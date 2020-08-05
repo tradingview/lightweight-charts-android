@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single" >
+        <item android:title="Series">
+            <menu>
+                <item
+                    android:id="@+id/menu_area_series"
+                    android:title="Area series"/>
+                <item
+                    android:id="@+id/menu_bar_prices"
+                    android:title="Bar series"/>
+                <item
+                    android:id="@+id/menu_histogram_time"
+                    android:title="Histogram series"/>
+                <item
+                    android:id="@+id/menu_candlestick_time"
+                    android:title="Candlestick series"/>
+                <item
+                    android:id="@+id/menu_line_time"
+                    android:title="Line series"/>
+            </menu>
+        </item>
+    </group>
+</menu>
