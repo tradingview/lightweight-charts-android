@@ -17,12 +17,10 @@ class MouseEventParamsSerializer: Serializer<MouseEventParams>() {
 
     override fun serialize(any: Any?): MouseEventParams? {
         return when (any) {
-            is Map<*, *> -> {
-                return gson.fromJson<MouseEventParams>(
-                    JSONObject(any).toString(),
-                    MouseEventParams::class.java
-                )
-            }
+            is Map<*, *> -> gson.fromJson<MouseEventParams>(
+                JSONObject(any).toString(),
+                MouseEventParams::class.java
+            )
             else -> null
         }
     }
