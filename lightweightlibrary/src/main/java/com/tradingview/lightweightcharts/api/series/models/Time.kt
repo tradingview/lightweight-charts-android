@@ -30,7 +30,7 @@ sealed class Time {
 
     abstract val date: Date
 
-    class TimeAdapter : JsonSerializer<Time> {
+    class TimeSerializer : JsonSerializer<Time> {
         override fun serialize(
             src: Time?,
             typeOfSrc: Type?,
@@ -44,6 +44,24 @@ sealed class Time {
                     addProperty("day", src.day)
                 }
                 is StringTime -> JsonPrimitive(src.source)
+                else -> throw IllegalStateException("Unsupported time type")
+            }
+        }
+    }
+    class TimeDeserializer : JsonDeserializer<Time> {
+        override fun deserialize(
+            json: JsonElement?,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ): Time {
+            return when {
+                json is JsonPrimitive && json.isNumber -> Utc(json.asLong)
+                json is JsonPrimitive && json.isString -> StringTime(json.asString)
+                json is JsonObject -> BusinessDay(
+                        json["year"].asInt,
+                        json["month"].asInt,
+                        json["day"].asInt
+                )
                 else -> throw IllegalStateException("Unsupported time type")
             }
         }
