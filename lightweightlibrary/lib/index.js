@@ -47,7 +47,7 @@ onmessage = function (message) {
 }
 
 window.onresize = () => {
-    window["chart"].resize(window.innerHeight, window.innerWidth)
+    window["chart"].resize(window.innerWidth, window.innerHeight)
 }
 
 onload = () => {
