@@ -8,6 +8,7 @@ import androidx.webkit.WebMessagePortCompat
 import androidx.webkit.WebViewCompat
 import com.google.gson.GsonBuilder
 import com.tradingview.lightweightcharts.Logger
+import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.runtime.messaging.*
 
@@ -15,7 +16,9 @@ import com.tradingview.lightweightcharts.runtime.messaging.*
 class WebMessageChannel(private val debug: Boolean, ports: List<WebMessagePortCompat>) {
     private val serializer = GsonBuilder()
         .registerTypeAdapter(Time::class.java, Time.TimeAdapter())
+        .registerTypeAdapter(CrosshairMode::class.java, CrosshairMode.CrosshairModeAdapter())
         .create()
+
     private val jsPort = ports[1]
     private val nativePort = ports[0]
     private var onBridgeMessageListener: BridgeMessageListener? = null
