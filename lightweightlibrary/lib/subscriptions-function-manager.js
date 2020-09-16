@@ -38,9 +38,18 @@ export default class SubscriptionsFunctionManager {
 
         this.functionManager.registerSubscription(
             "subscribeCrosshairMove",
-            (params, callback) => {
+            (callParams, callback) => {
                 try {
-                    chart.subscribeCrosshairMove(callback)
+                    chart.subscribeCrosshairMove((params) => {
+                        let customSeries = []
+                        console.log("series prices", params.seriesPrices)
+                        params.seriesPrices.forEach((value, key, map) => {
+                            console.log("series prices forEach", value, key)
+                            customSeries.push({ id: this.getSeriesId(key, callParams), prices: value })
+                        })
+                        params.seriesPrices = customSeries
+                        callback(params)
+                    })
                     console.debug("subscribeCrosshairMove successful")
                 } catch (error) {
                     console.error(error)
