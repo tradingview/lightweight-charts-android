@@ -1,8 +1,7 @@
 package com.tradingview.lightweightcharts.api.serializer
 
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.tradingview.lightweightcharts.api.serializer.adapter.GsonProvider
+import com.tradingview.lightweightcharts.api.serializer.gson.GsonProvider
 
 abstract class Serializer<T> {
 

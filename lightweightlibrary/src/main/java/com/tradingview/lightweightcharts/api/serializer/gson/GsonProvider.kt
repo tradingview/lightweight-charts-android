@@ -1,4 +1,4 @@
-package com.tradingview.lightweightcharts.api.serializer.adapter
+package com.tradingview.lightweightcharts.api.serializer.gson
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -6,6 +6,14 @@ import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.BarPrices
 import com.tradingview.lightweightcharts.api.series.models.Time
 
+
+object GsonProvider {
+    fun newInstance(): Gson {
+        return GsonBuilder()
+            .registerDefaultAdapters()
+            .create()
+    }
+}
 
 fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeAdapter(Time::class.java, Time.TimeAdapter())
@@ -19,12 +27,4 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeAdapter(PriceScaleMode::class.java, PriceScaleMode.PriceScaleModeAdapter())
 
     return this
-}
-
-object GsonProvider {
-    fun newInstance(): Gson {
-        return GsonBuilder()
-            .registerDefaultAdapters()
-            .create()
-    }
 }

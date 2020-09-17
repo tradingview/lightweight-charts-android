@@ -1,10 +1,8 @@
 package com.tradingview.lightweightcharts.api.serializer
 
 import com.google.gson.*
-import com.tradingview.lightweightcharts.api.serializer.adapter.GsonProvider
-import com.tradingview.lightweightcharts.api.series.models.BarPrices
+import com.tradingview.lightweightcharts.api.serializer.gson.GsonProvider
 import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
-import com.tradingview.lightweightcharts.api.series.models.Time
 import org.json.JSONObject
 
 class MouseEventParamsSerializer: Serializer<MouseEventParams>() {

@@ -6,9 +6,8 @@ import android.webkit.WebView
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebMessagePortCompat
 import androidx.webkit.WebViewCompat
-import com.google.gson.*
 import com.tradingview.lightweightcharts.Logger
-import com.tradingview.lightweightcharts.api.serializer.adapter.GsonProvider
+import com.tradingview.lightweightcharts.api.serializer.gson.GsonProvider
 import com.tradingview.lightweightcharts.runtime.messaging.*
 
 @SuppressLint("RequiresFeature")
