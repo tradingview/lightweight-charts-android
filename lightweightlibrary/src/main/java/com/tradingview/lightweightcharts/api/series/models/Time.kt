@@ -15,14 +15,16 @@ sealed class Time {
         override val date: Date
             get() = Date(timestamp * 1000)
     }
-    data class BusinessDay(val year: Int, val month: Int, val day: Int): Time() {
+
+    data class BusinessDay(val year: Int, val month: Int, val day: Int) : Time() {
         override val date: Date
             get() = Calendar
                 .getInstance()
                 .apply { set(year, month, day) }
                 .time
     }
-    data class StringTime(val source: String, val locale: Locale = Locale.getDefault()): Time() {
+
+    data class StringTime(val source: String, val locale: Locale = Locale.getDefault()) : Time() {
         override val date: Date
             get() = SimpleDateFormat("yyyy-MM-dd", locale).parse(source)
                 ?: throw IllegalStateException("Time format is not supported")
@@ -30,13 +32,13 @@ sealed class Time {
 
     abstract val date: Date
 
-    class TimeSerializer : JsonSerializer<Time> {
+    class TimeAdapter : JsonSerializer<Time>, JsonDeserializer<Time> {
         override fun serialize(
             src: Time?,
             typeOfSrc: Type?,
             context: JsonSerializationContext?
         ): JsonElement {
-            return when(src) {
+            return when (src) {
                 is Utc -> JsonPrimitive(src.timestamp)
                 is BusinessDay -> JsonObject().apply {
                     addProperty("year", src.year)
@@ -47,8 +49,7 @@ sealed class Time {
                 else -> throw IllegalStateException("Unsupported time type")
             }
         }
-    }
-    class TimeDeserializer : JsonDeserializer<Time> {
+
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
@@ -58,9 +59,9 @@ sealed class Time {
                 json is JsonPrimitive && json.isNumber -> Utc(json.asLong)
                 json is JsonPrimitive && json.isString -> StringTime(json.asString)
                 json is JsonObject -> BusinessDay(
-                        json["year"].asInt,
-                        json["month"].asInt,
-                        json["day"].asInt
+                    json["year"].asInt,
+                    json["month"].asInt,
+                    json["day"].asInt
                 )
                 else -> throw IllegalStateException("Unsupported time type")
             }

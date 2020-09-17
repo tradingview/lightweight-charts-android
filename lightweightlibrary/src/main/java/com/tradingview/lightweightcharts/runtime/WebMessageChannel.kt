@@ -6,17 +6,13 @@ import android.webkit.WebView
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebMessagePortCompat
 import androidx.webkit.WebViewCompat
-import com.google.gson.*
 import com.tradingview.lightweightcharts.Logger
-import com.tradingview.lightweightcharts.api.series.models.Time
+import com.tradingview.lightweightcharts.api.serializer.gson.GsonProvider
 import com.tradingview.lightweightcharts.runtime.messaging.*
 
 @SuppressLint("RequiresFeature")
 class WebMessageChannel(private val debug: Boolean, ports: List<WebMessagePortCompat>) {
-    private val serializer = GsonBuilder()
-        .registerTypeAdapter(Time::class.java, Time.TimeSerializer())
-        .registerTypeAdapter(Time::class.java, Time.TimeDeserializer())
-        .create()
+    private val serializer = GsonProvider.newInstance()
 
     private val jsPort = ports[1]
     private val nativePort = ports[0]
