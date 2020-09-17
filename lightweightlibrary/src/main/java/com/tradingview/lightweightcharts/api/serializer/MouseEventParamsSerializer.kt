@@ -1,6 +1,7 @@
 package com.tradingview.lightweightcharts.api.serializer
 
 import com.google.gson.*
+import com.tradingview.lightweightcharts.api.serializer.adapter.GsonProvider
 import com.tradingview.lightweightcharts.api.series.models.BarPrices
 import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
 import com.tradingview.lightweightcharts.api.series.models.Time
@@ -8,12 +9,7 @@ import org.json.JSONObject
 
 class MouseEventParamsSerializer: Serializer<MouseEventParams>() {
 
-    override val gson: Gson by lazy {
-        GsonBuilder()
-            .registerTypeAdapter(Time::class.java, Time.TimeDeserializer())
-            .registerTypeAdapter(BarPrices::class.java, BarPricesTypedAdapter())
-            .create()
-    }
+    override val gson: Gson by lazy { GsonProvider.newInstance() }
 
     override fun serialize(any: Any?): MouseEventParams? {
         return when (any) {

@@ -1,20 +1,17 @@
 package com.tradingview.lightweightcharts.api.series.enums
 
 import com.google.gson.*
+import com.tradingview.lightweightcharts.help.isNumber
 import java.lang.reflect.Type
+import kotlin.contracts.ExperimentalContracts
 
 
 enum class CrosshairMode(val value: Int) {
     NORMAL(0),
     MAGNET(1);
+
     companion object {
-        fun fromValue(value: Int): CrosshairMode? {
-            return when (value) {
-                0 -> NORMAL
-                1 -> MAGNET
-                else -> null
-            }
-        }
+        fun fromValue(value: Int): CrosshairMode = values().first { it.value == value }
     }
 
     class CrosshairModeAdapter : JsonSerializer<CrosshairMode>, JsonDeserializer<CrosshairMode> {
@@ -26,14 +23,15 @@ enum class CrosshairMode(val value: Int) {
             return src?.let { JsonPrimitive(it.value) } ?: JsonNull.INSTANCE
         }
 
+        @ExperimentalContracts
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ): CrosshairMode? {
+        ): CrosshairMode {
             return when {
-                json is JsonPrimitive && json.isNumber -> fromValue(json.asInt)
-                else -> null
+                json.isNumber() -> fromValue(json.asInt)
+                else -> NORMAL
             }
         }
     }
