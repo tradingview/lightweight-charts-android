@@ -23,6 +23,6 @@ In `/gradle_module/build.gradle`
 ```groovy
 dependencies {
     ...
-    implementation 'com.tradingview:lightweightcharts:1.0.0-beta'
+    implementation 'com.tradingview:lightweightcharts:1.0.0-beta02'
 }
 ```
