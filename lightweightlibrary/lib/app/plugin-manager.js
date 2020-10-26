@@ -7,23 +7,33 @@ export default class PluginManager {
         console.log("registration of plugin", plugin)
         const name = plugin.name
         const fileLink = plugin.file
-        console.log("addScript", window[plugin.functionName])
+        const configurationParams = plugin.configurationParams
         
         const foundPlugin = this.plugins.find((item) => item.name == name)
         if (foundPlugin) {
-            consumer(foundPlugin.functionName)
+            consumer(foundPlugin.fn)
         } else {
-            this.addScript(fileLink, () => {
-                const mainFun = window[plugin.functionName]
-                delete window[plugin.functionName]
-                this.plugins.push({
-                    name: name, 
-                    file: fileLink,
-                    functionName: mainFun
-                })
-                consumer(mainFun)
-            })
+            this.addPlugin(consumer, name, fileLink, configurationParams)
         }
+    }
+
+    getPlugin(fn) {
+        return this.plugins.find((item) => item.fn == fn)
+    }
+
+    addPlugin(consumer, name, fileLink, configurationParams) {
+        this.addScript(fileLink, () => {
+            const pluginConfiguration = window[name]
+            const fn = pluginConfiguration(configurationParams)
+            delete window[name]
+            this.plugins.push({
+                name: name, 
+                file: fileLink,
+                configurationParams: configurationParams,
+                fn: fn
+            })
+            consumer(fn)
+        })
     }
 
     addScript(file, onLoad) {

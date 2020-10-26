@@ -24,7 +24,8 @@ import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.viewmodel.*
-import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
+import com.tradingview.lightweightcharts.runtime.plugins.FormatterParams
+import com.tradingview.lightweightcharts.runtime.plugins.StringFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Job
@@ -104,8 +105,9 @@ class MainActivity : AppCompatActivity() {
                 ),
                 localization = LocalizationOptions(
                     locale = "ru-RU",
-                    priceFormatter = PriceFormatter(),
-                    timeFormatter = "(time) => time"
+                    //TODO: add uuid for every new added plugin
+                    priceFormatter = StringFormatter(FormatterParams("{0}$")),
+                    timeFormatter = StringFormatter(FormatterParams("{0} time"))
                 )
             )
         )

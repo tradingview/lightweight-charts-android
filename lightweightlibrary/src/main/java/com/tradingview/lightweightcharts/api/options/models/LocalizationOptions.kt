@@ -1,6 +1,6 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
+import com.tradingview.lightweightcharts.runtime.plugins.StringFormatter
 
 data class LocalizationOptions(
     /**
@@ -12,12 +12,12 @@ data class LocalizationOptions(
      * User-defined function for price formatting.
      * Could be used for some specific cases, that could not be covered with PriceFormat
      */
-    val priceFormatter: PriceFormatter,
+    val priceFormatter: StringFormatter,
 
     /**
      * User-defined function for time formatting.
      */
-    val timeFormatter: String,
+    val timeFormatter: StringFormatter,
 
     /**
      * One of predefined options to format time. Ignored if timeFormatter has been specified.
