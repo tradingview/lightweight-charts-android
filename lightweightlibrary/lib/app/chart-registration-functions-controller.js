@@ -2,12 +2,14 @@ import SeriesFunctionManager from "./series-function-manager.js";
 import SubscriptionsFunctionManager from "./subscriptions-function-manager";
 import PriceScaleFunctionManager from "./price-scale-function-manager";
 import TimeScaleFunctionManager from "./time-scale-function-manager";
+import { applyIf } from "./helper.js";
 
 export default class ChartRegistrationFunctionsController {
 
-  constructor(chart, functionManager) {
+  constructor(chart, functionManager, pluginManager) {
         this.chart = chart
         this.functionManager = functionManager
+        this.pluginManager = pluginManager
         this.cache = new Map()
     }
 
@@ -55,17 +57,33 @@ export default class ChartRegistrationFunctionsController {
             resolve(options)
         })
         this.functionManager.registerFunction("chartApplyOptions", (params, resolve) => {
-            if (params.options.localization && params.options.localization.priceFormatter) {
-                let priceFunction = "return " + params.options.localization.priceFormatter
-                params.options.localization.priceFormatter = new Function(priceFunction)()
-            }
-
-            if (params.options.localization && params.options.localization.timeFormatter) {
-                let timeFunction = "return " + params.options.localization.timeFormatter
-                params.options.localization.timeFormatter = new Function(timeFunction)()
-            }
-
-            this.chart.applyOptions(params.options)
+            console.log(params)
+            new Promise((resolve) => {
+                if (params.options.localization && params.options.localization.priceFormatter) {
+                    const plugin = params.options.localization.priceFormatter
+                    this.pluginManager.register(plugin, (fun) => {
+                        params.options.localization.priceFormatter = fun
+                        console.log('plugin priceFormatter registered')
+                        resolve()
+                    })
+                } else {
+                    resolve()
+                }
+            }).then(() => {
+                return new Promise((resolve) => {
+                    if (params.options.localization && params.options.localization.timeFormatter) {
+                        let timeFunction = params.options.localization.timeFormatter
+                        params.options.localization.timeFormatter = eval(timeFunction)
+                        console.log('timeFormatter registered')
+                        resolve()
+                    } else {
+                        resolve()
+                    }
+                })
+            }).then(() => {
+                this.chart.applyOptions(params.options)
+                console.log('apply options')
+            })
         })
 
     }

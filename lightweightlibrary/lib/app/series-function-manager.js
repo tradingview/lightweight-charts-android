@@ -11,6 +11,10 @@ export default class SeriesFunctionManager {
             this.addSeries(params.uuid, this.chart.addLineSeries(params.options))
         })
         this.functionManager.registerFunction("addAreaSeries", (params, resolve) => {
+            console.log(params)
+            if (params.options.priceFormat !== undefined) {
+                params.options.priceFormat.formatter = eval(params.options.priceFormat.formatter)
+            }
             this.addSeries(params.uuid, this.chart.addAreaSeries(params.options))
         })
         this.functionManager.registerFunction("addBarSeries", (params, resolve) => {

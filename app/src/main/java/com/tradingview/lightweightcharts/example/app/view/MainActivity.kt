@@ -13,14 +13,18 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
+import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.BarData
 import com.tradingview.lightweightcharts.api.series.models.HistogramData
 import com.tradingview.lightweightcharts.api.series.models.LineData
+import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.viewmodel.*
+import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Job
@@ -56,6 +60,55 @@ class MainActivity : AppCompatActivity() {
 
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
+
+        firstChartApi.applyOptions(
+            ChartOptions(
+                layout = LayoutOptions(
+                    backgroundColor = "#000000",
+                    textColor = "#ffffff"
+                ),
+                grid = GridOptions(
+                    GridLineOptions(
+                        "#ff0000"
+                    ),
+                    GridLineOptions(
+                        "#ff0000"
+                    )
+                ),
+                priceScale = PriceScaleOptions(
+                    autoScale = true,
+                    scaleMargins = PriceScaleMargins(
+                        top = 0.2f, bottom = 0.2f
+                    ),
+                    borderVisible = false
+                ),
+                timeScale = TimeScaleOptions(
+                    borderVisible = false,
+                    timeVisible = true,
+                    secondsVisible = true
+                ),
+                crosshair = CrosshairOptions(
+                    CrosshairMode.NORMAL,
+                    CrosshairLineOptions(
+                        color = "#00ff00",
+                        labelBackgroundColor = "#00ff00"
+                    ),
+                    CrosshairLineOptions(
+                        color = "#00ff00",
+                        labelBackgroundColor = "#00ff00"
+                    )
+                ),
+                handleScroll = HandleScrollOptions(
+                    horzTouchDrag = true,
+                    vertTouchDrag = false
+                ),
+                localization = LocalizationOptions(
+                    locale = "ru-RU",
+                    priceFormatter = PriceFormatter(),
+                    timeFormatter = "(time) => time"
+                )
+            )
+        )
     }
 
     private fun setSeriesData(data: Data, currentSeries: SeriesApi<*>?, chartApi: ChartApi): SeriesApi<SeriesData> {
@@ -63,7 +116,9 @@ class MainActivity : AppCompatActivity() {
 
         when (data.type) {
             SeriesDataType.AREA -> {
-                val seriesApi = chartApi.addAreaSeries()
+                val seriesApi = chartApi.addAreaSeries(AreaSeriesOptions(
+                    priceFormat = PriceFormat.priceFormatBuiltIn(PriceFormat.Type.VOLUME, 1, 0.02f)
+                ))
                 seriesApi.setData(data.list.map { it as LineData })
                 return seriesApi as SeriesApi<SeriesData>
             }

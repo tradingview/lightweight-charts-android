@@ -66,6 +66,7 @@ def evaluateShellScript(String ... script) {
 task npmBuild {
     evaluateShellScript 'npm', 'install'
     evaluateShellScript 'npm', 'run', 'compile'
+    evaluateShellScript 'npm', 'run', 'compile-price-formatter'
 }
 
 task androidSourcesJar(type: Jar) {

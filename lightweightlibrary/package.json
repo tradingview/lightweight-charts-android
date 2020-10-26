@@ -14,6 +14,7 @@
     "webpack-cli": "^3.3.9"
   },
   "scripts": {
-    "compile": "npx webpack ./lib/index.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts"
+    "compile": "npx webpack ./lib/app/index.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts/app",
+    "compile-price-formatter": "npx webpack ./lib/plugins/price-formatter/index.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts/plugins/price-formatter/"
   }
 }
