@@ -5,15 +5,16 @@ export default class PluginManager {
 
     register(plugin, consumer) {
         console.log("registration of plugin", plugin)
+        const uuid = plugin.uuid
         const name = plugin.name
         const fileLink = plugin.file
         const configurationParams = plugin.configurationParams
         
-        const foundPlugin = this.plugins.find((item) => item.name == name)
+        const foundPlugin = this.plugins.find((item) => item.uuid == uuid)
         if (foundPlugin) {
             consumer(foundPlugin.fn)
         } else {
-            this.addPlugin(consumer, name, fileLink, configurationParams)
+            this.addPlugin(consumer, uuid, name, fileLink, configurationParams)
         }
     }
 
@@ -21,12 +22,13 @@ export default class PluginManager {
         return this.plugins.find((item) => item.fn == fn)
     }
 
-    addPlugin(consumer, name, fileLink, configurationParams) {
+    addPlugin(consumer, uuid, name, fileLink, configurationParams) {
         this.addScript(fileLink, () => {
             const pluginConfiguration = window[name]
             const fn = pluginConfiguration(configurationParams)
             delete window[name]
             this.plugins.push({
+                uuid: uuid,
                 name: name, 
                 file: fileLink,
                 configurationParams: configurationParams,
