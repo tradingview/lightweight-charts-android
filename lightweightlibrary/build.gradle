@@ -67,6 +67,7 @@ task npmBuild {
     evaluateShellScript 'npm', 'install'
     evaluateShellScript 'npm', 'run', 'compile'
     evaluateShellScript 'npm', 'run', 'compile-price-formatter'
+    evaluateShellScript 'npm', 'run', 'compile-time-formatter'
 }
 
 task androidSourcesJar(type: Jar) {

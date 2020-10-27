@@ -1,8 +1,8 @@
 package com.tradingview.lightweightcharts.runtime.plugins
 
-class StringFormatter(formatterParams: FormatterParams) : Plugin(
-    name = "stringFormatter",
-    file = "scripts/plugins/string-formatter/main.js",
+class PriceFormatter(formatterParams: FormatterParams) : Plugin(
+    name = "priceFormatter",
+    file = "scripts/plugins/price-formatter/main.js",
     configurationParams = formatterParams
 )
 
