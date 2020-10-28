@@ -24,7 +24,7 @@ import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.viewmodel.*
-import com.tradingview.lightweightcharts.runtime.plugins.FormatterParams
+import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
@@ -66,15 +66,15 @@ class MainActivity : AppCompatActivity() {
         firstChartApi.applyOptions(
             ChartOptions(
                 layout = LayoutOptions(
-                    backgroundColor = "#000000",
-                    textColor = "#ffffff"
+                    backgroundColor = "#eeeeee",
+                    textColor = "#000000"
                 ),
                 grid = GridOptions(
                     GridLineOptions(
-                        "#ff0000"
+                        "#c2c2c2"
                     ),
                     GridLineOptions(
-                        "#ff0000"
+                        "#c2c2c2"
                     )
                 ),
                 priceScale = PriceScaleOptions(
@@ -92,12 +92,12 @@ class MainActivity : AppCompatActivity() {
                 crosshair = CrosshairOptions(
                     CrosshairMode.NORMAL,
                     CrosshairLineOptions(
-                        color = "#00ff00",
-                        labelBackgroundColor = "#00ff00"
+                        color = "#555555",
+                        labelBackgroundColor = "#555555"
                     ),
                     CrosshairLineOptions(
-                        color = "#00ff00",
-                        labelBackgroundColor = "#00ff00"
+                        color = "#555555",
+                        labelBackgroundColor = "#555555"
                     )
                 ),
                 handleScroll = HandleScrollOptions(
@@ -106,8 +106,11 @@ class MainActivity : AppCompatActivity() {
                 ),
                 localization = LocalizationOptions(
                     locale = "ru-RU",
-                    priceFormatter = PriceFormatter(FormatterParams("{0}$")),
-                    timeFormatter = TimeFormatter("ru-RU")
+                    priceFormatter = PriceFormatter(template = "{price}$"),
+                    timeFormatter = TimeFormatter(
+                        locale = "ru-RU",
+                        dateTimeFormat = DateTimeFormat.DATE_TIME
+                    )
                 )
             )
         )

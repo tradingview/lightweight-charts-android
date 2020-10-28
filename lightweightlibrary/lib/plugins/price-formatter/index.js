@@ -1,10 +1,6 @@
 window.priceFormatter = (formatterParams) => {
-    return (...params) => {
-        console.log(params, formatterParams)
-        var template = formatterParams.template
-        params.forEach((param, index) => {
-            template = template.replace(new RegExp("\\{" + index + "\\}", "g"), param)
-        })
-        return template
+    return (price) => {
+        console.log(price, formatterParams)
+        return formatterParams.template.replace(new RegExp("\\{price\\}", "g"), price)
     }
 }
