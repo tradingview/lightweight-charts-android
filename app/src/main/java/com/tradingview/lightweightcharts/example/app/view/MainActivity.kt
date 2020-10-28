@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                 ),
                 localization = LocalizationOptions(
                     locale = "ru-RU",
-                    priceFormatter = PriceFormatter(template = "{price}$"),
+                    priceFormatter = PriceFormatter(template = "{price:#2:#3}$"),
                     timeFormatter = TimeFormatter(
                         locale = "ru-RU",
                         dateTimeFormat = DateTimeFormat.DATE_TIME

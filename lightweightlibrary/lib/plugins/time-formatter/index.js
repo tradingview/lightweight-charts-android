@@ -13,7 +13,6 @@ window.timeFormatter = (formatterParams) => {
     }
 
     return (businessDayOrTimestamp) => {
-        console.log(businessDayOrTimestamp, formatterParams)
         if (typeof businessDayOrTimestamp == 'number') {
             return toLocaleString(new Date(businessDayOrTimestamp * 1000))
         }
