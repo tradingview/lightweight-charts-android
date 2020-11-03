@@ -92,63 +92,98 @@ class ChartApiDelegate(
         )
     }
 
-    override fun addAreaSeries(options: AreaSeriesOptions): SeriesApi<LineData> {
-        val uuid = controller.callFunction(
+    override fun addAreaSeries(
+            options: AreaSeriesOptions,
+           block: (api: SeriesApi<LineData>) -> Unit
+    ) {
+        controller.callFunction<String>(
             ADD_AREA_SERIES,
-            mapOf(OPTIONS to options)
-        )
-        return SeriesApiDelegate(
-            uuid,
-            controller,
-            AreaSeriesOptionsSerializer()
+            mapOf(OPTIONS to options),
+            { uuid ->
+                if (uuid != null) {
+                    block(SeriesApiDelegate(
+                            uuid,
+                            controller,
+                            AreaSeriesOptionsSerializer()
+                    ))
+                }
+            }
         )
     }
 
-    override fun addBarSeries(options: BarSeriesOptions): SeriesApi<BarData> {
-        val uuid = controller.callFunction(
+    override fun addBarSeries(
+            options: BarSeriesOptions,
+            block: (api: SeriesApi<BarData>) -> Unit
+    ) {
+        controller.callFunction<String>(
             ADD_BAR_SERIES,
-            mapOf(OPTIONS to options)
-        )
-        return SeriesApiDelegate(
-            uuid,
-            controller,
-            BarSeriesOptionsSerializer()
+            mapOf(OPTIONS to options),
+            { uuid ->
+                if (uuid != null) {
+                    block(SeriesApiDelegate(
+                            uuid,
+                            controller,
+                            BarSeriesOptionsSerializer()
+                    ))
+                }
+            }
         )
     }
 
-    override fun addCandlestickSeries(options: CandlestickSeriesOptions): SeriesApi<BarData> {
-        val uuid = controller.callFunction(
+    override fun addCandlestickSeries(
+            options: CandlestickSeriesOptions,
+            block: (api: SeriesApi<BarData>) -> Unit
+    ) {
+        controller.callFunction<String>(
             ADD_CANDLESTICK_SERIES,
-            mapOf(OPTIONS to options)
-        )
-        return SeriesApiDelegate(
-            uuid,
-            controller,
-            CandlestickSeriesOptionsSerializer()
+            mapOf(OPTIONS to options),
+            { uuid ->
+                if (uuid != null) {
+                    block(SeriesApiDelegate(
+                            uuid,
+                            controller,
+                            CandlestickSeriesOptionsSerializer()
+                    ))
+                }
+            }
         )
     }
 
-    override fun addHistogramSeries(options: HistogramSeriesOptions): SeriesApi<HistogramData> {
-        val uuid = controller.callFunction(
+    override fun addHistogramSeries(
+            options: HistogramSeriesOptions,
+            block: (api: SeriesApi<HistogramData>) -> Unit
+    ) {
+        controller.callFunction<String>(
             ADD_HISTOGRAM_SERIES,
-            mapOf(OPTIONS to options)
-        )
-        return SeriesApiDelegate(
-            uuid,
-            controller,
-            HistogramSeriesOptionsSerializer()
+            mapOf(OPTIONS to options),
+            { uuid ->
+                if (uuid != null) {
+                    block(SeriesApiDelegate(
+                            uuid,
+                            controller,
+                            HistogramSeriesOptionsSerializer()
+                    ))
+                }
+            }
         )
     }
 
-    override fun addLineSeries(options: LineSeriesOptions): SeriesApi<LineData> {
-        val uuid = controller.callFunction(
+    override fun addLineSeries(
+            options: LineSeriesOptions,
+            block: (api: SeriesApi<LineData>) -> Unit
+    ) {
+        controller.callFunction<String>(
             ADD_LINE_SERIES,
-            mapOf(OPTIONS to options)
-        )
-        return SeriesApiDelegate(
-            uuid,
-            controller,
-            LineSeriesOptionsSerializer()
+            mapOf(OPTIONS to options),
+            { uuid ->
+                if (uuid != null) {
+                    block(SeriesApiDelegate(
+                            uuid,
+                            controller,
+                            LineSeriesOptionsSerializer()
+                    ))
+                }
+            },
         )
     }
 

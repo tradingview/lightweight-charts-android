@@ -204,15 +204,6 @@ fun listCandlestickSeriesData(): MutableList<SeriesData> {
     )
 }
 
-fun lineSeriesOptionsWithCustomPriceFormat(): LineSeriesOptions {
-    return LineSeriesOptions(
-            priceFormat = PriceFormat.priceFormatCustom(
-            "function (price) { return price + '!'; }",
-            2f
-        )
-    )
-}
-
 fun priceScaleOptions() = PriceScaleOptions(autoScale = false, position = PriceAxisPosition.LEFT)
 fun timeScaleOptions() = TimeScaleOptions(visible = false)
 

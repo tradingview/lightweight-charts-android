@@ -55,97 +55,125 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        viewModel.seriesData.observe(this, Observer { data ->
-            currentSeriesApiFirstChart = setSeriesData(data, currentSeriesApiFirstChart, firstChartApi)
-            currentSeriesApiSecondChart = setSeriesData(data, currentSeriesApiSecondChart, secondChartApi)
+        viewModel.seriesData.observe(this, { data ->
+            setSeriesData(data, currentSeriesApiFirstChart, firstChartApi) {
+                currentSeriesApiFirstChart = it as SeriesApi<SeriesData>
+            }
+            setSeriesData(data, currentSeriesApiSecondChart, secondChartApi) {
+                currentSeriesApiSecondChart = it as SeriesApi<SeriesData>
+            }
         })
 
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
 
         firstChartApi.applyOptions(
-            ChartOptions(
-                layout = LayoutOptions(
-                    backgroundColor = "#eeeeee",
-                    textColor = "#000000"
-                ),
-                grid = GridOptions(
-                    GridLineOptions(
-                        "#c2c2c2"
-                    ),
-                    GridLineOptions(
-                        "#c2c2c2"
-                    )
-                ),
-                priceScale = PriceScaleOptions(
-                    autoScale = true,
-                    scaleMargins = PriceScaleMargins(
-                        top = 0.2f, bottom = 0.2f
-                    ),
-                    borderVisible = false
-                ),
-                timeScale = TimeScaleOptions(
-                    borderVisible = false,
-                    timeVisible = true,
-                    secondsVisible = true
-                ),
-                crosshair = CrosshairOptions(
-                    CrosshairMode.NORMAL,
-                    CrosshairLineOptions(
-                        color = "#555555",
-                        labelBackgroundColor = "#555555"
-                    ),
-                    CrosshairLineOptions(
-                        color = "#555555",
-                        labelBackgroundColor = "#555555"
-                    )
-                ),
-                handleScroll = HandleScrollOptions(
-                    horzTouchDrag = true,
-                    vertTouchDrag = false
-                ),
-                localization = LocalizationOptions(
-                    locale = "ru-RU",
-                    priceFormatter = PriceFormatter(template = "{price:#2:#3}$"),
-                    timeFormatter = TimeFormatter(
-                        locale = "ru-RU",
-                        dateTimeFormat = DateTimeFormat.DATE_TIME
-                    )
+                ChartOptions(
+                        layout = LayoutOptions(
+                                backgroundColor = "#eeeeee",
+                                textColor = "#000000"
+                        ),
+                        grid = GridOptions(
+                                GridLineOptions(
+                                        "#c2c2c2"
+                                ),
+                                GridLineOptions(
+                                        "#c2c2c2"
+                                )
+                        ),
+                        priceScale = PriceScaleOptions(
+                                autoScale = true,
+                                scaleMargins = PriceScaleMargins(
+                                        top = 0.2f, bottom = 0.2f
+                                ),
+                                borderVisible = false
+                        ),
+                        timeScale = TimeScaleOptions(
+                                borderVisible = false,
+                                timeVisible = true,
+                                secondsVisible = true
+                        ),
+                        crosshair = CrosshairOptions(
+                                CrosshairMode.NORMAL,
+                                CrosshairLineOptions(
+                                        color = "#555555",
+                                        labelBackgroundColor = "#555555"
+                                ),
+                                CrosshairLineOptions(
+                                        color = "#555555",
+                                        labelBackgroundColor = "#555555"
+                                )
+                        ),
+                        handleScroll = HandleScrollOptions(
+                                horzTouchDrag = true,
+                                vertTouchDrag = false
+                        ),
+                        localization = LocalizationOptions(
+                                locale = "ru-RU",
+                                priceFormatter = PriceFormatter(template = "{price:#2:#3}$"),
+                                timeFormatter = TimeFormatter(
+                                        locale = "ru-RU",
+                                        dateTimeFormat = DateTimeFormat.DATE_TIME
+                                )
+                        )
                 )
-            )
         )
     }
 
-    private fun setSeriesData(data: Data, currentSeries: SeriesApi<*>?, chartApi: ChartApi): SeriesApi<SeriesData> {
+    private fun setSeriesData(
+            data: Data,
+            currentSeries: SeriesApi<*>?,
+            chartApi: ChartApi,
+            onSeriesCreated: (SeriesApi<*>) -> Unit
+    ) {
         currentSeries?.let(chartApi::removeSeries)
 
         when (data.type) {
             SeriesDataType.AREA -> {
-                val seriesApi = chartApi.addAreaSeries(AreaSeriesOptions(
-                    priceFormat = PriceFormat.priceFormatBuiltIn(PriceFormat.Type.VOLUME, 1, 0.02f)
-                ))
-                seriesApi.setData(data.list.map { it as LineData })
-                return seriesApi as SeriesApi<SeriesData>
+                chartApi.addAreaSeries(
+                        options = AreaSeriesOptions(
+                                priceFormat = PriceFormat.priceFormatCustom(
+                                        PriceFormatter("{price}$!"),
+                                        0.02f
+                                )
+                        ),
+                        block = { api ->
+                            api.setData(data.list.map { it as LineData })
+                            onSeriesCreated(api)
+                        }
+                )
             }
             SeriesDataType.LINE -> {
-                val seriesApi = chartApi.addLineSeries()
-                seriesApi.setData(data.list.map { it as LineData })
-                return seriesApi as SeriesApi<SeriesData>
+                chartApi.addLineSeries(
+                        block = { api ->
+                            api.setData(data.list.map { it as LineData })
+                            onSeriesCreated(api)
+                        }
+                )
             }
             SeriesDataType.BAR -> {
-                val seriesApi = chartApi.addBarSeries()
-                seriesApi.setData(data.list.map { it as BarData })
-                return seriesApi as SeriesApi<SeriesData>
+                chartApi.addBarSeries(
+                        block = { api ->
+                            api.setData(data.list.map { it as BarData })
+                            onSeriesCreated(api)
+                        }
+                )
             }
             SeriesDataType.CANDLESTICK -> {
-                val seriesApi = chartApi.addCandlestickSeries()
-                seriesApi.setData(data.list.map { it as BarData })
-                return seriesApi as SeriesApi<SeriesData>
+                chartApi.addCandlestickSeries(
+                        block = { api ->
+                            api.setData(data.list.map { it as BarData })
+                            onSeriesCreated(api)
+                        }
+                )
             }
             SeriesDataType.HISTOGRAM -> {
-                val seriesApi = chartApi.addHistogramSeries()
-                seriesApi.setData(data.list.map { it as HistogramData })
-                return seriesApi as SeriesApi<SeriesData>
+                chartApi.addHistogramSeries(
+                        block = { api ->
+                            api.setData(data.list.map { it as HistogramData })
+                            onSeriesCreated(api)
+                        }
+                )
             }
         }
     }
@@ -156,7 +184,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when  {
+        when {
             item.itemId == R.id.static_data -> {
                 lifecycleScope.launchWhenResumed {
                     realtimeDataJob?.cancelAndJoin()

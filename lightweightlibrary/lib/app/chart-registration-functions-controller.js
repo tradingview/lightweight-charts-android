@@ -14,7 +14,7 @@ export default class ChartRegistrationFunctionsController {
 
     registerFunctions() {
 
-        const series = new SeriesFunctionManager(this.chart, this.functionManager)
+        const series = new SeriesFunctionManager(this.chart, this.functionManager, this.pluginManager)
         series.register()
 
         const subscriptions = new SubscriptionsFunctionManager(
