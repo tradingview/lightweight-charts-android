@@ -3,58 +3,61 @@ export default class TimeScaleFunctionManager {
     constructor(chart, functionManager) {
         this.chart = chart
         this.functionManager = functionManager
-        this.cache = new Map()
+    }
+
+    _timeScale() {
+        return this.chart.timeScale()
     }
 
     register() {
-        this.functionManager.registerFunction("timeScale", (params, resolve) => {
-            this.cache.set(params.uuid, this.chart.timeScale())
-        })
         this.functionManager.registerFunction("scrollPosition", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                resolve(scale.scrollPosition())
-            })
+            resolve(this._timeScale().scrollPosition())
         })
         this.functionManager.registerFunction("scrollToPosition", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                scale.scrollToPosition(params.position, params.animated)
-            })
+            this._timeScale().scrollToPosition(params.position, params.animated)
         })
         this.functionManager.registerFunction("timeScaleOptions", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                resolve(scale.options())
-            })
+            resolve(this._timeScale().options())
         })
         this.functionManager.registerFunction("timeScaleApplyOptions", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                scale.applyOptions(params.options)
-            })
+            this._timeScale().applyOptions(params.options)
         })
         this.functionManager.registerFunction("scrollToRealTime", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                scale.scrollToRealTime()
-            })
+            this._timeScale().scrollToRealTime()
         })
         this.functionManager.registerFunction("getVisibleRange", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                resolve(scale.getVisibleRange())
-            })
+            resolve(this._timeScale().getVisibleRange())
         })
         this.functionManager.registerFunction("setVisibleRange", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                scale.setVisibleRange(params.range)
-            })
+            this._timeScale().setVisibleRange(params.range)
         })
         this.functionManager.registerFunction("resetTimeScale", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                scale.resetTimeScale()
-            })
+            this._timeScale().resetTimeScale()
         })
         this.functionManager.registerFunction("fitContent", (params, resolve) => {
-            this.fetchTimeScale(params, (scale) => {
-                scale.fitContent()
-            })
+            this._timeScale().fitContent()
         })
+        this.functionManager.registerSubscription(
+            "subscribeVisibleTimeRangeChange",
+            (params, callback) => {
+                try {
+                    this._timeScale().subscribeVisibleTimeRangeChange(callback)
+                    console.debug("subscribeVisibleTimeRangeChange successful")
+                } catch (error) {
+                    console.error(error)
+                    console.warn('subscribeVisibleTimeRangeChange has been failed')
+                }
+            },
+            (callback) => {
+                try {
+                    this._timeScale().unsubscribeVisibleTimeRangeChange(callback)
+                    console.debug("unsubscribeVisibleTimeRangeChange successful")
+                } catch (error) {
+                    console.error(error)
+                    console.warn('unsubscribeVisibleTimeRangeChange has been failed')
+                }
+            }
+        )
     }
 
     fetchTimeScale(params, callback) {

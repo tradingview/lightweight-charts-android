@@ -9,8 +9,6 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE_SER
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.RESIZE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_CROSSHAIR_MOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_ON_CLICK
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.TIME_SCALE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.FORCE_REPAINT
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.HEIGHT
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.OPTIONS
@@ -25,7 +23,6 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.serializer.*
@@ -34,6 +31,8 @@ import com.tradingview.lightweightcharts.api.series.models.*
 class ChartApiDelegate(
     private val controller: WebMessageController
 ): ChartApi {
+
+    override val timeScale = TimeScaleApiDelegate(controller)
 
     override fun subscribeCrosshairMove(block: (params: MouseEventParams?) -> Unit) {
         controller.callSubscribe(
@@ -49,22 +48,6 @@ class ChartApiDelegate(
             callback = block
         )
     }
-
-    override fun subscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit) {
-        controller.callSubscribe(
-            SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE,
-            callback = block,
-            serializer = TimeRangeSerializer()
-        )
-    }
-
-    override fun unsubscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit) {
-        controller.callUnsubscribe(
-            SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE,
-            callback = block
-        )
-    }
-
 
     override fun subscribeClick(block: (params: MouseEventParams?) -> Unit) {
         controller.callSubscribe(
@@ -202,11 +185,6 @@ class ChartApiDelegate(
     override fun priceScale(): PriceScaleApi {
         val uuid = controller.callFunction(PRICE_SCALE)
         return PriceScaleApiDelegate(uuid, controller)
-    }
-
-    override fun timeScale(): TimeScaleApi {
-        val uuid = controller.callFunction(TIME_SCALE)
-        return TimeScaleApiDelegate(uuid, controller)
     }
 
     override fun applyOptions(options: ChartOptions, onApply: () -> Unit) {

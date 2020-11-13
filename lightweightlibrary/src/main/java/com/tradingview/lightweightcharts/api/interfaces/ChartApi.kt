@@ -14,10 +14,8 @@ interface ChartApi {
         const val PRINT = "print"
         const val SUBSCRIBE_ON_CLICK = "subscribeOnClick"
         const val SUBSCRIBE_CROSSHAIR_MOVE = "subscribeCrosshairMove"
-        const val SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE = "subscribeVisibleTimeRangeChange"
         const val REMOVE = "remove"
         const val REMOVE_SERIES = "removeSeries"
-        const val TIME_SCALE = "timeScale"
         const val PRICE_SCALE = "priceScale"
         const val APPLY_OPTIONS = "chartApplyOptions"
         const val CHART_OPTIONS = "chartOptions"
@@ -31,6 +29,12 @@ interface ChartApi {
         const val OPTIONS = "options"
         const val FORCE_REPAINT = "forceRepaint"
     }
+
+    /**
+     * Returns API to manipulate the time scale
+     * @returns - target API
+     */
+    val timeScale: TimeScaleApi
 
     /**
      * Removes the chart object including all DOM elements.
@@ -124,27 +128,10 @@ interface ChartApi {
     fun unsubscribeCrosshairMove(block: (params: MouseEventParams?) -> Unit)
 
     /**
-     * Adds a subscription to visible range changes
-     * to receive notification about visible range of data changes
-     */
-    fun subscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
-
-    /**
-     * Removes a subscription to visible range changes
-     */
-    fun unsubscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
-
-    /**
      * Returns API to manipulate the price scale
      * @returns - target API
      */
     fun priceScale(): PriceScaleApi
-
-    /**
-     * Returns API to manipulate the time scale
-     * @returns - target API
-     */
-    fun timeScale(): TimeScaleApi
 
     /**
      * Applies new options to the chart
