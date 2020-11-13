@@ -6,4 +6,7 @@
     <item
         android:id="@+id/real_time_data"
         android:title="Real-time data"/>
+    <item
+        android:id="@+id/clear_series"
+        android:title="Clear series"/>
 </menu>

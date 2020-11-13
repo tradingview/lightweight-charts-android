@@ -101,7 +101,7 @@ interface ChartApi {
      * Removes a series of any type.
      * This is an irreversible operation, you cannot do anything with the series after removing it
      */
-    fun removeSeries(seriesApi: SeriesApi<*>)
+    fun removeSeries(seriesApi: SeriesApi<*>, block: () -> Unit = {})
 
     /**
      * Adds a subscription to mouse click event
@@ -150,7 +150,7 @@ interface ChartApi {
      * Applies new options to the chart
      * @param options - any subset of chart options
      */
-    fun applyOptions(options: ChartOptions)
+    fun applyOptions(options: ChartOptions, onApply: () -> Unit = {})
 
     /**
      * Returns currently applied options

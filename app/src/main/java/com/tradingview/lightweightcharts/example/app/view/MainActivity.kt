@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             setSeriesData(data, currentSeriesApiFirstChart, firstChartApi) {
                 currentSeriesApiFirstChart = it as SeriesApi<SeriesData>
             }
+
             setSeriesData(data, currentSeriesApiSecondChart, secondChartApi) {
                 currentSeriesApiSecondChart = it as SeriesApi<SeriesData>
             }
@@ -122,11 +123,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSeriesData(
             data: Data,
-            currentSeries: SeriesApi<*>?,
+            currentSeriesApi: SeriesApi<*>?,
             chartApi: ChartApi,
             onSeriesCreated: (SeriesApi<*>) -> Unit
     ) {
-        currentSeries?.let(chartApi::removeSeries)
+        currentSeriesApi?.let(chartApi::removeSeries)
 
         when (data.type) {
             SeriesDataType.AREA -> {
@@ -200,6 +201,14 @@ class MainActivity : AppCompatActivity() {
                         currentSeriesApiSecondChart?.update(it)
                     }
                 }
+                return true
+            }
+            item.itemId == R.id.clear_series -> {
+                currentSeriesApiFirstChart?.let(firstChartApi::removeSeries)
+                currentSeriesApiFirstChart = null
+
+                currentSeriesApiSecondChart?.let(secondChartApi::removeSeries)
+                currentSeriesApiSecondChart = null
                 return true
             }
             actionBar.onOptionsItemSelected(item) -> return true

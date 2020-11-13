@@ -94,7 +94,7 @@ class ChartApiDelegate(
 
     override fun addAreaSeries(
             options: AreaSeriesOptions,
-           block: (api: SeriesApi<LineData>) -> Unit
+            block: (api: SeriesApi<LineData>) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_AREA_SERIES,
@@ -191,10 +191,11 @@ class ChartApiDelegate(
         controller.callFunction(REMOVE)
     }
 
-    override fun removeSeries(seriesApi: SeriesApi<*>) {
-        controller.callFunction(
+    override fun removeSeries(seriesApi: SeriesApi<*>, block: () -> Unit) {
+        controller.callFunction<Unit>(
             REMOVE_SERIES,
-            mapOf(SERIES_ID to seriesApi.uuid)
+            mapOf(SERIES_ID to seriesApi.uuid),
+            { block() }
         )
     }
 
@@ -208,10 +209,11 @@ class ChartApiDelegate(
         return TimeScaleApiDelegate(uuid, controller)
     }
 
-    override fun applyOptions(options: ChartOptions) {
-        controller.callFunction(
-            APPLY_OPTIONS,
-            mapOf(OPTIONS to options)
+    override fun applyOptions(options: ChartOptions, onApply: () -> Unit) {
+        controller.callFunction<Unit>(
+                APPLY_OPTIONS,
+                mapOf(OPTIONS to options),
+                { onApply() }
         )
     }
 
