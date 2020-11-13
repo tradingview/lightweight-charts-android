@@ -110,22 +110,14 @@ fun listBarSeriesData(): MutableList<SeriesData> {
 
 fun listAreaSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
-//        LineData(Time.Utc(1560211200), 40.01f),
-//        LineData(Time.Utc(1560297600), 52.38f),
-//        LineData(Time.Utc(1560384000), 36.30f),
-//        LineData(Time.Utc(1560470400), 34.48f),
-//        LineData(Time.Utc(1560556800), 40.06f),
-//        LineData(Time.Utc(1560643200), 56.94f),
-//        LineData(Time.Utc(1560729600), 41.50f),
-//        LineData(Time.Utc(1560816000), 34.82f)
-            LineData(Time.Utc(1560211200), 40.01f),
-            LineData(Time.Utc(1560211201), 52.38f),
-            LineData(Time.Utc(1560211202), 36.30f),
-            LineData(Time.Utc(1560211203), 34.48f),
-            LineData(Time.Utc(1560211204), 40.06f),
-            LineData(Time.Utc(1560211205), 56.94f),
-            LineData(Time.Utc(1560211206), 41.50f),
-            LineData(Time.Utc(1560211207), 34.82f)
+        LineData(Time.Utc(1560211200), 40.01f),
+        LineData(Time.Utc(1560297600), 52.38f),
+        LineData(Time.Utc(1560384000), 36.30f),
+        LineData(Time.Utc(1560470400), 34.48f),
+        LineData(Time.Utc(1560556800), 40.06f),
+        LineData(Time.Utc(1560643200), 56.94f),
+        LineData(Time.Utc(1560729600), 41.50f),
+        LineData(Time.Utc(1560816000), 34.82f)
     )
 }
 
@@ -207,25 +199,6 @@ fun listCandlestickSeriesData(): MutableList<SeriesData> {
 fun priceScaleOptions() = PriceScaleOptions(autoScale = false, position = PriceAxisPosition.LEFT)
 fun timeScaleOptions() = TimeScaleOptions(visible = false)
 
-//fun timeRange(): TimeRange {
-//    return TimeRange(
-//        Time.BusinessDay(2020, 10, 4),
-//        Time.BusinessDay(2020, 10, 20)
-//    )
-//}
-
-//fun chartOptions(width: Int, height: Int): ChartOptions {
-//    return ChartOptions(
-//        width = width,
-//        height = height,
-//        localization = LocalizationOptions(
-//            locale = "de-AT",
-//            priceFormatter = "function (price) { return price + '!'; }",
-//            timeFormatter = "function (time) { return time + '!'; }",
-//            dateFormat = DateFormat.FORMAT_10
-//        )
-//    )
-//}
 
 fun priceLineOptionsWith(price: Float): PriceLineOptions {
     return PriceLineOptions(
