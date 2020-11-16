@@ -13,7 +13,7 @@ interface ChartApi {
         const val RESIZE = "resize"
         const val PRINT = "print"
         const val SUBSCRIBE_ON_CLICK = "subscribeOnClick"
-        const val SUBSCRIBE_CROSSHAIR_MOVE= "subscribeCrosshairMove"
+        const val SUBSCRIBE_CROSSHAIR_MOVE = "subscribeCrosshairMove"
         const val SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE = "subscribeVisibleTimeRangeChange"
         const val REMOVE = "remove"
         const val REMOVE_SERIES = "removeSeries"
@@ -52,14 +52,20 @@ interface ChartApi {
      * @param options - customization parameters of the series being created
      * @returns an interface of the created series
      */
-    fun addAreaSeries(options: AreaSeriesOptions = AreaSeriesOptions()): SeriesApi<LineData>
+    fun addAreaSeries(
+            options: AreaSeriesOptions = AreaSeriesOptions(),
+            block: (api: SeriesApi<LineData>) -> Unit
+    )
 
     /**
      * Creates a bar series with specified parameters
      * @param options - customization parameters of the series being created
      * @returns an interface of the created series
      */
-    fun addBarSeries(options: BarSeriesOptions = BarSeriesOptions()): SeriesApi<BarData>
+    fun addBarSeries(
+            options: BarSeriesOptions = BarSeriesOptions(),
+            block: (api: SeriesApi<BarData>) -> Unit
+    )
 
     /**
      * Creates a candlestick series with specified parameters
@@ -67,8 +73,9 @@ interface ChartApi {
      * @returns an interface of the created series
      */
     fun addCandlestickSeries(
-        options: CandlestickSeriesOptions = CandlestickSeriesOptions()
-    ): SeriesApi<BarData>
+            options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
+            block: (api: SeriesApi<BarData>) -> Unit
+    )
 
     /**
      * Creates a histogram series with specified parameters
@@ -76,21 +83,25 @@ interface ChartApi {
      * @returns an interface of the created series
      */
     fun addHistogramSeries(
-        options: HistogramSeriesOptions = HistogramSeriesOptions()
-    ): SeriesApi<HistogramData>
+            options: HistogramSeriesOptions = HistogramSeriesOptions(),
+            block: (api: SeriesApi<HistogramData>) -> Unit
+    )
 
     /**
      * Creates a line series with specified parameters
      * @param options - customization parameters of the series being created
      * @returns an interface of the created series
      */
-    fun addLineSeries(options: LineSeriesOptions = LineSeriesOptions()): SeriesApi<LineData>
+    fun addLineSeries(
+            options: LineSeriesOptions = LineSeriesOptions(),
+            block: (api: SeriesApi<LineData>) -> Unit
+    )
 
     /**
      * Removes a series of any type.
      * This is an irreversible operation, you cannot do anything with the series after removing it
      */
-    fun removeSeries(seriesApi: SeriesApi<*>)
+    fun removeSeries(seriesApi: SeriesApi<*>, block: () -> Unit = {})
 
     /**
      * Adds a subscription to mouse click event
@@ -139,7 +150,7 @@ interface ChartApi {
      * Applies new options to the chart
      * @param options - any subset of chart options
      */
-    fun applyOptions(options: ChartOptions)
+    fun applyOptions(options: ChartOptions, onApply: () -> Unit = {})
 
     /**
      * Returns currently applied options

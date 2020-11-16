@@ -196,37 +196,9 @@ fun listCandlestickSeriesData(): MutableList<SeriesData> {
     )
 }
 
-fun lineSeriesOptionsWithCustomPriceFormat(): LineSeriesOptions {
-    return LineSeriesOptions(
-            priceFormat = PriceFormat.priceFormatCustom(
-            "function (price) { return price + '!'; }",
-            2f
-        )
-    )
-}
-
 fun priceScaleOptions() = PriceScaleOptions(autoScale = false, position = PriceAxisPosition.LEFT)
 fun timeScaleOptions() = TimeScaleOptions(visible = false)
 
-//fun timeRange(): TimeRange {
-//    return TimeRange(
-//        Time.BusinessDay(2020, 10, 4),
-//        Time.BusinessDay(2020, 10, 20)
-//    )
-//}
-
-fun chartOptions(width: Int, height: Int): ChartOptions {
-    return ChartOptions(
-        width = width,
-        height = height,
-        localization = LocalizationOptions(
-            locale = "de-AT",
-            priceFormatter = "function (price) { return price + '!'; }",
-            timeFormatter = "function (time) { return time + '!'; }",
-            dateFormat = DateFormat.FORMAT_10
-        )
-    )
-}
 
 fun priceLineOptionsWith(price: Float): PriceLineOptions {
     return PriceLineOptions(

@@ -1,10 +1,11 @@
 import { createChart } from 'lightweight-charts';
 import FunctionManager from './function-manager.js';
-import ChartRegistrationFunctionsController from './chart_registration_functions_controller.js';
+import ChartRegistrationFunctionsController from './chart-registration-functions-controller.js';
+import PluginManager from './plugin-manager.js';
 
 onmessage = function (message) {
     console.debug("received message", message)
-    const connectionMessage = JSON.parse(event.data)
+    const connectionMessage = JSON.parse(message.data)
 
     if (connectionMessage.messageType !== "Message::Connection") {
         console.error("Connection message has wrong")
@@ -16,9 +17,13 @@ onmessage = function (message) {
     const port = message.ports[0]
     const functionManager = new FunctionManager(port)
 
+    const pluginManager = new PluginManager()
+    window['pluginManager'] = pluginManager
+
     const functionsController = new ChartRegistrationFunctionsController(
         window['chart'],
-        functionManager
+        functionManager,
+        pluginManager
     )
     functionsController.registerFunctions()
     window['functionsController'] = functionsController
@@ -28,7 +33,9 @@ onmessage = function (message) {
         const nativeMessage = JSON.parse(event.data)
 
         if (debug) {
-            console.debug("function", nativeMessage.data.fn)
+            if (nativeMessage.data.fn) {
+                console.debug("function", nativeMessage.data.fn)
+            }
             console.debug("data", JSON.stringify(nativeMessage.data))
         }
 
@@ -51,5 +58,5 @@ window.onresize = () => {
 }
 
 onload = () => {
-    window["chart"] = createChart(document.body, { width: window.width, height: window.height });
+    window["chart"] = createChart(document.body, { width: window.innerWidth, height: window.innerHeight });
 }

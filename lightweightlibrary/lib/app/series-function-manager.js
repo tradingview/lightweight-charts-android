@@ -1,36 +1,80 @@
 export default class SeriesFunctionManager {
 
-    constructor(chart, functionManager) {
+    constructor(chart, functionManager, pluginManager) {
         this.chart = chart
         this.functionManager = functionManager
+        this.pluginManager = pluginManager
         this.cache = new Map()
     }
 
+    _registerPriceFormatter(params, onSuccess) {
+        new Promise((resolve) => {
+            if (!params.options.priceFormat || !params.options.priceFormat.formatter) {
+                resolve()
+                return
+            }
+
+            const plugin = params.options.priceFormat.formatter
+            this.pluginManager.register(plugin, (fun) => {
+                params.options.priceFormat.formatter = fun
+                resolve()
+            })
+        }).then(() => {
+            onSuccess(params)
+        })
+    }
+
+    _registerSeriesFunctions() {
+        this.functionManager.registerFunction("addAreaSeries", (rawParams, resolve) => {
+            this._registerPriceFormatter(rawParams, (params) => {
+                this.addSeries(params.uuid, this.chart.addAreaSeries(params.options))
+                resolve(params.uuid)
+            })
+        })
+        
+        this.functionManager.registerFunction("addLineSeries", (rawParams, resolve) => {
+            this._registerPriceFormatter(rawParams, (params) => {
+                this.addSeries(params.uuid, this.chart.addLineSeries(params.options))
+                resolve(params.uuid)
+            })
+        })
+        
+        this.functionManager.registerFunction("addBarSeries", (rawParams, resolve) => {
+            this._registerPriceFormatter(rawParams, (params) => {
+                this.addSeries(params.uuid, this.chart.addBarSeries(params.options))
+                resolve(params.uuid)
+            })
+        })
+        
+        this.functionManager.registerFunction("addCandlestickSeries", (rawParams, resolve) => {
+            this._registerPriceFormatter(rawParams, (params) => {
+                this.addSeries(params.uuid, this.chart.addCandlestickSeries(params.options))
+                resolve(params.uuid)
+            })
+        })
+        
+        this.functionManager.registerFunction("addHistogramSeries", (rawParams, resolve) => {
+            this._registerPriceFormatter(rawParams, (params) => {
+                this.addSeries(params.uuid, this.chart.addHistogramSeries(params.options))
+                resolve(params.uuid)
+            })
+        })
+    }
+
     register() {
-        this.functionManager.registerFunction("addLineSeries", (params, resolve) => {
-            this.addSeries(params.uuid, this.chart.addLineSeries(params.options))
-        })
-        this.functionManager.registerFunction("addAreaSeries", (params, resolve) => {
-            this.addSeries(params.uuid, this.chart.addAreaSeries(params.options))
-        })
-        this.functionManager.registerFunction("addBarSeries", (params, resolve) => {
-            this.addSeries(params.uuid, this.chart.addBarSeries(params.options))
-        })
-        this.functionManager.registerFunction("addCandlestickSeries", (params, resolve) => {
-            this.addSeries(params.uuid, this.chart.addCandlestickSeries(params.options))
-        })
-        this.functionManager.registerFunction("addHistogramSeries", (params, resolve) => {
-            this.addSeries(params.uuid, this.chart.addHistogramSeries(params.options))
-        })
-        this.functionManager.registerFunction("setSeries", (params, resolve) => {
+        this._registerSeriesFunctions()
+        
+        this.functionManager.registerFunction("setSeries", (params) => {
             this.findSeries(params, (series) => {
                 series.setData(params.data)
             })
         })
         this.functionManager.registerFunction("removeSeries", (params, resolve) => {
+            console.log('removeSeries')
             this.findSeries(params, (series) => {
                 this.cache.delete(params.seriesId)
                 this.chart.removeSeries(series)
+                resolve()
             })
         })
         this.functionManager.registerFunction("priceToCoordinate", (params, resolve) => {
@@ -38,7 +82,7 @@ export default class SeriesFunctionManager {
                 resolve(series.priceToCoordinate(params.price))
             })
         })
-        this.functionManager.registerFunction("coordinateToPrice", (params, resolve) => {
+        this.functionManager.registerFunction("coordinateToPrice", (params) => {
             this.findSeries(params, (series) => {
                 series.coordinateToPrice(params.price)
             })
@@ -47,18 +91,18 @@ export default class SeriesFunctionManager {
             this.findSeries(params, (series) => {
                 let options = series.options()
                 if (options.priceFormat.formatter !== undefined) {
-                    options.priceFormat.formatter = options.priceFormat.formatter.toString()
+                    const fun = options.priceFormat.formatter
+                    options.localization.priceFormatter = this.pluginManager.getPlugin(fun)
                 }
                 resolve(options)
             })
         })
-        this.functionManager.registerFunction("applyOptions", (params, resolve) => {
-            this.findSeries(params, (series) => {
-                if (params.options.priceFormat.formatter !== undefined) {
-                    let fn = new Function("return " + params.options.priceFormat.formatter)()
-                    params.options.priceFormat.formatter = fn
-                }
-                series.applyOptions(params.options)
+        this.functionManager.registerFunction("applyOptions", (rawParams, resolve) => {
+            this.findSeries(rawParams, (series) => {
+                this._registerPriceFormatter(rawParams, (params) => {
+                    series.applyOptions(params.options)
+                    resolve()
+                })
             })
         })
         this.functionManager.registerFunction("setMarkers", (params, resolve) => {
@@ -104,6 +148,8 @@ export default class SeriesFunctionManager {
                 resolve(formatter.format(params.price))
             }
         })
+
+        //TODO: delete
         this.functionManager.registerFunction("priceFormatter", (params, resolve) => {
             this.findSeries(params, (series) => {
                 this.cache.set(params.uuid, series.priceFormatter())
