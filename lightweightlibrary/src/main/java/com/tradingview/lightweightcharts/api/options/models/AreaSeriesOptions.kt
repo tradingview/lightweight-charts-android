@@ -1,10 +1,12 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.options.common.AreaStyleOptions
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 
 data class AreaSeriesOptions(
     override val title: String? = null,
@@ -28,5 +30,6 @@ data class AreaSeriesOptions(
     override val crosshairMarkerVisible: Boolean? = null,
     override val crosshairMarkerRadius: Float? = null,
     override val overlay: Boolean = false,
-    override val scaleMargins: PriceScaleMargins? = null
+    override val scaleMargins: PriceScaleMargins? = null,
+    override val priceScaleId: PriceScaleId? = null
 ) : SeriesOptionsCommon, AreaStyleOptions

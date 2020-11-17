@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
@@ -16,10 +15,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
-import com.tradingview.lightweightcharts.api.series.models.BarData
-import com.tradingview.lightweightcharts.api.series.models.HistogramData
-import com.tradingview.lightweightcharts.api.series.models.LineData
-import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
@@ -43,8 +39,8 @@ class MainActivity : AppCompatActivity() {
     private val firstChartApi: ChartApi by lazy { charts_view.api }
     private val secondChartApi: ChartApi by lazy { charts_view_second.api }
 
-    private var currentSeriesApiFirstChart: SeriesApi<SeriesData>? = null
-    private var currentSeriesApiSecondChart: SeriesApi<SeriesData>? = null
+    private var leftSeries: MutableList<SeriesApi<SeriesData>> = mutableListOf()
+    private var rightSeries: MutableList<SeriesApi<SeriesData>> = mutableListOf()
     private var realtimeDataJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,12 +52,11 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.seriesData.observe(this, { data ->
-            setSeriesData(data, currentSeriesApiFirstChart, firstChartApi) {
-                currentSeriesApiFirstChart = it as SeriesApi<SeriesData>
+            setSeriesData(data, firstChartApi) {
+                leftSeries.add(it as SeriesApi<SeriesData>)
             }
-
-            setSeriesData(data, currentSeriesApiSecondChart, secondChartApi) {
-                currentSeriesApiSecondChart = it as SeriesApi<SeriesData>
+            setSeriesData(data, secondChartApi) {
+                rightSeries.add(it as SeriesApi<SeriesData>)
             }
         })
 
@@ -82,7 +77,11 @@ class MainActivity : AppCompatActivity() {
                                         "#c2c2c2"
                                 )
                         ),
-                        priceScale = PriceScaleOptions(
+                        rightPriceScale = PriceScaleOptions(
+                                visible = false
+                        ),
+                        leftPriceScale = PriceScaleOptions(
+                                visible = true,
                                 autoScale = true,
                                 scaleMargins = PriceScaleMargins(
                                         top = 0.2f, bottom = 0.2f
@@ -123,12 +122,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSeriesData(
             data: Data,
-            currentSeriesApi: SeriesApi<*>?,
             chartApi: ChartApi,
             onSeriesCreated: (SeriesApi<*>) -> Unit
     ) {
-        currentSeriesApi?.let(chartApi::removeSeries)
-
         when (data.type) {
             SeriesDataType.AREA -> {
                 chartApi.addAreaSeries(
@@ -136,7 +132,8 @@ class MainActivity : AppCompatActivity() {
                                 priceFormat = PriceFormat.priceFormatCustom(
                                         PriceFormatter("{price}$!"),
                                         0.02f
-                                )
+                                ),
+                                priceScaleId = PriceScaleId.Left()
                         ),
                         block = { api ->
                             api.setData(data.list.map { it as LineData })
@@ -146,6 +143,9 @@ class MainActivity : AppCompatActivity() {
             }
             SeriesDataType.LINE -> {
                 chartApi.addLineSeries(
+                        options = LineSeriesOptions(
+                                priceScaleId = PriceScaleId.Right()
+                        ),
                         block = { api ->
                             api.setData(data.list.map { it as LineData })
                             onSeriesCreated(api)
@@ -194,26 +194,31 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             item.itemId == R.id.real_time_data -> {
+                clearSeries()
                 viewModel.selectSeries(SeriesDataType.AREA)
                 realtimeDataJob = lifecycleScope.launchWhenResumed {
                     viewModel.seriesFlow.collect {
-                        currentSeriesApiFirstChart?.update(it)
-                        currentSeriesApiSecondChart?.update(it)
+                        leftSeries.lastOrNull()?.update(it)
+                        rightSeries.lastOrNull()?.update(it)
                     }
                 }
                 return true
             }
             item.itemId == R.id.clear_series -> {
-                currentSeriesApiFirstChart?.let(firstChartApi::removeSeries)
-                currentSeriesApiFirstChart = null
-
-                currentSeriesApiSecondChart?.let(secondChartApi::removeSeries)
-                currentSeriesApiSecondChart = null
+                clearSeries()
                 return true
             }
             actionBar.onOptionsItemSelected(item) -> return true
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun clearSeries() {
+        leftSeries.forEach(firstChartApi::removeSeries)
+        leftSeries.clear()
+
+        rightSeries.forEach(secondChartApi::removeSeries)
+        rightSeries.clear()
     }
 
     private fun subscribeOnChartReady(view: ChartsView) {

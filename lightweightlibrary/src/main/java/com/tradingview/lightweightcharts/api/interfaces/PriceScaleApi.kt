@@ -10,7 +10,7 @@ interface PriceScaleApi {
     }
 
     object Params {
-        const val PRICE_SCALE_ID = "priceScaleId"
+        const val UUID = "uuid"
         const val OPTIONS_PARAM = "options"
     }
 

@@ -4,6 +4,7 @@ import com.tradingview.lightweightcharts.api.options.common.BarStyleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 
 data class BarSeriesOptions(
     override val title: String? = null,
@@ -23,5 +24,6 @@ data class BarSeriesOptions(
     override val openVisible: Boolean? = null,
     override val thinBars: Boolean? = null,
     override val overlay: Boolean = false,
-    override val scaleMargins: PriceScaleMargins? = null
+    override val scaleMargins: PriceScaleMargins? = null,
+    override val priceScaleId: PriceScaleId? = null
 ) : SeriesOptionsCommon, BarStyleOptions

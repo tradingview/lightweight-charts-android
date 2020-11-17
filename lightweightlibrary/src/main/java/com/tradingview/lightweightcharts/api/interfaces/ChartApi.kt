@@ -1,11 +1,7 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
-import com.tradingview.lightweightcharts.api.series.models.BarData
-import com.tradingview.lightweightcharts.api.series.models.HistogramData
-import com.tradingview.lightweightcharts.api.series.models.LineData
-import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
-import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.series.models.*
 
 interface ChartApi {
 
@@ -131,6 +127,10 @@ interface ChartApi {
      * Returns API to manipulate the price scale
      * @returns - target API
      */
+    fun priceScale(id: PriceScaleId): PriceScaleApi
+
+    @Deprecated("Using ChartApi.priceScale() method without arguments " +
+            "has been deprecated, pass valid price scale id instead")
     fun priceScale(): PriceScaleApi
 
     /**

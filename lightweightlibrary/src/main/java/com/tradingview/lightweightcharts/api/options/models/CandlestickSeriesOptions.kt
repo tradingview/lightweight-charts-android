@@ -4,6 +4,7 @@ import com.tradingview.lightweightcharts.api.options.common.CandlestickStyleOpti
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 
 data class CandlestickSeriesOptions(
     override val title: String? = null,
@@ -29,5 +30,6 @@ data class CandlestickSeriesOptions(
     override val wickUpColor: String? = null,
     override val wickDownColor: String? = null,
     override val overlay: Boolean = false,
-    override val scaleMargins: PriceScaleMargins? = null
+    override val scaleMargins: PriceScaleMargins? = null,
+    override val priceScaleId: PriceScaleId? = null
 ) : SeriesOptionsCommon, CandlestickStyleOptions

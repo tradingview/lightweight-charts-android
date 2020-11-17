@@ -19,10 +19,11 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_BAR_S
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_CANDLESTICK_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_HISTOGRAM_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_LINE_SERIES
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_ID
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.serializer.*
@@ -177,9 +178,17 @@ class ChartApiDelegate(
     override fun removeSeries(seriesApi: SeriesApi<*>, block: () -> Unit) {
         controller.callFunction<Unit>(
             REMOVE_SERIES,
-            mapOf(SERIES_ID to seriesApi.uuid),
+            mapOf(SERIES_UUID to seriesApi.uuid),
             { block() }
         )
+    }
+
+    override fun priceScale(id: PriceScaleId): PriceScaleApi {
+        val uuid = controller.callFunction(
+                PRICE_SCALE,
+                mapOf(PRICE_SCALE_ID to id.value)
+        )
+        return PriceScaleApiDelegate(uuid, controller)
     }
 
     override fun priceScale(): PriceScaleApi {

@@ -58,5 +58,8 @@ window.onresize = () => {
 }
 
 onload = () => {
-    window["chart"] = createChart(document.body, { width: window.innerWidth, height: window.innerHeight });
+    window["chart"] = createChart(document.body, { 
+        width: window.innerWidth, 
+        height: window.innerHeight
+    });
 }

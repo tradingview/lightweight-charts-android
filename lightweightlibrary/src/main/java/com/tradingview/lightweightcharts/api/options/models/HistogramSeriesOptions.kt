@@ -4,6 +4,7 @@ import com.tradingview.lightweightcharts.api.options.common.HistogramStyleOption
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 
 data class HistogramSeriesOptions(
     override val title: String? = null,
@@ -21,5 +22,6 @@ data class HistogramSeriesOptions(
     override val color: String? = null,
     override val base: Float? = null,
     override val overlay: Boolean = false,
-    override val scaleMargins: PriceScaleMargins? = null
+    override val scaleMargins: PriceScaleMargins? = null,
+    override val priceScaleId: PriceScaleId? = null
 ): SeriesOptionsCommon, HistogramStyleOptions

@@ -4,6 +4,7 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.options.common.SeriesSpecificOptions
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 
 /**
  * Structure describing options common for all types of series
@@ -31,4 +32,6 @@ interface SeriesOptionsCommon: SeriesSpecificOptions {
     val baseLineWidth: LineWidth?
     /** Base line style. Suitable for percentage and indexedTo100 scales. Ignored if baseLineVisible is not set */
     val baseLineStyle: LineStyle?
+    /** Target price scale to bind new series to */
+    val priceScaleId: PriceScaleId?
 }
