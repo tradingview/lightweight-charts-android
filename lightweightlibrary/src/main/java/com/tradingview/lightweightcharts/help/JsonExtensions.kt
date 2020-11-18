@@ -12,3 +12,11 @@ fun JsonElement?.isNumber(): Boolean {
     }
     return this is JsonPrimitive && this.isNumber
 }
+
+@ExperimentalContracts
+fun JsonElement?.isString(): Boolean {
+    contract {
+        returns(true) implies(this@isString is JsonPrimitive)
+    }
+    return this is JsonPrimitive && this.isString
+}

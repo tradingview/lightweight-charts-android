@@ -52,10 +52,10 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.seriesData.observe(this, { data ->
-            setSeriesData(data, firstChartApi) {
+            setSeriesData(data, PriceScaleId.LEFT, firstChartApi) {
                 leftSeries.add(it as SeriesApi<SeriesData>)
             }
-            setSeriesData(data, secondChartApi) {
+            setSeriesData(data, PriceScaleId.RIGHT, secondChartApi) {
                 rightSeries.add(it as SeriesApi<SeriesData>)
             }
         })
@@ -85,11 +85,9 @@ class MainActivity : AppCompatActivity() {
                                 autoScale = true,
                                 scaleMargins = PriceScaleMargins(
                                         top = 0.2f, bottom = 0.2f
-                                ),
-                                borderVisible = false
+                                )
                         ),
                         timeScale = TimeScaleOptions(
-                                borderVisible = false,
                                 timeVisible = true,
                                 secondsVisible = true
                         ),
@@ -122,6 +120,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSeriesData(
             data: Data,
+            priceScaleId: PriceScaleId,
             chartApi: ChartApi,
             onSeriesCreated: (SeriesApi<*>) -> Unit
     ) {
@@ -133,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                                         PriceFormatter("{price}$!"),
                                         0.02f
                                 ),
-                                priceScaleId = PriceScaleId.Left()
+                                priceScaleId = priceScaleId
                         ),
                         block = { api ->
                             api.setData(data.list.map { it as LineData })
@@ -144,7 +143,7 @@ class MainActivity : AppCompatActivity() {
             SeriesDataType.LINE -> {
                 chartApi.addLineSeries(
                         options = LineSeriesOptions(
-                                priceScaleId = PriceScaleId.Right()
+                                priceScaleId = priceScaleId
                         ),
                         block = { api ->
                             api.setData(data.list.map { it as LineData })
@@ -154,6 +153,9 @@ class MainActivity : AppCompatActivity() {
             }
             SeriesDataType.BAR -> {
                 chartApi.addBarSeries(
+                        options = BarSeriesOptions(
+                                priceScaleId = priceScaleId
+                        ),
                         block = { api ->
                             api.setData(data.list.map { it as BarData })
                             onSeriesCreated(api)
@@ -162,6 +164,9 @@ class MainActivity : AppCompatActivity() {
             }
             SeriesDataType.CANDLESTICK -> {
                 chartApi.addCandlestickSeries(
+                        options = CandlestickSeriesOptions(
+                                priceScaleId = priceScaleId
+                        ),
                         block = { api ->
                             api.setData(data.list.map { it as BarData })
                             onSeriesCreated(api)
@@ -170,6 +175,9 @@ class MainActivity : AppCompatActivity() {
             }
             SeriesDataType.HISTOGRAM -> {
                 chartApi.addHistogramSeries(
+                        options = HistogramSeriesOptions(
+                                priceScaleId = priceScaleId
+                        ),
                         block = { api ->
                             api.setData(data.list.map { it as HistogramData })
                             onSeriesCreated(api)
