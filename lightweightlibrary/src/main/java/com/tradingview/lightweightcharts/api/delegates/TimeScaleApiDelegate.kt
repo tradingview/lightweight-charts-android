@@ -77,12 +77,13 @@ class TimeScaleApiDelegate(
         )
     }
 
-    override fun applyOptions(options: TimeScaleOptions) {
+    override fun applyOptions(options: TimeScaleOptions, onApply: (Unit?) -> Unit) {
         controller.callFunction(
                 APPLY_OPTIONS,
                 mapOf(
                         OPTIONS_PARAM to options
-                )
+                ),
+                onApply
         )
     }
 

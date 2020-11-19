@@ -88,11 +88,6 @@ class MainActivity : AppCompatActivity() {
                                         top = 0.2f, bottom = 0.2f
                                 )
                         ),
-                        timeScale = TimeScaleOptions(
-                                timeVisible = true,
-                                secondsVisible = true,
-                                tickMarkFormatter = TickMarkFormatter()
-                        ),
                         crosshair = CrosshairOptions(
                                 CrosshairMode.NORMAL,
                                 CrosshairLineOptions(

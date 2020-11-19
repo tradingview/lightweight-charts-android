@@ -70,7 +70,7 @@ interface TimeScaleApi {
      * Applies new options to the time scale.
      * - Parameter options: any subset of options
      */
-    fun applyOptions(options: TimeScaleOptions)
+    fun applyOptions(options: TimeScaleOptions, onApply: (Unit?) -> Unit = {})
 
     /**
      * Returns current options

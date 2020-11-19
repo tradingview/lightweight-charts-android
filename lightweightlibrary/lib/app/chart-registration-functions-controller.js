@@ -24,7 +24,7 @@ export default class ChartRegistrationFunctionsController {
         )
         subscriptions.register()
 
-        const timeScale = new TimeScaleFunctionManager(this.chart, this.functionManager)
+        const timeScale = new TimeScaleFunctionManager(this.chart, this.functionManager, this.pluginManager)
         timeScale.register()
 
         const priceScale = new PriceScaleFunctionManager(this.chart, this.functionManager)

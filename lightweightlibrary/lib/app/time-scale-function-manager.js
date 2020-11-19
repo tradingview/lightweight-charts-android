@@ -1,12 +1,30 @@
 export default class TimeScaleFunctionManager {
 
-    constructor(chart, functionManager) {
+    constructor(chart, functionManager, pluginManager) {
         this.chart = chart
         this.functionManager = functionManager
+        this.pluginManager = pluginManager
     }
 
     _timeScale() {
         return this.chart.timeScale()
+    }
+    
+    _registerTickMarkFormatter(params, onSuccess) {
+        new Promise((resolve) => {
+            if (!params.options.tickMarkFormatter) {
+                resolve()
+                return
+            }
+
+            const plugin = params.options.tickMarkFormatter
+            this.pluginManager.register(plugin, (fun) => {
+                params.options.tickMarkFormatter = fun
+                resolve()
+            })
+        }).then(() => {
+            onSuccess(params)
+        })
     }
 
     register() {
@@ -17,10 +35,18 @@ export default class TimeScaleFunctionManager {
             this._timeScale().scrollToPosition(params.position, params.animated)
         })
         this.functionManager.registerFunction("timeScaleOptions", (params, resolve) => {
-            resolve(this._timeScale().options())
+            const options = this._timeScale().options()
+            if (options.tickMarkFormatter) {
+                const fun = options.tickMarkFormatter
+                options.tickMarkFormatter = this.pluginManager.getPlugin(fun)
+            }
+            resolve(options)
         })
-        this.functionManager.registerFunction("timeScaleApplyOptions", (params, resolve) => {
-            this._timeScale().applyOptions(params.options)
+        this.functionManager.registerFunction("timeScaleApplyOptions", (rawParams, resolve) => {
+            this._registerTickMarkFormatter(rawParams, (params) => {
+                this._timeScale().applyOptions(params.options)
+                resolve()
+            })
         })
         this.functionManager.registerFunction("scrollToRealTime", (params, resolve) => {
             this._timeScale().scrollToRealTime()
