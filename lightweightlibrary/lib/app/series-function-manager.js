@@ -92,7 +92,7 @@ export default class SeriesFunctionManager {
                 let options = series.options()
                 if (options.priceFormat.formatter !== undefined) {
                     const fun = options.priceFormat.formatter
-                    options.localization.priceFormatter = this.pluginManager.getPlugin(fun)
+                    options.priceFormat.formatter = this.pluginManager.getPlugin(fun)
                 }
                 resolve(options)
             })
