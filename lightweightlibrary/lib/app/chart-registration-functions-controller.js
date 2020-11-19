@@ -55,6 +55,11 @@ export default class ChartRegistrationFunctionsController {
                 options.localization.timeFormatter = this.pluginManager.getPlugin(fun)
             }
 
+            if (options.timeScale && options.timeScale.tickMarkFormatter) {
+                const fun = options.timeScale.tickMarkFormatter
+                options.timeScale.tickMarkFormatter = this.pluginManager.getPlugin(fun)
+            }
+
             resolve(options)
         })
         this.functionManager.registerFunction("chartApplyOptions", (params, resolve) => {
@@ -81,6 +86,18 @@ export default class ChartRegistrationFunctionsController {
                 this.pluginManager.register(plugin, (fun) => {
                     params.options.localization.timeFormatter = fun
                     console.log('plugin timeFormatter registered')
+                    resolve()
+                })
+            })).then(() => new Promise((resolve) => {
+                if (!params.options.timeScale || !params.options.timeScale.tickMarkFormatter) {
+                    resolve()
+                    return
+                }
+
+                const plugin = params.options.timeScale.tickMarkFormatter
+                this.pluginManager.register(plugin, (fun) => {
+                    params.options.timeScale.tickMarkFormatter = fun
+                    console.log('plugin tickMarkFormatter registered')
                     resolve()
                 })
             })).then(() => {

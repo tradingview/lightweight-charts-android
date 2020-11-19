@@ -19,6 +19,7 @@ import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
+import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
 import com.tradingview.lightweightcharts.example.app.viewmodel.*
 import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
@@ -89,7 +90,8 @@ class MainActivity : AppCompatActivity() {
                         ),
                         timeScale = TimeScaleOptions(
                                 timeVisible = true,
-                                secondsVisible = true
+                                secondsVisible = true,
+                                tickMarkFormatter = TickMarkFormatter()
                         ),
                         crosshair = CrosshairOptions(
                                 CrosshairMode.NORMAL,
