@@ -15,6 +15,8 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
+import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerPosition
+import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
 import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
@@ -124,65 +126,69 @@ class MainActivity : AppCompatActivity() {
         onSeriesCreated: (SeriesApi<*>) -> Unit
     ) {
         when (data.type) {
-            SeriesDataType.AREA -> {
-                chartApi.addAreaSeries(
-                    options = AreaSeriesOptions(
-                        priceFormat = PriceFormat.priceFormatCustom(
-                            PriceFormatter("{price}$!"),
-                            0.02f
-                        ),
-                        priceScaleId = priceScale
+            SeriesDataType.AREA -> chartApi.addAreaSeries(
+                options = AreaSeriesOptions(
+                    priceFormat = PriceFormat.priceFormatCustom(
+                        PriceFormatter("{price}$!"),
+                        0.02f
                     ),
-                    block = { api ->
-                        api.setData(data.list.map { it as LineData })
-                        onSeriesCreated(api)
-                    }
-                )
-            }
-            SeriesDataType.LINE -> {
-                chartApi.addLineSeries(
-                    options = LineSeriesOptions(
-                        priceScaleId = priceScale
-                    ),
-                    block = { api ->
-                        api.setData(data.list.map { it as LineData })
-                        onSeriesCreated(api)
-                    }
-                )
-            }
-            SeriesDataType.BAR -> {
-                chartApi.addBarSeries(
-                    options = BarSeriesOptions(
-                        priceScaleId = priceScale
-                    ),
-                    block = { api ->
-                        api.setData(data.list.map { it as BarData })
-                        onSeriesCreated(api)
-                    }
-                )
-            }
-            SeriesDataType.CANDLESTICK -> {
-                chartApi.addCandlestickSeries(
-                    options = CandlestickSeriesOptions(
-                        priceScaleId = priceScale
-                    ),
-                    block = { api ->
-                        api.setData(data.list.map { it as BarData })
-                        onSeriesCreated(api)
-                    }
-                )
-            }
-            SeriesDataType.HISTOGRAM -> {
-                chartApi.addHistogramSeries(
-                    options = HistogramSeriesOptions(
-                        priceScaleId = priceScale
-                    ),
-                    block = { api ->
-                        api.setData(data.list.map { it as HistogramData })
-                        onSeriesCreated(api)
-                    }
-                )
-            }
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as LineData })
+                    api.setMarkers(listOf(
+                        SeriesMarker(
+                            time = data.list[0].time,
+                            position = SeriesMarkerPosition.ABOVE_BAR,
+                            color = "black",
+                            shape = SeriesMarkerShape.ARROW_DOWN,
+                            text = "Example",
+                            size = 2
+                        )
+                    ))
+                    onSeriesCreated(api)
+                }
+            )
+
+            SeriesDataType.LINE -> chartApi.addLineSeries(
+                options = LineSeriesOptions(
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as LineData })
+                    onSeriesCreated(api)
+                }
+            )
+
+            SeriesDataType.BAR -> chartApi.addBarSeries(
+                options = BarSeriesOptions(
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as BarData })
+                    onSeriesCreated(api)
+                }
+            )
+
+            SeriesDataType.CANDLESTICK -> chartApi.addCandlestickSeries(
+                options = CandlestickSeriesOptions(
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as BarData })
+                    onSeriesCreated(api)
+                }
+            )
+
+            SeriesDataType.HISTOGRAM -> chartApi.addHistogramSeries(
+                options = HistogramSeriesOptions(
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as HistogramData })
+                    onSeriesCreated(api)
+                }
+            )
         }
     }
 

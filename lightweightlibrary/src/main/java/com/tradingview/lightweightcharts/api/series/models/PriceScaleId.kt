@@ -5,7 +5,7 @@ import com.tradingview.lightweightcharts.help.isString
 import java.lang.reflect.Type
 import kotlin.contracts.ExperimentalContracts
 
-open class PriceScaleId(val value: String) {
+data class PriceScaleId(val value: String) {
     companion object {
         val LEFT = PriceScaleId("left")
         val RIGHT = PriceScaleId("right")

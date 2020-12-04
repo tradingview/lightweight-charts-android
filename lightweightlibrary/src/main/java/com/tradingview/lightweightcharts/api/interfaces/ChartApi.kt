@@ -41,7 +41,7 @@ interface ChartApi {
      */
     fun addAreaSeries(
             options: AreaSeriesOptions = AreaSeriesOptions(),
-            block: (api: SeriesApi<LineData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
     )
 
     /**
@@ -51,7 +51,7 @@ interface ChartApi {
      */
     fun addBarSeries(
             options: BarSeriesOptions = BarSeriesOptions(),
-            block: (api: SeriesApi<BarData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
     )
 
     /**
@@ -61,7 +61,7 @@ interface ChartApi {
      */
     fun addCandlestickSeries(
             options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
-            block: (api: SeriesApi<BarData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
     )
 
     /**
@@ -71,7 +71,7 @@ interface ChartApi {
      */
     fun addHistogramSeries(
             options: HistogramSeriesOptions = HistogramSeriesOptions(),
-            block: (api: SeriesApi<HistogramData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<HistogramData>) -> Unit
     )
 
     /**
@@ -81,34 +81,34 @@ interface ChartApi {
      */
     fun addLineSeries(
             options: LineSeriesOptions = LineSeriesOptions(),
-            block: (api: SeriesApi<LineData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
     )
 
     /**
      * Removes a series of any type.
      * This is an irreversible operation, you cannot do anything with the series after removing it
      */
-    fun removeSeries(seriesApi: SeriesApi<*>, block: () -> Unit = {})
+    fun removeSeries(seriesApi: SeriesApi<*>, onSeriesDeleted: () -> Unit = {})
 
     /**
      * Adds a subscription to mouse click event
      */
-    fun subscribeClick(block: (params: MouseEventParams?) -> Unit)
+    fun subscribeClick(onClick: (params: MouseEventParams?) -> Unit)
 
     /**
      * Removes mouse click subscription
      */
-    fun unsubscribeClick(block: (params: MouseEventParams?) -> Unit)
+    fun unsubscribeClick(funLink: (params: MouseEventParams?) -> Unit)
 
     /**
      * Adds a subscription to crosshair movement to receive notifications on crosshair movements
      */
-    fun subscribeCrosshairMove(block: (params: MouseEventParams?) -> Unit)
+    fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams?) -> Unit)
 
     /**
      * Removes a subscription on crosshair movement
      */
-    fun unsubscribeCrosshairMove(block: (params: MouseEventParams?) -> Unit)
+    fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams?) -> Unit)
 
     /**
      * Returns API to manipulate the price scale
@@ -133,6 +133,6 @@ interface ChartApi {
      * Returns currently applied options
      * @returns - full set of currently applied options, including defaults
      */
-    fun options(block: (options: ChartOptions?) -> Unit)
+    fun options(onOptionsReceived: (options: ChartOptions?) -> Unit)
 
 }
