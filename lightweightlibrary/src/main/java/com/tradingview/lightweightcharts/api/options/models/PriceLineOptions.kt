@@ -7,7 +7,9 @@ data class PriceLineOptions(
     var price: Float? = null,
     var color: String? = null,
     var lineWidth: LineWidth? = null,
-    var lineStyle: LineStyle? = null
+    var lineStyle: LineStyle? = null,
+    var axisLabelVisible: Boolean? = null,
+    var title: String? = null
 )
 
 inline fun priceLineOptions(init: PriceLineOptions.() -> Unit): PriceLineOptions {

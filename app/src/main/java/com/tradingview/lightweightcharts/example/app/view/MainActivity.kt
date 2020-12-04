@@ -14,9 +14,7 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
-import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
-import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerPosition
-import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
+import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
@@ -136,16 +134,28 @@ class MainActivity : AppCompatActivity() {
                 ),
                 onSeriesCreated = { api ->
                     api.setData(data.list.map { it as LineData })
-                    api.setMarkers(listOf(
-                        SeriesMarker(
-                            time = data.list[0].time,
-                            position = SeriesMarkerPosition.ABOVE_BAR,
-                            color = "black",
-                            shape = SeriesMarkerShape.ARROW_DOWN,
-                            text = "Example",
-                            size = 2
+                    api.setMarkers(
+                        listOf(
+                            SeriesMarker(
+                                time = data.list[0].time,
+                                position = SeriesMarkerPosition.ABOVE_BAR,
+                                color = "black",
+                                shape = SeriesMarkerShape.ARROW_DOWN,
+                                text = "Example",
+                                size = 2
+                            )
                         )
-                    ))
+                    )
+                    api.createPriceLine(
+                        PriceLineOptions(
+                            price = 44.1f,
+                            color = "green",
+                            lineWidth = LineWidth.TWO,
+                            lineStyle = LineStyle.Solid,
+                            axisLabelVisible = true,
+                            title = "P/L 500"
+                        )
+                    )
                     onSeriesCreated(api)
                 }
             )
