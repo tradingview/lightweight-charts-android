@@ -7,21 +7,25 @@ import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 
 data class HistogramSeriesOptions(
-    override val title: String? = null,
-    override val lastValueVisible: Boolean? = null,
-    override val priceLineVisible: Boolean? = null,
-    override val priceLineWidth: LineWidth? = null,
-    override val priceLineColor: String? = null,
-    override val priceLineStyle: LineStyle? = null,
-    override val priceFormat: PriceFormat? = null,
-    override val baseLineVisible: Boolean? = null,
-    override val baseLineColor: String? = null,
-    override val baseLineWidth: LineWidth? = null,
-    override val baseLineStyle: LineStyle? = null,
+    override var title: String? = null,
+    override var lastValueVisible: Boolean? = null,
+    override var priceLineVisible: Boolean? = null,
+    override var priceLineWidth: LineWidth? = null,
+    override var priceLineColor: String? = null,
+    override var priceLineStyle: LineStyle? = null,
+    override var priceFormat: PriceFormat? = null,
+    override var baseLineVisible: Boolean? = null,
+    override var baseLineColor: String? = null,
+    override var baseLineWidth: LineWidth? = null,
+    override var baseLineStyle: LineStyle? = null,
 
-    override val color: String? = null,
-    override val base: Float? = null,
-    override val overlay: Boolean = false,
-    override val scaleMargins: PriceScaleMargins? = null,
-    override val priceScaleId: PriceScaleId? = null
+    override var color: String? = null,
+    override var base: Float? = null,
+    override var overlay: Boolean = false,
+    override var scaleMargins: PriceScaleMargins? = null,
+    override var priceScaleId: PriceScaleId? = null
 ): SeriesOptionsCommon, HistogramStyleOptions
+
+inline fun histogramSeriesOptions(init: HistogramSeriesOptions.() -> Unit): HistogramSeriesOptions {
+    return HistogramSeriesOptions().apply(init)
+}

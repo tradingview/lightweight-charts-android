@@ -3,18 +3,40 @@ package com.tradingview.lightweightcharts.api.options.models
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 
-/** Structure describing a crosshair line (vertical or horizontal) */
+/** 
+ * Structure describing a crosshair line (vertical or horizontal) 
+ */
 data class CrosshairLineOptions(
-    /** Color of a certain crosshair line */
-    val color: String? = null,
-    /** Width of a certain crosshair line and corresponding scale label */
-    val width: LineWidth? = null,
-    /** Style of a certain crosshair line */
-    val style: LineStyle? = null,
-    /** Visibility of a certain crosshair line */
-    val visible: Boolean? = null,
-    /** Visibility of corresponding scale label */
-    val labelVisible: Boolean? = null,
-    /** Background color of corresponding scale label */
-    val labelBackgroundColor: String? = null
+    /** 
+     * Color of a certain crosshair line 
+     */
+    var color: String? = null,
+    /** 
+     * Width of a certain crosshair line and corresponding scale label 
+     */
+    var width: LineWidth? = null,
+    
+    /** 
+     * Style of a certain crosshair line 
+     */
+    var style: LineStyle? = null,
+    
+    /** 
+     * Visibility of a certain crosshair line 
+     */
+    var visible: Boolean? = null,
+    
+    /** 
+     * Visibility of corresponding scale label 
+     */
+    var labelVisible: Boolean? = null,
+    
+    /** 
+     * Background color of corresponding scale label 
+     */
+    var labelBackgroundColor: String? = null
 )
+
+inline fun crosshairLineOptions(init: CrosshairLineOptions.() -> Unit): CrosshairLineOptions {
+    return CrosshairLineOptions().apply(init)
+}

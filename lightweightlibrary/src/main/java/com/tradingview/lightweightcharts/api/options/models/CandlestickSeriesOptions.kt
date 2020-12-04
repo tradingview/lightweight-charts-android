@@ -7,29 +7,33 @@ import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 
 data class CandlestickSeriesOptions(
-    override val title: String? = null,
-    override val lastValueVisible: Boolean? = null,
-    override val priceLineVisible: Boolean? = null,
-    override val priceLineWidth: LineWidth? = null,
-    override val priceLineColor: String? = null,
-    override val priceLineStyle: LineStyle? = null,
-    override val priceFormat: PriceFormat? = null,
-    override val baseLineVisible: Boolean? = null,
-    override val baseLineColor: String? = null,
-    override val baseLineWidth: LineWidth? = null,
-    override val baseLineStyle: LineStyle? = null,
+    override var title: String? = null,
+    override var lastValueVisible: Boolean? = null,
+    override var priceLineVisible: Boolean? = null,
+    override var priceLineWidth: LineWidth? = null,
+    override var priceLineColor: String? = null,
+    override var priceLineStyle: LineStyle? = null,
+    override var priceFormat: PriceFormat? = null,
+    override var baseLineVisible: Boolean? = null,
+    override var baseLineColor: String? = null,
+    override var baseLineWidth: LineWidth? = null,
+    override var baseLineStyle: LineStyle? = null,
 
-    override val upColor: String? = null,
-    override val downColor: String? = null,
-    override val wickVisible: Boolean? = null,
-    override val borderVisible: Boolean? = null,
-    override val borderColor: String? = null,
-    override val borderUpColor: String? = null,
-    override val borderDownColor: String? = null,
-    override val wickColor: String? = null,
-    override val wickUpColor: String? = null,
-    override val wickDownColor: String? = null,
-    override val overlay: Boolean = false,
-    override val scaleMargins: PriceScaleMargins? = null,
-    override val priceScaleId: PriceScaleId? = null
+    override var upColor: String? = null,
+    override var downColor: String? = null,
+    override var wickVisible: Boolean? = null,
+    override var borderVisible: Boolean? = null,
+    override var borderColor: String? = null,
+    override var borderUpColor: String? = null,
+    override var borderDownColor: String? = null,
+    override var wickColor: String? = null,
+    override var wickUpColor: String? = null,
+    override var wickDownColor: String? = null,
+    override var overlay: Boolean = false,
+    override var scaleMargins: PriceScaleMargins? = null,
+    override var priceScaleId: PriceScaleId? = null
 ) : SeriesOptionsCommon, CandlestickStyleOptions
+
+inline fun candlestickSeriesOptions(init: CandlestickSeriesOptions.() -> Unit): CandlestickSeriesOptions {
+    return CandlestickSeriesOptions().apply(init)
+}

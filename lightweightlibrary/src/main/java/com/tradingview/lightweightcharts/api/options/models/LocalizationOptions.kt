@@ -8,18 +8,18 @@ data class LocalizationOptions(
     /**
      * Current locale, which will be used for formatting dates.
      */
-    val locale: String? = null,
+    var locale: String? = null,
 
     /**
      * User-defined function for price formatting.
      * Could be used for some specific cases, that could not be covered with PriceFormat
      */
-    val priceFormatter: Plugin? = null,
+    var priceFormatter: Plugin? = null,
 
     /**
      * User-defined function for time formatting.
      */
-    val timeFormatter: Plugin? = null,
+    var timeFormatter: Plugin? = null,
 
     /**
      * Date formatting string.
@@ -27,5 +27,9 @@ data class LocalizationOptions(
      * literals which will be replaced with corresponding date's value.
      * Ignored if timeFormatter has been specified.
      */
-    val dateFormat: String? = null
+    var dateFormat: String? = null
 )
+
+inline fun localizationOptions(init: LocalizationOptions.() -> Unit): LocalizationOptions {
+    return LocalizationOptions().apply(init)
+}

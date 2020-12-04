@@ -1,9 +1,20 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-/** Structure describing grid options */
+/** 
+ * Structure describing grid options 
+ */
 data class GridOptions(
-    /** Vertical grid line options */
-    val vertLines: GridLineOptions? = null,
-    /** Horizontal grid line options */
-    val horzLines: GridLineOptions? = null
+    /** 
+     * Vertical grid line options 
+     */
+    var vertLines: GridLineOptions? = null,
+
+    /** 
+     * Horizontal grid line options 
+     */
+    var horzLines: GridLineOptions? = null
 )
+
+inline fun gridOptions(init: GridOptions.() -> Unit): GridOptions {
+    return GridOptions().apply(init)
+}

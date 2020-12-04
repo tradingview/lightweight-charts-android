@@ -64,124 +64,123 @@ class MainActivity : AppCompatActivity() {
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
 
-        firstChartApi.applyOptions(
-                ChartOptions(
-                        layout = LayoutOptions(
-                                backgroundColor = "#eeeeee",
-                                textColor = "#000000"
-                        ),
-                        grid = GridOptions(
-                                GridLineOptions(
-                                        "#c2c2c2"
-                                ),
-                                GridLineOptions(
-                                        "#c2c2c2"
-                                )
-                        ),
-                        rightPriceScale = PriceScaleOptions(
-                                visible = false
-                        ),
-                        leftPriceScale = PriceScaleOptions(
-                                visible = true,
-                                autoScale = true,
-                                scaleMargins = PriceScaleMargins(
-                                        top = 0.2f, bottom = 0.2f
-                                )
-                        ),
-                        crosshair = CrosshairOptions(
-                                CrosshairMode.NORMAL,
-                                CrosshairLineOptions(
-                                        color = "#555555",
-                                        labelBackgroundColor = "#555555"
-                                ),
-                                CrosshairLineOptions(
-                                        color = "#555555",
-                                        labelBackgroundColor = "#555555"
-                                )
-                        ),
-                        handleScroll = HandleScrollOptions(
-                                horzTouchDrag = true,
-                                vertTouchDrag = false
-                        ),
-                        timeScale = TimeScaleOptions(
-                                tickMarkFormatter = TickMarkFormatter()
-                        ),
-                        localization = LocalizationOptions(
-                                locale = "ru-RU",
-                                priceFormatter = PriceFormatter(template = "{price:#2:#3}$"),
-                                timeFormatter = TimeFormatter(
-                                        locale = "ru-RU",
-                                        dateTimeFormat = DateTimeFormat.DATE_TIME
-                                )
-                        )
+        firstChartApi.applyOptions {
+            layout = layoutOptions {
+                backgroundColor = "#eeeeee"
+                textColor = "#000000"
+            }
+            grid = gridOptions {
+                vertLines = gridLineOptions {
+                    color = "#c2c2c2"
+                }
+                horzLines = gridLineOptions {
+                    color = "#c2c2c2"
+                }
+            }
+            rightPriceScale = priceScaleOptions {
+                visible = false
+            }
+            leftPriceScale = priceScaleOptions {
+                visible = true
+                autoScale = true
+                scaleMargins = priceScaleMargins {
+                    top = 0.2f
+                    bottom = 0.2f
+                }
+            }
+            crosshair = crosshairOptions {
+                mode = CrosshairMode.NORMAL
+                vertLine = crosshairLineOptions {
+                    color = "#555555"
+                    labelBackgroundColor = "#555555"
+                }
+                horzLine = crosshairLineOptions {
+                    color = "#555555"
+                    labelBackgroundColor = "#555555"
+                }
+            }
+            handleScroll = handleScrollOptions {
+                horzTouchDrag = true
+                vertTouchDrag = false
+            }
+            timeScale = timeScaleOptions {
+                tickMarkFormatter = TickMarkFormatter()
+            }
+            localization = localizationOptions {
+                locale = "ru-RU"
+                priceFormatter = PriceFormatter(template = "{price:#2:#3}$")
+                timeFormatter = TimeFormatter(
+                    locale = "ru-RU",
+                    dateTimeFormat = DateTimeFormat.DATE_TIME
                 )
-        )
+            }
+        }
     }
 
     private fun setSeriesData(
-            data: Data,
-            priceScaleId: PriceScaleId,
-            chartApi: ChartApi,
-            onSeriesCreated: (SeriesApi<*>) -> Unit
+        data: Data,
+        priceScale: PriceScaleId,
+        chartApi: ChartApi,
+        onSeriesCreated: (SeriesApi<*>) -> Unit
     ) {
         when (data.type) {
             SeriesDataType.AREA -> {
                 chartApi.addAreaSeries(
-                        options = AreaSeriesOptions(
-                                priceFormat = PriceFormat.priceFormatCustom(
-                                        PriceFormatter("{price}$!"),
-                                        0.02f
-                                ),
-                                priceScaleId = priceScaleId
+                    options = AreaSeriesOptions(
+                        priceFormat = PriceFormat.priceFormatCustom(
+                            PriceFormatter("{price}$!"),
+                            0.02f
                         ),
-                        block = { api ->
-                            api.setData(data.list.map { it as LineData })
-                            onSeriesCreated(api)
-                        }
+                        priceScaleId = priceScale
+                    ),
+                    block = { api ->
+                        api.setData(data.list.map { it as LineData })
+                        onSeriesCreated(api)
+                    }
                 )
             }
             SeriesDataType.LINE -> {
                 chartApi.addLineSeries(
-                        options = LineSeriesOptions(
-                                priceScaleId = priceScaleId
-                        ),
-                        block = { api ->
-                            api.setData(data.list.map { it as LineData })
-                            onSeriesCreated(api)
-                        }
+                    options = LineSeriesOptions(
+                        priceScaleId = priceScale
+                    ),
+                    block = { api ->
+                        api.setData(data.list.map { it as LineData })
+                        onSeriesCreated(api)
+                    }
                 )
             }
             SeriesDataType.BAR -> {
                 chartApi.addBarSeries(
-                        options = BarSeriesOptions(
-                                priceScaleId = priceScaleId
-                        ),
-                        block = { api ->
-                            api.setData(data.list.map { it as BarData })
-                            onSeriesCreated(api)
-                        }
+                    options = BarSeriesOptions(
+                        priceScaleId = priceScale
+                    ),
+                    block = { api ->
+                        api.setData(data.list.map { it as BarData })
+                        onSeriesCreated(api)
+                    }
                 )
             }
             SeriesDataType.CANDLESTICK -> {
                 chartApi.addCandlestickSeries(
-                        options = CandlestickSeriesOptions(
-                                priceScaleId = priceScaleId
-                        ),
-                        block = { api ->
-                            api.setData(data.list.map { it as BarData })
-                            onSeriesCreated(api)
-                        }
+                    options = CandlestickSeriesOptions(
+                        priceScaleId = priceScale
+                    ),
+                    block = { api ->
+                        api.setData(data.list.map { it as BarData })
+                        onSeriesCreated(api)
+                    }
                 )
             }
             SeriesDataType.HISTOGRAM -> {
                 chartApi.addHistogramSeries(
-                        options = HistogramSeriesOptions(
-                                priceScaleId = priceScaleId
-                        ),
-                        block = { api ->
-                            api.setData(data.list.map { it as HistogramData })
-                            onSeriesCreated(api)
-                        }
+                    options = HistogramSeriesOptions(
+                        priceScaleId = priceScale
+                    ),
+                    block = { api ->
+                        api.setData(data.list.map { it as HistogramData })
+                        onSeriesCreated(api)
+                    }
                 )
             }
         }

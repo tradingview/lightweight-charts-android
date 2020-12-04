@@ -138,12 +138,14 @@ interface ChartApi {
      * @param options - any subset of chart options
      */
     fun applyOptions(options: ChartOptions, onApply: () -> Unit = {})
+    fun applyOptions(options: ChartOptions.() -> Unit) {
+        applyOptions(ChartOptions().apply(options))
+    }
 
     /**
      * Returns currently applied options
      * @returns - full set of currently applied options, including defaults
      */
-
     fun options(block: (options: ChartOptions?) -> Unit)
 
 }
