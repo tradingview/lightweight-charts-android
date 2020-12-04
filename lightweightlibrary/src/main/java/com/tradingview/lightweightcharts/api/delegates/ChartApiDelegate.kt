@@ -6,14 +6,10 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.PRICE_SCAL
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.PRINT
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE_SERIES
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.RESIZE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_CROSSHAIR_MOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_ON_CLICK
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.FORCE_REPAINT
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.HEIGHT
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.TEXT
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.WIDTH
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_AREA_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_BAR_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_CANDLESTICK_SERIES
@@ -62,17 +58,6 @@ class ChartApiDelegate(
         controller.callUnsubscribe(
             SUBSCRIBE_ON_CLICK,
             callback = block
-        )
-    }
-
-    override fun resize(height: Float, width: Float, forceRepaint: Boolean) {
-        controller.callFunction(
-            RESIZE,
-            mapOf(
-                HEIGHT to height,
-                WIDTH to width,
-                FORCE_REPAINT to forceRepaint
-            )
         )
     }
 

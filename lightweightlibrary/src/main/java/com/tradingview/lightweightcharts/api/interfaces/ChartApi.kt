@@ -6,7 +6,6 @@ import com.tradingview.lightweightcharts.api.series.models.*
 interface ChartApi {
 
     object Func {
-        const val RESIZE = "resize"
         const val PRINT = "print"
         const val SUBSCRIBE_ON_CLICK = "subscribeOnClick"
         const val SUBSCRIBE_CROSSHAIR_MOVE = "subscribeCrosshairMove"
@@ -20,10 +19,7 @@ interface ChartApi {
     object Params {
         const val UUID = "uuid"
         const val TEXT = "text"
-        const val HEIGHT = "height"
-        const val WIDTH = "width"
         const val OPTIONS = "options"
-        const val FORCE_REPAINT = "forceRepaint"
     }
 
     /**
@@ -37,15 +33,6 @@ interface ChartApi {
      * This is an irreversible operation, you cannot do anything with the chart after removing it.
      */
     fun remove()
-
-    /**
-     * Sets fixed size of the chart. By default chart takes up 100% of its container
-     * @param height - target height of the chart
-     * @param width - target width of the chart
-     * @param forceRepaint - true to initiate resize immediately.
-     *                       One could need this to get screenshot immediately after resize
-     */
-    fun resize(height: Float, width: Float, forceRepaint: Boolean = false)
 
     /**
      * Creates an area series with specified parameters

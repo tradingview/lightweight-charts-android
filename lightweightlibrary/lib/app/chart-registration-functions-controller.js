@@ -34,10 +34,6 @@ export default class ChartRegistrationFunctionsController {
             console.log(params.text)
         })
 
-        this.functionManager.registerFunction("resize", (params, resolve) => {
-            this.chart.resize(params.width, params.height, params.forceRepaint)
-        })
-
         this.functionManager.registerFunction("remove", (params, resolve) => {
             this.cache.clear()
             this.chart.remove()
