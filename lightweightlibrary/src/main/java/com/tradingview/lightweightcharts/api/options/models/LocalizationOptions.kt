@@ -1,5 +1,6 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 
@@ -13,15 +14,18 @@ data class LocalizationOptions(
      * User-defined function for price formatting.
      * Could be used for some specific cases, that could not be covered with PriceFormat
      */
-    val priceFormatter: PriceFormatter? = null,
+    val priceFormatter: Plugin? = null,
 
     /**
      * User-defined function for time formatting.
      */
-    val timeFormatter: TimeFormatter? = null,
+    val timeFormatter: Plugin? = null,
 
     /**
-     * One of predefined options to format time. Ignored if timeFormatter has been specified.
+     * Date formatting string.
+     * Might contains `yyyy`, `yy`, `MMMM`, `MMM`, `MM` and `dd`
+     * literals which will be replaced with corresponding date's value.
+     * Ignored if timeFormatter has been specified.
      */
     val dateFormat: String? = null
 )

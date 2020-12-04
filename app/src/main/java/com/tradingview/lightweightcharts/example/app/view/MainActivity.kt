@@ -103,6 +103,9 @@ class MainActivity : AppCompatActivity() {
                                 horzTouchDrag = true,
                                 vertTouchDrag = false
                         ),
+                        timeScale = TimeScaleOptions(
+                                tickMarkFormatter = TickMarkFormatter()
+                        ),
                         localization = LocalizationOptions(
                                 locale = "ru-RU",
                                 priceFormatter = PriceFormatter(template = "{price:#2:#3}$"),
