@@ -5,6 +5,7 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class CandlestickSeriesOptions(
     override var title: String? = null,
@@ -18,7 +19,6 @@ data class CandlestickSeriesOptions(
     override var baseLineColor: String? = null,
     override var baseLineWidth: LineWidth? = null,
     override var baseLineStyle: LineStyle? = null,
-
     override var upColor: String? = null,
     override var downColor: String? = null,
     override var wickVisible: Boolean? = null,
@@ -31,7 +31,8 @@ data class CandlestickSeriesOptions(
     override var wickDownColor: String? = null,
     override var overlay: Boolean = false,
     override var scaleMargins: PriceScaleMargins? = null,
-    override var priceScaleId: PriceScaleId? = null
+    override var priceScaleId: PriceScaleId? = null,
+    override val autoscaleInfoProvider: Plugin? = null
 ) : SeriesOptionsCommon, CandlestickStyleOptions
 
 inline fun candlestickSeriesOptions(init: CandlestickSeriesOptions.() -> Unit): CandlestickSeriesOptions {

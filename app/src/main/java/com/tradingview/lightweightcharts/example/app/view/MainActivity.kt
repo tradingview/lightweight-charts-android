@@ -19,6 +19,7 @@ import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
+import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
 import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
 import com.tradingview.lightweightcharts.example.app.viewmodel.*
 import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
@@ -130,7 +131,8 @@ class MainActivity : AppCompatActivity() {
                         PriceFormatter("{price}$!"),
                         0.02f
                     ),
-                    priceScaleId = priceScale
+                    priceScaleId = priceScale,
+                    autoscaleInfoProvider = AutoscaleInfoProvider()
                 ),
                 onSeriesCreated = { api ->
                     api.setData(data.list.map { it as LineData })

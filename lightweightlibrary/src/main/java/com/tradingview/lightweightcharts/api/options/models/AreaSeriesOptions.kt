@@ -6,6 +6,7 @@ import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.options.common.AreaStyleOptions
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class AreaSeriesOptions(
     override var title: String? = null,
@@ -19,7 +20,6 @@ data class AreaSeriesOptions(
     override var baseLineColor: String? = null,
     override var baseLineWidth: LineWidth? = null,
     override var baseLineStyle: LineStyle? = null,
-
     override var topColor: String? = null,
     override var bottomColor: String? = null,
     override var lineColor: String? = null,
@@ -30,7 +30,8 @@ data class AreaSeriesOptions(
     override var crosshairMarkerRadius: Float? = null,
     override var overlay: Boolean = false,
     override var scaleMargins: PriceScaleMargins? = null,
-    override var priceScaleId: PriceScaleId? = null
+    override var priceScaleId: PriceScaleId? = null,
+    override val autoscaleInfoProvider: Plugin? = null
 ) : SeriesOptionsCommon, AreaStyleOptions
 
 inline fun areaSeriesOptions(init: AreaSeriesOptions.() -> Unit): AreaSeriesOptions {

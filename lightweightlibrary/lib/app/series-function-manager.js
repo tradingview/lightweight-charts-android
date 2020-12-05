@@ -7,6 +7,23 @@ export default class SeriesFunctionManager {
         this.cache = new Map()
     }
 
+    _registerAutoscaleInfoProvider(params, onSuccess) {
+        new Promise((resolve) => {
+            if (!params.options.autoscaleInfoProvider) {
+                resolve()
+                return
+            }
+
+            const plugin = params.options.autoscaleInfoProvider
+            this.pluginManager.register(plugin, (fun) => {
+                params.options.autoscaleInfoProvider = fun
+                resolve()
+            })
+        }).then(() => {
+            onSuccess(params)
+        })
+    }
+
     _registerPriceFormatter(params, onSuccess) {
         new Promise((resolve) => {
             if (!params.options.priceFormat || !params.options.priceFormat.formatter) {
@@ -24,37 +41,45 @@ export default class SeriesFunctionManager {
         })
     }
 
+    _registerPlugins(rawParams, onSuccess) {
+        this._registerAutoscaleInfoProvider(rawParams, (autoscaleParams) => {
+            this._registerPriceFormatter(autoscaleParams, (params) => {
+                onSuccess(params)
+            })
+        })
+    }
+
     _registerSeriesFunctions() {
         this.functionManager.registerFunction("addAreaSeries", (rawParams, resolve) => {
-            this._registerPriceFormatter(rawParams, (params) => {
+            this._registerPlugins(rawParams, (params) => {
                 this.addSeries(params.uuid, this.chart.addAreaSeries(params.options))
                 resolve(params.uuid)
             })
         })
         
         this.functionManager.registerFunction("addLineSeries", (rawParams, resolve) => {
-            this._registerPriceFormatter(rawParams, (params) => {
+            this._registerPlugins(rawParams, (params) => {
                 this.addSeries(params.uuid, this.chart.addLineSeries(params.options))
                 resolve(params.uuid)
             })
         })
         
         this.functionManager.registerFunction("addBarSeries", (rawParams, resolve) => {
-            this._registerPriceFormatter(rawParams, (params) => {
+            this._registerPlugins(rawParams, (params) => {
                 this.addSeries(params.uuid, this.chart.addBarSeries(params.options))
                 resolve(params.uuid)
             })
         })
         
         this.functionManager.registerFunction("addCandlestickSeries", (rawParams, resolve) => {
-            this._registerPriceFormatter(rawParams, (params) => {
+            this._registerPlugins(rawParams, (params) => {
                 this.addSeries(params.uuid, this.chart.addCandlestickSeries(params.options))
                 resolve(params.uuid)
             })
         })
         
         this.functionManager.registerFunction("addHistogramSeries", (rawParams, resolve) => {
-            this._registerPriceFormatter(rawParams, (params) => {
+            this._registerPlugins(rawParams, (params) => {
                 this.addSeries(params.uuid, this.chart.addHistogramSeries(params.options))
                 resolve(params.uuid)
             })
@@ -93,6 +118,10 @@ export default class SeriesFunctionManager {
                 if (options.priceFormat.formatter !== undefined) {
                     const fun = options.priceFormat.formatter
                     options.priceFormat.formatter = this.pluginManager.getPlugin(fun)
+                }
+                if (options.autoscaleInfoProvider !== undefined) {
+                    const fun = options.autoscaleInfoProvider
+                    options.autoscaleInfoProvider = this.pluginManager.getPlugin(fun)
                 }
                 resolve(options)
             })

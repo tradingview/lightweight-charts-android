@@ -6,6 +6,7 @@ import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.options.common.LineStyleOptions
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class LineSeriesOptions(
     override var title: String? = null,
@@ -27,7 +28,8 @@ data class LineSeriesOptions(
     override var crosshairMarkerRadius: Float? = null,
     override var overlay: Boolean = false,
     override var scaleMargins: PriceScaleMargins? = null,
-    override var priceScaleId: PriceScaleId? = null
+    override var priceScaleId: PriceScaleId? = null,
+    override val autoscaleInfoProvider: Plugin? = null
 ) : SeriesOptionsCommon, LineStyleOptions
 
 inline fun lineSeriesOptions(init: LineSeriesOptions.() -> Unit): LineSeriesOptions {
