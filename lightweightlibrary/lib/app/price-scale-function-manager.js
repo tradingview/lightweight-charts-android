@@ -11,7 +11,7 @@ export default class PriceScaleFunctionManager {
             this.cache.set(params.uuid, this.chart.priceScale(params.priceScaleId))
         })
         this.functionManager.registerFunction("priceScaleOptions", (params, resolve) => {
-            let scale = this.cache.get(params.uuid)
+            const scale = this.cache.get(params.priceScaleId)
             if (scale === undefined) {
                 this.functionManager.throwFatalError(`PriceScale with uuid:${params.uuid} is not found`, params)
             } else {
@@ -19,11 +19,19 @@ export default class PriceScaleFunctionManager {
             }
         })
         this.functionManager.registerFunction("priceScaleApplyOptions", (params, resolve) => {
-            let scale = this.cache.get(params.uuid)
+            const scale = this.cache.get(params.priceScaleId)
             if (scale === undefined) {
                 this.functionManager.throwFatalError(`PriceScale with uuid:${params.uuid} is not found`, params)
             } else {
                 scale.applyOptions(params.options)
+            }
+        })
+        this.functionManager.registerFunction("priceScaleWidth", (params, resolve) => {
+            const scale = this.cache.get(params.priceScaleId)
+            if (scale === undefined) {
+                this.functionManager.throwFatalError(`PriceScale with uuid:${params.uuid} is not found`, params)
+            } else {
+                resolve(scale.width())
             }
         })
     }

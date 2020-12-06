@@ -28,7 +28,7 @@ class TimeScaleApiDelegate(
     override fun scrollPosition(completion: (Float?) -> Unit) {
         controller.callFunction<Double>(
                 SCROLL_POSITION,
-                callback = { it!!.toFloat().apply { completion.invoke(this) } }
+                callback = { it.toFloat().apply { completion.invoke(this) } }
         )
     }
 

@@ -27,131 +27,131 @@ import com.tradingview.lightweightcharts.api.series.models.*
 
 class ChartApiDelegate(
     private val controller: WebMessageController
-): ChartApi {
+) : ChartApi {
 
     override val timeScale = TimeScaleApiDelegate(controller)
 
-    override fun subscribeCrosshairMove(block: (params: MouseEventParams?) -> Unit) {
+    override fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams?) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
-            callback = block,
+            callback = onCrosshairMove,
             serializer = MouseEventParamsSerializer()
         )
     }
 
-    override fun unsubscribeCrosshairMove(block: (params: MouseEventParams?) -> Unit) {
+    override fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams?) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
-            callback = block
+            callback = funLink
         )
     }
 
-    override fun subscribeClick(block: (params: MouseEventParams?) -> Unit) {
+    override fun subscribeClick(onClick: (params: MouseEventParams?) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_ON_CLICK,
-            callback = block,
+            callback = onClick,
             serializer = MouseEventParamsSerializer()
         )
     }
 
-    override fun unsubscribeClick(block: (params: MouseEventParams?) -> Unit) {
+    override fun unsubscribeClick(funLink: (params: MouseEventParams?) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_ON_CLICK,
-            callback = block
+            callback = funLink
         )
     }
 
     override fun addAreaSeries(
-            options: AreaSeriesOptions,
-            block: (api: SeriesApi<LineData>) -> Unit
+        options: AreaSeriesOptions,
+        onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_AREA_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
-                if (uuid != null) {
-                    block(SeriesApiDelegate(
-                            uuid,
-                            controller,
-                            AreaSeriesOptionsSerializer()
-                    ))
-                }
+                onSeriesCreated(
+                    SeriesApiDelegate(
+                        uuid,
+                        controller,
+                        AreaSeriesOptionsSerializer()
+                    )
+                )
             }
         )
     }
 
     override fun addBarSeries(
-            options: BarSeriesOptions,
-            block: (api: SeriesApi<BarData>) -> Unit
+        options: BarSeriesOptions,
+        onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_BAR_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
-                if (uuid != null) {
-                    block(SeriesApiDelegate(
-                            uuid,
-                            controller,
-                            BarSeriesOptionsSerializer()
-                    ))
-                }
+                onSeriesCreated(
+                    SeriesApiDelegate(
+                        uuid,
+                        controller,
+                        BarSeriesOptionsSerializer()
+                    )
+                )
             }
         )
     }
 
     override fun addCandlestickSeries(
-            options: CandlestickSeriesOptions,
-            block: (api: SeriesApi<BarData>) -> Unit
+        options: CandlestickSeriesOptions,
+        onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_CANDLESTICK_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
-                if (uuid != null) {
-                    block(SeriesApiDelegate(
-                            uuid,
-                            controller,
-                            CandlestickSeriesOptionsSerializer()
-                    ))
-                }
+                onSeriesCreated(
+                    SeriesApiDelegate(
+                        uuid,
+                        controller,
+                        CandlestickSeriesOptionsSerializer()
+                    )
+                )
             }
         )
     }
 
     override fun addHistogramSeries(
-            options: HistogramSeriesOptions,
-            block: (api: SeriesApi<HistogramData>) -> Unit
+        options: HistogramSeriesOptions,
+        onSeriesCreated: (api: SeriesApi<HistogramData>) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_HISTOGRAM_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
-                if (uuid != null) {
-                    block(SeriesApiDelegate(
-                            uuid,
-                            controller,
-                            HistogramSeriesOptionsSerializer()
-                    ))
-                }
+                onSeriesCreated(
+                    SeriesApiDelegate(
+                        uuid,
+                        controller,
+                        HistogramSeriesOptionsSerializer()
+                    )
+                )
             }
         )
     }
 
     override fun addLineSeries(
-            options: LineSeriesOptions,
-            block: (api: SeriesApi<LineData>) -> Unit
+        options: LineSeriesOptions,
+        onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_LINE_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
-                if (uuid != null) {
-                    block(SeriesApiDelegate(
-                            uuid,
-                            controller,
-                            LineSeriesOptionsSerializer()
-                    ))
-                }
+                onSeriesCreated(
+                    SeriesApiDelegate(
+                        uuid,
+                        controller,
+                        LineSeriesOptionsSerializer()
+                    )
+                )
             },
         )
     }
@@ -160,39 +160,41 @@ class ChartApiDelegate(
         controller.callFunction(REMOVE)
     }
 
-    override fun removeSeries(seriesApi: SeriesApi<*>, block: () -> Unit) {
-        controller.callFunction<Unit>(
+    override fun removeSeries(seriesApi: SeriesApi<*>, onSeriesDeleted: () -> Unit) {
+        controller.callFunction(
             REMOVE_SERIES,
             mapOf(SERIES_UUID to seriesApi.uuid),
-            { block() }
+            onSeriesDeleted
         )
     }
 
     override fun priceScale(id: PriceScaleId): PriceScaleApi {
         val uuid = controller.callFunction(
-                PRICE_SCALE,
-                mapOf(PRICE_SCALE_ID to id.value)
+            PRICE_SCALE,
+            mapOf(PRICE_SCALE_ID to id.value)
         )
         return PriceScaleApiDelegate(uuid, controller)
     }
 
+    @Deprecated("Using ChartApi.priceScale() method without arguments " +
+            "has been deprecated, pass valid price scale id instead")
     override fun priceScale(): PriceScaleApi {
         val uuid = controller.callFunction(PRICE_SCALE)
         return PriceScaleApiDelegate(uuid, controller)
     }
 
     override fun applyOptions(options: ChartOptions, onApply: () -> Unit) {
-        controller.callFunction<Unit>(
-                APPLY_OPTIONS,
-                mapOf(OPTIONS to options),
-                { onApply() }
+        controller.callFunction(
+            APPLY_OPTIONS,
+            mapOf(OPTIONS to options),
+            onApply
         )
     }
 
-    override fun options(block: (options: ChartOptions?) -> Unit) {
+    override fun options(onOptionsReceived: (options: ChartOptions?) -> Unit) {
         controller.callFunction(
             CHART_OPTIONS,
-            callback = block,
+            callback = onOptionsReceived,
             serializer = ChartOptionsSerializer()
         )
     }

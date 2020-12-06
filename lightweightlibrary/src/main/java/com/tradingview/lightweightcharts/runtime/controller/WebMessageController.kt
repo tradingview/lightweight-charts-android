@@ -20,10 +20,18 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         return callFunction<Unit>(name, params, null, null)
     }
 
+    fun callFunction(
+        name: String,
+        params: Map<String, Any> = emptyMap(),
+        callback: (() -> Unit)?
+    ): String {
+        return callFunction<Unit>(name, params, { callback?.invoke() }, null)
+    }
+
     fun <T: Any> callFunction(
         name: String,
         params: Map<String, Any> = emptyMap(),
-        callback: ((T?) -> Unit)?,
+        callback: ((T) -> Unit)?,
         serializer: Serializer<out T>? = null
     ): String {
         val bridge = BridgeFunction(name, params)
