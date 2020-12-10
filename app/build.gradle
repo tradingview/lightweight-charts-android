@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.tradingview:lightweightcharts:1.0.0-beta02'
+    implementation project(path: ':lightweightlibrary')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
