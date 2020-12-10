@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.BarPrices
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.api.series.models.Time
 
 
@@ -25,6 +26,7 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeAdapter(LineType::class.java, LineType.LineTypeAdapter())
     registerTypeAdapter(LineWidth::class.java, LineWidth.LineWidthAdapter())
     registerTypeAdapter(PriceScaleMode::class.java, PriceScaleMode.PriceScaleModeAdapter())
+    registerTypeAdapter(PriceScaleId::class.java, PriceScaleId.PriceScaleIdAdapter())
 
     return this
 }

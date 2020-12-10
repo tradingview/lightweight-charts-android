@@ -5,57 +5,62 @@ package com.tradingview.lightweightcharts.api.options.models
  */
 data class ChartOptions(
     /**
-        Width of the chart
+     * Structure with watermark options
      */
-    val width: Int? = null,
+    var watermark: WatermarkOptions? = null,
 
     /**
-        Height of the chart
+     * Structure with layout options
      */
-    val height: Int? = null,
+    var layout: LayoutOptions? = null,
 
     /**
-        Structure with watermark options
+     * ## Deprecated
+     * Use [leftPriceScale]/[rightPriceScale]/[overlayPriceScale] instead.
+     *
+     * Structure with price scale options
      */
-    val watermark: WatermarkOptions? = null,
+    @Deprecated("Use leftPriceScale/rightPriceScale/overlayPriceScale instead")
+    var priceScale: PriceScaleOptions? = null,
+
+    var leftPriceScale: PriceScaleOptions? = null,
+
+    var rightPriceScale: PriceScaleOptions? = null,
+
+    //TODO: Omit<PriceScaleOptions, 'visible' | 'autoScale'>
+    var overlayPriceScale: PriceScaleOptions? = null,
 
     /**
-        Structure with layout options
+     * Structure with time scale options
      */
-    val layout: LayoutOptions? = null,
+    var timeScale: TimeScaleOptions? = null,
 
     /**
-        Structure with price scale options
+     * Structure with crosshair options
      */
-    val priceScale: PriceScaleOptions? = null,
+    var crosshair: CrosshairOptions? = null,
 
     /**
-        Structure with time scale options
+     * Structure with grid options
      */
-    val timeScale: TimeScaleOptions? = null,
+    var grid: GridOptions? = null,
 
     /**
-        Structure with crosshair options
+     * Structure with localization options
      */
-    val crosshair: CrosshairOptions? = null,
+    var localization: LocalizationOptions? = null,
 
     /**
-        Structure with grid options
+     * Structure that describes scrolling behavior
      */
-    val grid: GridOptions? = null,
+    var handleScroll: HandleScrollOptions? = null,
 
     /**
-        Structure with localization options
+     * Structure that describes scaling behavior
      */
-    val localization: LocalizationOptions? = null,
-
-    /**
-        Structure that describes scrolling behavior
-     */
-    val handleScroll: HandleScrollOptions? = null,
-
-    /**
-        Structure that describes scaling behavior
-     */
-    val handleScale: HandleScaleOptions? = null
+    var handleScale: HandleScaleOptions? = null
 )
+
+inline fun chartOptions(init: ChartOptions.() -> Unit): ChartOptions {
+    return ChartOptions().apply(init)
+}

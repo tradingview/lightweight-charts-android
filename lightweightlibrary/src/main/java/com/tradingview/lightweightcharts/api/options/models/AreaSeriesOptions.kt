@@ -5,28 +5,35 @@ import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.options.common.AreaStyleOptions
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class AreaSeriesOptions(
-    override val title: String? = null,
-    override val lastValueVisible: Boolean? = null,
-    override val priceLineVisible: Boolean? = null,
-    override val priceLineWidth: LineWidth? = null,
-    override val priceLineColor: String? = null,
-    override val priceLineStyle: LineStyle? = null,
-    override val priceFormat: PriceFormat? = null,
-    override val baseLineVisible: Boolean? = null,
-    override val baseLineColor: String? = null,
-    override val baseLineWidth: LineWidth? = null,
-    override val baseLineStyle: LineStyle? = null,
-
-    override val topColor: String? = null,
-    override val bottomColor: String? = null,
-    override val lineColor: String? = null,
-    override val lineStyle: LineStyle? = null,
-    override val lineWidth: LineWidth? = null,
-    override val lineType: LineType? = null,
-    override val crosshairMarkerVisible: Boolean? = null,
-    override val crosshairMarkerRadius: Float? = null,
-    override val overlay: Boolean = false,
-    override val scaleMargins: PriceScaleMargins? = null
+    override var title: String? = null,
+    override var lastValueVisible: Boolean? = null,
+    override var priceLineVisible: Boolean? = null,
+    override var priceLineWidth: LineWidth? = null,
+    override var priceLineColor: String? = null,
+    override var priceLineStyle: LineStyle? = null,
+    override var priceFormat: PriceFormat? = null,
+    override var baseLineVisible: Boolean? = null,
+    override var baseLineColor: String? = null,
+    override var baseLineWidth: LineWidth? = null,
+    override var baseLineStyle: LineStyle? = null,
+    override var topColor: String? = null,
+    override var bottomColor: String? = null,
+    override var lineColor: String? = null,
+    override var lineStyle: LineStyle? = null,
+    override var lineWidth: LineWidth? = null,
+    override var lineType: LineType? = null,
+    override var crosshairMarkerVisible: Boolean? = null,
+    override var crosshairMarkerRadius: Float? = null,
+    override var overlay: Boolean = false,
+    override var scaleMargins: PriceScaleMargins? = null,
+    override var priceScaleId: PriceScaleId? = null,
+    override val autoscaleInfoProvider: Plugin? = null
 ) : SeriesOptionsCommon, AreaStyleOptions
+
+inline fun areaSeriesOptions(init: AreaSeriesOptions.() -> Unit): AreaSeriesOptions {
+    return AreaSeriesOptions().apply(init)
+}

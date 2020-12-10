@@ -17,13 +17,32 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap()
     ): String {
-        return callFunction<Unit>(name, params, null, null)
+        return callFunction(name, params, null)
+    }
+
+    fun callFunction(
+        name: String,
+        params: Map<String, Any> = emptyMap(),
+        callback: (() -> Unit)?
+    ): String {
+        val bridge = BridgeFunction(name, params)
+
+        @Suppress("UNCHECKED_CAST")
+        callbackBuffer[bridge.uuid] = BufferElement(
+            callback as? (Any?) -> Unit,
+            null,
+            Thread.currentThread().stackTrace
+        )
+
+        messageBuffer.addLast(bridge)
+        sendMessages()
+        return bridge.uuid
     }
 
     fun <T: Any> callFunction(
         name: String,
         params: Map<String, Any> = emptyMap(),
-        callback: ((T?) -> Unit)?,
+        callback: ((T) -> Unit)?,
         serializer: Serializer<out T>? = null
     ): String {
         val bridge = BridgeFunction(name, params)

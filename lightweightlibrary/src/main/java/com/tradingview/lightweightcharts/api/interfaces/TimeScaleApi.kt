@@ -15,17 +15,15 @@ interface TimeScaleApi {
         const val SET_VISIBLE_RANGE = "setVisibleRange"
         const val RESET_TIME_SCALE = "resetTimeScale"
         const val FIT_CONTENT = "fitContent"
+        const val SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE = "subscribeVisibleTimeRangeChange"
     }
 
     object Params {
         const val OPTIONS_PARAM = "options"
-        const val TIME_SCALE_ID = "timeScaleId"
         const val POSITION = "position"
         const val ANIMATED = "animated"
         const val RANGE = "range"
     }
-
-    val uuid: String
 
     /**
      * Returns current scroll position of the chart
@@ -72,11 +70,22 @@ interface TimeScaleApi {
      * Applies new options to the time scale.
      * - Parameter options: any subset of options
      */
-    fun applyOptions(options: TimeScaleOptions)
+    fun applyOptions(options: TimeScaleOptions, onApply: (Unit?) -> Unit = {})
 
     /**
      * Returns current options
      * - Parameter completion: currently applied options
      */
     fun options(completion: (TimeScaleOptions?) -> Unit)
+
+    /**
+     * Adds a subscription to visible range changes
+     * to receive notification about visible range of data changes
+     */
+    fun subscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
+
+    /**
+     * Removes a subscription to visible range changes
+     */
+    fun unsubscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
 }

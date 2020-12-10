@@ -2,14 +2,26 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 
-/** Structure describing horizontal or vertical grid line options */
+/** 
+ * Structure describing horizontal or vertical grid line options 
+ */
 data class GridLineOptions(
-    /** Color of the lines */
-    val color: String? = null,
+    /** 
+     * Color of the lines 
+     */
+    var color: String? = null,
 
-    /** Style of the lines */
-    val style: LineStyle? = null,
+    /** 
+     * Style of the lines 
+     */
+    var style: LineStyle? = null,
 
-    /** Visibility of the lines */
-    val visible: Boolean? = null
+    /** 
+     * Visibility of the lines 
+     */
+    var visible: Boolean? = null
 )
+
+inline fun gridLineOptions(init: GridLineOptions.() -> Unit): GridLineOptions {
+    return GridLineOptions().apply(init)
+}

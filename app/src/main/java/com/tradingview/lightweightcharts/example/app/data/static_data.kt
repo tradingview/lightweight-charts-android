@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.data
 
-import com.tradingview.lightweightcharts.api.options.enums.DateFormat
 import com.tradingview.lightweightcharts.api.options.enums.PriceAxisPosition
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.common.SeriesData

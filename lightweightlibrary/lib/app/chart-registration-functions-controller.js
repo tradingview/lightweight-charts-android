@@ -24,7 +24,7 @@ export default class ChartRegistrationFunctionsController {
         )
         subscriptions.register()
 
-        const timeScale = new TimeScaleFunctionManager(this.chart, this.functionManager)
+        const timeScale = new TimeScaleFunctionManager(this.chart, this.functionManager, this.pluginManager)
         timeScale.register()
 
         const priceScale = new PriceScaleFunctionManager(this.chart, this.functionManager)
@@ -32,10 +32,6 @@ export default class ChartRegistrationFunctionsController {
 
         this.functionManager.registerFunction("print", (params, resolve) => {
             console.log(params.text)
-        })
-
-        this.functionManager.registerFunction("resize", (params, resolve) => {
-            this.chart.resize(params.width, params.height, params.forceRepaint)
         })
 
         this.functionManager.registerFunction("remove", (params, resolve) => {
@@ -53,6 +49,11 @@ export default class ChartRegistrationFunctionsController {
             if (options.localization && options.localization.timeFormatter) {
                 const fun = options.localization.timeFormatter
                 options.localization.timeFormatter = this.pluginManager.getPlugin(fun)
+            }
+
+            if (options.timeScale && options.timeScale.tickMarkFormatter) {
+                const fun = options.timeScale.tickMarkFormatter
+                options.timeScale.tickMarkFormatter = this.pluginManager.getPlugin(fun)
             }
 
             resolve(options)
@@ -81,6 +82,18 @@ export default class ChartRegistrationFunctionsController {
                 this.pluginManager.register(plugin, (fun) => {
                     params.options.localization.timeFormatter = fun
                     console.log('plugin timeFormatter registered')
+                    resolve()
+                })
+            })).then(() => new Promise((resolve) => {
+                if (!params.options.timeScale || !params.options.timeScale.tickMarkFormatter) {
+                    resolve()
+                    return
+                }
+
+                const plugin = params.options.timeScale.tickMarkFormatter
+                this.pluginManager.register(plugin, (fun) => {
+                    params.options.timeScale.tickMarkFormatter = fun
+                    console.log('plugin tickMarkFormatter registered')
                     resolve()
                 })
             })).then(() => {

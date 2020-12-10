@@ -18,7 +18,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.DATA
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.LINE_ID
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_ID
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.serializer.Serializer
@@ -36,7 +36,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         controller.callFunction(
             SET_SERIES,
             mapOf(
-                SERIES_ID to uuid,
+                SERIES_UUID to uuid,
                 DATA to data
             )
         )
@@ -45,7 +45,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
     override fun priceFormatter(): PriceFormatter {
         val uuid = controller.callFunction(
             PRICE_FORMATTER,
-            mapOf(SERIES_ID to uuid)
+            mapOf(SERIES_UUID to uuid)
         )
         return PriceFormatterDelegate(
             uuid,
@@ -57,7 +57,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         controller.callFunction<Double>(
             PRICE_TO_COORDINATE,
             mapOf(
-                SERIES_ID to uuid,
+                SERIES_UUID to uuid,
                 PRICE to price
             ),
             callback = { completion(it?.toFloat()) }
@@ -68,7 +68,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         controller.callFunction(
             COORDINATE_TO_PRICE,
             mapOf(
-                SERIES_ID to uuid,
+                SERIES_UUID to uuid,
                 COORDINATE to coordinate
             ),
             callback = completion
@@ -79,7 +79,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         controller.callFunction(
             APPLY_OPTIONS,
             mapOf(
-                SERIES_ID to uuid,
+                SERIES_UUID to uuid,
                 OPTIONS to options
             )
         )
@@ -90,7 +90,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         Logger.printD("type $collectionType")
         controller.callFunction(
             OPTIONS,
-            mapOf(SERIES_ID to uuid),
+            mapOf(SERIES_UUID to uuid),
             callback = completion,
             serializer = optionsSerializer
         )
@@ -100,7 +100,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         controller.callFunction(
             SET_MARKERS,
             mapOf(
-                SERIES_ID to uuid,
+                SERIES_UUID to uuid,
                 DATA to data
             )
         )
@@ -110,7 +110,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         val uuid = controller.callFunction(
             CREATE_PRICE_LINE,
             mapOf(
-                SERIES_ID to uuid,
+                SERIES_UUID to uuid,
                 OPTIONS to options
             )
         )
@@ -124,7 +124,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         controller.callFunction(
             REMOVE_PRICE_LINE,
             mapOf(
-                SERIES_ID to uuid,
+                SERIES_UUID to uuid,
                 LINE_ID to line.uuid
             )
         )
@@ -134,7 +134,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         controller.callFunction(
             UPDATE,
             mapOf(
-                SERIES_ID to uuid,
+                SERIES_UUID to uuid,
                 BAR to bar
             )
         )

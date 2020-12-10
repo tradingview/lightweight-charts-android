@@ -1,23 +1,16 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
-import com.tradingview.lightweightcharts.api.series.models.BarData
-import com.tradingview.lightweightcharts.api.series.models.HistogramData
-import com.tradingview.lightweightcharts.api.series.models.LineData
-import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
-import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.series.models.*
 
 interface ChartApi {
 
     object Func {
-        const val RESIZE = "resize"
         const val PRINT = "print"
         const val SUBSCRIBE_ON_CLICK = "subscribeOnClick"
         const val SUBSCRIBE_CROSSHAIR_MOVE = "subscribeCrosshairMove"
-        const val SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE = "subscribeVisibleTimeRangeChange"
         const val REMOVE = "remove"
         const val REMOVE_SERIES = "removeSeries"
-        const val TIME_SCALE = "timeScale"
         const val PRICE_SCALE = "priceScale"
         const val APPLY_OPTIONS = "chartApplyOptions"
         const val CHART_OPTIONS = "chartOptions"
@@ -26,11 +19,14 @@ interface ChartApi {
     object Params {
         const val UUID = "uuid"
         const val TEXT = "text"
-        const val HEIGHT = "height"
-        const val WIDTH = "width"
         const val OPTIONS = "options"
-        const val FORCE_REPAINT = "forceRepaint"
     }
+
+    /**
+     * Returns API to manipulate the time scale
+     * @returns - target API
+     */
+    val timeScale: TimeScaleApi
 
     /**
      * Removes the chart object including all DOM elements.
@@ -39,22 +35,13 @@ interface ChartApi {
     fun remove()
 
     /**
-     * Sets fixed size of the chart. By default chart takes up 100% of its container
-     * @param height - target height of the chart
-     * @param width - target width of the chart
-     * @param forceRepaint - true to initiate resize immediately.
-     *                       One could need this to get screenshot immediately after resize
-     */
-    fun resize(height: Float, width: Float, forceRepaint: Boolean = false)
-
-    /**
      * Creates an area series with specified parameters
      * @param options - customization parameters of the series being created
      * @returns an interface of the created series
      */
     fun addAreaSeries(
             options: AreaSeriesOptions = AreaSeriesOptions(),
-            block: (api: SeriesApi<LineData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
     )
 
     /**
@@ -64,7 +51,7 @@ interface ChartApi {
      */
     fun addBarSeries(
             options: BarSeriesOptions = BarSeriesOptions(),
-            block: (api: SeriesApi<BarData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
     )
 
     /**
@@ -74,7 +61,7 @@ interface ChartApi {
      */
     fun addCandlestickSeries(
             options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
-            block: (api: SeriesApi<BarData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
     )
 
     /**
@@ -84,7 +71,7 @@ interface ChartApi {
      */
     fun addHistogramSeries(
             options: HistogramSeriesOptions = HistogramSeriesOptions(),
-            block: (api: SeriesApi<HistogramData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<HistogramData>) -> Unit
     )
 
     /**
@@ -94,69 +81,58 @@ interface ChartApi {
      */
     fun addLineSeries(
             options: LineSeriesOptions = LineSeriesOptions(),
-            block: (api: SeriesApi<LineData>) -> Unit
+            onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
     )
 
     /**
      * Removes a series of any type.
      * This is an irreversible operation, you cannot do anything with the series after removing it
      */
-    fun removeSeries(seriesApi: SeriesApi<*>, block: () -> Unit = {})
+    fun removeSeries(seriesApi: SeriesApi<*>, onSeriesDeleted: () -> Unit = {})
 
     /**
      * Adds a subscription to mouse click event
      */
-    fun subscribeClick(block: (params: MouseEventParams?) -> Unit)
+    fun subscribeClick(onClick: (params: MouseEventParams?) -> Unit)
 
     /**
      * Removes mouse click subscription
      */
-    fun unsubscribeClick(block: (params: MouseEventParams?) -> Unit)
+    fun unsubscribeClick(funLink: (params: MouseEventParams?) -> Unit)
 
     /**
      * Adds a subscription to crosshair movement to receive notifications on crosshair movements
      */
-    fun subscribeCrosshairMove(block: (params: MouseEventParams?) -> Unit)
+    fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams?) -> Unit)
 
     /**
      * Removes a subscription on crosshair movement
      */
-    fun unsubscribeCrosshairMove(block: (params: MouseEventParams?) -> Unit)
-
-    /**
-     * Adds a subscription to visible range changes
-     * to receive notification about visible range of data changes
-     */
-    fun subscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
-
-    /**
-     * Removes a subscription to visible range changes
-     */
-    fun unsubscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
+    fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams?) -> Unit)
 
     /**
      * Returns API to manipulate the price scale
      * @returns - target API
      */
-    fun priceScale(): PriceScaleApi
+    fun priceScale(id: PriceScaleId): PriceScaleApi
 
-    /**
-     * Returns API to manipulate the time scale
-     * @returns - target API
-     */
-    fun timeScale(): TimeScaleApi
+    @Deprecated("Using ChartApi.priceScale() method without arguments " +
+            "has been deprecated, pass valid price scale id instead")
+    fun priceScale(): PriceScaleApi
 
     /**
      * Applies new options to the chart
      * @param options - any subset of chart options
      */
     fun applyOptions(options: ChartOptions, onApply: () -> Unit = {})
+    fun applyOptions(options: ChartOptions.() -> Unit) {
+        applyOptions(ChartOptions().apply(options))
+    }
 
     /**
      * Returns currently applied options
      * @returns - full set of currently applied options, including defaults
      */
-
-    fun options(block: (options: ChartOptions?) -> Unit)
+    fun options(onOptionsReceived: (options: ChartOptions?) -> Unit)
 
 }

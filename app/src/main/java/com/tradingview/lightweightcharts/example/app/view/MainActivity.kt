@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
@@ -15,16 +14,16 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
-import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
-import com.tradingview.lightweightcharts.api.series.models.BarData
-import com.tradingview.lightweightcharts.api.series.models.HistogramData
-import com.tradingview.lightweightcharts.api.series.models.LineData
-import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.enums.*
+import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.*
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
+import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
+import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
 import com.tradingview.lightweightcharts.example.app.viewmodel.*
 import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
+import com.tradingview.lightweightcharts.runtime.plugins.Eval
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
@@ -43,8 +42,8 @@ class MainActivity : AppCompatActivity() {
     private val firstChartApi: ChartApi by lazy { charts_view.api }
     private val secondChartApi: ChartApi by lazy { charts_view_second.api }
 
-    private var currentSeriesApiFirstChart: SeriesApi<SeriesData>? = null
-    private var currentSeriesApiSecondChart: SeriesApi<SeriesData>? = null
+    private var leftSeries: MutableList<SeriesApi<SeriesData>> = mutableListOf()
+    private var rightSeries: MutableList<SeriesApi<SeriesData>> = mutableListOf()
     private var realtimeDataJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,126 +55,160 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.seriesData.observe(this, { data ->
-            setSeriesData(data, currentSeriesApiFirstChart, firstChartApi) {
-                currentSeriesApiFirstChart = it as SeriesApi<SeriesData>
+            setSeriesData(data, PriceScaleId.LEFT, firstChartApi) {
+                leftSeries.add(it as SeriesApi<SeriesData>)
             }
-
-            setSeriesData(data, currentSeriesApiSecondChart, secondChartApi) {
-                currentSeriesApiSecondChart = it as SeriesApi<SeriesData>
+            setSeriesData(data, PriceScaleId.RIGHT, secondChartApi) {
+                rightSeries.add(it as SeriesApi<SeriesData>)
             }
         })
 
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
 
-        firstChartApi.applyOptions(
-                ChartOptions(
-                        layout = LayoutOptions(
-                                backgroundColor = "#eeeeee",
-                                textColor = "#000000"
-                        ),
-                        grid = GridOptions(
-                                GridLineOptions(
-                                        "#c2c2c2"
-                                ),
-                                GridLineOptions(
-                                        "#c2c2c2"
-                                )
-                        ),
-                        priceScale = PriceScaleOptions(
-                                autoScale = true,
-                                scaleMargins = PriceScaleMargins(
-                                        top = 0.2f, bottom = 0.2f
-                                ),
-                                borderVisible = false
-                        ),
-                        timeScale = TimeScaleOptions(
-                                borderVisible = false,
-                                timeVisible = true,
-                                secondsVisible = true
-                        ),
-                        crosshair = CrosshairOptions(
-                                CrosshairMode.NORMAL,
-                                CrosshairLineOptions(
-                                        color = "#555555",
-                                        labelBackgroundColor = "#555555"
-                                ),
-                                CrosshairLineOptions(
-                                        color = "#555555",
-                                        labelBackgroundColor = "#555555"
-                                )
-                        ),
-                        handleScroll = HandleScrollOptions(
-                                horzTouchDrag = true,
-                                vertTouchDrag = false
-                        ),
-                        localization = LocalizationOptions(
-                                locale = "ru-RU",
-                                priceFormatter = PriceFormatter(template = "{price:#2:#3}$"),
-                                timeFormatter = TimeFormatter(
-                                        locale = "ru-RU",
-                                        dateTimeFormat = DateTimeFormat.DATE_TIME
-                                )
-                        )
+        firstChartApi.applyOptions {
+            layout = layoutOptions {
+                backgroundColor = "#eeeeee"
+                textColor = "#000000"
+            }
+            grid = gridOptions {
+                vertLines = gridLineOptions {
+                    color = "#c2c2c2"
+                }
+                horzLines = gridLineOptions {
+                    color = "#c2c2c2"
+                }
+            }
+            rightPriceScale = priceScaleOptions {
+                visible = false
+            }
+            leftPriceScale = priceScaleOptions {
+                visible = true
+                autoScale = true
+                scaleMargins = priceScaleMargins {
+                    top = 0.2f
+                    bottom = 0.2f
+                }
+            }
+            crosshair = crosshairOptions {
+                mode = CrosshairMode.NORMAL
+                vertLine = crosshairLineOptions {
+                    color = "#555555"
+                    labelBackgroundColor = "#555555"
+                }
+                horzLine = crosshairLineOptions {
+                    color = "#555555"
+                    labelBackgroundColor = "#555555"
+                }
+            }
+            handleScroll = handleScrollOptions {
+                horzTouchDrag = true
+                vertTouchDrag = false
+            }
+            handleScale = handleScaleOptions {
+                axisPressedMouseMove = axisPressedMouseMoveOptions {
+                    time = true
+                    price = false
+                }
+            }
+            timeScale = timeScaleOptions {
+                tickMarkFormatter = TickMarkFormatter()
+            }
+            localization = localizationOptions {
+                locale = "ru-RU"
+                //priceFormatter = Eval("function() { return 123 }")
+                priceFormatter = PriceFormatter(template = "{price:#2:#3}$")
+                timeFormatter = TimeFormatter(
+                    locale = "ru-RU",
+                    dateTimeFormat = DateTimeFormat.DATE_TIME
                 )
-        )
+            }
+        }
     }
 
     private fun setSeriesData(
-            data: Data,
-            currentSeriesApi: SeriesApi<*>?,
-            chartApi: ChartApi,
-            onSeriesCreated: (SeriesApi<*>) -> Unit
+        data: Data,
+        priceScale: PriceScaleId,
+        chartApi: ChartApi,
+        onSeriesCreated: (SeriesApi<*>) -> Unit
     ) {
-        currentSeriesApi?.let(chartApi::removeSeries)
-
         when (data.type) {
-            SeriesDataType.AREA -> {
-                chartApi.addAreaSeries(
-                        options = AreaSeriesOptions(
-                                priceFormat = PriceFormat.priceFormatCustom(
-                                        PriceFormatter("{price}$!"),
-                                        0.02f
-                                )
-                        ),
-                        block = { api ->
-                            api.setData(data.list.map { it as LineData })
-                            onSeriesCreated(api)
-                        }
-                )
-            }
-            SeriesDataType.LINE -> {
-                chartApi.addLineSeries(
-                        block = { api ->
-                            api.setData(data.list.map { it as LineData })
-                            onSeriesCreated(api)
-                        }
-                )
-            }
-            SeriesDataType.BAR -> {
-                chartApi.addBarSeries(
-                        block = { api ->
-                            api.setData(data.list.map { it as BarData })
-                            onSeriesCreated(api)
-                        }
-                )
-            }
-            SeriesDataType.CANDLESTICK -> {
-                chartApi.addCandlestickSeries(
-                        block = { api ->
-                            api.setData(data.list.map { it as BarData })
-                            onSeriesCreated(api)
-                        }
-                )
-            }
-            SeriesDataType.HISTOGRAM -> {
-                chartApi.addHistogramSeries(
-                        block = { api ->
-                            api.setData(data.list.map { it as HistogramData })
-                            onSeriesCreated(api)
-                        }
-                )
-            }
+            SeriesDataType.AREA -> chartApi.addAreaSeries(
+                options = AreaSeriesOptions(
+                    priceFormat = PriceFormat.priceFormatCustom(
+                        PriceFormatter("{price}$!"),
+                        0.02f
+                    ),
+                    priceScaleId = priceScale,
+                    autoscaleInfoProvider = AutoscaleInfoProvider()
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as LineData })
+                    api.setMarkers(
+                        listOf(
+                            SeriesMarker(
+                                time = data.list[0].time,
+                                position = SeriesMarkerPosition.ABOVE_BAR,
+                                color = "black",
+                                shape = SeriesMarkerShape.ARROW_DOWN,
+                                text = "Example",
+                                size = 2
+                            )
+                        )
+                    )
+                    api.createPriceLine(
+                        PriceLineOptions(
+                            price = 44.1f,
+                            color = "green",
+                            lineWidth = LineWidth.TWO,
+                            lineStyle = LineStyle.Solid,
+                            axisLabelVisible = true,
+                            title = "P/L 500"
+                        )
+                    )
+                    onSeriesCreated(api)
+                }
+            )
+
+            SeriesDataType.LINE -> chartApi.addLineSeries(
+                options = LineSeriesOptions(
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as LineData })
+                    onSeriesCreated(api)
+                }
+            )
+
+            SeriesDataType.BAR -> chartApi.addBarSeries(
+                options = BarSeriesOptions(
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as BarData })
+                    onSeriesCreated(api)
+                }
+            )
+
+            SeriesDataType.CANDLESTICK -> chartApi.addCandlestickSeries(
+                options = CandlestickSeriesOptions(
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as BarData })
+                    onSeriesCreated(api)
+                }
+            )
+
+            SeriesDataType.HISTOGRAM -> chartApi.addHistogramSeries(
+                options = HistogramSeriesOptions(
+                    priceScaleId = priceScale
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list.map { it as HistogramData })
+                    onSeriesCreated(api)
+                }
+            )
         }
     }
 
@@ -194,26 +227,34 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             item.itemId == R.id.real_time_data -> {
+                clearSeries()
                 viewModel.selectSeries(SeriesDataType.AREA)
                 realtimeDataJob = lifecycleScope.launchWhenResumed {
                     viewModel.seriesFlow.collect {
-                        currentSeriesApiFirstChart?.update(it)
-                        currentSeriesApiSecondChart?.update(it)
+                        leftSeries.lastOrNull()?.update(it)
+                        rightSeries.lastOrNull()?.update(it)
                     }
                 }
                 return true
             }
             item.itemId == R.id.clear_series -> {
-                currentSeriesApiFirstChart?.let(firstChartApi::removeSeries)
-                currentSeriesApiFirstChart = null
-
-                currentSeriesApiSecondChart?.let(secondChartApi::removeSeries)
-                currentSeriesApiSecondChart = null
+                lifecycleScope.launchWhenResumed {
+                    clearSeries()
+                    realtimeDataJob?.cancelAndJoin()
+                }
                 return true
             }
             actionBar.onOptionsItemSelected(item) -> return true
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun clearSeries() {
+        leftSeries.forEach(firstChartApi::removeSeries)
+        leftSeries.clear()
+
+        rightSeries.forEach(secondChartApi::removeSeries)
+        rightSeries.clear()
     }
 
     private fun subscribeOnChartReady(view: ChartsView) {

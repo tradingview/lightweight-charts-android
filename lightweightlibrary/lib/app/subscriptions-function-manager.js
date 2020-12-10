@@ -66,28 +66,6 @@ export default class SubscriptionsFunctionManager {
                 }
             }
         )
-
-        this.functionManager.registerSubscription(
-            "subscribeVisibleTimeRangeChange",
-            (params, callback) => {
-                try {
-                    chart.subscribeVisibleTimeRangeChange(callback)
-                    console.debug("subscribeVisibleTimeRangeChange successful")
-                } catch (error) {
-                    console.error(error)
-                    console.warn('subscribeVisibleTimeRangeChange has been failed')
-                }
-            },
-            (callback) => {
-                try {
-                    chart.unsubscribeVisibleTimeRangeChange(callback)
-                    console.debug("unsubscribeVisibleTimeRangeChange successful")
-                } catch (error) {
-                    console.error(error)
-                    console.warn('unsubscribeVisibleTimeRangeChange has been failed')
-                }
-            }
-        )
     }
 
 }

@@ -1,7 +1,10 @@
-import { createChart } from 'lightweight-charts';
+import { createChart, isBusinessDay, isUTCTimestamp } from 'lightweight-charts';
 import FunctionManager from './function-manager.js';
 import ChartRegistrationFunctionsController from './chart-registration-functions-controller.js';
 import PluginManager from './plugin-manager.js';
+
+window.isBusinessDay = isBusinessDay
+window.isUTCTimestamp = isUTCTimestamp
 
 onmessage = function (message) {
     console.debug("received message", message)
@@ -58,5 +61,8 @@ window.onresize = () => {
 }
 
 onload = () => {
-    window["chart"] = createChart(document.body, { width: window.innerWidth, height: window.innerHeight });
+    window["chart"] = createChart(document.body, { 
+        width: window.innerWidth, 
+        height: window.innerHeight
+    });
 }

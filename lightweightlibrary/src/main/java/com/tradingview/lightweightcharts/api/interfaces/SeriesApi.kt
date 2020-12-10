@@ -28,7 +28,8 @@ interface SeriesApi<T : SeriesData> {
     }
 
     object Params {
-        const val SERIES_ID = "seriesId"
+        const val SERIES_UUID = "seriesId"
+        const val PRICE_SCALE_ID = "priceScaleId"
         const val LINE_ID = "lineId"
         const val DATA = "data"
         const val PRICE = "price"
