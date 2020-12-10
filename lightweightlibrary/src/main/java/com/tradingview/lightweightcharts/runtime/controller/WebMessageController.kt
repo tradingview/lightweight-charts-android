@@ -17,7 +17,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap()
     ): String {
-        return callFunction<Unit>(name, params, null, null)
+        return callFunction(name, params, null)
     }
 
     fun callFunction(
@@ -25,7 +25,18 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         params: Map<String, Any> = emptyMap(),
         callback: (() -> Unit)?
     ): String {
-        return callFunction<Unit>(name, params, { callback?.invoke() }, null)
+        val bridge = BridgeFunction(name, params)
+
+        @Suppress("UNCHECKED_CAST")
+        callbackBuffer[bridge.uuid] = BufferElement(
+            callback as? (Any?) -> Unit,
+            null,
+            Thread.currentThread().stackTrace
+        )
+
+        messageBuffer.addLast(bridge)
+        sendMessages()
+        return bridge.uuid
     }
 
     fun <T: Any> callFunction(

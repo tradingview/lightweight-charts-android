@@ -238,7 +238,10 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             item.itemId == R.id.clear_series -> {
-                clearSeries()
+                lifecycleScope.launchWhenResumed {
+                    clearSeries()
+                    realtimeDataJob?.cancelAndJoin()
+                }
                 return true
             }
             actionBar.onOptionsItemSelected(item) -> return true
