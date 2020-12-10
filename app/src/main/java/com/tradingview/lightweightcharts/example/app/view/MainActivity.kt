@@ -23,6 +23,7 @@ import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvid
 import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
 import com.tradingview.lightweightcharts.example.app.viewmodel.*
 import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
+import com.tradingview.lightweightcharts.runtime.plugins.Eval
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
@@ -115,6 +116,7 @@ class MainActivity : AppCompatActivity() {
             }
             localization = localizationOptions {
                 locale = "ru-RU"
+                //priceFormatter = Eval("function() { return 123 }")
                 priceFormatter = PriceFormatter(template = "{price:#2:#3}$")
                 timeFormatter = TimeFormatter(
                     locale = "ru-RU",

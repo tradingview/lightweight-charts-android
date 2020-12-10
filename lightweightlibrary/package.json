@@ -16,6 +16,7 @@
   "scripts": {
     "compile": "npx webpack ./lib/app/index.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts/app",
     "compile-price-formatter": "npx webpack ./lib/plugins/price-formatter/index.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts/plugins/price-formatter/",
-    "compile-time-formatter": "npx webpack ./lib/plugins/time-formatter/index.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts/plugins/time-formatter/"
+    "compile-time-formatter": "npx webpack ./lib/plugins/time-formatter/index.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts/plugins/time-formatter/",
+    "compile-eval-plugin": "npx webpack ./lib/plugins/eval-plugin/index.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts/plugins/eval-plugin/"
   }
 }
