@@ -104,6 +104,12 @@ class MainActivity : AppCompatActivity() {
                 horzTouchDrag = true
                 vertTouchDrag = false
             }
+            handleScale = handleScaleOptions {
+                axisPressedMouseMove = axisPressedMouseMoveOptions {
+                    time = true
+                    price = false
+                }
+            }
             timeScale = timeScaleOptions {
                 tickMarkFormatter = TickMarkFormatter()
             }
