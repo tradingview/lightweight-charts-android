@@ -63,6 +63,12 @@ export default class TimeScaleFunctionManager {
         this.functionManager.registerFunction("fitContent", (params, resolve) => {
             this._timeScale().fitContent()
         })
+        this.functionManager.registerFunction("timeToCoordinate", (params, resolve) => {
+            resolve(this._timeScale().timeToCoordinate(params.time))
+        })
+        this.functionManager.registerFunction("coordinateToTime", (params, resolve) => {
+            resolve(this._timeScale().coordinateToTime(params.x))
+        })
         this.functionManager.registerSubscription(
             "subscribeVisibleTimeRangeChange",
             (params, callback) => {

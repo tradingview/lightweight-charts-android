@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.delegates
 
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.APPLY_OPTIONS
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.COORDINATE_TO_TIME
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.FIT_CONTENT
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.GET_VISIBLE_RANGE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.OPTIONS
@@ -11,6 +12,7 @@ import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SCROLL
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SCROLL_TO_REAL_TIME
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SET_VISIBLE_RANGE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.TIME_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.ANIMATED
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.OPTIONS_PARAM
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.POSITION
@@ -18,6 +20,7 @@ import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.RANG
 import com.tradingview.lightweightcharts.api.options.models.TimeScaleOptions
 import com.tradingview.lightweightcharts.api.serializer.TimeRangeSerializer
 import com.tradingview.lightweightcharts.api.serializer.TimeScaleOptionsSerializer
+import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 
@@ -74,6 +77,26 @@ class TimeScaleApiDelegate(
     override fun fitContent() {
         controller.callFunction(
                 FIT_CONTENT
+        )
+    }
+
+    override fun timeToCoordinate(time: Time, onCoordinateReceive: (x: Double?) -> Unit) {
+        controller.callFunction(
+            TIME_TO_COORDINATE,
+            mapOf(
+                "time" to time
+            ),
+            callback = onCoordinateReceive
+        )
+    }
+
+    override fun coordinateToTime(x: Double, onTimeReceive: (time: Time?) -> Unit) {
+        controller.callFunction(
+            COORDINATE_TO_TIME,
+            mapOf(
+                "x" to x
+            ),
+            callback = onTimeReceive
         )
     }
 

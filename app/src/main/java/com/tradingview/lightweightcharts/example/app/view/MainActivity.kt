@@ -238,9 +238,12 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             item.itemId == R.id.clear_series -> {
-                lifecycleScope.launchWhenResumed {
-                    clearSeries()
-                    realtimeDataJob?.cancelAndJoin()
+//                lifecycleScope.launchWhenResumed {
+//                    clearSeries()
+//                    realtimeDataJob?.cancelAndJoin()
+//                }
+                firstChartApi.timeScale.timeToCoordinate(Time.StringTime("2019-06-13")) { x ->
+                    Toast.makeText(context, "x: $x", Toast.LENGTH_LONG).show()
                 }
                 return true
             }
