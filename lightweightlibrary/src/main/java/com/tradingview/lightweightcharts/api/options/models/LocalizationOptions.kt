@@ -1,8 +1,6 @@
 package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
-import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
-import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 
 data class LocalizationOptions(
     /**

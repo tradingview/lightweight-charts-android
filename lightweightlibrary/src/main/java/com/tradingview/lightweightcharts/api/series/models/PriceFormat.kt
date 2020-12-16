@@ -1,10 +1,10 @@
 package com.tradingview.lightweightcharts.api.series.models
 
 import com.google.gson.annotations.SerializedName
-import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
+import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class PriceFormat(
-    val formatter: PriceFormatter? = null,
+    val formatter: Plugin? = null,
     val type: Type? = null,
     val precision: Int? = null,
     val minMove: Float? = null
@@ -27,7 +27,7 @@ data class PriceFormat(
             return PriceFormat(type = type, precision = precision, minMove = minMove)
         }
 
-        fun priceFormatCustom(formatter: PriceFormatter, minMove: Float): PriceFormat {
+        fun priceFormatCustom(formatter: Plugin, minMove: Float): PriceFormat {
             return PriceFormat(formatter = formatter, minMove = minMove, type = Type.CUSTOM)
         }
 
