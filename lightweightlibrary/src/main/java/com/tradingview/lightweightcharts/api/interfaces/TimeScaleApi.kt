@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.interfaces
 
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.api.options.models.TimeScaleOptions
+import com.tradingview.lightweightcharts.api.series.models.Time
 
 interface TimeScaleApi {
 
@@ -16,6 +17,8 @@ interface TimeScaleApi {
         const val RESET_TIME_SCALE = "resetTimeScale"
         const val FIT_CONTENT = "fitContent"
         const val SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE = "subscribeVisibleTimeRangeChange"
+        const val TIME_TO_COORDINATE = "timeToCoordinate"
+        const val COORDINATE_TO_TIME = "coordinateToTime"
     }
 
     object Params {
@@ -65,6 +68,22 @@ interface TimeScaleApi {
      * This is a momentary operation.
      */
     fun fitContent()
+
+    /**
+     * Converts a time to local x coordinate.
+     * @param time time needs to be converted
+     * @param onCoordinateReceive returns x coordinate of that time
+     *                            or <i>null</i> if no time found on time scale
+     */
+    fun timeToCoordinate(time: Time, onCoordinateReceive: (x: Double?) -> Unit)
+
+    /**
+     * Converts a coordinate to time.
+     * @param x coordinate needs to be converted
+     * @param onTimeReceive the time of a bar that placed on that coordinate
+     *                      or `null` if no bar found at this coordinate
+     */
+    fun coordinateToTime(x: Double, onTimeReceive: (time: Time?) -> Unit)
 
     /**
      * Applies new options to the time scale.

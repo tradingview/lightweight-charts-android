@@ -23,7 +23,6 @@ import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvid
 import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
 import com.tradingview.lightweightcharts.example.app.viewmodel.*
 import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
-import com.tradingview.lightweightcharts.runtime.plugins.Eval
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
@@ -56,9 +55,13 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.seriesData.observe(this, { data ->
             setSeriesData(data, PriceScaleId.LEFT, firstChartApi) {
+                leftSeries.forEach(firstChartApi::removeSeries)
+                leftSeries.clear()
                 leftSeries.add(it as SeriesApi<SeriesData>)
             }
             setSeriesData(data, PriceScaleId.RIGHT, secondChartApi) {
+                rightSeries.forEach(secondChartApi::removeSeries)
+                rightSeries.clear()
                 rightSeries.add(it as SeriesApi<SeriesData>)
             }
         })
@@ -125,6 +128,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun setSeriesData(
         data: Data,

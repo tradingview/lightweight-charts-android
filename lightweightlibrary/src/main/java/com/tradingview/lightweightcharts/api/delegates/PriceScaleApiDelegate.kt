@@ -5,7 +5,6 @@ import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Func.APPLY
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Func.WIDTH
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Func.OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.OPTIONS_PARAM
-import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.UUID
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.api.options.models.PriceScaleOptions
 import com.tradingview.lightweightcharts.api.serializer.PriceScaleOptionsSerializer

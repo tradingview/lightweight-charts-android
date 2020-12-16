@@ -17,7 +17,7 @@ object GsonProvider {
 }
 
 fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
-    registerTypeAdapter(Time::class.java, Time.TimeAdapter())
+    registerTypeHierarchyAdapter(Time::class.java, Time.TimeAdapter())
     registerTypeAdapter(BarPrices::class.java, BarPrices.BarPricesAdapter())
 
     //series enums
