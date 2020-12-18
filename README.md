@@ -10,7 +10,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        ...
+        //...
         maven {
             url "https://dl.bintray.com/tradingview-org/charts"
         }
@@ -22,7 +22,7 @@ In `/gradle_module/build.gradle`
 
 ```groovy
 dependencies {
-    ...
-    implementation 'com.tradingview:lightweightcharts:3.0.0-beta01'
+    //...
+    implementation 'com.tradingview:lightweightcharts:3.0.0-beta02'
 }
 ```
