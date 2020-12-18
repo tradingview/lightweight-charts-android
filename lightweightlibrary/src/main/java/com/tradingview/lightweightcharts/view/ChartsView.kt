@@ -93,11 +93,11 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
         webMessageController.clearWebMessageChannel()
     }
 
-    override fun loadUrl(url: String?, additionalHttpHeaders: MutableMap<String, String>?) {
+    override fun loadUrl(url: String, additionalHttpHeaders: MutableMap<String, String>) {
         throw UnsupportedOperationException()
     }
 
-    override fun loadUrl(url: String?) {
+    override fun loadUrl(url: String) {
         throw UnsupportedOperationException()
     }
 
