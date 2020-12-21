@@ -12,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
+import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.*
@@ -125,6 +127,15 @@ class MainActivity : AppCompatActivity() {
                     locale = "ru-RU",
                     dateTimeFormat = DateTimeFormat.DATE_TIME
                 )
+            }
+            watermark = watermarkOptions {
+                visible = true
+                color = "rgba(11, 94, 29, 0.4)"
+                text = "TradingView Watermark Example"
+                fontSize = 24
+                fontStyle = "italic"
+                horzAlign = HorizontalAlignment.LEFT
+                vertAlign = VerticalAlignment.TOP
             }
         }
     }

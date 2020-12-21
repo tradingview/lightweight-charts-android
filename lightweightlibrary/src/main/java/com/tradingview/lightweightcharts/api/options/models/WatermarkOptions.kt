@@ -18,6 +18,16 @@ data class WatermarkOptions (
     var visible: Boolean? = null,
 
     /**
+     * Font family
+     */
+    var fontFamily: String? = null,
+
+    /**
+     * Font style
+     */
+    var fontStyle: String? = null,
+
+    /**
      * Text of the watermark. Word wrapping is not supported
      */
     var text: String? = null,
