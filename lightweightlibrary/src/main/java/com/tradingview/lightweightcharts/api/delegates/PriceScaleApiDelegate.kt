@@ -25,7 +25,7 @@ class PriceScaleApiDelegate(
         )
     }
 
-    override fun options(onOptionsReceived: (PriceScaleOptions?) -> Unit) {
+    override fun options(onOptionsReceived: (PriceScaleOptions) -> Unit) {
         controller.callFunction(
             OPTIONS,
             mapOf(PRICE_SCALE_ID to uuid),

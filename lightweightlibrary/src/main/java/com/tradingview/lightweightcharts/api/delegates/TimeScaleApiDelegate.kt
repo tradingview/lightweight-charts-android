@@ -28,10 +28,10 @@ class TimeScaleApiDelegate(
         private val controller: WebMessageController
 ) : TimeScaleApi {
 
-    override fun scrollPosition(completion: (Float?) -> Unit) {
+    override fun scrollPosition(completion: (Float) -> Unit) {
         controller.callFunction<Double>(
                 SCROLL_POSITION,
-                callback = { it.toFloat().apply { completion.invoke(this) } }
+                callback = { it.toFloat().let(completion::invoke) }
         )
     }
 
@@ -100,7 +100,7 @@ class TimeScaleApiDelegate(
         )
     }
 
-    override fun applyOptions(options: TimeScaleOptions, onApply: (Unit?) -> Unit) {
+    override fun applyOptions(options: TimeScaleOptions, onApply: () -> Unit) {
         controller.callFunction(
                 APPLY_OPTIONS,
                 mapOf(
@@ -110,7 +110,7 @@ class TimeScaleApiDelegate(
         )
     }
 
-    override fun options(completion: (TimeScaleOptions?) -> Unit) {
+    override fun options(completion: (TimeScaleOptions) -> Unit) {
         controller.callFunction(
                 OPTIONS,
                 callback = completion,

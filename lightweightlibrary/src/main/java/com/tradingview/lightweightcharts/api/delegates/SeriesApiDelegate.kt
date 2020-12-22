@@ -85,9 +85,7 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
         )
     }
 
-    override fun options(completion: (SeriesOptionsCommon?) -> Unit) {
-        val collectionType = object : TypeToken<T>() {}.type
-        Logger.printD("type $collectionType")
+    override fun options(completion: (SeriesOptionsCommon) -> Unit) {
         controller.callFunction(
             OPTIONS,
             mapOf(SERIES_UUID to uuid),

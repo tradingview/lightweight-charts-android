@@ -30,14 +30,14 @@ interface TimeScaleApi {
 
     /**
      * Returns current scroll position of the chart
-     * - Parameter completion: a distance from the right edge to the latest bar, measured in bars
+     * @param completion a distance from the right edge to the latest bar, measured in bars
      */
-    fun scrollPosition(completion: (Float?) -> Unit)
+    fun scrollPosition(completion: (Float) -> Unit)
 
     /**
      * Scrolls the chart to the specified position
-     * - Parameter position: target data position
-     * - Parameter animated: setting this to true makes the chart scrolling smooth and adds animation
+     * @param position target data position
+     * @param animated setting this to true makes the chart scrolling smooth and adds animation
      */
     fun scrollToPosition(position: Float, animated: Boolean = false)
 
@@ -48,13 +48,13 @@ interface TimeScaleApi {
 
     /**
      * Returns current visible time range of the chart
-     * - Parameter completion: visible range or null if the chart has no data at all
+     * @param completion visible range or null if the chart has no data at all
      */
     fun getVisibleRange(completion: (TimeRange?) -> Unit)
 
     /**
      * Sets visible range of data
-     * - Parameter range: target visible range of data
+     * @param range target visible range of data
      */
     fun setVisibleRange(range: TimeRange)
 
@@ -73,7 +73,7 @@ interface TimeScaleApi {
      * Converts a time to local x coordinate.
      * @param time time needs to be converted
      * @param onCoordinateReceive returns x coordinate of that time
-     *                            or <i>null</i> if no time found on time scale
+     *                            or null if no time found on time scale
      */
     fun timeToCoordinate(time: Time, onCoordinateReceive: (x: Double?) -> Unit)
 
@@ -81,21 +81,21 @@ interface TimeScaleApi {
      * Converts a coordinate to time.
      * @param x coordinate needs to be converted
      * @param onTimeReceive the time of a bar that placed on that coordinate
-     *                      or `null` if no bar found at this coordinate
+     *                      or null if no bar found at this coordinate
      */
     fun coordinateToTime(x: Double, onTimeReceive: (time: Time?) -> Unit)
 
     /**
      * Applies new options to the time scale.
-     * - Parameter options: any subset of options
+     * @param options any subset of options
      */
-    fun applyOptions(options: TimeScaleOptions, onApply: (Unit?) -> Unit = {})
+    fun applyOptions(options: TimeScaleOptions, onApply: () -> Unit = {})
 
     /**
      * Returns current options
-     * - Parameter completion: currently applied options
+     * @param completion currently applied options
      */
-    fun options(completion: (TimeScaleOptions?) -> Unit)
+    fun options(completion: (TimeScaleOptions) -> Unit)
 
     /**
      * Adds a subscription to visible range changes

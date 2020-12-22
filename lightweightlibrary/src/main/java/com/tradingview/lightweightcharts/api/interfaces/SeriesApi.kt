@@ -71,7 +71,7 @@ interface SeriesApi {
      * Returns currently applied options
      * @param completion full set of currently applied options, including defaults
      */
-    fun options(completion: (SeriesOptionsCommon?) -> Unit)
+    fun options(completion: (SeriesOptionsCommon) -> Unit)
 
     /**
      * Sets or replaces series data

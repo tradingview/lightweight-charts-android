@@ -27,7 +27,7 @@ interface PriceScaleApi {
      * Returns currently applied options of the price scale
      * @param onOptionsReceived full set of currently applied options, including defaults
      */
-    fun options(onOptionsReceived: (PriceScaleOptions?) -> Unit)
+    fun options(onOptionsReceived: (PriceScaleOptions) -> Unit)
 
     /**
      * Returns a width of the price scale if it's visible or 0 if invisible.
