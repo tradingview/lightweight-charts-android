@@ -26,13 +26,13 @@ import com.tradingview.lightweightcharts.api.series.common.*
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 
-class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
+class SeriesApiDelegate<T: SeriesOptionsCommon>(
     override val uuid: String,
     private val controller: WebMessageController,
-    private val optionsSerializer: Serializer<out O>
-): SeriesApi<T> {
+    private val optionsSerializer: Serializer<out T>
+): SeriesApi {
 
-    override fun setData(data: List<T>) {
+    override fun setData(data: List<SeriesData>) {
         controller.callFunction(
             SET_SERIES,
             mapOf(
@@ -54,7 +54,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
     }
 
     override fun priceToCoordinate(price: Float, completion: (Float?) -> Unit) {
-        controller.callFunction<Double>(
+        controller.callFunction<Double?>(
             PRICE_TO_COORDINATE,
             mapOf(
                 SERIES_UUID to uuid,
@@ -130,7 +130,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         )
     }
 
-    override fun update(bar: T) {
+    override fun update(bar: SeriesData) {
         controller.callFunction(
             UPDATE,
             mapOf(

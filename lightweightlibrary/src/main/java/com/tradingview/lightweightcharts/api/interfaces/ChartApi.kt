@@ -41,7 +41,7 @@ interface ChartApi {
      */
     fun addAreaSeries(
             options: AreaSeriesOptions = AreaSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -51,7 +51,7 @@ interface ChartApi {
      */
     fun addBarSeries(
             options: BarSeriesOptions = BarSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -61,7 +61,7 @@ interface ChartApi {
      */
     fun addCandlestickSeries(
             options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -71,7 +71,7 @@ interface ChartApi {
      */
     fun addHistogramSeries(
             options: HistogramSeriesOptions = HistogramSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<HistogramData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -81,14 +81,14 @@ interface ChartApi {
      */
     fun addLineSeries(
             options: LineSeriesOptions = LineSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
      * Removes a series of any type.
      * This is an irreversible operation, you cannot do anything with the series after removing it
      */
-    fun removeSeries(seriesApi: SeriesApi<*>, onSeriesDeleted: () -> Unit = {})
+    fun removeSeries(seriesApi: SeriesApi, onSeriesDeleted: () -> Unit = {})
 
     /**
      * Adds a subscription to mouse click event
@@ -125,6 +125,11 @@ interface ChartApi {
      * @param options - any subset of chart options
      */
     fun applyOptions(options: ChartOptions, onApply: () -> Unit = {})
+
+    /**
+     * Applies new options to the chart
+     * @param options - any subset of chart options
+     */
     fun applyOptions(options: ChartOptions.() -> Unit) {
         applyOptions(ChartOptions().apply(options))
     }
@@ -133,6 +138,6 @@ interface ChartApi {
      * Returns currently applied options
      * @returns - full set of currently applied options, including defaults
      */
-    fun options(onOptionsReceived: (options: ChartOptions?) -> Unit)
+    fun options(onOptionsReceived: (options: ChartOptions) -> Unit)
 
 }

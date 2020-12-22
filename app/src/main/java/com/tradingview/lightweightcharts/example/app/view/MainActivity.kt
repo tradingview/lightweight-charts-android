@@ -15,7 +15,6 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
 import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
 import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.*
@@ -43,8 +42,8 @@ class MainActivity : AppCompatActivity() {
     private val firstChartApi: ChartApi by lazy { charts_view.api }
     private val secondChartApi: ChartApi by lazy { charts_view_second.api }
 
-    private var leftSeries: MutableList<SeriesApi<SeriesData>> = mutableListOf()
-    private var rightSeries: MutableList<SeriesApi<SeriesData>> = mutableListOf()
+    private var leftSeries: MutableList<SeriesApi> = mutableListOf()
+    private var rightSeries: MutableList<SeriesApi> = mutableListOf()
     private var realtimeDataJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,15 +55,15 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.seriesData.observe(this, { data ->
-            setSeriesData(data, PriceScaleId.LEFT, firstChartApi) {
+            createSeriesWithData(data, PriceScaleId.LEFT, firstChartApi) { series ->
                 leftSeries.forEach(firstChartApi::removeSeries)
                 leftSeries.clear()
-                leftSeries.add(it as SeriesApi<SeriesData>)
+                leftSeries.add(series)
             }
-            setSeriesData(data, PriceScaleId.RIGHT, secondChartApi) {
+            createSeriesWithData(data, PriceScaleId.RIGHT, secondChartApi) { series ->
                 rightSeries.forEach(secondChartApi::removeSeries)
                 rightSeries.clear()
-                rightSeries.add(it as SeriesApi<SeriesData>)
+                rightSeries.add(series)
             }
         })
 
@@ -141,11 +140,11 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun setSeriesData(
+    private fun createSeriesWithData(
         data: Data,
         priceScale: PriceScaleId,
         chartApi: ChartApi,
-        onSeriesCreated: (SeriesApi<*>) -> Unit
+        onSeriesCreated: (SeriesApi) -> Unit
     ) {
         when (data.type) {
             SeriesDataType.AREA -> chartApi.addAreaSeries(
@@ -190,7 +189,7 @@ class MainActivity : AppCompatActivity() {
                     priceScaleId = priceScale
                 ),
                 onSeriesCreated = { api ->
-                    api.setData(data.list.map { it as LineData })
+                    api.setData(data.list)
                     onSeriesCreated(api)
                 }
             )
@@ -200,7 +199,7 @@ class MainActivity : AppCompatActivity() {
                     priceScaleId = priceScale
                 ),
                 onSeriesCreated = { api ->
-                    api.setData(data.list.map { it as BarData })
+                    api.setData(data.list)
                     onSeriesCreated(api)
                 }
             )
@@ -210,7 +209,7 @@ class MainActivity : AppCompatActivity() {
                     priceScaleId = priceScale
                 ),
                 onSeriesCreated = { api ->
-                    api.setData(data.list.map { it as BarData })
+                    api.setData(data.list)
                     onSeriesCreated(api)
                 }
             )
@@ -220,7 +219,7 @@ class MainActivity : AppCompatActivity() {
                     priceScaleId = priceScale
                 ),
                 onSeriesCreated = { api ->
-                    api.setData(data.list.map { it as HistogramData })
+                    api.setData(data.list)
                     onSeriesCreated(api)
                 }
             )

@@ -126,8 +126,8 @@ fun listHistogramSeriesData(): MutableList<SeriesData> {
         HistogramData(Time.BusinessDay(2019, 6, 12), 52.38f),
         HistogramData(Time.BusinessDay(2019, 6, 13), 36.30f),
         HistogramData(Time.BusinessDay(2019, 6, 14), 34.48f),
-        HistogramData(Time.BusinessDay(2019, 6, 15), 40.06f),
-        HistogramData(Time.BusinessDay(2019, 6, 16), 56.94f),
+        WhitespaceData(Time.BusinessDay(2019, 6, 15)),
+        WhitespaceData(Time.BusinessDay(2019, 6, 16)),
         HistogramData(Time.BusinessDay(2019, 6, 17), 41.50f),
         HistogramData(Time.BusinessDay(2019, 6, 18), 34.82f)
     )

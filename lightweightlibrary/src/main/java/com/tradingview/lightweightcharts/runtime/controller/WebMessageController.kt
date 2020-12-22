@@ -17,7 +17,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap()
     ): String {
-        return callFunction(name, params, null)
+        return callBridgeFunction(name, params)
     }
 
     fun callFunction(
@@ -25,31 +25,31 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         params: Map<String, Any> = emptyMap(),
         callback: (() -> Unit)?
     ): String {
-        val bridge = BridgeFunction(name, params)
-
         @Suppress("UNCHECKED_CAST")
-        callbackBuffer[bridge.uuid] = BufferElement(
-            callback as? (Any?) -> Unit,
-            null,
-            Thread.currentThread().stackTrace
-        )
-
-        messageBuffer.addLast(bridge)
-        sendMessages()
-        return bridge.uuid
+        return callBridgeFunction(name, params, callback as? (Any?) -> Unit)
     }
 
-    fun <T: Any> callFunction(
+    fun <T: Any?> callFunction(
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: ((T) -> Unit)?,
         serializer: Serializer<out T>? = null
     ): String {
+        @Suppress("UNCHECKED_CAST")
+        return callBridgeFunction(name, params, callback as? (Any?) -> Unit, serializer)
+    }
+
+    private fun callBridgeFunction(
+        name: String,
+        params: Map<String, Any> = emptyMap(),
+        callback: ((Any?) -> Unit)? = null,
+        serializer: Serializer<out Any?>? = null
+    ): String {
         val bridge = BridgeFunction(name, params)
 
         @Suppress("UNCHECKED_CAST")
         callbackBuffer[bridge.uuid] = BufferElement(
-            callback as? (Any?) -> Unit,
+            callback,
             serializer,
             Thread.currentThread().stackTrace
         )
@@ -148,7 +148,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
     data class BufferElement(
         val callback: ((Any?) -> Unit)? = null,
-        val serializer: Serializer<out Any>? = null,
+        val serializer: Serializer<out Any?>? = null,
         val stackTrace: Array<StackTraceElement>
     ) {
         fun invoke(any: Any?) {

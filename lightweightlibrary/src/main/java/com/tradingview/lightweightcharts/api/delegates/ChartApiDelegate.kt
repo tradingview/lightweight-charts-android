@@ -63,7 +63,7 @@ class ChartApiDelegate(
 
     override fun addAreaSeries(
         options: AreaSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_AREA_SERIES,
@@ -82,7 +82,7 @@ class ChartApiDelegate(
 
     override fun addBarSeries(
         options: BarSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_BAR_SERIES,
@@ -101,7 +101,7 @@ class ChartApiDelegate(
 
     override fun addCandlestickSeries(
         options: CandlestickSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_CANDLESTICK_SERIES,
@@ -120,7 +120,7 @@ class ChartApiDelegate(
 
     override fun addHistogramSeries(
         options: HistogramSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<HistogramData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_HISTOGRAM_SERIES,
@@ -139,7 +139,7 @@ class ChartApiDelegate(
 
     override fun addLineSeries(
         options: LineSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
         controller.callFunction<String>(
             ADD_LINE_SERIES,
@@ -160,7 +160,7 @@ class ChartApiDelegate(
         controller.callFunction(REMOVE)
     }
 
-    override fun removeSeries(seriesApi: SeriesApi<*>, onSeriesDeleted: () -> Unit) {
+    override fun removeSeries(seriesApi: SeriesApi, onSeriesDeleted: () -> Unit) {
         controller.callFunction(
             REMOVE_SERIES,
             mapOf(SERIES_UUID to seriesApi.uuid),
@@ -191,7 +191,7 @@ class ChartApiDelegate(
         )
     }
 
-    override fun options(onOptionsReceived: (options: ChartOptions?) -> Unit) {
+    override fun options(onOptionsReceived: (options: ChartOptions) -> Unit) {
         controller.callFunction(
             CHART_OPTIONS,
             callback = onOptionsReceived,
