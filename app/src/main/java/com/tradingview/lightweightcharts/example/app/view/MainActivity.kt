@@ -1,7 +1,9 @@
 package com.tradingview.lightweightcharts.example.app.view
 
+import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -16,13 +18,16 @@ import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
 import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.*
-import com.tradingview.lightweightcharts.api.series.models.*
-import com.tradingview.lightweightcharts.example.app.*
+import com.tradingview.lightweightcharts.api.series.models.LineData
+import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
 import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
-import com.tradingview.lightweightcharts.example.app.viewmodel.*
+import com.tradingview.lightweightcharts.example.app.viewmodel.MainViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
@@ -72,15 +77,16 @@ class MainActivity : AppCompatActivity() {
 
         firstChartApi.applyOptions {
             layout = layoutOptions {
-                backgroundColor = "#eeeeee"
-                textColor = "#000000"
+                backgroundColor = Color.LTGRAY
+                textColor = Color.BLACK
             }
             grid = gridOptions {
                 vertLines = gridLineOptions {
-                    color = "#c2c2c2"
+                    color = Color.rgb(0xA0, 0xA0, 0xA0)
                 }
                 horzLines = gridLineOptions {
-                    color = "#c2c2c2"
+                    //aRGB color
+                    color = 0xFFB0B0B0.toInt()
                 }
             }
             rightPriceScale = priceScaleOptions {
@@ -97,12 +103,12 @@ class MainActivity : AppCompatActivity() {
             crosshair = crosshairOptions {
                 mode = CrosshairMode.NORMAL
                 vertLine = crosshairLineOptions {
-                    color = "#555555"
-                    labelBackgroundColor = "#555555"
+                    color = Color.DKGRAY
+                    labelBackgroundColor = Color.DKGRAY
                 }
                 horzLine = crosshairLineOptions {
-                    color = "#555555"
-                    labelBackgroundColor = "#555555"
+                    color = Color.DKGRAY
+                    labelBackgroundColor = Color.DKGRAY
                 }
             }
             handleScroll = handleScrollOptions {
@@ -129,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             }
             watermark = watermarkOptions {
                 visible = true
-                color = "rgba(11, 94, 29, 0.4)"
+                color = Color.argb(102, 11, 94, 29)
                 text = "TradingView Watermark Example"
                 fontSize = 24
                 fontStyle = "italic"
@@ -163,7 +169,7 @@ class MainActivity : AppCompatActivity() {
                             SeriesMarker(
                                 time = data.list[0].time,
                                 position = SeriesMarkerPosition.ABOVE_BAR,
-                                color = "black",
+                                color = Color.BLACK,
                                 shape = SeriesMarkerShape.ARROW_DOWN,
                                 text = "Example",
                                 size = 2
@@ -173,7 +179,8 @@ class MainActivity : AppCompatActivity() {
                     api.createPriceLine(
                         PriceLineOptions(
                             price = 44.1f,
-                            color = "green",
+                            //css color green
+                            color = Color.rgb(0,128,0),
                             lineWidth = LineWidth.TWO,
                             lineStyle = LineStyle.Solid,
                             axisLabelVisible = true,

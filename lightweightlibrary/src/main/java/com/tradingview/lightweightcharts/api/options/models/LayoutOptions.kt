@@ -1,15 +1,26 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import androidx.annotation.ColorInt
+import com.google.gson.annotations.JsonAdapter
+import com.tradingview.lightweightcharts.api.series.models.ColorAdapter
+import com.tradingview.lightweightcharts.api.series.models.IntColor
+
+//import com.tradingview.lightweightcharts.api.series.models.IntColor
+
 data class LayoutOptions(
     /**
      * Background color of the chart area and the scales
      */
-    var backgroundColor: String? = null,
+    @ColorInt
+    @JsonAdapter(ColorAdapter::class)
+    var backgroundColor: IntColor? = null,
 
     /**
      * Color of a text on the scales
      */
-    var textColor: String? = null,
+    @ColorInt
+    @JsonAdapter(ColorAdapter::class)
+    var textColor: IntColor? = null,
 
     /**
      * Font size of a text on the scales in pixels

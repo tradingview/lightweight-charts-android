@@ -3,9 +3,7 @@ package com.tradingview.lightweightcharts.api.serializer.gson
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tradingview.lightweightcharts.api.series.enums.*
-import com.tradingview.lightweightcharts.api.series.models.BarPrices
-import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.series.models.Time
+import com.tradingview.lightweightcharts.api.series.models.*
 
 
 object GsonProvider {

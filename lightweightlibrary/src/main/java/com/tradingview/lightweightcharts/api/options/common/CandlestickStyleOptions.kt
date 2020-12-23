@@ -1,12 +1,14 @@
 package com.tradingview.lightweightcharts.api.options.common
 
+import com.tradingview.lightweightcharts.api.series.models.IntColor
+
 /** Structure describing a drawing style of the candlestick chart  */
 interface CandlestickStyleOptions {
     /** Color of rising candlesticks */
-    val upColor: String?
+    val upColor: IntColor?
 
     /** Color of falling candlesticks */
-    val downColor: String?
+    val downColor: IntColor?
 
     /** Flag to draw/hide candlestick wicks */
     val wickVisible: Boolean?
@@ -18,23 +20,23 @@ interface CandlestickStyleOptions {
      * Color of borders around candles' bodies. Ignored if borderVisible == false
      * If specified, it overrides both borderUpColor and borderDownColor options
      */
-    val borderColor: String?
+    val borderColor: IntColor?
 
     /** Color of the border of rising candlesticks. Ignored if borderVisible == false or borderColor is specified */
-    val borderUpColor: String?
+    val borderUpColor: IntColor?
 
     /** Color of the border of rising candlesticks. Ignored if borderVisible == false or borderColor is specified */
-    val borderDownColor: String?
+    val borderDownColor: IntColor?
 
     /**
      * Color of candlestick wicks. Ignored if wickVisible == false
      * If specified, it overrides both wickUpColor and wickDownColor options
      */
-    val wickColor: String?
+    val wickColor: IntColor?
 
     /** Color of rising candlestick wicks. Ignored if wickVisible == false or wickColor is specified */
-    val wickUpColor: String?
+    val wickUpColor: IntColor?
 
     /** Color of falling candlestick wicks. Ignored if wickVisible == false or wickColor is specified */
-    val wickDownColor: String?
+    val wickDownColor: IntColor?
 }
