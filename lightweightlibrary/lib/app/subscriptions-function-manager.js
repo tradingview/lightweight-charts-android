@@ -9,12 +9,12 @@ export default class SubscriptionsFunctionManager {
     register() {
         this.functionManager.registerSubscription(
             "subscribeOnClick",
-            (callParams, callback) => {
+            (input, callback) => {
                 try {
                     chart.subscribeClick((params) => {
                         let customSeries = []
                         params.seriesPrices.forEach((value, key, map) => {
-                            customSeries.push({ id: this.getSeriesId(key, callParams), prices: value })
+                            customSeries.push({ id: this.getSeriesId(key, input), prices: value })
                         })
                         params.seriesPrices = customSeries
                         callback(params)
@@ -38,14 +38,14 @@ export default class SubscriptionsFunctionManager {
 
         this.functionManager.registerSubscription(
             "subscribeCrosshairMove",
-            (callParams, callback) => {
+            (input, callback) => {
                 try {
                     chart.subscribeCrosshairMove((params) => {
                         let customSeries = []
                         console.log("series prices", params.seriesPrices)
                         params.seriesPrices.forEach((value, key, map) => {
                             console.log("series prices forEach", value, key)
-                            customSeries.push({ id: this.getSeriesId(key, callParams), prices: value })
+                            customSeries.push({ id: this.getSeriesId(key, input), prices: value })
                         })
                         params.seriesPrices = customSeries
                         callback(params)

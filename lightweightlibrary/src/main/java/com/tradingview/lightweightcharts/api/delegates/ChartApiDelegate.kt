@@ -65,7 +65,7 @@ class ChartApiDelegate(
         options: AreaSeriesOptions,
         onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_AREA_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -76,7 +76,8 @@ class ChartApiDelegate(
                         AreaSeriesOptionsSerializer()
                     )
                 )
-            }
+            },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
@@ -84,7 +85,7 @@ class ChartApiDelegate(
         options: BarSeriesOptions,
         onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_BAR_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -95,7 +96,8 @@ class ChartApiDelegate(
                         BarSeriesOptionsSerializer()
                     )
                 )
-            }
+            },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
@@ -103,7 +105,7 @@ class ChartApiDelegate(
         options: CandlestickSeriesOptions,
         onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_CANDLESTICK_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -114,7 +116,8 @@ class ChartApiDelegate(
                         CandlestickSeriesOptionsSerializer()
                     )
                 )
-            }
+            },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
@@ -122,7 +125,7 @@ class ChartApiDelegate(
         options: HistogramSeriesOptions,
         onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_HISTOGRAM_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -133,7 +136,8 @@ class ChartApiDelegate(
                         HistogramSeriesOptionsSerializer()
                     )
                 )
-            }
+            },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
@@ -141,7 +145,7 @@ class ChartApiDelegate(
         options: LineSeriesOptions,
         onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_LINE_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -153,6 +157,7 @@ class ChartApiDelegate(
                     )
                 )
             },
+            PrimitiveSerializer.StringSerializer
         )
     }
 

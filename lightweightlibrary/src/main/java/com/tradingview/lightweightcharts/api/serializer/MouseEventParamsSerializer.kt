@@ -7,15 +7,11 @@ import org.json.JSONObject
 
 class MouseEventParamsSerializer: Serializer<MouseEventParams>() {
 
-    override val gson: Gson by lazy { GsonProvider.newInstance() }
-
-    override fun serialize(any: Any?): MouseEventParams? {
-        return when (any) {
-            is Map<*, *> -> gson.fromJson<MouseEventParams>(
-                JSONObject(any).toString(),
-                MouseEventParams::class.java
-            )
-            else -> null
+    override fun serialize(json: JsonElement): MouseEventParams? {
+        return try {
+            gson.fromJson(json, MouseEventParams::class.java)
+        } catch (e: JsonSyntaxException) {
+            null
         }
     }
 }

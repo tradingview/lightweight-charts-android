@@ -1,12 +1,9 @@
 package com.tradingview.lightweightcharts.api.delegates
 
-import com.google.gson.reflect.TypeToken
-import com.tradingview.lightweightcharts.Logger
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.COORDINATE_TO_PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.CREATE_PRICE_LINE
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_FORMATTER
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.REMOVE_PRICE_LINE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.SET_MARKERS
@@ -21,6 +18,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
+import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.api.serializer.Serializer
 import com.tradingview.lightweightcharts.api.series.common.*
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
@@ -42,25 +40,15 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
         )
     }
 
-    override fun priceFormatter(): PriceFormatter {
-        val uuid = controller.callFunction(
-            PRICE_FORMATTER,
-            mapOf(SERIES_UUID to uuid)
-        )
-        return PriceFormatterDelegate(
-            uuid,
-            controller
-        )
-    }
-
     override fun priceToCoordinate(price: Float, completion: (Float?) -> Unit) {
-        controller.callFunction<Double?>(
+        controller.callFunction<Float?>(
             PRICE_TO_COORDINATE,
             mapOf(
                 SERIES_UUID to uuid,
                 PRICE to price
             ),
-            callback = { completion(it?.toFloat()) }
+            callback = completion,
+            PrimitiveSerializer.FloatSerializer
         )
     }
 
@@ -71,7 +59,8 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
                 SERIES_UUID to uuid,
                 COORDINATE to coordinate
             ),
-            callback = completion
+            callback = completion,
+            PrimitiveSerializer.FloatSerializer
         )
     }
 

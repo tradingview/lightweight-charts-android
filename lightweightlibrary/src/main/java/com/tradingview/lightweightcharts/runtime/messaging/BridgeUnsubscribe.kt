@@ -5,5 +5,8 @@ class BridgeUnsubscribe(
     uuid: String
 ) : BridgeMessage(
     MessageType.UNSUBSCRIBE,
-    mapOf(FN to functionName, UUID to uuid)
+    Data(
+        uuid = uuid,
+        fn = functionName
+    )
 )

@@ -1,6 +1,11 @@
 package com.tradingview.lightweightcharts.runtime.messaging
 
+import java.util.*
+
 class ConnectionMessage(debug: Boolean): BridgeMessage(
     MessageType.CONNECTION,
-    mapOf(DEBUG to debug)
+    Data(
+        uuid = UUID.randomUUID().toString(),
+        debug = debug
+    )
 )

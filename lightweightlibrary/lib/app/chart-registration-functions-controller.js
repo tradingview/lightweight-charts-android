@@ -30,14 +30,11 @@ export default class ChartRegistrationFunctionsController {
         const priceScale = new PriceScaleFunctionManager(this.chart, this.functionManager)
         priceScale.register()
 
-        this.functionManager.registerFunction("print", (params, resolve) => {
-            console.log(params.text)
-        })
-
         this.functionManager.registerFunction("remove", (params, resolve) => {
             this.cache.clear()
             this.chart.remove()
         })
+        
         this.functionManager.registerFunction("chartOptions", (params, resolve) => {
             let options = this.chart.options()
 
@@ -58,46 +55,46 @@ export default class ChartRegistrationFunctionsController {
 
             resolve(options)
         })
-        this.functionManager.registerFunction("chartApplyOptions", (params, resolve) => {
-            console.log(params)
+        this.functionManager.registerFunction("chartApplyOptions", (input, resolve) => {
+            console.log(input)
             new Promise((resolve) => {
-                if (!params.options.localization || !params.options.localization.priceFormatter) {
+                if (!input.params.options.localization || !input.params.options.localization.priceFormatter) {
                     resolve()
                     return
                 }
 
-                const plugin = params.options.localization.priceFormatter
+                const plugin = input.params.options.localization.priceFormatter
                 this.pluginManager.register(plugin, (fun) => {
-                    params.options.localization.priceFormatter = fun
+                    input.params.options.localization.priceFormatter = fun
                     console.log('plugin priceFormatter registered')
                     resolve()
                 })
             }).then(() => new Promise((resolve) => {
-                if (!params.options.localization || !params.options.localization.timeFormatter) {
+                if (!input.params.options.localization || !input.params.options.localization.timeFormatter) {
                     resolve()
                     return
                 }
 
-                const plugin = params.options.localization.timeFormatter
+                const plugin = input.params.options.localization.timeFormatter
                 this.pluginManager.register(plugin, (fun) => {
-                    params.options.localization.timeFormatter = fun
+                    input.params.options.localization.timeFormatter = fun
                     console.log('plugin timeFormatter registered')
                     resolve()
                 })
             })).then(() => new Promise((resolve) => {
-                if (!params.options.timeScale || !params.options.timeScale.tickMarkFormatter) {
+                if (!input.params.options.timeScale || !input.params.options.timeScale.tickMarkFormatter) {
                     resolve()
                     return
                 }
 
-                const plugin = params.options.timeScale.tickMarkFormatter
+                const plugin = input.params.options.timeScale.tickMarkFormatter
                 this.pluginManager.register(plugin, (fun) => {
-                    params.options.timeScale.tickMarkFormatter = fun
+                    input.params.options.timeScale.tickMarkFormatter = fun
                     console.log('plugin tickMarkFormatter registered')
                     resolve()
                 })
             })).then(() => {
-                this.chart.applyOptions(params.options)
+                this.chart.applyOptions(input.params.options)
                 console.log('apply options')
             })
         })

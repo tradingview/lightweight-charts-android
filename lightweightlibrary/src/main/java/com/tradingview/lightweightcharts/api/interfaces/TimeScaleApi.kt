@@ -19,6 +19,8 @@ interface TimeScaleApi {
         const val SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE = "subscribeVisibleTimeRangeChange"
         const val TIME_TO_COORDINATE = "timeToCoordinate"
         const val COORDINATE_TO_TIME = "coordinateToTime"
+        const val LOGICAL_TO_COORDINATE = "logicalToCoordinate"
+        const val COORDINATE_TO_LOGICAL = "coordinateToLogical"
     }
 
     object Params {
@@ -75,15 +77,31 @@ interface TimeScaleApi {
      * @param onCoordinateReceive returns x coordinate of that time
      *                            or null if no time found on time scale
      */
-    fun timeToCoordinate(time: Time, onCoordinateReceive: (x: Double?) -> Unit)
+    fun timeToCoordinate(time: Time, onCoordinateReceive: (x: Float?) -> Unit)
 
     /**
      * Converts a coordinate to time.
      * @param x coordinate needs to be converted
-     * @param onTimeReceive the time of a bar that placed on that coordinate
+     * @param onTimeReceive returns the time of a bar that placed on that coordinate
      *                      or null if no bar found at this coordinate
      */
-    fun coordinateToTime(x: Double, onTimeReceive: (time: Time?) -> Unit)
+    fun coordinateToTime(x: Float, onTimeReceive: (time: Time?) -> Unit)
+
+    /**
+     * Converts a logical index to local x coordinate.
+     * @param logical logical index needs to be converted
+     * @param onCoordinateReceive returns x coordinate of that time
+     *                            or null if the chart doesn't have data
+     */
+    fun logicalToCoordinate(logical: Int, onCoordinateReceive: (x: Float?) -> Unit)
+
+    /**
+     * Converts a coordinate to logical index.
+     * @param x coordinate needs to be converted
+     * @param onLogicalReceive returns logical index that is located on that coordinate
+     *                         or null if the chart doesn't have data
+     */
+    fun coordinateToLogical(x: Float, onLogicalReceive: (logical: Int?) -> Unit)
 
     /**
      * Applies new options to the time scale.
@@ -107,4 +125,6 @@ interface TimeScaleApi {
      * Removes a subscription to visible range changes
      */
     fun unsubscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
+
+
 }

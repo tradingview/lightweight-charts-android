@@ -1,13 +1,17 @@
 package com.tradingview.lightweightcharts.runtime.messaging
 
+import java.util.*
+
 class BridgeSubscription(
     functionName: String,
     functionParams: Map<String, Any> = emptyMap()
 ) : BridgeMessage(
     MessageType.SUBSCRIBE,
-    functionParams
-        .plus(FN to functionName)
-        .plus(UUID to java.util.UUID.randomUUID())
+    Data(
+        uuid = UUID.randomUUID().toString(),
+        fn = functionName,
+        params = functionParams
+    )
 ) {
-    val uuid: String get() = data[UUID].toString()
+    val uuid: String get() = data.uuid
 }

@@ -1,5 +1,6 @@
 package com.tradingview.lightweightcharts.api.series.common
 
+import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 
 class PriceFormatterDelegate(
@@ -14,7 +15,8 @@ class PriceFormatterDelegate(
                 PriceFormatter.Params.FORMATTER_ID to uuid,
                 PriceFormatter.Params.PRICE to price
             ),
-            callback = result
+            callback = result,
+            PrimitiveSerializer.StringSerializer
         )
     }
 

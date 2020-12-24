@@ -1,6 +1,8 @@
 package com.tradingview.lightweightcharts.runtime.controller
 
+import com.google.gson.JsonElement
 import com.tradingview.lightweightcharts.Logger
+import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.api.serializer.Serializer
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.messaging.*
@@ -33,7 +35,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: ((T) -> Unit)?,
-        serializer: Serializer<out T>? = null
+        serializer: Serializer<out T>
     ): String {
         @Suppress("UNCHECKED_CAST")
         return callBridgeFunction(name, params, callback as? (Any?) -> Unit, serializer)
@@ -43,7 +45,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: ((Any?) -> Unit)? = null,
-        serializer: Serializer<out Any?>? = null
+        serializer: Serializer<out Any?> = PrimitiveSerializer.NullSerializer
     ): String {
         val bridge = BridgeFunction(name, params)
 
@@ -63,7 +65,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: (T?) -> Unit,
-        serializer: Serializer<out T>? = null
+        serializer: Serializer<out T>
     ) {
         val bridge = BridgeSubscription(name, params)
         @Suppress("UNCHECKED_CAST")
@@ -148,11 +150,12 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
     data class BufferElement(
         val callback: ((Any?) -> Unit)? = null,
-        val serializer: Serializer<out Any?>? = null,
+        val serializer: Serializer<out Any?>,
         val stackTrace: Array<StackTraceElement>
     ) {
-        fun invoke(any: Any?) {
-            callback?.invoke(serializer?.serialize(any) ?: any)
+        fun invoke(jsonElement: JsonElement) {
+            //TODO: make serializer not nullable
+            callback?.invoke(serializer.serialize(jsonElement))
         }
     }
 }

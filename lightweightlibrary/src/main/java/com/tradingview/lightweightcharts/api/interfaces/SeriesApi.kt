@@ -18,7 +18,6 @@ interface SeriesApi {
         const val ADD_HISTOGRAM_SERIES = "addHistogramSeries"
         const val SET_SERIES = "setSeries"
         const val PRICE_TO_COORDINATE = "priceToCoordinate"
-        const val PRICE_FORMATTER = "priceFormatter"
         const val COORDINATE_TO_PRICE = "coordinateToPrice"
         const val APPLY_OPTIONS = "applyOptions"
         const val SET_MARKERS = "setMarkers"
@@ -39,13 +38,6 @@ interface SeriesApi {
     }
 
     val uuid: String
-
-    /**
-     * Returns current price formatter
-     * @return interface to the price formatter object that can be used
-     * to format prices in the same way as the chart does
-     */
-    fun priceFormatter(): PriceFormatter
 
     /**
      * Converts specified series price to pixel coordinate according to the chart price scale
