@@ -58,7 +58,7 @@ export default class SeriesFunctionManager {
         })
         
         this.functionManager.registerFunction("addLineSeries", (input, resolve) => {
-            this._registerPlugins(intput.params, (params) => {
+            this._registerPlugins(input.params, (params) => {
                 this.addSeries(input.uuid, this.chart.addLineSeries(params.options))
                 resolve(input.uuid)
             })
