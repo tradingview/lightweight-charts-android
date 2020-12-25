@@ -2,7 +2,7 @@ export default class FunctionManager {
     constructor(port) {
         this.functions = []
         this.port = port
-        this.subscriberCallbacksMap = new Map()
+        this.subscriptions = new Map()
     }
 
     registerFunction(functionName, functionRef) {
@@ -64,8 +64,8 @@ export default class FunctionManager {
                 }
             }))
         }
-        this.subscriberCallbacksMap.set(data.uuid, callback)
-        fn.subscribe(data, callback)
+        const subscription = fn.subscribe(data, callback)
+        this.subscriptions.set(data.uuid + data.fn, subscription)
     }
 
     unsubscribe(data) {
@@ -76,15 +76,19 @@ export default class FunctionManager {
             return
         }
 
-        const subscriberCallback = this.subscriberCallbacksMap.get(data.uuid)
+        const id = data.uuid + data.fn
+        console.log('try to unsubscribe ' + id)
+        const subscription = this.subscriptions.get(id)
+        console.log(this.subscriptions)
 
-        if (subscriberCallback === undefined) {
+        if (subscription === undefined) {
             this.throwFatalError(`Subscriber:${data.fn} with uuid:${data.uuid} is not found`, data)
             return
         }
 
-        fn.unsubscribe(subscriberCallback)
-        this.subscriberCallbacksMap.delete(data.uuid)
+        fn.unsubscribe(subscription)
+        this.subscriptions.delete(id)
+
         this.port.postMessage(JSON.stringify({
             messageType: "Message::SubscriptionCancellationResult",
             data: {

@@ -93,22 +93,22 @@ interface ChartApi {
     /**
      * Adds a subscription to mouse click event
      */
-    fun subscribeClick(onClick: (params: MouseEventParams?) -> Unit)
+    fun subscribeClick(onClick: (params: MouseEventParams) -> Unit)
 
     /**
      * Removes mouse click subscription
      */
-    fun unsubscribeClick(funLink: (params: MouseEventParams?) -> Unit)
+    fun unsubscribeClick(funLink: (params: MouseEventParams) -> Unit)
 
     /**
      * Adds a subscription to crosshair movement to receive notifications on crosshair movements
      */
-    fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams?) -> Unit)
+    fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams) -> Unit)
 
     /**
      * Removes a subscription on crosshair movement
      */
-    fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams?) -> Unit)
+    fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams) -> Unit)
 
     /**
      * Returns API to manipulate the price scale

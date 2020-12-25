@@ -64,7 +64,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
     fun <T: Any> callSubscribe(
         name: String,
         params: Map<String, Any> = emptyMap(),
-        callback: (T?) -> Unit,
+        callback: (T) -> Unit,
         serializer: Serializer<out T>
     ) {
         val bridge = BridgeSubscription(name, params)
@@ -80,7 +80,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
     fun <T: Any> callUnsubscribe(
         name: String,
-        callback: (T?) -> Unit
+        callback: (T) -> Unit
     ) {
         val uuid = callbackBuffer.filterValues { it.callback == callback }.keys.firstOrNull()
         if (uuid != null) {
@@ -113,11 +113,11 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
             is BridgeUnsubscribeResult -> {
                 val element = callbackBuffer.remove(bridgeMessage.uuid)
-                    ?: throw IllegalStateException(
-                        "Could not apply the subscription cancellation result, " +
-                                "bridgeMessage: $bridgeMessage")
+//                    ?: throw IllegalStateException(
+//                        "Could not apply the subscription cancellation result, " +
+//                                "bridgeMessage: $bridgeMessage")
 
-                element.invoke(bridgeMessage.result)
+                //element.invoke(bridgeMessage.result)
             }
 
             is BridgeFatalError -> {

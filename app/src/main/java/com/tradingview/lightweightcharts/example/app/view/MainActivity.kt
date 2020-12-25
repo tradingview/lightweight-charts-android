@@ -18,10 +18,7 @@ import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
 import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.*
-import com.tradingview.lightweightcharts.api.series.models.LineData
-import com.tradingview.lightweightcharts.api.series.models.PriceFormat
-import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
+import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
@@ -51,6 +48,8 @@ class MainActivity : AppCompatActivity() {
     private var rightSeries: MutableList<SeriesApi> = mutableListOf()
     private var realtimeDataJob: Job? = null
 
+    lateinit var onCrosshairMove: (MouseEventParams) -> Unit
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WebView.setWebContentsDebuggingEnabled(true)
@@ -74,6 +73,12 @@ class MainActivity : AppCompatActivity() {
 
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
+
+        onCrosshairMove = {
+            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            firstChartApi.unsubscribeCrosshairMove(onCrosshairMove)
+        }
+        firstChartApi.subscribeCrosshairMove(onCrosshairMove)
 
         firstChartApi.applyOptions {
             layout = layoutOptions {

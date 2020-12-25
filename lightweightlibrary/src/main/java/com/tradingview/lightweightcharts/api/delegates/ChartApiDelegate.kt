@@ -31,7 +31,7 @@ class ChartApiDelegate(
 
     override val timeScale = TimeScaleApiDelegate(controller)
 
-    override fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams?) -> Unit) {
+    override fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
             callback = onCrosshairMove,
@@ -39,14 +39,14 @@ class ChartApiDelegate(
         )
     }
 
-    override fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams?) -> Unit) {
+    override fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
             callback = funLink
         )
     }
 
-    override fun subscribeClick(onClick: (params: MouseEventParams?) -> Unit) {
+    override fun subscribeClick(onClick: (params: MouseEventParams) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_ON_CLICK,
             callback = onClick,
@@ -54,7 +54,7 @@ class ChartApiDelegate(
         )
     }
 
-    override fun unsubscribeClick(funLink: (params: MouseEventParams?) -> Unit) {
+    override fun unsubscribeClick(funLink: (params: MouseEventParams) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_ON_CLICK,
             callback = funLink
