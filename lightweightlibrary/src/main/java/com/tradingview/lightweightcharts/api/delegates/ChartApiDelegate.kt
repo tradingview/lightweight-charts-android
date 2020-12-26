@@ -18,8 +18,8 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_LINE_
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
+import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.serializer.*

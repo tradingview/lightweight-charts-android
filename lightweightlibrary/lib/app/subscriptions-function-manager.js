@@ -19,7 +19,7 @@ export default class SubscriptionsFunctionManager {
                         params.seriesPrices = customSeries
                         callback(params)
                     }
-                    chart.subscribeClick()
+                    chart.subscribeClick(subscription)
                     console.debug("subscribeOnChartClicked successful")
                     return subscription
                 } catch (error) {

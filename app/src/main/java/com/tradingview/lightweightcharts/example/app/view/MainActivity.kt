@@ -75,10 +75,16 @@ class MainActivity : AppCompatActivity() {
         subscribeOnChartReady(charts_view_second)
 
         onCrosshairMove = {
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-            firstChartApi.unsubscribeCrosshairMove(onCrosshairMove)
+            firstChartApi.unsubscribeClick(onCrosshairMove)
+            val api = firstChartApi.priceScale(PriceScaleId.LEFT)
+            api.applyOptions(priceScaleOptions {
+                mode = PriceScaleMode.PERCENTAGE
+            })
+            api.options {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
-        firstChartApi.subscribeCrosshairMove(onCrosshairMove)
+        firstChartApi.subscribeClick(onCrosshairMove)
 
         firstChartApi.applyOptions {
             layout = layoutOptions {
