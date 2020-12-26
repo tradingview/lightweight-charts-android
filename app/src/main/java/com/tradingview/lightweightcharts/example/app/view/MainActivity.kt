@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private var rightSeries: MutableList<SeriesApi> = mutableListOf()
     private var realtimeDataJob: Job? = null
 
-    lateinit var onCrosshairMove: (MouseEventParams) -> Unit
+    lateinit var onVisibleTimeRangeChange: (TimeRange?) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,17 +74,11 @@ class MainActivity : AppCompatActivity() {
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
 
-        onCrosshairMove = {
-            firstChartApi.unsubscribeClick(onCrosshairMove)
-            val api = firstChartApi.priceScale(PriceScaleId.LEFT)
-            api.applyOptions(priceScaleOptions {
-                mode = PriceScaleMode.PERCENTAGE
-            })
-            api.options {
-                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-            }
+        onVisibleTimeRangeChange = {
+            Toast.makeText(context, it?.toString(), Toast.LENGTH_LONG).show()
+            firstChartApi.timeScale.unsubscribeVisibleTimeRangeChange(onVisibleTimeRangeChange)
         }
-        firstChartApi.subscribeClick(onCrosshairMove)
+        firstChartApi.timeScale.subscribeVisibleTimeRangeChange(onVisibleTimeRangeChange)
 
         firstChartApi.applyOptions {
             layout = layoutOptions {
@@ -187,17 +181,17 @@ class MainActivity : AppCompatActivity() {
                             )
                         )
                     )
-                    api.createPriceLine(
-                        PriceLineOptions(
-                            price = 44.1f,
-                            //css color green
-                            color = Color.rgb(0,128,0),
-                            lineWidth = LineWidth.TWO,
-                            lineStyle = LineStyle.Solid,
-                            axisLabelVisible = true,
-                            title = "P/L 500"
-                        )
+                    val options = PriceLineOptions(
+                        price = 44.1f,
+                        //css color green
+                        color = Color.rgb(0,128,0),
+                        lineWidth = LineWidth.TWO,
+                        lineStyle = LineStyle.Solid,
+                        axisLabelVisible = true,
+                        title = "P/L 500"
                     )
+                    val priceLine = api.createPriceLine(options)
+                    api.removePriceLine(priceLine)
                     onSeriesCreated(api)
                 }
             )
