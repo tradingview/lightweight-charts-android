@@ -1,6 +1,7 @@
 package com.tradingview.lightweightcharts.runtime.messaging
 
 import com.google.gson.JsonElement
+import com.google.gson.JsonNull
 
 class BridgeUnsubscribeResult(
     bridgeMessage: BridgeMessage
@@ -9,5 +10,5 @@ class BridgeUnsubscribeResult(
     bridgeMessage.data
 ) {
     val uuid: String get() = data.uuid
-    val result: JsonElement get() = data.result!!
+    val result: JsonElement get() = data.result ?: JsonNull.INSTANCE
 }

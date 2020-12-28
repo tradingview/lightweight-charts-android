@@ -48,8 +48,6 @@ class MainActivity : AppCompatActivity() {
     private var rightSeries: MutableList<SeriesApi> = mutableListOf()
     private var realtimeDataJob: Job? = null
 
-    lateinit var onVisibleTimeRangeChange: (TimeRange?) -> Unit
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WebView.setWebContentsDebuggingEnabled(true)
@@ -73,12 +71,6 @@ class MainActivity : AppCompatActivity() {
 
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
-
-        onVisibleTimeRangeChange = {
-            Toast.makeText(context, it?.toString(), Toast.LENGTH_LONG).show()
-            firstChartApi.timeScale.unsubscribeVisibleTimeRangeChange(onVisibleTimeRangeChange)
-        }
-        firstChartApi.timeScale.subscribeVisibleTimeRangeChange(onVisibleTimeRangeChange)
 
         firstChartApi.applyOptions {
             layout = layoutOptions {
