@@ -89,12 +89,12 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
             messageBuffer.addLast(message)
             sendMessages()
         } else {
-            Logger.printE("Subscribe cancellation is failed. Key $uuid is not found")
+            Logger.e("Subscribe cancellation is failed. Key $uuid is not found")
         }
     }
 
     override fun onMessage(bridgeMessage: BridgeMessage) {
-        Logger.printD("Received message from web: $bridgeMessage")
+        Logger.d("Received message from web: $bridgeMessage")
         when (bridgeMessage) {
             is BridgeFunctionResult -> {
                 val element = callbackBuffer.remove(bridgeMessage.uuid)
@@ -109,7 +109,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
                 if (element != null && !element.isInactive) {
                     element.invoke(bridgeMessage.result)
                 } else {
-                    Logger.printW("Inactive subscription triggered the action")
+                    Logger.w("Inactive subscription triggered the action")
                 }
             }
 

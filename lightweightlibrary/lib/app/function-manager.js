@@ -9,7 +9,7 @@ export default class FunctionManager {
         if (!this.hasDuplicates(functionName)) {
             this.functions.push({name: functionName, functionRef: functionRef})
         } else {
-            console.error(`Function:${functionName} already registered`)
+            logger.error(`Function:${functionName} already registered`)
         }
     }
 
@@ -17,7 +17,7 @@ export default class FunctionManager {
         if (!this.hasDuplicates(subscriptionName)) {
             this.functions.push({name: subscriptionName, subscribe: subscribe, unsubscribe: unsubscribe })
         } else {
-            console.error(`Subscription:${subscriptionName} already registered`)
+            logger.error(`Subscription:${subscriptionName} already registered`)
         }
     }
 
@@ -54,7 +54,7 @@ export default class FunctionManager {
         }
 
         let callback = (result) => {
-            console.debug('subscription result', result)
+            logger.debug('subscription result', result)
             this.port.postMessage(JSON.stringify({
                 messageType: "Message::SubscriptionResult",
                 data: {
@@ -77,9 +77,7 @@ export default class FunctionManager {
         }
 
         const id = data.uuid + data.fn
-        console.log('try to unsubscribe ' + id)
         const subscription = this.subscriptions.get(id)
-        console.log(this.subscriptions)
 
         if (subscription === undefined) {
             this.throwFatalError(`Subscriber:${data.fn} with uuid:${data.uuid} is not found`, data)
@@ -99,7 +97,7 @@ export default class FunctionManager {
     }
 
     throwFatalError(message, data) {
-        console.error(message)
+        logger.error(message)
 
         if (data === undefined) {
             data = {}

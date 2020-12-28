@@ -20,21 +20,19 @@ export default class SubscriptionsFunctionManager {
                         callback(params)
                     }
                     chart.subscribeClick(subscription)
-                    console.debug("subscribeOnChartClicked successful")
+                    logger.debug("subscribeOnChartClicked successful")
                     return subscription
                 } catch (error) {
-                    console.error(error)
-                    console.warn('subscribeOnClick has been failed')
+                    logger.error('subscribeOnClick has been failed', error)
                     return null
                 }
             },
             (subscription) => {
                 try {
                     chart.unsubscribeClick(subscription)
-                    console.debug("unsubscribeOnChartClicked successful")
+                    logger.debug("unsubscribeOnChartClicked successful")
                 } catch (error) {
-                    console.error(error)
-                    console.warn('unsubscribeOnClick has been failed')
+                    logger.error('unsubscribeOnClick has been failed', error)
                 }
             }
         )
@@ -45,32 +43,26 @@ export default class SubscriptionsFunctionManager {
                 try {
                     const subscription = (params) => {
                         let customSeries = []
-                        console.log("series prices", params.seriesPrices)
                         params.seriesPrices.forEach((value, key, map) => {
-                            console.log("series prices forEach", value, key)
                             customSeries.push({ id: this.getSeriesId(key, input), prices: value })
                         })
                         params.seriesPrices = customSeries
                         callback(params)
                     }
-                    console.log(subscription)
                     chart.subscribeCrosshairMove(subscription)
-                    console.debug("subscribeCrosshairMove successful")
+                    logger.debug("subscribeCrosshairMove successful")
                     return subscription
                 } catch (error) {
-                    console.error(error)
-                    console.warn('subscribeCrosshairMove has been failed')
+                    logger.error('subscribeCrosshairMove has been failed', error)
                     return null
                 }
             },
             (subscription) => {
                 try {
-                    console.log(subscription)
                     chart.unsubscribeCrosshairMove(subscription)
-                    console.debug("unsubscribeCrosshairMove successful")
+                    logger.debug("unsubscribeCrosshairMove successful")
                 } catch (error) {
-                    console.error(error)
-                    console.warn('unsubscribeCrosshairMove has been failed')
+                    logger.error('unsubscribeCrosshairMove has been failed', error)
                 }
             }
         )

@@ -2,6 +2,7 @@ import SeriesFunctionManager from "./series-function-manager.js";
 import SubscriptionsFunctionManager from "./subscriptions-function-manager";
 import PriceScaleFunctionManager from "./price-scale-function-manager";
 import TimeScaleFunctionManager from "./time-scale-function-manager";
+import { logger } from './logger.js';
 
 export default class ChartRegistrationFunctionsController {
 
@@ -34,7 +35,7 @@ export default class ChartRegistrationFunctionsController {
             this.cache.clear()
             this.chart.remove()
         })
-        
+
         this.functionManager.registerFunction("chartOptions", (params, resolve) => {
             let options = this.chart.options()
 
@@ -56,7 +57,6 @@ export default class ChartRegistrationFunctionsController {
             resolve(options)
         })
         this.functionManager.registerFunction("chartApplyOptions", (input, resolve) => {
-            console.log(input)
             new Promise((resolve) => {
                 if (!input.params.options.localization || !input.params.options.localization.priceFormatter) {
                     resolve()
@@ -66,7 +66,7 @@ export default class ChartRegistrationFunctionsController {
                 const plugin = input.params.options.localization.priceFormatter
                 this.pluginManager.register(plugin, (fun) => {
                     input.params.options.localization.priceFormatter = fun
-                    console.log('plugin priceFormatter registered')
+                    logger.debug('plugin priceFormatter registered')
                     resolve()
                 })
             }).then(() => new Promise((resolve) => {
@@ -78,7 +78,7 @@ export default class ChartRegistrationFunctionsController {
                 const plugin = input.params.options.localization.timeFormatter
                 this.pluginManager.register(plugin, (fun) => {
                     input.params.options.localization.timeFormatter = fun
-                    console.log('plugin timeFormatter registered')
+                    logger.debug('plugin timeFormatter registered')
                     resolve()
                 })
             })).then(() => new Promise((resolve) => {
@@ -90,12 +90,12 @@ export default class ChartRegistrationFunctionsController {
                 const plugin = input.params.options.timeScale.tickMarkFormatter
                 this.pluginManager.register(plugin, (fun) => {
                     input.params.options.timeScale.tickMarkFormatter = fun
-                    console.log('plugin tickMarkFormatter registered')
+                    logger.debug('plugin tickMarkFormatter registered')
                     resolve()
                 })
             })).then(() => {
                 this.chart.applyOptions(input.params.options)
-                console.log('apply options')
+                logger.debug('apply options')
             })
         })
 

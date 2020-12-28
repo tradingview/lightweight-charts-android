@@ -4,7 +4,7 @@ export default class PluginManager {
     }
 
     register(plugin, consumer) {
-        console.log("registration of plugin", plugin)
+        logger.debug("registration of plugin", plugin)
         const uuid = plugin.uuid
         const name = plugin.name
         const fileLink = plugin.file

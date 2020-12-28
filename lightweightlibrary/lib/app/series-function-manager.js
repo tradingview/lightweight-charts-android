@@ -95,7 +95,6 @@ export default class SeriesFunctionManager {
             })
         })
         this.functionManager.registerFunction("removeSeries", (input, resolve) => {
-            console.log('removeSeries')
             this.findSeries(input, (series) => {
                 this.cache.delete(input.params.seriesId)
                 this.chart.removeSeries(series)
@@ -189,8 +188,6 @@ export default class SeriesFunctionManager {
     }
 
     getSeriesId(seriesObject, input) {
-        console.debug('getSeriesId(seriesObject)', seriesObject)
-
         for (let [key, value] of this.cache.entries()) {
             if (Object.is(value, seriesObject)) {
                 return key

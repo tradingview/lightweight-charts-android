@@ -1,3 +1,5 @@
+import { logger } from "./logger"
+
 export default class TimeScaleFunctionManager {
 
     constructor(chart, functionManager, pluginManager) {
@@ -67,7 +69,6 @@ export default class TimeScaleFunctionManager {
             resolve(this._timeScale().timeToCoordinate(input.params.time))
         })
         this.functionManager.registerFunction("coordinateToTime", (input, resolve) => {
-            console.log(this._timeScale().coordinateToTime(input.params.x))
             resolve(this._timeScale().coordinateToTime(input.params.x))
         })
         this.functionManager.registerFunction("logicalToCoordinate", (input, resolve) => {
@@ -82,20 +83,18 @@ export default class TimeScaleFunctionManager {
                 try {
                     const subscription = callback
                     this._timeScale().subscribeVisibleTimeRangeChange(subscription)
-                    console.debug("subscribeVisibleTimeRangeChange successful")
+                    logger.debug("subscribeVisibleTimeRangeChange successful")
                     return subscription
                 } catch (error) {
-                    console.error(error)
-                    console.warn('subscribeVisibleTimeRangeChange has been failed')
+                    logger.error('subscribeVisibleTimeRangeChange has been failed', error)
                 }
             },
             (subscription) => {
                 try {
                     this._timeScale().unsubscribeVisibleTimeRangeChange(subscription)
-                    console.debug("unsubscribeVisibleTimeRangeChange successful")
+                    logger.debug("unsubscribeVisibleTimeRangeChange successful")
                 } catch (error) {
-                    console.error(error)
-                    console.warn('unsubscribeVisibleTimeRangeChange has been failed')
+                    logger.error('unsubscribeVisibleTimeRangeChange has been failed', error)
                 }
             }
         )
