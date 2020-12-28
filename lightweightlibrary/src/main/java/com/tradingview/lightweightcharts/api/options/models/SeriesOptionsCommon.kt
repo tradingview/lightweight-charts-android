@@ -4,6 +4,7 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.options.common.SeriesSpecificOptions
+import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
 import com.tradingview.lightweightcharts.api.series.models.IntColor
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
@@ -26,6 +27,11 @@ interface SeriesOptionsCommon: SeriesSpecificOptions {
      * Visibility of the price line. Price line is a horizontal line indicating the last price of the series
      */
     val priceLineVisible: Boolean?
+
+    /**
+     * Enum of possible modes of priceLine source
+     */
+    val priceLineSource: PriceLineSource?
 
     /**
      * Width of the price line. Ignored if priceLineVisible is false

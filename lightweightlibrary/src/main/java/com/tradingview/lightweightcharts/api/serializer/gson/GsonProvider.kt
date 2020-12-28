@@ -21,6 +21,7 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     //series enums
     registerTypeAdapter(CrosshairMode::class.java, CrosshairMode.CrosshairModeAdapter())
     registerTypeAdapter(LineStyle::class.java, LineStyle.LineStyleAdapter())
+    registerTypeAdapter(PriceLineSource::class.java, PriceLineSource.PriceLineSourceAdapter())
     registerTypeAdapter(LineType::class.java, LineType.LineTypeAdapter())
     registerTypeAdapter(LineWidth::class.java, LineWidth.LineWidthAdapter())
     registerTypeAdapter(PriceScaleMode::class.java, PriceScaleMode.PriceScaleModeAdapter())

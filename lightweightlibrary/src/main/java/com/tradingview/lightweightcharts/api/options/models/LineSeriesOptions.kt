@@ -6,6 +6,7 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.options.common.LineStyleOptions
+import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
 import com.tradingview.lightweightcharts.api.series.models.ColorAdapter
 import com.tradingview.lightweightcharts.api.series.models.IntColor
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
@@ -16,6 +17,7 @@ data class LineSeriesOptions(
     override var title: String? = null,
     override var lastValueVisible: Boolean? = null,
     override var priceLineVisible: Boolean? = null,
+    override var priceLineSource: PriceLineSource? = null,
     override var priceLineWidth: LineWidth? = null,
 
     @ColorInt
@@ -42,7 +44,7 @@ data class LineSeriesOptions(
     override var lineType: LineType? = null,
     override var crosshairMarkerVisible: Boolean? = null,
     override var crosshairMarkerRadius: Float? = null,
-    override var overlay: Boolean = false,
+    override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,
     override var priceScaleId: PriceScaleId? = null,
     override var autoscaleInfoProvider: Plugin? = null,

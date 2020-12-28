@@ -5,20 +5,18 @@ import com.tradingview.lightweightcharts.help.isNumber
 import java.lang.reflect.Type
 import kotlin.contracts.ExperimentalContracts
 
-enum class LineStyle(val value: Int) {
-    SOLID(0),
-    DOTTED(1),
-    DASHED(2),
-    LARGE_DASHED(3),
-    SPARSE_DOTTED(4);
+
+enum class PriceLineSource(val value: Int) {
+    LAST_BAR(0),
+    LAST_VISIBLE(1);
 
     companion object {
-        fun from(value: Int): LineStyle = values().first { it.value == value }
+        fun from(value: Int): PriceLineSource = values().first { it.value == value }
     }
 
-    class LineStyleAdapter : JsonSerializer<LineStyle>, JsonDeserializer<LineStyle> {
+    class PriceLineSourceAdapter : JsonSerializer<PriceLineSource>, JsonDeserializer<PriceLineSource> {
         override fun serialize(
-            src: LineStyle?,
+            src: PriceLineSource?,
             typeOfSrc: Type?,
             context: JsonSerializationContext?
         ): JsonElement {
@@ -30,10 +28,10 @@ enum class LineStyle(val value: Int) {
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ): LineStyle {
+        ): PriceLineSource {
             return when {
                 json.isNumber() -> from(json.asInt)
-                else -> SOLID
+                else -> LAST_BAR
             }
         }
     }

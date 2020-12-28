@@ -72,14 +72,6 @@ class MainActivity : AppCompatActivity() {
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
 
-        firstChartApi.subscribeClick {
-            leftSeries.first().options { options ->
-                leftSeries.first().applyOptions(areaSeriesOptions {
-                    visible = options.visible?.not() ?: false
-                })
-            }
-        }
-
         firstChartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.LTGRAY
@@ -165,7 +157,8 @@ class MainActivity : AppCompatActivity() {
                         0.02f
                     ),
                     priceScaleId = priceScale,
-                    autoscaleInfoProvider = AutoscaleInfoProvider()
+                    autoscaleInfoProvider = AutoscaleInfoProvider(),
+                    priceLineSource = PriceLineSource.LAST_BAR
                 ),
                 onSeriesCreated = { api ->
                     api.setData(data.list.map { it as LineData })
@@ -186,7 +179,7 @@ class MainActivity : AppCompatActivity() {
                         //css color green
                         color = Color.rgb(0,128,0),
                         lineWidth = LineWidth.TWO,
-                        lineStyle = LineStyle.Solid,
+                        lineStyle = LineStyle.SOLID,
                         axisLabelVisible = true,
                         title = "P/L 500"
                     )

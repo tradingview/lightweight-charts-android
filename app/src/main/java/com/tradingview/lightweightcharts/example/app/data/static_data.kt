@@ -204,7 +204,7 @@ fun priceLineOptionsWith(price: Float): PriceLineOptions {
         price = price,
         color = 0xFF016309.toInt(),
         lineWidth = LineWidth.TWO,
-        lineStyle = LineStyle.Dotted
+        lineStyle = LineStyle.DOTTED
     )
 }
 
@@ -213,7 +213,7 @@ fun priceLineOptions(): PriceLineOptions {
         price = 140f,
         color = 0xFF0F2FFF.toInt(),
         lineWidth = LineWidth.ONE,
-        lineStyle = LineStyle.Solid
+        lineStyle = LineStyle.SOLID
     )
 }
 
