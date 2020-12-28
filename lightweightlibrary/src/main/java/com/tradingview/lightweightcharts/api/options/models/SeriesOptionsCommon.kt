@@ -78,4 +78,9 @@ interface SeriesOptionsCommon: SeriesSpecificOptions {
      *  function that overrides calculating of visible prices range
      */
     val autoscaleInfoProvider: Plugin?
+
+    /**
+     * Visibility of series
+     */
+    val visible: Boolean?
 }

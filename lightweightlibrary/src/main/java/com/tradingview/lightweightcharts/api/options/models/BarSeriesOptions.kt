@@ -45,7 +45,8 @@ data class BarSeriesOptions(
     override var overlay: Boolean = false,
     override var scaleMargins: PriceScaleMargins? = null,
     override var priceScaleId: PriceScaleId? = null,
-    override val autoscaleInfoProvider: Plugin? = null
+    override var autoscaleInfoProvider: Plugin? = null,
+    override var visible: Boolean? = null
 ) : SeriesOptionsCommon, BarStyleOptions
 
 inline fun barSeriesOptions(init: BarSeriesOptions.() -> Unit): BarSeriesOptions {

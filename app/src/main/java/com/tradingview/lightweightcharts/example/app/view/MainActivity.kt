@@ -72,6 +72,14 @@ class MainActivity : AppCompatActivity() {
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
 
+        firstChartApi.subscribeClick {
+            leftSeries.first().options { options ->
+                leftSeries.first().applyOptions(areaSeriesOptions {
+                    visible = options.visible?.not() ?: false
+                })
+            }
+        }
+
         firstChartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.LTGRAY

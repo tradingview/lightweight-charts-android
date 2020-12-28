@@ -69,7 +69,8 @@ data class CandlestickSeriesOptions(
     override var overlay: Boolean = false,
     override var scaleMargins: PriceScaleMargins? = null,
     override var priceScaleId: PriceScaleId? = null,
-    override val autoscaleInfoProvider: Plugin? = null
+    override var autoscaleInfoProvider: Plugin? = null,
+    override var visible: Boolean? = null
 ) : SeriesOptionsCommon, CandlestickStyleOptions
 
 inline fun candlestickSeriesOptions(init: CandlestickSeriesOptions.() -> Unit): CandlestickSeriesOptions {
