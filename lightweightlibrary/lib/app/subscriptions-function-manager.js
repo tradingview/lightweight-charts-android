@@ -11,23 +11,26 @@ export default class SubscriptionsFunctionManager {
             "subscribeOnClick",
             (input, callback) => {
                 try {
-                    chart.subscribeClick((params) => {
+                    const subscription = (params) => {
                         let customSeries = []
                         params.seriesPrices.forEach((value, key, map) => {
                             customSeries.push({ id: this.getSeriesId(key, input), prices: value })
                         })
                         params.seriesPrices = customSeries
                         callback(params)
-                    })
+                    }
+                    chart.subscribeClick(subscription)
                     console.debug("subscribeOnChartClicked successful")
+                    return subscription
                 } catch (error) {
                     console.error(error)
                     console.warn('subscribeOnClick has been failed')
+                    return null
                 }
             },
-            (callback) => {
+            (subscription) => {
                 try {
-                    chart.unsubscribeClick(callback)
+                    chart.unsubscribeClick(subscription)
                     console.debug("unsubscribeOnChartClicked successful")
                 } catch (error) {
                     console.error(error)
@@ -40,7 +43,7 @@ export default class SubscriptionsFunctionManager {
             "subscribeCrosshairMove",
             (input, callback) => {
                 try {
-                    chart.subscribeCrosshairMove((params) => {
+                    const subscription = (params) => {
                         let customSeries = []
                         console.log("series prices", params.seriesPrices)
                         params.seriesPrices.forEach((value, key, map) => {
@@ -49,16 +52,21 @@ export default class SubscriptionsFunctionManager {
                         })
                         params.seriesPrices = customSeries
                         callback(params)
-                    })
+                    }
+                    console.log(subscription)
+                    chart.subscribeCrosshairMove(subscription)
                     console.debug("subscribeCrosshairMove successful")
+                    return subscription
                 } catch (error) {
                     console.error(error)
                     console.warn('subscribeCrosshairMove has been failed')
+                    return null
                 }
             },
-            (callback) => {
+            (subscription) => {
                 try {
-                    chart.unsubscribeCrosshairMove(callback)
+                    console.log(subscription)
+                    chart.unsubscribeCrosshairMove(subscription)
                     console.debug("unsubscribeCrosshairMove successful")
                 } catch (error) {
                     console.error(error)

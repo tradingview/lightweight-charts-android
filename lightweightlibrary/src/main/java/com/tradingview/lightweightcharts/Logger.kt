@@ -15,7 +15,7 @@ object Logger {
     }
 
     fun printW(source: Any) {
-        Log.e(TAG, source.toString())
+        Log.w(TAG, source.toString())
     }
 
 }
