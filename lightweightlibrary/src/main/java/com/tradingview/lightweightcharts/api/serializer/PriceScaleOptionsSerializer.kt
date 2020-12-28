@@ -2,9 +2,7 @@ package com.tradingview.lightweightcharts.api.serializer
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonSyntaxException
-import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.PriceScaleOptions
-import org.json.JSONObject
 
 class PriceScaleOptionsSerializer: Serializer<PriceScaleOptions>() {
     override fun serialize(json: JsonElement): PriceScaleOptions? {

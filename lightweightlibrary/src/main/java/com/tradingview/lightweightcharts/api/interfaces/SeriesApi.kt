@@ -1,7 +1,6 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
-import com.tradingview.lightweightcharts.api.series.common.PriceFormatter
 import com.tradingview.lightweightcharts.api.series.common.PriceLine
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
