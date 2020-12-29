@@ -152,7 +152,6 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         val isInactive: Boolean = false
     ) {
         fun invoke(jsonElement: JsonElement) {
-            //TODO: make serializer not nullable
             callback?.invoke(serializer.serialize(jsonElement))
         }
 

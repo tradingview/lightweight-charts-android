@@ -27,7 +27,6 @@ data class ChartOptions(
 
     var rightPriceScale: PriceScaleOptions? = null,
 
-    //TODO: Omit<PriceScaleOptions, 'visible' | 'autoScale'>
     var overlayPriceScale: PriceScaleOptions? = null,
 
     /**
