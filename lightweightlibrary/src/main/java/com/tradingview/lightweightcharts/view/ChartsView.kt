@@ -7,7 +7,6 @@ import android.webkit.WebView
 import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature.*
-import com.tradingview.lightweightcharts.BuildConfig
 import com.tradingview.lightweightcharts.api.delegates.ChartApiDelegate
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel

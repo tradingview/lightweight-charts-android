@@ -80,9 +80,9 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
     fun <T: Any> callUnsubscribe(
         name: String,
-        callback: (T) -> Unit
+        subscription: (T) -> Unit
     ) {
-        val uuid = callbackBuffer.filterValues { it.callback == callback }.keys.firstOrNull()
+        val uuid = callbackBuffer.filterValues { it.callback == subscription }.keys.firstOrNull()
         if (uuid != null) {
             callbackBuffer[uuid] = callbackBuffer[uuid]!!.makeInactive()
             val message = BridgeUnsubscribe(name, uuid)

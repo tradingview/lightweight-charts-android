@@ -32,10 +32,10 @@ class TimeScaleApiDelegate(
     private val controller: WebMessageController
 ) : TimeScaleApi {
 
-    override fun scrollPosition(completion: (Float) -> Unit) {
+    override fun scrollPosition(onScrollPositionReceived: (Float) -> Unit) {
         controller.callFunction(
             SCROLL_POSITION,
-            callback = completion,
+            callback = onScrollPositionReceived,
             serializer = PrimitiveSerializer.FloatSerializer
         )
     }
@@ -56,10 +56,10 @@ class TimeScaleApiDelegate(
         )
     }
 
-    override fun getVisibleRange(completion: (TimeRange?) -> Unit) {
+    override fun getVisibleRange(onTimeRangeReceived: (TimeRange?) -> Unit) {
         controller.callFunction(
             GET_VISIBLE_RANGE,
-            callback = completion,
+            callback = onTimeRangeReceived,
             serializer = TimeRangeSerializer()
         )
     }
@@ -85,80 +85,79 @@ class TimeScaleApiDelegate(
         )
     }
 
-    override fun timeToCoordinate(time: Time, onCoordinateReceive: (x: Float?) -> Unit) {
+    override fun timeToCoordinate(time: Time, onCoordinateReceived: (x: Float?) -> Unit) {
         controller.callFunction(
             TIME_TO_COORDINATE,
             mapOf(
                 "time" to time
             ),
-            callback = onCoordinateReceive,
+            callback = onCoordinateReceived,
             serializer = PrimitiveSerializer.FloatSerializer
         )
     }
 
-    override fun coordinateToTime(x: Float, onTimeReceive: (time: Time?) -> Unit) {
+    override fun coordinateToTime(x: Float, onTimeReceived: (time: Time?) -> Unit) {
         controller.callFunction(
             COORDINATE_TO_TIME,
             mapOf(
                 "x" to x
             ),
-            callback = onTimeReceive,
+            callback = onTimeReceived,
             serializer = TimeSerializer()
         )
     }
 
-    override fun logicalToCoordinate(logical: Int, onCoordinateReceive: (x: Float?) -> Unit) {
+    override fun logicalToCoordinate(logical: Int, onCoordinateReceived: (x: Float?) -> Unit) {
         controller.callFunction(
             LOGICAL_TO_COORDINATE,
             mapOf(
                 "logical" to logical
             ),
-            callback = onCoordinateReceive,
+            callback = onCoordinateReceived,
             serializer = PrimitiveSerializer.FloatSerializer
         )
     }
 
-    override fun coordinateToLogical(x: Float, onLogicalReceive: (logical: Int?) -> Unit) {
+    override fun coordinateToLogical(x: Float, onLogicalReceived: (logical: Int?) -> Unit) {
         controller.callFunction<Int?>(
             COORDINATE_TO_LOGICAL,
             mapOf(
                 "x" to x
             ),
-            callback = onLogicalReceive,
+            callback = onLogicalReceived,
             serializer = PrimitiveSerializer.IntSerializer
         )
     }
 
-    override fun applyOptions(options: TimeScaleOptions, onApply: () -> Unit) {
+    override fun applyOptions(options: TimeScaleOptions) {
         controller.callFunction(
             APPLY_OPTIONS,
             mapOf(
                 OPTIONS_PARAM to options
-            ),
-            onApply
+            )
         )
     }
 
-    override fun options(completion: (TimeScaleOptions) -> Unit) {
+    override fun options(onOptionsReceived: (TimeScaleOptions) -> Unit) {
         controller.callFunction(
             OPTIONS,
-            callback = completion,
+            callback = onOptionsReceived,
             serializer = TimeScaleOptionsSerializer()
         )
     }
 
-    override fun subscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit) {
+    override fun subscribeVisibleTimeRangeChange(onTimeRangeChanged: (params: TimeRange?) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE,
-            callback = block,
+            callback = onTimeRangeChanged,
             serializer = TimeRangeSerializer()
         )
     }
 
-    override fun unsubscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit) {
+    override fun unsubscribeVisibleTimeRangeChange(onTimeRangeChanged: (params: TimeRange?) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE,
-            callback = block
+            subscription = onTimeRangeChanged
         )
     }
 }

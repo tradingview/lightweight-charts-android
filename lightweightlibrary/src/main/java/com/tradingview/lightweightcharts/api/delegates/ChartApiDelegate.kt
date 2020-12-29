@@ -3,13 +3,11 @@ package com.tradingview.lightweightcharts.api.delegates
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.CHART_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.PRICE_SCALE
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.PRINT
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_CROSSHAIR_MOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_ON_CLICK
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.OPTIONS
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.TEXT
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_AREA_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_BAR_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_CANDLESTICK_SERIES
@@ -31,33 +29,33 @@ class ChartApiDelegate(
 
     override val timeScale = TimeScaleApiDelegate(controller)
 
-    override fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams) -> Unit) {
+    override fun subscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
-            callback = onCrosshairMove,
+            callback = onCrosshairMoved,
             serializer = MouseEventParamsSerializer()
         )
     }
 
-    override fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams) -> Unit) {
+    override fun unsubscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
-            callback = funLink
+            subscription = onCrosshairMoved
         )
     }
 
-    override fun subscribeClick(onClick: (params: MouseEventParams) -> Unit) {
+    override fun subscribeClick(onClicked: (params: MouseEventParams) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_ON_CLICK,
-            callback = onClick,
+            callback = onClicked,
             serializer = MouseEventParamsSerializer()
         )
     }
 
-    override fun unsubscribeClick(funLink: (params: MouseEventParams) -> Unit) {
+    override fun unsubscribeClick(onClicked: (params: MouseEventParams) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_ON_CLICK,
-            callback = funLink
+            subscription = onClicked
         )
     }
 
@@ -188,11 +186,10 @@ class ChartApiDelegate(
         return PriceScaleApiDelegate(uuid, controller)
     }
 
-    override fun applyOptions(options: ChartOptions, onApply: () -> Unit) {
+    override fun applyOptions(options: ChartOptions) {
         controller.callFunction(
             APPLY_OPTIONS,
-            mapOf(OPTIONS to options),
-            onApply
+            mapOf(OPTIONS to options)
         )
     }
 
@@ -203,9 +200,4 @@ class ChartApiDelegate(
             serializer = ChartOptionsSerializer()
         )
     }
-
-    fun print(text: String) {
-        controller.callFunction(PRINT, mapOf(TEXT to text))
-    }
-
 }

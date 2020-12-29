@@ -40,26 +40,26 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
         )
     }
 
-    override fun priceToCoordinate(price: Float, completion: (Float?) -> Unit) {
+    override fun priceToCoordinate(price: Float, onCoordinateReceived: (Float?) -> Unit) {
         controller.callFunction<Float?>(
             PRICE_TO_COORDINATE,
             mapOf(
                 SERIES_UUID to uuid,
                 PRICE to price
             ),
-            callback = completion,
+            callback = onCoordinateReceived,
             PrimitiveSerializer.FloatSerializer
         )
     }
 
-    override fun coordinateToPrice(coordinate: Float, completion: (Float?) -> Unit) {
+    override fun coordinateToPrice(coordinate: Float, onPriceReceived: (Float?) -> Unit) {
         controller.callFunction(
             COORDINATE_TO_PRICE,
             mapOf(
                 SERIES_UUID to uuid,
                 COORDINATE to coordinate
             ),
-            callback = completion,
+            callback = onPriceReceived,
             PrimitiveSerializer.FloatSerializer
         )
     }
@@ -74,11 +74,11 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
         )
     }
 
-    override fun options(completion: (SeriesOptionsCommon) -> Unit) {
+    override fun options(onOptionsReceived: (SeriesOptionsCommon) -> Unit) {
         controller.callFunction(
             OPTIONS,
             mapOf(SERIES_UUID to uuid),
-            callback = completion,
+            callback = onOptionsReceived,
             serializer = optionsSerializer
         )
     }
@@ -126,5 +126,4 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
             )
         )
     }
-
 }

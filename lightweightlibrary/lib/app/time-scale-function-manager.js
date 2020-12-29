@@ -47,7 +47,6 @@ export default class TimeScaleFunctionManager {
         this.functionManager.registerFunction("timeScaleApplyOptions", (input, resolve) => {
             this._registerTickMarkFormatter(input.params, (params) => {
                 this._timeScale().applyOptions(params.options)
-                resolve()
             })
         })
         this.functionManager.registerFunction("scrollToRealTime", (input, resolve) => {

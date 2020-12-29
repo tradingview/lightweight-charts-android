@@ -9,7 +9,6 @@ import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 interface SeriesApi {
 
     object Func {
-
         const val ADD_LINE_SERIES = "addLineSeries"
         const val ADD_AREA_SERIES = "addAreaSeries"
         const val ADD_BAR_SERIES = "addBarSeries"
@@ -40,16 +39,16 @@ interface SeriesApi {
     /**
      * Converts specified series price to pixel coordinate according to the chart price scale
      * @param price input price to be converted
-     * @param completion pixel coordinate of the price level on the chart
+     * @param onCoordinateReceived pixel coordinate of the price level on the chart
      */
-    fun priceToCoordinate(price: Float, completion: (Float?) -> Unit)
+    fun priceToCoordinate(price: Float, onCoordinateReceived: (Float?) -> Unit)
 
     /**
      * Converts specified coordinate to price value according to the series price scale
      * @param coordinate input coordinate to be converted
-     * @param completion price value  of the coordinate on the chart
+     * @param onPriceReceived price value of the coordinate on the chart
      */
-    fun coordinateToPrice(coordinate: Float, completion: (Float?) -> Unit)
+    fun coordinateToPrice(coordinate: Float, onPriceReceived: (Float?) -> Unit)
 
     /**
      * Applies new options to the existing series
@@ -59,9 +58,9 @@ interface SeriesApi {
 
     /**
      * Returns currently applied options
-     * @param completion full set of currently applied options, including defaults
+     * @param onOptionsReceived full set of currently applied options, including defaults
      */
-    fun options(completion: (SeriesOptionsCommon) -> Unit)
+    fun options(onOptionsReceived: (SeriesOptionsCommon) -> Unit)
 
     /**
      * Sets or replaces series data
@@ -98,5 +97,4 @@ interface SeriesApi {
      * @param line line to remove
      */
     fun removePriceLine(line: PriceLine)
-
 }

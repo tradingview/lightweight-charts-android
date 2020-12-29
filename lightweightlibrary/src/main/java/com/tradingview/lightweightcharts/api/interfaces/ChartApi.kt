@@ -6,7 +6,6 @@ import com.tradingview.lightweightcharts.api.series.models.*
 interface ChartApi {
 
     object Func {
-        const val PRINT = "print"
         const val SUBSCRIBE_ON_CLICK = "subscribeOnClick"
         const val SUBSCRIBE_CROSSHAIR_MOVE = "subscribeCrosshairMove"
         const val REMOVE = "remove"
@@ -93,22 +92,22 @@ interface ChartApi {
     /**
      * Adds a subscription to mouse click event
      */
-    fun subscribeClick(onClick: (params: MouseEventParams) -> Unit)
+    fun subscribeClick(onClicked: (params: MouseEventParams) -> Unit)
 
     /**
      * Removes mouse click subscription
      */
-    fun unsubscribeClick(funLink: (params: MouseEventParams) -> Unit)
+    fun unsubscribeClick(onClicked: (params: MouseEventParams) -> Unit)
 
     /**
      * Adds a subscription to crosshair movement to receive notifications on crosshair movements
      */
-    fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams) -> Unit)
+    fun subscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit)
 
     /**
      * Removes a subscription on crosshair movement
      */
-    fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams) -> Unit)
+    fun unsubscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit)
 
     /**
      * Returns API to manipulate the price scale
@@ -124,7 +123,7 @@ interface ChartApi {
      * Applies new options to the chart
      * @param options - any subset of chart options
      */
-    fun applyOptions(options: ChartOptions, onApply: () -> Unit = {})
+    fun applyOptions(options: ChartOptions)
 
     /**
      * Applies new options to the chart
@@ -139,5 +138,4 @@ interface ChartApi {
      * @returns - full set of currently applied options, including defaults
      */
     fun options(onOptionsReceived: (options: ChartOptions) -> Unit)
-
 }
