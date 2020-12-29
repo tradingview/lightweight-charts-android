@@ -5,8 +5,6 @@ import com.google.gson.annotations.JsonAdapter
 import com.tradingview.lightweightcharts.api.series.models.ColorAdapter
 import com.tradingview.lightweightcharts.api.series.models.IntColor
 
-//import com.tradingview.lightweightcharts.api.series.models.IntColor
-
 data class LayoutOptions(
     /**
      * Background color of the chart area and the scales
