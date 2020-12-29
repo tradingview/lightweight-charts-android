@@ -1,3 +1,5 @@
+import { logger } from './logger.js'
+
 export default class PriceScaleFunctionManager {
 
     constructor(chart, functionManager) {
@@ -7,29 +9,29 @@ export default class PriceScaleFunctionManager {
     }
 
     register() {
-        this.functionManager.registerFunction("priceScale", (params, resolve) => {
-            this.cache.set(params.uuid, this.chart.priceScale(params.priceScaleId))
+        this.functionManager.registerFunction("priceScale", (input, resolve) => {
+            this.cache.set(input.uuid, this.chart.priceScale(input.params.priceScaleId))
         })
-        this.functionManager.registerFunction("priceScaleOptions", (params, resolve) => {
-            const scale = this.cache.get(params.priceScaleId)
+        this.functionManager.registerFunction("priceScaleOptions", (input, resolve) => {
+            const scale = this.cache.get(input.params.caller)
             if (scale === undefined) {
-                this.functionManager.throwFatalError(`PriceScale with uuid:${params.uuid} is not found`, params)
+                this.functionManager.throwFatalError(`PriceScale with uuid:${input.caller} is not found`, input)
             } else {
                 resolve(scale.options())
             }
         })
-        this.functionManager.registerFunction("priceScaleApplyOptions", (params, resolve) => {
-            const scale = this.cache.get(params.priceScaleId)
+        this.functionManager.registerFunction("priceScaleApplyOptions", (input, resolve) => {
+            const scale = this.cache.get(input.params.caller)
             if (scale === undefined) {
-                this.functionManager.throwFatalError(`PriceScale with uuid:${params.uuid} is not found`, params)
+                this.functionManager.throwFatalError(`PriceScale with uuid:${input.caller} is not found`, input)
             } else {
-                scale.applyOptions(params.options)
+                scale.applyOptions(input.params.options)
             }
         })
-        this.functionManager.registerFunction("priceScaleWidth", (params, resolve) => {
-            const scale = this.cache.get(params.priceScaleId)
+        this.functionManager.registerFunction("priceScaleWidth", (input, resolve) => {
+            const scale = this.cache.get(input.params.caller)
             if (scale === undefined) {
-                this.functionManager.throwFatalError(`PriceScale with uuid:${params.uuid} is not found`, params)
+                this.functionManager.throwFatalError(`PriceScale with uuid:${input.caller} is not found`, input)
             } else {
                 resolve(scale.width())
             }

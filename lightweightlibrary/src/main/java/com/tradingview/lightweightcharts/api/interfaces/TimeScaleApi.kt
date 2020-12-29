@@ -19,6 +19,8 @@ interface TimeScaleApi {
         const val SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE = "subscribeVisibleTimeRangeChange"
         const val TIME_TO_COORDINATE = "timeToCoordinate"
         const val COORDINATE_TO_TIME = "coordinateToTime"
+        const val LOGICAL_TO_COORDINATE = "logicalToCoordinate"
+        const val COORDINATE_TO_LOGICAL = "coordinateToLogical"
     }
 
     object Params {
@@ -30,14 +32,14 @@ interface TimeScaleApi {
 
     /**
      * Returns current scroll position of the chart
-     * - Parameter completion: a distance from the right edge to the latest bar, measured in bars
+     * @param onScrollPositionReceived a distance from the right edge to the latest bar, measured in bars
      */
-    fun scrollPosition(completion: (Float?) -> Unit)
+    fun scrollPosition(onScrollPositionReceived: (Float) -> Unit)
 
     /**
      * Scrolls the chart to the specified position
-     * - Parameter position: target data position
-     * - Parameter animated: setting this to true makes the chart scrolling smooth and adds animation
+     * @param position target data position
+     * @param animated setting this to true makes the chart scrolling smooth and adds animation
      */
     fun scrollToPosition(position: Float, animated: Boolean = false)
 
@@ -48,13 +50,13 @@ interface TimeScaleApi {
 
     /**
      * Returns current visible time range of the chart
-     * - Parameter completion: visible range or null if the chart has no data at all
+     * @param onTimeRangeReceived visible range or null if the chart has no data at all
      */
-    fun getVisibleRange(completion: (TimeRange?) -> Unit)
+    fun getVisibleRange(onTimeRangeReceived: (TimeRange?) -> Unit)
 
     /**
      * Sets visible range of data
-     * - Parameter range: target visible range of data
+     * @param range target visible range of data
      */
     fun setVisibleRange(range: TimeRange)
 
@@ -72,39 +74,57 @@ interface TimeScaleApi {
     /**
      * Converts a time to local x coordinate.
      * @param time time needs to be converted
-     * @param onCoordinateReceive returns x coordinate of that time
-     *                            or <i>null</i> if no time found on time scale
+     * @param onCoordinateReceived returns x coordinate of that time
+     *                            or null if no time found on time scale
      */
-    fun timeToCoordinate(time: Time, onCoordinateReceive: (x: Double?) -> Unit)
+    fun timeToCoordinate(time: Time, onCoordinateReceived: (x: Float?) -> Unit)
 
     /**
      * Converts a coordinate to time.
      * @param x coordinate needs to be converted
-     * @param onTimeReceive the time of a bar that placed on that coordinate
-     *                      or `null` if no bar found at this coordinate
+     * @param onTimeReceived returns the time of a bar that placed on that coordinate
+     *                      or null if no bar found at this coordinate
      */
-    fun coordinateToTime(x: Double, onTimeReceive: (time: Time?) -> Unit)
+    fun coordinateToTime(x: Float, onTimeReceived: (time: Time?) -> Unit)
+
+    /**
+     * Converts a logical index to local x coordinate.
+     * @param logical logical index needs to be converted
+     * @param onCoordinateReceived returns x coordinate of that time
+     *                            or null if the chart doesn't have data
+     */
+    fun logicalToCoordinate(logical: Int, onCoordinateReceived: (x: Float?) -> Unit)
+
+    /**
+     * Converts a coordinate to logical index.
+     * @param x coordinate needs to be converted
+     * @param onLogicalReceived returns logical index that is located on that coordinate
+     *                         or null if the chart doesn't have data
+     */
+    fun coordinateToLogical(x: Float, onLogicalReceived: (logical: Int?) -> Unit)
 
     /**
      * Applies new options to the time scale.
-     * - Parameter options: any subset of options
+     * @param options any subset of options
      */
-    fun applyOptions(options: TimeScaleOptions, onApply: (Unit?) -> Unit = {})
+    fun applyOptions(options: TimeScaleOptions)
 
     /**
      * Returns current options
-     * - Parameter completion: currently applied options
+     * @param onOptionsReceived currently applied options
      */
-    fun options(completion: (TimeScaleOptions?) -> Unit)
+    fun options(onOptionsReceived: (TimeScaleOptions) -> Unit)
 
     /**
      * Adds a subscription to visible range changes
      * to receive notification about visible range of data changes
      */
-    fun subscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
+    fun subscribeVisibleTimeRangeChange(onTimeRangeChanged: (params: TimeRange?) -> Unit)
 
     /**
      * Removes a subscription to visible range changes
      */
-    fun unsubscribeVisibleTimeRangeChange(block: (params: TimeRange?) -> Unit)
+    fun unsubscribeVisibleTimeRangeChange(onTimeRangeChanged: (params: TimeRange?) -> Unit)
+
+
 }

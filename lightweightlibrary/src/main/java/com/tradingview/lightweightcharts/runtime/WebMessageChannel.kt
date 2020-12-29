@@ -11,7 +11,7 @@ import com.tradingview.lightweightcharts.api.serializer.gson.GsonProvider
 import com.tradingview.lightweightcharts.runtime.messaging.*
 
 @SuppressLint("RequiresFeature")
-class WebMessageChannel(private val debug: Boolean, ports: List<WebMessagePortCompat>) {
+class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePortCompat>) {
     private val serializer = GsonProvider.newInstance()
 
     private val jsPort = ports[1]
@@ -25,7 +25,7 @@ class WebMessageChannel(private val debug: Boolean, ports: List<WebMessagePortCo
                     val bridgeMessage = bridgeMessageOf(webMessage)
                     onBridgeMessageListener?.onMessage(bridgeMessage)
                 } else {
-                    Logger.printW("Web message is null")
+                    Logger.w("Web message is null")
                 }
             }
         })
@@ -34,7 +34,7 @@ class WebMessageChannel(private val debug: Boolean, ports: List<WebMessagePortCo
     fun initConnection(webView: WebView) {
         WebViewCompat.postWebMessage(
             webView,
-            webMessageOf(ConnectionMessage(debug), jsPort),
+            webMessageOf(ConnectionMessage(logLevel), jsPort),
             Uri.EMPTY
         )
     }

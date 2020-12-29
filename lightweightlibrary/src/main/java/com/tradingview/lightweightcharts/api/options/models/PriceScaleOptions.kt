@@ -1,7 +1,11 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import androidx.annotation.ColorInt
+import com.google.gson.annotations.JsonAdapter
 import com.tradingview.lightweightcharts.api.series.enums.PriceScaleMode
 import com.tradingview.lightweightcharts.api.options.enums.PriceAxisPosition
+import com.tradingview.lightweightcharts.api.series.models.ColorAdapter
+import com.tradingview.lightweightcharts.api.series.models.IntColor
 
 data class PriceScaleOptions(
     /**
@@ -46,7 +50,9 @@ data class PriceScaleOptions(
      * Defines a color of the border between the price scale and the chart area.
      * It is ignored if borderVisible is false
      */
-    var borderColor: String? = null,
+    @ColorInt
+    @JsonAdapter(ColorAdapter::class)
+    var borderColor: IntColor? = null,
 
     /**
      * Indicates whether the price scale displays only full lines of text or partial lines.

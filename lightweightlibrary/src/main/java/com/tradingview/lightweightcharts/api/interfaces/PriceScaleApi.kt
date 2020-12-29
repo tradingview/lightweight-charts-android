@@ -13,6 +13,8 @@ interface PriceScaleApi {
     object Params {
         const val UUID = "uuid"
         const val OPTIONS_PARAM = "options"
+        const val CALLER = "caller"
+        const val PRICE_SCALE_ID = "priceScaleId"
     }
 
     val uuid: String
@@ -27,7 +29,7 @@ interface PriceScaleApi {
      * Returns currently applied options of the price scale
      * @param onOptionsReceived full set of currently applied options, including defaults
      */
-    fun options(onOptionsReceived: (PriceScaleOptions?) -> Unit)
+    fun options(onOptionsReceived: (PriceScaleOptions) -> Unit)
 
     /**
      * Returns a width of the price scale if it's visible or 0 if invisible.

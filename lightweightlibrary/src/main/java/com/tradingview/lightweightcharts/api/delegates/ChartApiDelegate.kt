@@ -3,13 +3,11 @@ package com.tradingview.lightweightcharts.api.delegates
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.CHART_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.PRICE_SCALE
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.PRINT
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_CROSSHAIR_MOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_ON_CLICK
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.OPTIONS
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.TEXT
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_AREA_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_BAR_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_CANDLESTICK_SERIES
@@ -18,8 +16,8 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_LINE_
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
+import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.serializer.*
@@ -31,41 +29,41 @@ class ChartApiDelegate(
 
     override val timeScale = TimeScaleApiDelegate(controller)
 
-    override fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams?) -> Unit) {
+    override fun subscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
-            callback = onCrosshairMove,
+            callback = onCrosshairMoved,
             serializer = MouseEventParamsSerializer()
         )
     }
 
-    override fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams?) -> Unit) {
+    override fun unsubscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
-            callback = funLink
+            subscription = onCrosshairMoved
         )
     }
 
-    override fun subscribeClick(onClick: (params: MouseEventParams?) -> Unit) {
+    override fun subscribeClick(onClicked: (params: MouseEventParams) -> Unit) {
         controller.callSubscribe(
             SUBSCRIBE_ON_CLICK,
-            callback = onClick,
+            callback = onClicked,
             serializer = MouseEventParamsSerializer()
         )
     }
 
-    override fun unsubscribeClick(funLink: (params: MouseEventParams?) -> Unit) {
+    override fun unsubscribeClick(onClicked: (params: MouseEventParams) -> Unit) {
         controller.callUnsubscribe(
             SUBSCRIBE_ON_CLICK,
-            callback = funLink
+            subscription = onClicked
         )
     }
 
     override fun addAreaSeries(
         options: AreaSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_AREA_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -76,15 +74,16 @@ class ChartApiDelegate(
                         AreaSeriesOptionsSerializer()
                     )
                 )
-            }
+            },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
     override fun addBarSeries(
         options: BarSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_BAR_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -95,15 +94,16 @@ class ChartApiDelegate(
                         BarSeriesOptionsSerializer()
                     )
                 )
-            }
+            },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
     override fun addCandlestickSeries(
         options: CandlestickSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_CANDLESTICK_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -114,15 +114,16 @@ class ChartApiDelegate(
                         CandlestickSeriesOptionsSerializer()
                     )
                 )
-            }
+            },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
     override fun addHistogramSeries(
         options: HistogramSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<HistogramData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_HISTOGRAM_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -133,15 +134,16 @@ class ChartApiDelegate(
                         HistogramSeriesOptionsSerializer()
                     )
                 )
-            }
+            },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
     override fun addLineSeries(
         options: LineSeriesOptions,
-        onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
+        onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
-        controller.callFunction<String>(
+        controller.callFunction(
             ADD_LINE_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
@@ -153,6 +155,7 @@ class ChartApiDelegate(
                     )
                 )
             },
+            PrimitiveSerializer.StringSerializer
         )
     }
 
@@ -160,7 +163,7 @@ class ChartApiDelegate(
         controller.callFunction(REMOVE)
     }
 
-    override fun removeSeries(seriesApi: SeriesApi<*>, onSeriesDeleted: () -> Unit) {
+    override fun removeSeries(seriesApi: SeriesApi, onSeriesDeleted: () -> Unit) {
         controller.callFunction(
             REMOVE_SERIES,
             mapOf(SERIES_UUID to seriesApi.uuid),
@@ -183,24 +186,18 @@ class ChartApiDelegate(
         return PriceScaleApiDelegate(uuid, controller)
     }
 
-    override fun applyOptions(options: ChartOptions, onApply: () -> Unit) {
+    override fun applyOptions(options: ChartOptions) {
         controller.callFunction(
             APPLY_OPTIONS,
-            mapOf(OPTIONS to options),
-            onApply
+            mapOf(OPTIONS to options)
         )
     }
 
-    override fun options(onOptionsReceived: (options: ChartOptions?) -> Unit) {
+    override fun options(onOptionsReceived: (options: ChartOptions) -> Unit) {
         controller.callFunction(
             CHART_OPTIONS,
             callback = onOptionsReceived,
             serializer = ChartOptionsSerializer()
         )
     }
-
-    fun print(text: String) {
-        controller.callFunction(PRINT, mapOf(TEXT to text))
-    }
-
 }

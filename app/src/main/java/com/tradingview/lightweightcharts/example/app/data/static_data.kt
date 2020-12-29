@@ -126,8 +126,8 @@ fun listHistogramSeriesData(): MutableList<SeriesData> {
         HistogramData(Time.BusinessDay(2019, 6, 12), 52.38f),
         HistogramData(Time.BusinessDay(2019, 6, 13), 36.30f),
         HistogramData(Time.BusinessDay(2019, 6, 14), 34.48f),
-        HistogramData(Time.BusinessDay(2019, 6, 15), 40.06f),
-        HistogramData(Time.BusinessDay(2019, 6, 16), 56.94f),
+        WhitespaceData(Time.BusinessDay(2019, 6, 15)),
+        WhitespaceData(Time.BusinessDay(2019, 6, 16)),
         HistogramData(Time.BusinessDay(2019, 6, 17), 41.50f),
         HistogramData(Time.BusinessDay(2019, 6, 18), 34.82f)
     )
@@ -202,18 +202,18 @@ fun timeScaleOptions() = TimeScaleOptions(visible = false)
 fun priceLineOptionsWith(price: Float): PriceLineOptions {
     return PriceLineOptions(
         price = price,
-        color = "#016309",
+        color = 0xFF016309.toInt(),
         lineWidth = LineWidth.TWO,
-        lineStyle = LineStyle.Dotted
+        lineStyle = LineStyle.DOTTED
     )
 }
 
 fun priceLineOptions(): PriceLineOptions {
     return PriceLineOptions(
         price = 140f,
-        color = "#0f2fff",
+        color = 0xFF0F2FFF.toInt(),
         lineWidth = LineWidth.ONE,
-        lineStyle = LineStyle.Solid
+        lineStyle = LineStyle.SOLID
     )
 }
 
@@ -225,21 +225,21 @@ fun listSeriesMarker(): MutableList<SeriesMarker> {
             time = Time.StringTime("2019-04-11"),
             position = SeriesMarkerPosition.ABOVE_BAR,
             shape = SeriesMarkerShape.SQUARE,
-            color = "#ff1115",
+            color = 0xFFFF1115.toInt(),
             id = "1"
         ),
         SeriesMarker(
             time = Time.StringTime("2019-04-18"),
             position = SeriesMarkerPosition.IN_BAR,
             shape = SeriesMarkerShape.CIRCLE,
-            color = "#ff1115",
+            color = 0xFFFF1115.toInt(),
             id = "2"
         ),
         SeriesMarker(
             time = Time.StringTime("2019-04-13"),
             position = SeriesMarkerPosition.BELOW_BAR,
             shape = SeriesMarkerShape.ARROW_DOWN,
-            color = "#ff1115",
+            color = 0xFFFF1115.toInt(),
             id = "3"
         )
     )

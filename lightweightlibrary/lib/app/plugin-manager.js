@@ -1,10 +1,12 @@
+import { logger } from './logger.js'
+
 export default class PluginManager {
     constructor() {
         this.plugins = []
     }
 
     register(plugin, consumer) {
-        console.log("registration of plugin", plugin)
+        logger.d("registration of plugin", plugin)
         const uuid = plugin.uuid
         const name = plugin.name
         const fileLink = plugin.file

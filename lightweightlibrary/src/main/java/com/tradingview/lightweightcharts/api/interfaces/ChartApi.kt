@@ -6,7 +6,6 @@ import com.tradingview.lightweightcharts.api.series.models.*
 interface ChartApi {
 
     object Func {
-        const val PRINT = "print"
         const val SUBSCRIBE_ON_CLICK = "subscribeOnClick"
         const val SUBSCRIBE_CROSSHAIR_MOVE = "subscribeCrosshairMove"
         const val REMOVE = "remove"
@@ -41,7 +40,7 @@ interface ChartApi {
      */
     fun addAreaSeries(
             options: AreaSeriesOptions = AreaSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -51,7 +50,7 @@ interface ChartApi {
      */
     fun addBarSeries(
             options: BarSeriesOptions = BarSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -61,7 +60,7 @@ interface ChartApi {
      */
     fun addCandlestickSeries(
             options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<BarData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -71,7 +70,7 @@ interface ChartApi {
      */
     fun addHistogramSeries(
             options: HistogramSeriesOptions = HistogramSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<HistogramData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -81,34 +80,34 @@ interface ChartApi {
      */
     fun addLineSeries(
             options: LineSeriesOptions = LineSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi<LineData>) -> Unit
+            onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
      * Removes a series of any type.
      * This is an irreversible operation, you cannot do anything with the series after removing it
      */
-    fun removeSeries(seriesApi: SeriesApi<*>, onSeriesDeleted: () -> Unit = {})
+    fun removeSeries(seriesApi: SeriesApi, onSeriesDeleted: () -> Unit = {})
 
     /**
      * Adds a subscription to mouse click event
      */
-    fun subscribeClick(onClick: (params: MouseEventParams?) -> Unit)
+    fun subscribeClick(onClicked: (params: MouseEventParams) -> Unit)
 
     /**
      * Removes mouse click subscription
      */
-    fun unsubscribeClick(funLink: (params: MouseEventParams?) -> Unit)
+    fun unsubscribeClick(onClicked: (params: MouseEventParams) -> Unit)
 
     /**
      * Adds a subscription to crosshair movement to receive notifications on crosshair movements
      */
-    fun subscribeCrosshairMove(onCrosshairMove: (params: MouseEventParams?) -> Unit)
+    fun subscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit)
 
     /**
      * Removes a subscription on crosshair movement
      */
-    fun unsubscribeCrosshairMove(funLink: (params: MouseEventParams?) -> Unit)
+    fun unsubscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit)
 
     /**
      * Returns API to manipulate the price scale
@@ -124,7 +123,12 @@ interface ChartApi {
      * Applies new options to the chart
      * @param options - any subset of chart options
      */
-    fun applyOptions(options: ChartOptions, onApply: () -> Unit = {})
+    fun applyOptions(options: ChartOptions)
+
+    /**
+     * Applies new options to the chart
+     * @param options - any subset of chart options
+     */
     fun applyOptions(options: ChartOptions.() -> Unit) {
         applyOptions(ChartOptions().apply(options))
     }
@@ -133,6 +137,5 @@ interface ChartApi {
      * Returns currently applied options
      * @returns - full set of currently applied options, including defaults
      */
-    fun options(onOptionsReceived: (options: ChartOptions?) -> Unit)
-
+    fun options(onOptionsReceived: (options: ChartOptions) -> Unit)
 }

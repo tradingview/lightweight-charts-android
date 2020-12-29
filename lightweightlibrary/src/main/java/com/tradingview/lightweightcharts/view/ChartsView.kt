@@ -7,10 +7,10 @@ import android.webkit.WebView
 import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature.*
-import com.tradingview.lightweightcharts.BuildConfig
 import com.tradingview.lightweightcharts.api.delegates.ChartApiDelegate
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
+import com.tradingview.lightweightcharts.runtime.messaging.LogLevel
 import java.lang.Exception
 import java.lang.UnsupportedOperationException
 import java.util.HashMap
@@ -28,7 +28,7 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
         )
     }
 
-    open val debug = BuildConfig.DEBUG
+    open val logLevel = LogLevel.WARNING
 
     val api by lazy { ChartApiDelegate(webMessageController) }
 
@@ -47,7 +47,7 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
     private val channel: WebMessageChannel by lazy {
         WebViewCompat.createWebMessageChannel(this)
             .asList()
-            .let { WebMessageChannel(debug, it) }
+            .let { WebMessageChannel(logLevel, it) }
             .apply { initConnection(this@ChartsView) }
     }
 

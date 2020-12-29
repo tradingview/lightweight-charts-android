@@ -1,7 +1,9 @@
 package com.tradingview.lightweightcharts.example.app.view
 
+import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,16 +14,17 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
+import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
 import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.*
-import com.tradingview.lightweightcharts.example.app.*
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
 import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
-import com.tradingview.lightweightcharts.example.app.viewmodel.*
+import com.tradingview.lightweightcharts.example.app.viewmodel.MainViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
@@ -41,8 +44,8 @@ class MainActivity : AppCompatActivity() {
     private val firstChartApi: ChartApi by lazy { charts_view.api }
     private val secondChartApi: ChartApi by lazy { charts_view_second.api }
 
-    private var leftSeries: MutableList<SeriesApi<SeriesData>> = mutableListOf()
-    private var rightSeries: MutableList<SeriesApi<SeriesData>> = mutableListOf()
+    private var leftSeries: MutableList<SeriesApi> = mutableListOf()
+    private var rightSeries: MutableList<SeriesApi> = mutableListOf()
     private var realtimeDataJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,15 +57,15 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.seriesData.observe(this, { data ->
-            setSeriesData(data, PriceScaleId.LEFT, firstChartApi) {
+            createSeriesWithData(data, PriceScaleId.LEFT, firstChartApi) { series ->
                 leftSeries.forEach(firstChartApi::removeSeries)
                 leftSeries.clear()
-                leftSeries.add(it as SeriesApi<SeriesData>)
+                leftSeries.add(series)
             }
-            setSeriesData(data, PriceScaleId.RIGHT, secondChartApi) {
+            createSeriesWithData(data, PriceScaleId.RIGHT, secondChartApi) { series ->
                 rightSeries.forEach(secondChartApi::removeSeries)
                 rightSeries.clear()
-                rightSeries.add(it as SeriesApi<SeriesData>)
+                rightSeries.add(series)
             }
         })
 
@@ -71,15 +74,16 @@ class MainActivity : AppCompatActivity() {
 
         firstChartApi.applyOptions {
             layout = layoutOptions {
-                backgroundColor = "#eeeeee"
-                textColor = "#000000"
+                backgroundColor = Color.LTGRAY
+                textColor = Color.BLACK
             }
             grid = gridOptions {
                 vertLines = gridLineOptions {
-                    color = "#c2c2c2"
+                    color = Color.rgb(0xA0, 0xA0, 0xA0)
                 }
                 horzLines = gridLineOptions {
-                    color = "#c2c2c2"
+                    //aRGB color
+                    color = 0xFFB0B0B0.toInt()
                 }
             }
             rightPriceScale = priceScaleOptions {
@@ -96,12 +100,12 @@ class MainActivity : AppCompatActivity() {
             crosshair = crosshairOptions {
                 mode = CrosshairMode.NORMAL
                 vertLine = crosshairLineOptions {
-                    color = "#555555"
-                    labelBackgroundColor = "#555555"
+                    color = Color.DKGRAY
+                    labelBackgroundColor = Color.DKGRAY
                 }
                 horzLine = crosshairLineOptions {
-                    color = "#555555"
-                    labelBackgroundColor = "#555555"
+                    color = Color.DKGRAY
+                    labelBackgroundColor = Color.DKGRAY
                 }
             }
             handleScroll = handleScrollOptions {
@@ -126,15 +130,24 @@ class MainActivity : AppCompatActivity() {
                     dateTimeFormat = DateTimeFormat.DATE_TIME
                 )
             }
+            watermark = watermarkOptions {
+                visible = true
+                color = Color.argb(102, 11, 94, 29)
+                text = "TradingView Watermark Example"
+                fontSize = 24
+                fontStyle = "italic"
+                horzAlign = HorizontalAlignment.LEFT
+                vertAlign = VerticalAlignment.TOP
+            }
         }
     }
 
 
-    private fun setSeriesData(
+    private fun createSeriesWithData(
         data: Data,
         priceScale: PriceScaleId,
         chartApi: ChartApi,
-        onSeriesCreated: (SeriesApi<*>) -> Unit
+        onSeriesCreated: (SeriesApi) -> Unit
     ) {
         when (data.type) {
             SeriesDataType.AREA -> chartApi.addAreaSeries(
@@ -144,7 +157,8 @@ class MainActivity : AppCompatActivity() {
                         0.02f
                     ),
                     priceScaleId = priceScale,
-                    autoscaleInfoProvider = AutoscaleInfoProvider()
+                    autoscaleInfoProvider = AutoscaleInfoProvider(),
+                    priceLineSource = PriceLineSource.LAST_BAR
                 ),
                 onSeriesCreated = { api ->
                     api.setData(data.list.map { it as LineData })
@@ -153,23 +167,24 @@ class MainActivity : AppCompatActivity() {
                             SeriesMarker(
                                 time = data.list[0].time,
                                 position = SeriesMarkerPosition.ABOVE_BAR,
-                                color = "black",
+                                color = Color.BLACK,
                                 shape = SeriesMarkerShape.ARROW_DOWN,
                                 text = "Example",
                                 size = 2
                             )
                         )
                     )
-                    api.createPriceLine(
-                        PriceLineOptions(
-                            price = 44.1f,
-                            color = "green",
-                            lineWidth = LineWidth.TWO,
-                            lineStyle = LineStyle.Solid,
-                            axisLabelVisible = true,
-                            title = "P/L 500"
-                        )
+                    val options = PriceLineOptions(
+                        price = 44.1f,
+                        //css color green
+                        color = Color.rgb(0,128,0),
+                        lineWidth = LineWidth.TWO,
+                        lineStyle = LineStyle.SOLID,
+                        axisLabelVisible = true,
+                        title = "P/L 500"
                     )
+                    val priceLine = api.createPriceLine(options)
+                    api.removePriceLine(priceLine)
                     onSeriesCreated(api)
                 }
             )
@@ -179,7 +194,7 @@ class MainActivity : AppCompatActivity() {
                     priceScaleId = priceScale
                 ),
                 onSeriesCreated = { api ->
-                    api.setData(data.list.map { it as LineData })
+                    api.setData(data.list)
                     onSeriesCreated(api)
                 }
             )
@@ -189,7 +204,7 @@ class MainActivity : AppCompatActivity() {
                     priceScaleId = priceScale
                 ),
                 onSeriesCreated = { api ->
-                    api.setData(data.list.map { it as BarData })
+                    api.setData(data.list)
                     onSeriesCreated(api)
                 }
             )
@@ -199,7 +214,7 @@ class MainActivity : AppCompatActivity() {
                     priceScaleId = priceScale
                 ),
                 onSeriesCreated = { api ->
-                    api.setData(data.list.map { it as BarData })
+                    api.setData(data.list)
                     onSeriesCreated(api)
                 }
             )
@@ -209,7 +224,7 @@ class MainActivity : AppCompatActivity() {
                     priceScaleId = priceScale
                 ),
                 onSeriesCreated = { api ->
-                    api.setData(data.list.map { it as HistogramData })
+                    api.setData(data.list)
                     onSeriesCreated(api)
                 }
             )

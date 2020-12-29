@@ -1,3 +1,5 @@
+import { logger } from "./logger"
+
 export default class TimeScaleFunctionManager {
 
     constructor(chart, functionManager, pluginManager) {
@@ -28,13 +30,13 @@ export default class TimeScaleFunctionManager {
     }
 
     register() {
-        this.functionManager.registerFunction("scrollPosition", (params, resolve) => {
+        this.functionManager.registerFunction("scrollPosition", (input, resolve) => {
             resolve(this._timeScale().scrollPosition())
         })
-        this.functionManager.registerFunction("scrollToPosition", (params, resolve) => {
-            this._timeScale().scrollToPosition(params.position, params.animated)
+        this.functionManager.registerFunction("scrollToPosition", (input, resolve) => {
+            this._timeScale().scrollToPosition(input.params.position, input.params.animated)
         })
-        this.functionManager.registerFunction("timeScaleOptions", (params, resolve) => {
+        this.functionManager.registerFunction("timeScaleOptions", (input, resolve) => {
             const options = this._timeScale().options()
             if (options.tickMarkFormatter) {
                 const fun = options.tickMarkFormatter
@@ -42,60 +44,65 @@ export default class TimeScaleFunctionManager {
             }
             resolve(options)
         })
-        this.functionManager.registerFunction("timeScaleApplyOptions", (rawParams, resolve) => {
-            this._registerTickMarkFormatter(rawParams, (params) => {
+        this.functionManager.registerFunction("timeScaleApplyOptions", (input, resolve) => {
+            this._registerTickMarkFormatter(input.params, (params) => {
                 this._timeScale().applyOptions(params.options)
-                resolve()
             })
         })
-        this.functionManager.registerFunction("scrollToRealTime", (params, resolve) => {
+        this.functionManager.registerFunction("scrollToRealTime", (input, resolve) => {
             this._timeScale().scrollToRealTime()
         })
-        this.functionManager.registerFunction("getVisibleRange", (params, resolve) => {
+        this.functionManager.registerFunction("getVisibleRange", (input, resolve) => {
             resolve(this._timeScale().getVisibleRange())
         })
-        this.functionManager.registerFunction("setVisibleRange", (params, resolve) => {
-            this._timeScale().setVisibleRange(params.range)
+        this.functionManager.registerFunction("setVisibleRange", (input, resolve) => {
+            this._timeScale().setVisibleRange(input.params.range)
         })
-        this.functionManager.registerFunction("resetTimeScale", (params, resolve) => {
+        this.functionManager.registerFunction("resetTimeScale", (input, resolve) => {
             this._timeScale().resetTimeScale()
         })
-        this.functionManager.registerFunction("fitContent", (params, resolve) => {
+        this.functionManager.registerFunction("fitContent", (input, resolve) => {
             this._timeScale().fitContent()
         })
-        this.functionManager.registerFunction("timeToCoordinate", (params, resolve) => {
-            resolve(this._timeScale().timeToCoordinate(params.time))
+        this.functionManager.registerFunction("timeToCoordinate", (input, resolve) => {
+            resolve(this._timeScale().timeToCoordinate(input.params.time))
         })
-        this.functionManager.registerFunction("coordinateToTime", (params, resolve) => {
-            resolve(this._timeScale().coordinateToTime(params.x))
+        this.functionManager.registerFunction("coordinateToTime", (input, resolve) => {
+            resolve(this._timeScale().coordinateToTime(input.params.x))
+        })
+        this.functionManager.registerFunction("logicalToCoordinate", (input, resolve) => {
+            resolve(this._timeScale().logicalToCoordinate(input.params.logical))
+        })
+        this.functionManager.registerFunction("coordinateToLogical", (input, resolve) => {
+            resolve(this._timeScale().coordinateToLogical(input.params.x))
         })
         this.functionManager.registerSubscription(
             "subscribeVisibleTimeRangeChange",
-            (params, callback) => {
+            (input, callback) => {
                 try {
-                    this._timeScale().subscribeVisibleTimeRangeChange(callback)
-                    console.debug("subscribeVisibleTimeRangeChange successful")
+                    const subscription = callback
+                    this._timeScale().subscribeVisibleTimeRangeChange(subscription)
+                    logger.d("subscribeVisibleTimeRangeChange successful")
+                    return subscription
                 } catch (error) {
-                    console.error(error)
-                    console.warn('subscribeVisibleTimeRangeChange has been failed')
+                    logger.e('subscribeVisibleTimeRangeChange has been failed', error)
                 }
             },
-            (callback) => {
+            (subscription) => {
                 try {
-                    this._timeScale().unsubscribeVisibleTimeRangeChange(callback)
-                    console.debug("unsubscribeVisibleTimeRangeChange successful")
+                    this._timeScale().unsubscribeVisibleTimeRangeChange(subscription)
+                    logger.d("unsubscribeVisibleTimeRangeChange successful")
                 } catch (error) {
-                    console.error(error)
-                    console.warn('unsubscribeVisibleTimeRangeChange has been failed')
+                    logger.e('unsubscribeVisibleTimeRangeChange has been failed', error)
                 }
             }
         )
     }
 
-    fetchTimeScale(params, callback) {
-        let scale = this.cache.get(params.timeScaleId)
+    fetchTimeScale(input, callback) {
+        let scale = this.cache.get(input.params.timeScaleId)
         if (scale === undefined) {
-            this.functionManager.throwFatalError(`TimeScale with uuid:${params.uuid} is not found`, params)
+            this.functionManager.throwFatalError(`TimeScale with uuid:${input.uuid} is not found`, input)
         } else {
             callback(scale)
         }

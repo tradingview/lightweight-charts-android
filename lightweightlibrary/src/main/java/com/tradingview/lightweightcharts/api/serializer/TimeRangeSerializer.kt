@@ -1,39 +1,46 @@
 package com.tradingview.lightweightcharts.api.serializer
 
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
+import com.tradingview.lightweightcharts.help.isNumber
+import com.tradingview.lightweightcharts.help.isString
+import kotlin.contracts.ExperimentalContracts
 
 class TimeRangeSerializer: Serializer<TimeRange>() {
 
-    override fun serialize(any: Any?): TimeRange? {
-        if (any !is Map<*, *>) {
+    @ExperimentalContracts
+    override fun serialize(json: JsonElement): TimeRange? {
+        if (!json.isJsonObject) {
             return null
         }
+        val jsonObject = json.asJsonObject
+        val from = jsonObject.get("from")
+        val to = jsonObject.get("to")
 
-        if (any["from"] is Double) {
-            val from = any["from"] as Double
-            val to = any["to"] as Double
-            return TimeRange(Time.Utc(from.toLong()), Time.Utc(to.toLong()))
-        }
-
-        if (any["from"] is String) {
-            val from = any["from"] as String
-            val to = any["to"] as String
-            return TimeRange(Time.StringTime(from), Time.StringTime(to))
-        }
-
-        if (any["from"] is Map<*, *>) {
-            fun parseBusinessDay(map: Map<*, *>): Time.BusinessDay {
-                return Time.BusinessDay(map["year"] as Int, map["month"] as Int, map["day"] as Int)
+        return when {
+            from.isNumber() -> {
+                TimeRange(Time.Utc(from.asLong), Time.Utc(to.asLong))
             }
+            from.isString() -> {
+                TimeRange(Time.StringTime(from.asString), Time.StringTime(to.asString))
+            }
+            from.isJsonObject -> {
+                fun parseBusinessDay(date: JsonObject): Time.BusinessDay {
+                    return Time.BusinessDay(
+                        date.get("year").asInt,
+                        date.get("month").asInt,
+                        date.get("day").asInt
+                    )
+                }
 
-            val from = (any["from"] as Map<*, *>).let(::parseBusinessDay)
-            val to = (any["to"] as Map<*, *>).let(::parseBusinessDay)
+                val fromDate = from.asJsonObject.let(::parseBusinessDay)
+                val toDate = to.asJsonObject.let(::parseBusinessDay)
 
-            return TimeRange(from, to)
+                TimeRange(fromDate, toDate)
+            }
+            else -> null
         }
-
-        return null
     }
-
 }

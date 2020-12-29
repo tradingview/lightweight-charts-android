@@ -1,6 +1,8 @@
 package com.tradingview.lightweightcharts.runtime.controller
 
+import com.google.gson.JsonElement
 import com.tradingview.lightweightcharts.Logger
+import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.api.serializer.Serializer
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.messaging.*
@@ -17,7 +19,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap()
     ): String {
-        return callFunction(name, params, null)
+        return callBridgeFunction(name, params)
     }
 
     fun callFunction(
@@ -25,31 +27,31 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         params: Map<String, Any> = emptyMap(),
         callback: (() -> Unit)?
     ): String {
-        val bridge = BridgeFunction(name, params)
-
         @Suppress("UNCHECKED_CAST")
-        callbackBuffer[bridge.uuid] = BufferElement(
-            callback as? (Any?) -> Unit,
-            null,
-            Thread.currentThread().stackTrace
-        )
-
-        messageBuffer.addLast(bridge)
-        sendMessages()
-        return bridge.uuid
+        return callBridgeFunction(name, params, callback as? (Any?) -> Unit)
     }
 
-    fun <T: Any> callFunction(
+    fun <T: Any?> callFunction(
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: ((T) -> Unit)?,
-        serializer: Serializer<out T>? = null
+        serializer: Serializer<out T>
+    ): String {
+        @Suppress("UNCHECKED_CAST")
+        return callBridgeFunction(name, params, callback as? (Any?) -> Unit, serializer)
+    }
+
+    private fun callBridgeFunction(
+        name: String,
+        params: Map<String, Any> = emptyMap(),
+        callback: ((Any?) -> Unit)? = null,
+        serializer: Serializer<out Any?> = PrimitiveSerializer.NullSerializer
     ): String {
         val bridge = BridgeFunction(name, params)
 
         @Suppress("UNCHECKED_CAST")
         callbackBuffer[bridge.uuid] = BufferElement(
-            callback as? (Any?) -> Unit,
+            callback,
             serializer,
             Thread.currentThread().stackTrace
         )
@@ -62,8 +64,8 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
     fun <T: Any> callSubscribe(
         name: String,
         params: Map<String, Any> = emptyMap(),
-        callback: (T?) -> Unit,
-        serializer: Serializer<out T>? = null
+        callback: (T) -> Unit,
+        serializer: Serializer<out T>
     ) {
         val bridge = BridgeSubscription(name, params)
         @Suppress("UNCHECKED_CAST")
@@ -78,20 +80,21 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
     fun <T: Any> callUnsubscribe(
         name: String,
-        callback: (T?) -> Unit
+        subscription: (T) -> Unit
     ) {
-        val uuid = callbackBuffer.filterValues { it.callback == callback }.keys.firstOrNull()
+        val uuid = callbackBuffer.filterValues { it.callback == subscription }.keys.firstOrNull()
         if (uuid != null) {
+            callbackBuffer[uuid] = callbackBuffer[uuid]!!.makeInactive()
             val message = BridgeUnsubscribe(name, uuid)
             messageBuffer.addLast(message)
             sendMessages()
         } else {
-            Logger.printE("Subscribe cancellation is failed. Key $uuid is not found")
+            Logger.e("Subscribe cancellation is failed. Key $uuid is not found")
         }
     }
 
     override fun onMessage(bridgeMessage: BridgeMessage) {
-        Logger.printD("Received message from web: $bridgeMessage")
+        Logger.d("Received message from web: $bridgeMessage")
         when (bridgeMessage) {
             is BridgeFunctionResult -> {
                 val element = callbackBuffer.remove(bridgeMessage.uuid)
@@ -103,19 +106,15 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
             is BridgeSubscribeResult -> {
                 val element = callbackBuffer[bridgeMessage.uuid]
-                    ?: throw IllegalStateException(
-                        "Could not apply the subscription result, bridgeMessage: $bridgeMessage")
-
-                element.invoke(bridgeMessage.result)
+                if (element != null && !element.isInactive) {
+                    element.invoke(bridgeMessage.result)
+                } else {
+                    Logger.w("Inactive subscription triggered the action")
+                }
             }
 
             is BridgeUnsubscribeResult -> {
-                val element = callbackBuffer.remove(bridgeMessage.uuid)
-                    ?: throw IllegalStateException(
-                        "Could not apply the subscription cancellation result, " +
-                                "bridgeMessage: $bridgeMessage")
-
-                element.invoke(bridgeMessage.result)
+                callbackBuffer.remove(bridgeMessage.uuid)
             }
 
             is BridgeFatalError -> {
@@ -148,12 +147,15 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
     data class BufferElement(
         val callback: ((Any?) -> Unit)? = null,
-        val serializer: Serializer<out Any>? = null,
-        val stackTrace: Array<StackTraceElement>
+        val serializer: Serializer<out Any?>,
+        val stackTrace: Array<StackTraceElement>,
+        val isInactive: Boolean = false
     ) {
-        fun invoke(any: Any?) {
-            callback?.invoke(serializer?.serialize(any) ?: any)
+        fun invoke(jsonElement: JsonElement) {
+            callback?.invoke(serializer.serialize(jsonElement))
         }
+
+        fun makeInactive(): BufferElement = copy(isInactive = true)
     }
 }
 

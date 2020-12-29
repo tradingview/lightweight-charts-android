@@ -1,3 +1,5 @@
+import { logger } from './logger.js'
+
 export default class SubscriptionsFunctionManager {
 
     constructor(chart, functionManager, getSeriesId) {
@@ -9,60 +11,60 @@ export default class SubscriptionsFunctionManager {
     register() {
         this.functionManager.registerSubscription(
             "subscribeOnClick",
-            (callParams, callback) => {
+            (input, callback) => {
                 try {
-                    chart.subscribeClick((params) => {
+                    const subscription = (params) => {
                         let customSeries = []
                         params.seriesPrices.forEach((value, key, map) => {
-                            customSeries.push({ id: this.getSeriesId(key, callParams), prices: value })
+                            customSeries.push({ id: this.getSeriesId(key, input), prices: value })
                         })
                         params.seriesPrices = customSeries
                         callback(params)
-                    })
-                    console.debug("subscribeOnChartClicked successful")
+                    }
+                    chart.subscribeClick(subscription)
+                    logger.d("subscribeOnChartClicked successful")
+                    return subscription
                 } catch (error) {
-                    console.error(error)
-                    console.warn('subscribeOnClick has been failed')
+                    logger.e('subscribeOnClick has been failed', error)
+                    return null
                 }
             },
-            (callback) => {
+            (subscription) => {
                 try {
-                    chart.unsubscribeClick(callback)
-                    console.debug("unsubscribeOnChartClicked successful")
+                    chart.unsubscribeClick(subscription)
+                    logger.d("unsubscribeOnChartClicked successful")
                 } catch (error) {
-                    console.error(error)
-                    console.warn('unsubscribeOnClick has been failed')
+                    logger.e('unsubscribeOnClick has been failed', error)
                 }
             }
         )
 
         this.functionManager.registerSubscription(
             "subscribeCrosshairMove",
-            (callParams, callback) => {
+            (input, callback) => {
                 try {
-                    chart.subscribeCrosshairMove((params) => {
+                    const subscription = (params) => {
                         let customSeries = []
-                        console.log("series prices", params.seriesPrices)
                         params.seriesPrices.forEach((value, key, map) => {
-                            console.log("series prices forEach", value, key)
-                            customSeries.push({ id: this.getSeriesId(key, callParams), prices: value })
+                            customSeries.push({ id: this.getSeriesId(key, input), prices: value })
                         })
                         params.seriesPrices = customSeries
                         callback(params)
-                    })
-                    console.debug("subscribeCrosshairMove successful")
+                    }
+                    chart.subscribeCrosshairMove(subscription)
+                    logger.d("subscribeCrosshairMove successful")
+                    return subscription
                 } catch (error) {
-                    console.error(error)
-                    console.warn('subscribeCrosshairMove has been failed')
+                    logger.e('subscribeCrosshairMove has been failed', error)
+                    return null
                 }
             },
-            (callback) => {
+            (subscription) => {
                 try {
-                    chart.unsubscribeCrosshairMove(callback)
-                    console.debug("unsubscribeCrosshairMove successful")
+                    chart.unsubscribeCrosshairMove(subscription)
+                    logger.d("unsubscribeCrosshairMove successful")
                 } catch (error) {
-                    console.error(error)
-                    console.warn('unsubscribeCrosshairMove has been failed')
+                    logger.e('unsubscribeCrosshairMove has been failed', error)
                 }
             }
         )

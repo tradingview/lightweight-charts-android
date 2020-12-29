@@ -1,15 +1,18 @@
+
+import { logger } from './logger.js'
+
 export default class FunctionManager {
     constructor(port) {
         this.functions = []
         this.port = port
-        this.subscriberCallbacksMap = new Map()
+        this.subscriptions = new Map()
     }
 
     registerFunction(functionName, functionRef) {
         if (!this.hasDuplicates(functionName)) {
             this.functions.push({name: functionName, functionRef: functionRef})
         } else {
-            console.error(`Function:${functionName} already registered`)
+            logger.e(`Function:${functionName} already registered`)
         }
     }
 
@@ -17,7 +20,7 @@ export default class FunctionManager {
         if (!this.hasDuplicates(subscriptionName)) {
             this.functions.push({name: subscriptionName, subscribe: subscribe, unsubscribe: unsubscribe })
         } else {
-            console.error(`Subscription:${subscriptionName} already registered`)
+            logger.e(`Subscription:${subscriptionName} already registered`)
         }
     }
 
@@ -54,7 +57,7 @@ export default class FunctionManager {
         }
 
         let callback = (result) => {
-            console.debug('subscription result', result)
+            logger.d('subscription result', result)
             this.port.postMessage(JSON.stringify({
                 messageType: "Message::SubscriptionResult",
                 data: {
@@ -64,8 +67,8 @@ export default class FunctionManager {
                 }
             }))
         }
-        this.subscriberCallbacksMap.set(data.uuid, callback)
-        fn.subscribe(data, callback)
+        const subscription = fn.subscribe(data, callback)
+        this.subscriptions.set(data.uuid + data.fn, subscription)
     }
 
     unsubscribe(data) {
@@ -76,15 +79,17 @@ export default class FunctionManager {
             return
         }
 
-        const subscriberCallback = this.subscriberCallbacksMap.get(data.uuid)
+        const id = data.uuid + data.fn
+        const subscription = this.subscriptions.get(id)
 
-        if (subscriberCallback === undefined) {
+        if (subscription === undefined) {
             this.throwFatalError(`Subscriber:${data.fn} with uuid:${data.uuid} is not found`, data)
             return
         }
 
-        fn.unsubscribe(subscriberCallback)
-        this.subscriberCallbacksMap.delete(data.uuid)
+        fn.unsubscribe(subscription)
+        this.subscriptions.delete(id)
+
         this.port.postMessage(JSON.stringify({
             messageType: "Message::SubscriptionCancellationResult",
             data: {
@@ -95,7 +100,7 @@ export default class FunctionManager {
     }
 
     throwFatalError(message, data) {
-        console.error(message)
+        logger.e(message)
 
         if (data === undefined) {
             data = {}

@@ -1,12 +1,9 @@
 package com.tradingview.lightweightcharts.api.delegates
 
-import com.google.gson.reflect.TypeToken
-import com.tradingview.lightweightcharts.Logger
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.COORDINATE_TO_PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.CREATE_PRICE_LINE
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_FORMATTER
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.REMOVE_PRICE_LINE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.SET_MARKERS
@@ -21,18 +18,19 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
+import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.api.serializer.Serializer
 import com.tradingview.lightweightcharts.api.series.common.*
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 
-class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
+class SeriesApiDelegate<T: SeriesOptionsCommon>(
     override val uuid: String,
     private val controller: WebMessageController,
-    private val optionsSerializer: Serializer<out O>
-): SeriesApi<T> {
+    private val optionsSerializer: Serializer<out T>
+): SeriesApi {
 
-    override fun setData(data: List<T>) {
+    override fun setData(data: List<SeriesData>) {
         controller.callFunction(
             SET_SERIES,
             mapOf(
@@ -42,36 +40,27 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         )
     }
 
-    override fun priceFormatter(): PriceFormatter {
-        val uuid = controller.callFunction(
-            PRICE_FORMATTER,
-            mapOf(SERIES_UUID to uuid)
-        )
-        return PriceFormatterDelegate(
-            uuid,
-            controller
-        )
-    }
-
-    override fun priceToCoordinate(price: Float, completion: (Float?) -> Unit) {
-        controller.callFunction<Double>(
+    override fun priceToCoordinate(price: Float, onCoordinateReceived: (Float?) -> Unit) {
+        controller.callFunction<Float?>(
             PRICE_TO_COORDINATE,
             mapOf(
                 SERIES_UUID to uuid,
                 PRICE to price
             ),
-            callback = { completion(it?.toFloat()) }
+            callback = onCoordinateReceived,
+            PrimitiveSerializer.FloatSerializer
         )
     }
 
-    override fun coordinateToPrice(coordinate: Float, completion: (Float?) -> Unit) {
+    override fun coordinateToPrice(coordinate: Float, onPriceReceived: (Float?) -> Unit) {
         controller.callFunction(
             COORDINATE_TO_PRICE,
             mapOf(
                 SERIES_UUID to uuid,
                 COORDINATE to coordinate
             ),
-            callback = completion
+            callback = onPriceReceived,
+            PrimitiveSerializer.FloatSerializer
         )
     }
 
@@ -85,13 +74,11 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         )
     }
 
-    override fun options(completion: (SeriesOptionsCommon?) -> Unit) {
-        val collectionType = object : TypeToken<T>() {}.type
-        Logger.printD("type $collectionType")
+    override fun options(onOptionsReceived: (SeriesOptionsCommon) -> Unit) {
         controller.callFunction(
             OPTIONS,
             mapOf(SERIES_UUID to uuid),
-            callback = completion,
+            callback = onOptionsReceived,
             serializer = optionsSerializer
         )
     }
@@ -130,7 +117,7 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
         )
     }
 
-    override fun update(bar: T) {
+    override fun update(bar: SeriesData) {
         controller.callFunction(
             UPDATE,
             mapOf(
@@ -139,5 +126,4 @@ class SeriesApiDelegate<T: SeriesData, O : SeriesOptionsCommon>(
             )
         )
     }
-
 }

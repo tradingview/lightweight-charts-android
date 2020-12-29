@@ -2,6 +2,7 @@ import SeriesFunctionManager from "./series-function-manager.js";
 import SubscriptionsFunctionManager from "./subscriptions-function-manager";
 import PriceScaleFunctionManager from "./price-scale-function-manager";
 import TimeScaleFunctionManager from "./time-scale-function-manager";
+import { logger } from './logger.js';
 
 export default class ChartRegistrationFunctionsController {
 
@@ -30,14 +31,11 @@ export default class ChartRegistrationFunctionsController {
         const priceScale = new PriceScaleFunctionManager(this.chart, this.functionManager)
         priceScale.register()
 
-        this.functionManager.registerFunction("print", (params, resolve) => {
-            console.log(params.text)
-        })
-
         this.functionManager.registerFunction("remove", (params, resolve) => {
             this.cache.clear()
             this.chart.remove()
         })
+
         this.functionManager.registerFunction("chartOptions", (params, resolve) => {
             let options = this.chart.options()
 
@@ -58,47 +56,46 @@ export default class ChartRegistrationFunctionsController {
 
             resolve(options)
         })
-        this.functionManager.registerFunction("chartApplyOptions", (params, resolve) => {
-            console.log(params)
+        this.functionManager.registerFunction("chartApplyOptions", (input, resolve) => {
             new Promise((resolve) => {
-                if (!params.options.localization || !params.options.localization.priceFormatter) {
+                if (!input.params.options.localization || !input.params.options.localization.priceFormatter) {
                     resolve()
                     return
                 }
 
-                const plugin = params.options.localization.priceFormatter
+                const plugin = input.params.options.localization.priceFormatter
                 this.pluginManager.register(plugin, (fun) => {
-                    params.options.localization.priceFormatter = fun
-                    console.log('plugin priceFormatter registered')
+                    input.params.options.localization.priceFormatter = fun
+                    logger.d('plugin priceFormatter registered')
                     resolve()
                 })
             }).then(() => new Promise((resolve) => {
-                if (!params.options.localization || !params.options.localization.timeFormatter) {
+                if (!input.params.options.localization || !input.params.options.localization.timeFormatter) {
                     resolve()
                     return
                 }
 
-                const plugin = params.options.localization.timeFormatter
+                const plugin = input.params.options.localization.timeFormatter
                 this.pluginManager.register(plugin, (fun) => {
-                    params.options.localization.timeFormatter = fun
-                    console.log('plugin timeFormatter registered')
+                    input.params.options.localization.timeFormatter = fun
+                    logger.d('plugin timeFormatter registered')
                     resolve()
                 })
             })).then(() => new Promise((resolve) => {
-                if (!params.options.timeScale || !params.options.timeScale.tickMarkFormatter) {
+                if (!input.params.options.timeScale || !input.params.options.timeScale.tickMarkFormatter) {
                     resolve()
                     return
                 }
 
-                const plugin = params.options.timeScale.tickMarkFormatter
+                const plugin = input.params.options.timeScale.tickMarkFormatter
                 this.pluginManager.register(plugin, (fun) => {
-                    params.options.timeScale.tickMarkFormatter = fun
-                    console.log('plugin tickMarkFormatter registered')
+                    input.params.options.timeScale.tickMarkFormatter = fun
+                    logger.d('plugin tickMarkFormatter registered')
                     resolve()
                 })
             })).then(() => {
-                this.chart.applyOptions(params.options)
-                console.log('apply options')
+                this.chart.applyOptions(input.params.options)
+                logger.d('apply options')
             })
         })
 
