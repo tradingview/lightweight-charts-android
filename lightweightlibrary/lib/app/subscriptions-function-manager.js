@@ -1,3 +1,5 @@
+import { logger } from './logger.js'
+
 export default class SubscriptionsFunctionManager {
 
     constructor(chart, functionManager, getSeriesId) {
@@ -20,19 +22,19 @@ export default class SubscriptionsFunctionManager {
                         callback(params)
                     }
                     chart.subscribeClick(subscription)
-                    logger.debug("subscribeOnChartClicked successful")
+                    logger.d("subscribeOnChartClicked successful")
                     return subscription
                 } catch (error) {
-                    logger.error('subscribeOnClick has been failed', error)
+                    logger.e('subscribeOnClick has been failed', error)
                     return null
                 }
             },
             (subscription) => {
                 try {
                     chart.unsubscribeClick(subscription)
-                    logger.debug("unsubscribeOnChartClicked successful")
+                    logger.d("unsubscribeOnChartClicked successful")
                 } catch (error) {
-                    logger.error('unsubscribeOnClick has been failed', error)
+                    logger.e('unsubscribeOnClick has been failed', error)
                 }
             }
         )
@@ -50,19 +52,19 @@ export default class SubscriptionsFunctionManager {
                         callback(params)
                     }
                     chart.subscribeCrosshairMove(subscription)
-                    logger.debug("subscribeCrosshairMove successful")
+                    logger.d("subscribeCrosshairMove successful")
                     return subscription
                 } catch (error) {
-                    logger.error('subscribeCrosshairMove has been failed', error)
+                    logger.e('subscribeCrosshairMove has been failed', error)
                     return null
                 }
             },
             (subscription) => {
                 try {
                     chart.unsubscribeCrosshairMove(subscription)
-                    logger.debug("unsubscribeCrosshairMove successful")
+                    logger.d("unsubscribeCrosshairMove successful")
                 } catch (error) {
-                    logger.error('unsubscribeCrosshairMove has been failed', error)
+                    logger.e('unsubscribeCrosshairMove has been failed', error)
                 }
             }
         )

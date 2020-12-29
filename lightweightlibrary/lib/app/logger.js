@@ -40,4 +40,4 @@ export default class Logger {
     }
 }
 
-export var logger = new Logger()
+export const logger = new Logger()

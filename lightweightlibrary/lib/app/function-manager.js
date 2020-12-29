@@ -1,3 +1,6 @@
+
+import { logger } from './logger.js'
+
 export default class FunctionManager {
     constructor(port) {
         this.functions = []
@@ -9,7 +12,7 @@ export default class FunctionManager {
         if (!this.hasDuplicates(functionName)) {
             this.functions.push({name: functionName, functionRef: functionRef})
         } else {
-            logger.error(`Function:${functionName} already registered`)
+            logger.e(`Function:${functionName} already registered`)
         }
     }
 
@@ -17,7 +20,7 @@ export default class FunctionManager {
         if (!this.hasDuplicates(subscriptionName)) {
             this.functions.push({name: subscriptionName, subscribe: subscribe, unsubscribe: unsubscribe })
         } else {
-            logger.error(`Subscription:${subscriptionName} already registered`)
+            logger.e(`Subscription:${subscriptionName} already registered`)
         }
     }
 
@@ -54,7 +57,7 @@ export default class FunctionManager {
         }
 
         let callback = (result) => {
-            logger.debug('subscription result', result)
+            logger.d('subscription result', result)
             this.port.postMessage(JSON.stringify({
                 messageType: "Message::SubscriptionResult",
                 data: {
@@ -97,7 +100,7 @@ export default class FunctionManager {
     }
 
     throwFatalError(message, data) {
-        logger.error(message)
+        logger.e(message)
 
         if (data === undefined) {
             data = {}

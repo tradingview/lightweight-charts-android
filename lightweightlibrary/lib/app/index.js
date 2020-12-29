@@ -38,12 +38,10 @@ onmessage = function (message) {
     port.onmessage = function (event) {
         const nativeMessage = JSON.parse(event.data)
 
-        if (debug) {
-            if (nativeMessage.data.fn) {
-                logger.d("function", nativeMessage.data.fn)
-            }
-            logger.d("data", JSON.stringify(nativeMessage.data))
+        if (nativeMessage.data.fn) {
+            logger.d("function", nativeMessage.data.fn)
         }
+        logger.d("data", JSON.stringify(nativeMessage.data))
 
         switch (nativeMessage.messageType) {
             case 'Message::Function':

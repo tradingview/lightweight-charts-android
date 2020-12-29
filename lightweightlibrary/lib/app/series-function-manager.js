@@ -1,3 +1,5 @@
+import { logger } from './logger.js'
+
 export default class SeriesFunctionManager {
 
     constructor(chart, functionManager, pluginManager) {

@@ -83,18 +83,18 @@ export default class TimeScaleFunctionManager {
                 try {
                     const subscription = callback
                     this._timeScale().subscribeVisibleTimeRangeChange(subscription)
-                    logger.debug("subscribeVisibleTimeRangeChange successful")
+                    logger.d("subscribeVisibleTimeRangeChange successful")
                     return subscription
                 } catch (error) {
-                    logger.error('subscribeVisibleTimeRangeChange has been failed', error)
+                    logger.e('subscribeVisibleTimeRangeChange has been failed', error)
                 }
             },
             (subscription) => {
                 try {
                     this._timeScale().unsubscribeVisibleTimeRangeChange(subscription)
-                    logger.debug("unsubscribeVisibleTimeRangeChange successful")
+                    logger.d("unsubscribeVisibleTimeRangeChange successful")
                 } catch (error) {
-                    logger.error('unsubscribeVisibleTimeRangeChange has been failed', error)
+                    logger.e('unsubscribeVisibleTimeRangeChange has been failed', error)
                 }
             }
         )

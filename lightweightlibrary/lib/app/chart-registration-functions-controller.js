@@ -66,7 +66,7 @@ export default class ChartRegistrationFunctionsController {
                 const plugin = input.params.options.localization.priceFormatter
                 this.pluginManager.register(plugin, (fun) => {
                     input.params.options.localization.priceFormatter = fun
-                    logger.debug('plugin priceFormatter registered')
+                    logger.d('plugin priceFormatter registered')
                     resolve()
                 })
             }).then(() => new Promise((resolve) => {
@@ -78,7 +78,7 @@ export default class ChartRegistrationFunctionsController {
                 const plugin = input.params.options.localization.timeFormatter
                 this.pluginManager.register(plugin, (fun) => {
                     input.params.options.localization.timeFormatter = fun
-                    logger.debug('plugin timeFormatter registered')
+                    logger.d('plugin timeFormatter registered')
                     resolve()
                 })
             })).then(() => new Promise((resolve) => {
@@ -90,12 +90,12 @@ export default class ChartRegistrationFunctionsController {
                 const plugin = input.params.options.timeScale.tickMarkFormatter
                 this.pluginManager.register(plugin, (fun) => {
                     input.params.options.timeScale.tickMarkFormatter = fun
-                    logger.debug('plugin tickMarkFormatter registered')
+                    logger.d('plugin tickMarkFormatter registered')
                     resolve()
                 })
             })).then(() => {
                 this.chart.applyOptions(input.params.options)
-                logger.debug('apply options')
+                logger.d('apply options')
             })
         })
 
