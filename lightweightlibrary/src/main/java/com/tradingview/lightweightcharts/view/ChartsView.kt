@@ -7,6 +7,7 @@ import android.webkit.WebView
 import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature.*
+import com.tradingview.lightweightcharts.Logger
 import com.tradingview.lightweightcharts.api.delegates.ChartApiDelegate
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
@@ -84,8 +85,13 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        state = State.Preparing()
-        super.loadUrl(DEFAULT_URL)
+        if (state is State.Ready) {
+            Logger.d("Reattach to window")
+            webMessageController.setWebMessageChannel(channel)
+        } else {
+            state = State.Preparing()
+            super.loadUrl(DEFAULT_URL)
+        }
     }
 
     override fun onDetachedFromWindow() {

@@ -1,5 +1,6 @@
 package com.tradingview.lightweightcharts.example.app.view
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
@@ -309,6 +310,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.menu_histogram_time -> viewModel.selectSeries(SeriesDataType.HISTOGRAM)
                     R.id.menu_candlestick_time -> viewModel.selectSeries(SeriesDataType.CANDLESTICK)
                     R.id.menu_line_time -> viewModel.selectSeries(SeriesDataType.LINE)
+                    R.id.menu_view_pager -> {
+                        startActivity(Intent(this@MainActivity, ViewPagerActivity::class.java))
+                    }
                 }
             }
             drawer.closeDrawers()
