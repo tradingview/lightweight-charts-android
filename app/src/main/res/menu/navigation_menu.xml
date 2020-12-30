@@ -21,4 +21,11 @@
             </menu>
         </item>
     </group>
+    <group android:checkableBehavior="single">
+        <item android:title="Pages">
+            <item
+                android:id="@+id/menu_view_pager"
+                android:title="Open ViewPager"/>
+        </item>
+    </group>
 </menu>
