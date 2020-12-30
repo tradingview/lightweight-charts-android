@@ -53,6 +53,12 @@ class ViewPagerActivity : AppCompatActivity() {
                 return ChartsViewHolder(layout, this@ViewPagerActivity)
             }
 
+            override fun getItemViewType(position: Int): Int {
+                //We should hold the instance to ChartsView as long as possible
+                //Every page will create its own ChartsView
+                return position
+            }
+
             override fun onBindViewHolder(holder: ChartsViewHolder, position: Int) {
                 holder.bind()
             }
