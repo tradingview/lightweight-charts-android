@@ -74,11 +74,10 @@ firstChartApi.applyOptions {
 Add any series to the chart and store a reference to it.
 
 ```kotlin
-lateinit var lineSeries: SeriesApi
-charts_view.api.addLineSeries(
+lateinit var histogramSeries: SeriesApi
+charts_view.api.addHistogramSeries(
     onSeriesCreated = { series ->
-        lineSeries = series
-        lineSeries.requestAndSetData() // custom extension
+        histogramSeries = series
     }
 )
 ```
@@ -86,19 +85,17 @@ charts_view.api.addLineSeries(
 Add data to the series.
 
 ```kotlin
-fun SeriesApi.requestAndSetData() {
-    val data = listOf(
-        LineData(Time.BusinessDay(2019, 6, 11), 40.01f),
-        LineData(Time.BusinessDay(2019, 6, 12), 52.38f),
-        LineData(Time.BusinessDay(2019, 6, 13), 36.30f),
-        LineData(Time.BusinessDay(2019, 6, 14), 34.48f),
-        WhitespaceData(Time.BusinessDay(2019, 6, 15)),
-        WhitespaceData(Time.BusinessDay(2019, 6, 16)),
-        LineData(Time.BusinessDay(2019, 6, 17), 41.50f),
-        LineData(Time.BusinessDay(2019, 6, 18), 34.82f)
-    )
-    this.setData(data)
-}
+val data = listOf(
+    HistogramData(Time.BusinessDay(2019, 6, 11), 40.01f),
+    HistogramData(Time.BusinessDay(2019, 6, 12), 52.38f),
+    HistogramData(Time.BusinessDay(2019, 6, 13), 36.30f),
+    HistogramData(Time.BusinessDay(2019, 6, 14), 34.48f),
+    WhitespaceData(Time.BusinessDay(2019, 6, 15)),
+    WhitespaceData(Time.BusinessDay(2019, 6, 16)),
+    HistogramData(Time.BusinessDay(2019, 6, 17), 41.50f),
+    HistogramData(Time.BusinessDay(2019, 6, 18), 34.82f)
+)
+histogramSeries.setData(data)
 ```
 
 ## License
