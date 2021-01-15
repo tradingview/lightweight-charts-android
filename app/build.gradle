@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.tradingview:lightweightcharts:3.2.0-rc1'
+    implementation 'com.tradingview:lightweightcharts:3.2.0'
 //    implementation project(":lightweightlibrary")
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -37,8 +37,8 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 }
