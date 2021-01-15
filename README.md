@@ -16,10 +16,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        //...
-        maven {
-            url "https://dl.bintray.com/tradingview-org/charts"
-        }
     }
 }
 ```
