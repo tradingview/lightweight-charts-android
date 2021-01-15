@@ -51,7 +51,7 @@ Add view to the layout.
 Configure the chart layout.
 
 ```kotlin
-firstChartApi.applyOptions {
+charts_view.api.applyOptions {
     layout = layoutOptions {
         backgroundColor = Color.LTGRAY
         textColor = Color.BLACK
