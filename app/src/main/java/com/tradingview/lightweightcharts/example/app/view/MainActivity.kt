@@ -305,11 +305,14 @@ class MainActivity : AppCompatActivity() {
                 realtimeDataJob?.cancelAndJoin()
                 viewModel.loadData()
                 when (menuItem.itemId) {
-                    R.id.menu_area_series -> viewModel.selectSeries(SeriesDataType.AREA)
-                    R.id.menu_bar_prices -> viewModel.selectSeries(SeriesDataType.BAR)
-                    R.id.menu_histogram_time -> viewModel.selectSeries(SeriesDataType.HISTOGRAM)
-                    R.id.menu_candlestick_time -> viewModel.selectSeries(SeriesDataType.CANDLESTICK)
-                    R.id.menu_line_time -> viewModel.selectSeries(SeriesDataType.LINE)
+                    R.id.menu_bar_chart -> viewModel.selectSeries(SeriesDataType.BAR)
+                    R.id.menu_custom_price_formatter -> viewModel.selectSeries(SeriesDataType.BAR)
+                    R.id.menu_custom_themes -> viewModel.selectSeries(SeriesDataType.HISTOGRAM)
+                    R.id.menu_floating_tooltip -> viewModel.selectSeries(SeriesDataType.CANDLESTICK)
+                    R.id.menu_volume_study -> viewModel.selectSeries(SeriesDataType.LINE)
+                    R.id.menu_real_time_emulation -> viewModel.selectSeries(SeriesDataType.LINE)
+                    R.id.menu_series_markers -> viewModel.selectSeries(SeriesDataType.LINE)
+                    R.id.menu_price_lines_with_titles -> viewModel.selectSeries(SeriesDataType.LINE)
                     R.id.menu_view_pager -> {
                         startActivity(Intent(this@MainActivity, ViewPagerActivity::class.java))
                     }

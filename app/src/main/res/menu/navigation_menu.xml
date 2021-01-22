@@ -4,20 +4,29 @@
         <item android:title="Series">
             <menu>
                 <item
-                    android:id="@+id/menu_area_series"
-                    android:title="Area series"/>
+                    android:id="@+id/menu_bar_chart"
+                    android:title="Bar chart"/>
                 <item
-                    android:id="@+id/menu_bar_prices"
-                    android:title="Bar series"/>
+                    android:id="@+id/menu_custom_price_formatter"
+                    android:title="Custom price formatter"/>
                 <item
-                    android:id="@+id/menu_histogram_time"
-                    android:title="Histogram series"/>
+                    android:id="@+id/menu_custom_themes"
+                    android:title="Custom themes"/>
                 <item
-                    android:id="@+id/menu_candlestick_time"
-                    android:title="Candlestick series"/>
+                    android:id="@+id/menu_floating_tooltip"
+                    android:title="Floating tooltip"/>
                 <item
-                    android:id="@+id/menu_line_time"
-                    android:title="Line series"/>
+                    android:id="@+id/menu_volume_study"
+                    android:title="Volume study"/>
+                <item
+                    android:id="@+id/menu_real_time_emulation"
+                    android:title="Realtime emulation"/>
+                <item
+                    android:id="@+id/menu_series_markers"
+                    android:title="Series markers"/>
+                <item
+                    android:id="@+id/menu_price_lines_with_titles"
+                    android:title="Price lines with titles"/>
             </menu>
         </item>
     </group>
