@@ -15,16 +15,16 @@ class BarChartFragment: BaseFragment() {
         firstChartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.WHITE
-                textColor = Color.argb(33, 56, 77, 1)
+                textColor = Color.argb(1, 33, 56, 77)
             }
             crosshair = crosshairOptions {
                 mode = CrosshairMode.NORMAL
             }
             rightPriceScale = priceScaleOptions {
-                borderColor = Color.argb(197, 203, 206, 1)
+                borderColor = Color.argb(1, 197, 203, 206)
             }
             timeScale = timeScaleOptions {
-                borderColor = Color.argb(197, 203, 206, 1)
+                borderColor = Color.argb(1, 197, 203, 206)
             }
         }
     }

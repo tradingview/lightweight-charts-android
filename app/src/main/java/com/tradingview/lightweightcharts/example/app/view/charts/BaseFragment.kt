@@ -177,10 +177,10 @@ abstract class BaseFragment: Fragment() {
             when (state) {
                 is ChartsView.State.Preparing -> Unit
                 is ChartsView.State.Ready -> {
-                    Toast.makeText(this, "Chart ${view.id} is ready", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Chart ${view.id} is ready", Toast.LENGTH_SHORT).show()
                 }
                 is ChartsView.State.Error -> {
-                    Toast.makeText(this, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
                 }
             }
         }

@@ -11,7 +11,7 @@ class CustomPriceFormatterFragment: BaseFragment() {
         firstChartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.WHITE
-                textColor = Color.argb(255, 255, 255, 0.8)
+                textColor = Color.argb(0.8f, 255f, 255f, 255f)
             }
             localization = localizationOptions {
                 priceFormatter = PriceFormatter(template = "{price:#2}$")
@@ -20,14 +20,18 @@ class CustomPriceFormatterFragment: BaseFragment() {
                 mode = CrosshairMode.NORMAL
             }
             rightPriceScale = priceScaleOptions {
-                borderColor = Color.argb(255, 255, 255, 0.8)
+                borderColor = Color.argb(0.8f, 255f, 255f, 255f)
             }
             timeScale = timeScaleOptions {
-                borderColor = Color.argb(255, 255, 255, 0.8)
+                borderColor = Color.argb(0.8f, 255f, 255f, 255f)
             }
             grid = gridOptions {
-                vertLines = Color.argb(255, 255, 255, 0.2)
-                horzLines = Color.argb(255, 255, 255, 0.2)
+                vertLines = gridLineOptions {
+                    color = Color.argb(0.2f, 255f, 255f, 255f)
+                }
+                horzLines = gridLineOptions {
+                    color = Color.argb(0.2f, 255f, 255f, 255f)
+                }
             }
         }
     }
