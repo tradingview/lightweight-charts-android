@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
@@ -10,7 +9,7 @@ class BarChartViewModel: BaseViewModel() {
 
     override fun loadData() {
         viewModelScope.launch {
-            val barData = staticRepository.getListBarSeriesData()
+            val barData = staticRepository.getBarChartSeriesData()
             data.postValue(Data(barData, SeriesDataType.BAR))
         }
     }

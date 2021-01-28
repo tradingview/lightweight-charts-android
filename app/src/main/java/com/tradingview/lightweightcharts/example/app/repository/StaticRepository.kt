@@ -8,21 +8,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class StaticRepository {
-    suspend fun getListSeriesMarker(): MutableList<SeriesMarker> {
+    suspend fun getBarChartSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listSeriesMarker()
+            return@withContext barChartSeriesData()
         }
     }
 
-    suspend fun getListBarSeriesData(): MutableList<SeriesData> {
+    suspend fun getCustomPriceFormatterSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listBarSeriesData()
-        }
-    }
-
-    suspend fun getListLineSeriesData(): MutableList<SeriesData> {
-        return withContext(Dispatchers.IO) {
-            return@withContext listLineSeriesData()
+            return@withContext customPriceFormatterSeriesData()
         }
     }
 

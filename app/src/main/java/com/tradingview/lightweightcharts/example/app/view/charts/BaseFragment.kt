@@ -2,9 +2,11 @@ package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
@@ -13,6 +15,7 @@ import com.tradingview.lightweightcharts.api.series.models.LineData
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
@@ -28,14 +31,21 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
     protected val firstChartApi: ChartApi by lazy { charts_view.api }
     protected val secondChartApi: ChartApi by lazy { charts_view_second.api }
 
-    private var leftSeries: MutableList<SeriesApi> = mutableListOf()
-    private var rightSeries: MutableList<SeriesApi> = mutableListOf()
+    protected var leftSeries: MutableList<SeriesApi> = mutableListOf()
+    protected var rightSeries: MutableList<SeriesApi> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         provideViewModel()
-
         observeViewModelData()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.layout_chart_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         subscribeOnChartReady(charts_view)
         subscribeOnChartReady(charts_view_second)
         applyChartOptions()
@@ -43,7 +53,7 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
 
     abstract fun provideViewModel()
 
-    private fun observeViewModelData() {
+    protected fun observeViewModelData() {
         viewModel.seriesData.observe(this, { data ->
             createSeriesWithData(data, PriceScaleId.LEFT, firstChartApi) { series ->
                 leftSeries.forEach(firstChartApi::removeSeries)
@@ -58,7 +68,7 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
         })
     }
 
-    private fun createSeriesWithData(
+    protected fun createSeriesWithData(
             data: Data,
             priceScale: PriceScaleId,
             chartApi: ChartApi,
@@ -153,7 +163,7 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
 //        realtimeDataJob?.cancelAndJoin()
     }
 
-    private fun subscribeOnChartReady(view: ChartsView) {
+    protected fun subscribeOnChartReady(view: ChartsView) {
         view.subscribeOnChartStateChange { state ->
             when (state) {
                 is ChartsView.State.Preparing -> Unit
@@ -166,73 +176,4 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
             }
         }
     }
-
-//    firstChartApi.applyOptions {
-//        layout = layoutOptions {
-//            backgroundColor = Color.WHITE
-//            textColor = Color.argb(33, 56, 77, 1)
-//        }
-//        grid = gridOptions {
-//            vertLines = gridLineOptions {
-//                color = Color.rgb(0xA0, 0xA0, 0xA0)
-//            }
-//            horzLines = gridLineOptions {
-//                //aRGB color
-//                color = 0xFFB0B0B0.toInt()
-//            }
-//        }
-//        rightPriceScale = priceScaleOptions {
-//            visible = false
-//        }
-//        leftPriceScale = priceScaleOptions {
-//            visible = true
-//            autoScale = true
-//            scaleMargins = priceScaleMargins {
-//                top = 0.2f
-//                bottom = 0.2f
-//            }
-//        }
-//        crosshair = crosshairOptions {
-//            mode = CrosshairMode.NORMAL
-//            vertLine = crosshairLineOptions {
-//                color = Color.DKGRAY
-//                labelBackgroundColor = Color.DKGRAY
-//            }
-//            horzLine = crosshairLineOptions {
-//                color = Color.DKGRAY
-//                labelBackgroundColor = Color.DKGRAY
-//            }
-//        }
-//        handleScroll = handleScrollOptions {
-//            horzTouchDrag = true
-//            vertTouchDrag = false
-//        }
-//        handleScale = handleScaleOptions {
-//            axisPressedMouseMove = axisPressedMouseMoveOptions {
-//                time = true
-//                price = false
-//            }
-//        }
-//        timeScale = timeScaleOptions {
-//            tickMarkFormatter = TickMarkFormatter()
-//        }
-//        localization = localizationOptions {
-//            locale = "ru-RU"
-//            //priceFormatter = Eval("function() { return 123 }")
-//            priceFormatter = PriceFormatter(template = "{price:#2:#3}$")
-//            timeFormatter = TimeFormatter(
-//                    locale = "ru-RU",
-//                    dateTimeFormat = DateTimeFormat.DATE_TIME
-//            )
-//        }
-//        watermark = watermarkOptions {
-//            visible = true
-//            color = Color.argb(102, 11, 94, 29)
-//            text = "TradingView Watermark Example"
-//            fontSize = 24
-//            fontStyle = "italic"
-//            horzAlign = HorizontalAlignment.LEFT
-//            vertAlign = VerticalAlignment.TOP
-//        }
-//    }
 }
