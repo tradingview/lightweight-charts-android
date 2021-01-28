@@ -1,10 +1,17 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
+import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.example.app.view.charts.BaseFragment
+import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
+import com.tradingview.lightweightcharts.example.app.viewmodel.VolumeStudyViewModel
 
-class VolumeStudyFragment: BaseFragment() {
+class VolumeStudyFragment: BaseFragment<VolumeStudyViewModel>() {
+
+    override fun provideViewModel() {
+        viewModel = ViewModelProvider(this).get(VolumeStudyViewModel::class.java)
+    }
 
     override fun applyChartOptions() {
         firstChartApi.applyOptions {

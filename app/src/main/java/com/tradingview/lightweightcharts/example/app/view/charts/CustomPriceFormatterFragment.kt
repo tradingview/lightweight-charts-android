@@ -1,11 +1,18 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
+import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
+import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
+import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 
-class CustomPriceFormatterFragment: BaseFragment() {
+class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>() {
+
+    override fun provideViewModel() {
+        viewModel = ViewModelProvider(this).get(CustomPriceFormatterViewModel::class.java)
+    }
 
     override fun applyChartOptions() {
         firstChartApi.applyOptions {

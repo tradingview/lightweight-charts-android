@@ -28,18 +28,13 @@ class MainActivity : AppCompatActivity() {
     private val context: MainActivity = this
 
 
-    private var realtimeDataJob: Job? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WebView.setWebContentsDebuggingEnabled(true)
         setContentView(R.layout.activity_main)
         initializeNavigationDrawer()
-    }
-    
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.data_menu, menu)
-        return true
     }
 
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -112,5 +107,6 @@ class MainActivity : AppCompatActivity() {
                         R.id.fragment_container_fl,
                         FragmentFactory.getInstance(fragmentClass)
                 )
+                .commit()
     }
 }

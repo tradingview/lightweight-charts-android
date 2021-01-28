@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.example.app.R
-import com.tradingview.lightweightcharts.example.app.viewmodel.MainViewModel
+import com.tradingview.lightweightcharts.example.app.viewmodel.BaseViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.activity_view_pager.*
-import kotlinx.android.synthetic.main.fragment_charts.*
 import kotlinx.android.synthetic.main.fragment_charts.view.*
 
 class ViewPagerActivity : AppCompatActivity() {
@@ -21,8 +20,8 @@ class ViewPagerActivity : AppCompatActivity() {
         private val view: View,
         private val activity: AppCompatActivity
     ): RecyclerView.ViewHolder(view) {
-        private val viewModel: MainViewModel =
-            ViewModelProvider(activity).get(MainViewModel::class.java)
+        private val viewModel: BaseViewModel =
+            ViewModelProvider(activity).get(BaseViewModel::class.java)
 
         private lateinit var series: SeriesApi
 

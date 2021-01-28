@@ -1,9 +1,16 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
+import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
+import com.tradingview.lightweightcharts.example.app.viewmodel.SeriesMarkersViewModel
 
-class SeriesMarkersFragment: BaseFragment() {
+class SeriesMarkersFragment: BaseFragment<SeriesMarkersViewModel>() {
+
+    override fun provideViewModel() {
+        viewModel = ViewModelProvider(this).get(SeriesMarkersViewModel::class.java)
+    }
 
     override fun applyChartOptions() {
         firstChartApi.applyOptions {

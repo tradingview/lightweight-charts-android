@@ -1,11 +1,18 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
+import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
+import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
+import com.tradingview.lightweightcharts.example.app.viewmodel.PriceLinesWithTitlesViewModel
 
-class PriceLinesWithTitlesFragment: BaseFragment() {
+class PriceLinesWithTitlesFragment: BaseFragment<PriceLinesWithTitlesViewModel>() {
+
+    override fun provideViewModel() {
+        viewModel = ViewModelProvider(this).get(PriceLinesWithTitlesViewModel::class.java)
+    }
 
     override fun applyChartOptions() {
         firstChartApi.applyOptions {

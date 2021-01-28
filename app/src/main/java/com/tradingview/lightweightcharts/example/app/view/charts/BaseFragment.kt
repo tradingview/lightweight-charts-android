@@ -2,15 +2,11 @@ package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
-import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.LineData
@@ -20,27 +16,14 @@ import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
-import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
-import com.tradingview.lightweightcharts.example.app.viewmodel.MainViewModel
-import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
+import com.tradingview.lightweightcharts.example.app.viewmodel.BaseViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
-import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_chart_fragment.*
-import kotlinx.coroutines.cancelAndJoin
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment<V: BaseViewModel>: Fragment() {
 
-    companion object {
-        fun newInstance(bundle: Bundle): BarChartFragment {
-            val barChartFragment = BarChartFragment()
-            val args = Bundle()
-            barChartFragment.arguments = args
-            return barChartFragment
-        }
-    }
-
-    private lateinit var viewModel: MainViewModel
+    protected lateinit var viewModel: BaseViewModel
 
     protected val firstChartApi: ChartApi by lazy { charts_view.api }
     protected val secondChartApi: ChartApi by lazy { charts_view_second.api }
@@ -50,7 +33,7 @@ abstract class BaseFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        provideViewModel()
 
         observeViewModelData()
         subscribeOnChartReady(charts_view)
@@ -58,9 +41,7 @@ abstract class BaseFragment: Fragment() {
         applyChartOptions()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
+    abstract fun provideViewModel()
 
     private fun observeViewModelData() {
         viewModel.seriesData.observe(this, { data ->

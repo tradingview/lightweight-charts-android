@@ -1,9 +1,16 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
+import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
+import com.tradingview.lightweightcharts.example.app.viewmodel.FloatingTooltipViewModel
 
-class FloatingTooltipFragment: BaseFragment() {
+class FloatingTooltipFragment: BaseFragment<FloatingTooltipViewModel>() {
+
+    override fun provideViewModel() {
+        viewModel = ViewModelProvider(this).get(FloatingTooltipViewModel::class.java)
+    }
 
     override fun applyChartOptions() {
         firstChartApi.applyOptions {

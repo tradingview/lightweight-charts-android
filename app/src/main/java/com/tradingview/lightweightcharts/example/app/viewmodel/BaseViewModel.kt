@@ -12,12 +12,12 @@ import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    private val staticRepository = StaticRepository()
+abstract class BaseViewModel : ViewModel() {
+    protected val staticRepository = StaticRepository()
     private val dynamicRepository = DynamicRepository()
     private var dataType: SeriesDataType = SeriesDataType.AREA
 
-    private val data: MutableLiveData<Data> by lazy {
+    protected val data: MutableLiveData<Data> by lazy {
         MutableLiveData<Data>().also {
             loadData()
         }
@@ -29,7 +29,9 @@ class MainViewModel : ViewModel() {
     val seriesFlow: Flow<SeriesData>
         get() = dynamicRepository.getListSeriesData()
 
-    fun loadData() {
+    abstract fun loadData()
+
+    fun loadDatas() {
         viewModelScope.launch {
             when(dataType) {
                 SeriesDataType.AREA -> {
@@ -39,10 +41,6 @@ class MainViewModel : ViewModel() {
                 SeriesDataType.HISTOGRAM -> {
                     val histogramData = staticRepository.getListHistogramSeriesData()
                     data.postValue(Data(histogramData, SeriesDataType.HISTOGRAM))
-                }
-                SeriesDataType.BAR -> {
-                    val barData = staticRepository.getListBarSeriesData()
-                    data.postValue(Data(barData, SeriesDataType.BAR))
                 }
                 SeriesDataType.CANDLESTICK -> {
                     val candlestickData = staticRepository.getListCandlestickSeriesData()
