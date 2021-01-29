@@ -16,7 +16,7 @@ class FloatingTooltipFragment: BaseFragment<FloatingTooltipViewModel>() {
         firstChartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.WHITE
-                textColor = Color.parseColor("#333")
+                textColor = Color.parseColor("#333333")
             }
             crosshair = crosshairOptions {
                 vertLine = crosshairLineOptions {
@@ -35,7 +35,7 @@ class FloatingTooltipFragment: BaseFragment<FloatingTooltipViewModel>() {
             }
             grid = gridOptions {
                 horzLines = gridLineOptions {
-                    color = Color.parseColor("#eee")
+                    color = Color.parseColor("#eeeeee")
                 }
                 vertLines = gridLineOptions {
                     color = Color.WHITE

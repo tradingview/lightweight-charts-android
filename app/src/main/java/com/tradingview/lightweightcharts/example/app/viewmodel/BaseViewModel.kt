@@ -31,30 +31,6 @@ abstract class BaseViewModel : ViewModel() {
 
     abstract fun loadData()
 
-    fun loadDatas() {
-        viewModelScope.launch {
-            when(dataType) {
-                SeriesDataType.AREA -> {
-                    val areaSeriesData = staticRepository.getListAreaSeriesData()
-                    data.postValue(Data(areaSeriesData, SeriesDataType.AREA))
-                }
-                SeriesDataType.HISTOGRAM -> {
-                    val histogramData = staticRepository.getListHistogramSeriesData()
-                    data.postValue(Data(histogramData, SeriesDataType.HISTOGRAM))
-                }
-                SeriesDataType.CANDLESTICK -> {
-                    val candlestickData = staticRepository.getListCandlestickSeriesData()
-                    data.postValue(Data(candlestickData, SeriesDataType.CANDLESTICK))
-                }
-                SeriesDataType.LINE -> {
-                    val lineData = staticRepository.getListLineSeriesData()
-                    data.postValue(Data(lineData, SeriesDataType.LINE))
-                }
-            }
-
-        }
-    }
-
     fun selectSeries(seriesDataType: SeriesDataType) {
         dataType = seriesDataType
         loadData()

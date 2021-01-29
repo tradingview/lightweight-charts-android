@@ -10,7 +10,7 @@ import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
 import com.tradingview.lightweightcharts.api.series.models.*
 
 @Suppress("LongMethod")
-fun barChartSeriesData(): MutableList<SeriesData> {
+fun listBarChartSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
         BarData(time = Time.StringTime("2018-10-19"), open = 180.34f, high = 180.99f, low = 178.57f, close = 179.85f),
         BarData(time = Time.StringTime("2018-10-22"), open = 180.82f, high = 181.40f, low = 177.56f, close = 178.75f),
@@ -166,7 +166,7 @@ fun barChartSeriesData(): MutableList<SeriesData> {
 }
 
 @Suppress("LongMethod")
-fun customPriceFormatterSeriesData(): MutableList<SeriesData> {
+fun listCustomPriceFormatterSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             LineData(Time.StringTime("2018-10-19"), 72.35f),
             LineData(Time.StringTime("2018-10-22"), 72.57f),
@@ -322,7 +322,7 @@ fun customPriceFormatterSeriesData(): MutableList<SeriesData> {
 }
 
 @Suppress("LongMethod")
-fun getCustomThemesSeriesData(): MutableList<SeriesData> {
+fun listCustomThemesSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             LineData(Time.StringTime("2018-10-19"), 35.98f),
             LineData(Time.StringTime("2018-10-22"), 35.75f),
@@ -477,7 +477,7 @@ fun getCustomThemesSeriesData(): MutableList<SeriesData> {
     )
 }
 
-fun getFloatingTooltipSeriesData(): MutableList<SeriesData> {
+fun listFloatingTooltipSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             LineData(Time.StringTime("2018-03-28"), 154f),
             LineData(Time.StringTime("2018-03-29"), 154.2f),
@@ -782,7 +782,7 @@ fun getFloatingTooltipSeriesData(): MutableList<SeriesData> {
     )
 }
 
-fun getPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
+fun listPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             LineData(Time.BusinessDay(year = 2018, month = 1, day = 1), value = 27.58405298746434f),
             LineData(Time.BusinessDay(year = 2018, month = 1, day = 2), value = 31.74088841431117f),
@@ -1151,7 +1151,7 @@ fun getPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
     )
 }
 
-fun getRealTimeEmulationSeriesData(): MutableList<SeriesData> {
+fun listRealTimeEmulationSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             BarData(Time.StringTime("2018-10-19"), open = 54.62f, high = 55.50f, low = 54.52f, close = 54.90f),
             BarData(Time.StringTime("2018-10-22"), open = 55.08f, high = 55.27f, low = 54.61f, close = 54.98f),
@@ -1306,7 +1306,7 @@ fun getRealTimeEmulationSeriesData(): MutableList<SeriesData> {
     )
 }
 
-fun getSeriesMarkersSeriesData(): MutableList<SeriesData> {
+fun listSeriesMarkersSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             BarData(Time.BusinessDay(year = 2018, month = 9, day = 22), open = 29.630237296336794f, high = 35.36950035097501f, low = 26.21522501353531f, close = 30.734997177569916f),
             BarData(Time.BusinessDay(year = 2018, month = 9, day = 23), open = 32.267626500691215f, high = 34.452661663723774f, low = 26.096868360824704f, close = 29.573918833457004f),
@@ -1412,7 +1412,7 @@ fun getSeriesMarkersSeriesData(): MutableList<SeriesData> {
     )
 }
 
-fun getVolumeStudySeriesData(): MutableList<SeriesData> {
+fun listVolumeStudySeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             LineData(Time.StringTime("2018-10-19"), value = 54.90f),
             LineData(Time.StringTime("2018-10-22"), value = 54.98f),

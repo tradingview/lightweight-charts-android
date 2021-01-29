@@ -2,7 +2,6 @@ package com.tradingview.lightweightcharts.example.app.repository
 
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
-import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.example.app.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -10,31 +9,49 @@ import kotlinx.coroutines.withContext
 class StaticRepository {
     suspend fun getBarChartSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext barChartSeriesData()
+            return@withContext listBarChartSeriesData()
         }
     }
 
     suspend fun getCustomPriceFormatterSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext customPriceFormatterSeriesData()
+            return@withContext listCustomPriceFormatterSeriesData()
         }
     }
 
-    suspend fun getListAreaSeriesData(): MutableList<SeriesData> {
+    suspend fun getCustomThemesSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listAreaSeriesData()
+            return@withContext listCustomThemesSeriesData()
         }
     }
 
-    suspend fun getListHistogramSeriesData(): MutableList<SeriesData> {
+    suspend fun getFloatingTooltipSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listHistogramSeriesData()
+            return@withContext listFloatingTooltipSeriesData()
         }
     }
 
-    suspend fun getListCandlestickSeriesData(): MutableList<SeriesData> {
+    suspend fun getPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listCandlestickSeriesData()
+            return@withContext listPriceLinesWithTitlesSeriesData()
+        }
+    }
+
+    suspend fun getRealTimeEmulationSeriesData(): MutableList<SeriesData> {
+        return withContext(Dispatchers.IO) {
+            return@withContext listRealTimeEmulationSeriesData()
+        }
+    }
+
+    suspend fun getVolumeStudySeriesData(): MutableList<SeriesData> {
+        return withContext(Dispatchers.IO) {
+            return@withContext listVolumeStudySeriesData()
+        }
+    }
+
+    suspend fun getSeriesMarkersSeriesData(): MutableList<SeriesData> {
+        return withContext(Dispatchers.IO) {
+            return@withContext listSeriesMarkersSeriesData()
         }
     }
 
