@@ -60,7 +60,7 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
         })
     }
 
-    protected fun createSeriesWithData(
+    protected open fun createSeriesWithData(
             data: Data,
             priceScale: PriceScaleId,
             chartApi: ChartApi,
@@ -108,16 +108,6 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
 
             SeriesDataType.LINE -> chartApi.addLineSeries(
                     options = LineSeriesOptions(
-                            priceScaleId = priceScale
-                    ),
-                    onSeriesCreated = { api ->
-                        api.setData(data.list)
-                        onSeriesCreated(api)
-                    }
-            )
-
-            SeriesDataType.BAR -> chartApi.addBarSeries(
-                    options = BarSeriesOptions(
                             priceScaleId = priceScale
                     ),
                     onSeriesCreated = { api ->
