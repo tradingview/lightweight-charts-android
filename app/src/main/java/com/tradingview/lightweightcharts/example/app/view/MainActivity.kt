@@ -27,9 +27,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navigationView: NavigationView
     private val context: MainActivity = this
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WebView.setWebContentsDebuggingEnabled(true)
@@ -37,37 +34,12 @@ class MainActivity : AppCompatActivity() {
         initializeNavigationDrawer()
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when {
-//            item.itemId == R.id.static_data -> {
-//                lifecycleScope.launchWhenResumed {
-//                    realtimeDataJob?.cancelAndJoin()
-//                    viewModel.selectSeries(SeriesDataType.AREA)
-//                }
-//                return true
-//            }
-//            item.itemId == R.id.real_time_data -> {
-//                clearSeries()
-//                viewModel.selectSeries(SeriesDataType.AREA)
-//                realtimeDataJob = lifecycleScope.launchWhenResumed {
-//                    viewModel.seriesFlow.collect {
-//                        leftSeries.lastOrNull()?.update(it)
-//                        rightSeries.lastOrNull()?.update(it)
-//                    }
-//                }
-//                return true
-//            }
-//            item.itemId == R.id.clear_series -> {
-//                lifecycleScope.launchWhenResumed {
-//                    clearSeries()
-//                    realtimeDataJob?.cancelAndJoin()
-//                }
-//                return true
-//            }
-//            actionBar.onOptionsItemSelected(item) -> return true
-//            else -> return super.onOptionsItemSelected(item)
-//        }
-//    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when {
+            actionBar.onOptionsItemSelected(item) -> return true
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 
     private fun initializeNavigationDrawer() {
         drawer = findViewById(R.id.drawer_layout)
