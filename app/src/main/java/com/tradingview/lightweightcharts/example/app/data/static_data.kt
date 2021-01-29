@@ -477,6 +477,7 @@ fun listCustomThemesSeriesData(): MutableList<SeriesData> {
     )
 }
 
+@Suppress("LongMethod")
 fun listFloatingTooltipSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             LineData(Time.StringTime("2018-03-28"), 154f),
@@ -782,6 +783,7 @@ fun listFloatingTooltipSeriesData(): MutableList<SeriesData> {
     )
 }
 
+@Suppress("LongMethod")
 fun listPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             LineData(Time.BusinessDay(year = 2018, month = 1, day = 1), value = 27.58405298746434f),
@@ -1151,6 +1153,7 @@ fun listPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
     )
 }
 
+@Suppress("LongMethod")
 fun listRealTimeEmulationSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             BarData(Time.StringTime("2018-10-19"), open = 54.62f, high = 55.50f, low = 54.52f, close = 54.90f),
@@ -1306,6 +1309,7 @@ fun listRealTimeEmulationSeriesData(): MutableList<SeriesData> {
     )
 }
 
+@Suppress("LongMethod")
 fun listSeriesMarkersSeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             BarData(Time.BusinessDay(year = 2018, month = 9, day = 22), open = 29.630237296336794f, high = 35.36950035097501f, low = 26.21522501353531f, close = 30.734997177569916f),
@@ -1412,6 +1416,7 @@ fun listSeriesMarkersSeriesData(): MutableList<SeriesData> {
     )
 }
 
+@Suppress("LongMethod")
 fun listVolumeStudySeriesData(): MutableList<SeriesData> {
     return mutableListOf(
             LineData(Time.StringTime("2018-10-19"), value = 54.90f),
