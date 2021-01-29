@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.example.app.viewmodel.PriceLinesWithTitlesViewModel
 
 class PriceLinesWithTitlesFragment: BaseFragment<PriceLinesWithTitlesViewModel>() {
@@ -15,7 +14,7 @@ class PriceLinesWithTitlesFragment: BaseFragment<PriceLinesWithTitlesViewModel>(
     }
 
     override fun applyChartOptions() {
-        firstChartApi.applyOptions {
+        chartApi.applyOptions {
             layout = layoutOptions {
                 textColor = Color.parseColor("#d1d4dc")
                 backgroundColor = Color.BLACK

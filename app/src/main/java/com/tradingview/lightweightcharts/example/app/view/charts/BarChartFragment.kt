@@ -17,19 +17,19 @@ class BarChartFragment: BaseFragment<BarChartViewModel>() {
     }
 
     override fun applyChartOptions() {
-        firstChartApi.applyOptions {
+        chartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.WHITE
-                textColor = Color.argb(1, 33, 56, 77)
+                textColor = Color.argb(255, 33, 56, 77)
             }
             crosshair = crosshairOptions {
                 mode = CrosshairMode.NORMAL
             }
             rightPriceScale = priceScaleOptions {
-                borderColor = Color.argb(1, 197, 203, 206)
+                borderColor = Color.argb(255, 197, 203, 206)
             }
             timeScale = timeScaleOptions {
-                borderColor = Color.argb(1, 197, 203, 206)
+                borderColor = Color.argb(255, 197, 203, 206)
             }
         }
     }

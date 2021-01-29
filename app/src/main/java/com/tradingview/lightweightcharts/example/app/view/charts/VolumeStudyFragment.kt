@@ -3,8 +3,6 @@ package com.tradingview.lightweightcharts.example.app.view.charts
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.example.app.view.charts.BaseFragment
-import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.example.app.viewmodel.VolumeStudyViewModel
 
 class VolumeStudyFragment: BaseFragment<VolumeStudyViewModel>() {
@@ -14,7 +12,7 @@ class VolumeStudyFragment: BaseFragment<VolumeStudyViewModel>() {
     }
 
     override fun applyChartOptions() {
-        firstChartApi.applyOptions {
+        chartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.parseColor("#131722")
                 textColor = Color.parseColor("#d1d4dc")

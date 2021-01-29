@@ -3,7 +3,6 @@ package com.tradingview.lightweightcharts.example.app.view.charts
 import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.example.app.viewmodel.FloatingTooltipViewModel
 
 class FloatingTooltipFragment: BaseFragment<FloatingTooltipViewModel>() {
@@ -13,7 +12,7 @@ class FloatingTooltipFragment: BaseFragment<FloatingTooltipViewModel>() {
     }
 
     override fun applyChartOptions() {
-        firstChartApi.applyOptions {
+        chartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.WHITE
                 textColor = Color.parseColor("#333333")

@@ -28,11 +28,9 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
 
     protected lateinit var viewModel: BaseViewModel
 
-    protected val firstChartApi: ChartApi by lazy { charts_view.api }
-    protected val secondChartApi: ChartApi by lazy { charts_view_second.api }
+    protected val chartApi: ChartApi by lazy { charts_view.api }
 
-    protected var leftSeries: MutableList<SeriesApi> = mutableListOf()
-    protected var rightSeries: MutableList<SeriesApi> = mutableListOf()
+    protected var series: MutableList<SeriesApi> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +45,6 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeOnChartReady(charts_view)
-        subscribeOnChartReady(charts_view_second)
         applyChartOptions()
     }
 
@@ -55,15 +52,10 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
 
     protected fun observeViewModelData() {
         viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.LEFT, firstChartApi) { series ->
-                leftSeries.forEach(firstChartApi::removeSeries)
-                leftSeries.clear()
-                leftSeries.add(series)
-            }
-            createSeriesWithData(data, PriceScaleId.RIGHT, secondChartApi) { series ->
-                rightSeries.forEach(secondChartApi::removeSeries)
-                rightSeries.clear()
-                rightSeries.add(series)
+            createSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
+                this.series.forEach(chartApi::removeSeries)
+                this.series.clear()
+                this.series.add(series)
             }
         })
     }

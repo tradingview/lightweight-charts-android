@@ -4,7 +4,6 @@ import android.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
-import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 
@@ -15,7 +14,7 @@ class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>(
     }
 
     override fun applyChartOptions() {
-        firstChartApi.applyOptions {
+        chartApi.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.WHITE
                 textColor = Color.argb(0.8f, 255f, 255f, 255f)
