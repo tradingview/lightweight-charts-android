@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
@@ -25,6 +26,11 @@ import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_chart_fragment.*
 
 abstract class BaseFragment<V: BaseViewModel>: Fragment() {
+
+    companion object {
+        const val BUTTON_WIDTH = 360
+        const val BUTTON_HEIGHT = 180
+    }
 
     protected lateinit var viewModel: BaseViewModel
 
@@ -159,6 +165,14 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
                     Toast.makeText(context, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
                 }
             }
+        }
+    }
+
+    protected fun createButton(buttonText: String, onClick: () -> Unit): Button {
+        return Button(context).apply {
+            layoutParams = ViewGroup.LayoutParams(BUTTON_WIDTH, BUTTON_HEIGHT)
+            text = buttonText
+            setOnClickListener { onClick.invoke() }
         }
     }
 }

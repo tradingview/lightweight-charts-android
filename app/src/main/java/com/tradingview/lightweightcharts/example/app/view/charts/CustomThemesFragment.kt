@@ -101,18 +101,7 @@ class CustomThemesFragment: BaseFragment<CustomThemesViewModel>() {
         )
 
         themes.forEach { entry ->
-            val button = Button(context)
-            button.layoutParams = ViewGroup.LayoutParams(
-                    CustomPriceFormatterFragment.BUTTON_WIDTH,
-                    CustomPriceFormatterFragment.BUTTON_HEIGHT
-            )
-
-            button.apply {
-                text = entry.key
-                setOnClickListener {
-                    applyThemeOptions(entry.value)
-                }
-            }
+            val button = createButton(entry.key) { applyThemeOptions(entry.value) }
             switcher.addView(button)
         }
     }

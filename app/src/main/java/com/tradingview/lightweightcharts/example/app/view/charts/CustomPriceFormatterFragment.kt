@@ -24,11 +24,6 @@ import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 
 class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>() {
 
-    companion object {
-        const val BUTTON_WIDTH = 360
-        const val BUTTON_HEIGHT = 180
-    }
-
     override fun provideViewModel() {
         viewModel = ViewModelProvider(this).get(CustomPriceFormatterViewModel::class.java)
     }
@@ -92,14 +87,7 @@ class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>(
         )
 
         formatters.forEach { entry ->
-            val button = Button(context)
-            button.layoutParams = ViewGroup.LayoutParams(BUTTON_WIDTH, BUTTON_HEIGHT)
-            button.apply {
-                text = entry.key
-                setOnClickListener {
-                    applyPriceFormat(entry.value)
-                }
-            }
+            val button = createButton(entry.key) { applyPriceFormat(entry.value) }
             switcher.addView(button)
         }
     }
