@@ -1,8 +1,18 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.interfaces.ChartApi
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.series.enums.LineWidth
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.example.app.R
+import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomThemesViewModel
 
 class CustomThemesFragment: BaseFragment<CustomThemesViewModel>() {
@@ -11,9 +21,7 @@ class CustomThemesFragment: BaseFragment<CustomThemesViewModel>() {
         viewModel = ViewModelProvider(this).get(CustomThemesViewModel::class.java)
     }
 
-    var isDarkTheme: Boolean = false
-
-    val darkThemeOptions: ChartOptions.() -> Unit = {
+    private val darkThemeOptions: ChartOptions.() -> Unit = {
         layout = layoutOptions {
             backgroundColor = Color.parseColor("#2B2B43")
             textColor = Color.parseColor("#D9D9D9")
@@ -41,7 +49,7 @@ class CustomThemesFragment: BaseFragment<CustomThemesViewModel>() {
         }
     }
 
-    val lightThemeOptions: ChartOptions.() -> Unit = {
+    private val lightThemeOptions: ChartOptions.() -> Unit = {
         layout = layoutOptions {
             backgroundColor = Color.WHITE
             textColor = Color.parseColor("#191919")
@@ -59,13 +67,59 @@ class CustomThemesFragment: BaseFragment<CustomThemesViewModel>() {
         }
     }
 
+    override fun createSeriesWithData(
+            data: Data,
+            priceScale: PriceScaleId,
+            chartApi: ChartApi,
+            onSeriesCreated: (SeriesApi) -> Unit
+    ) {
+        chartApi.addAreaSeries(
+                options = AreaSeriesOptions(
+                        topColor = Color.argb(143, 33, 150, 243),
+                        bottomColor = Color.argb(10, 33, 150, 243),
+                        lineColor = Color.argb(204, 33, 150, 243),
+                        lineWidth = LineWidth.TWO,
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list)
+                    onSeriesCreated(api)
+                }
+        )
+    }
+
     override fun applyChartOptions() {
-        chartApi.applyOptions {
-            if (isDarkTheme) {
-                darkThemeOptions
-            } else {
-                lightThemeOptions
+        applyThemeOptions(darkThemeOptions)
+    }
+
+    override fun enableButtons(view: View) {
+        val switcher = view.findViewById<LinearLayout>(R.id.switcher_ll)
+        switcher.visibility = View.VISIBLE
+
+        val themes = mapOf(
+                "Dark" to darkThemeOptions,
+                "Light" to lightThemeOptions
+        )
+
+        themes.forEach { entry ->
+            val button = Button(context)
+            button.layoutParams = ViewGroup.LayoutParams(
+                    CustomPriceFormatterFragment.BUTTON_WIDTH,
+                    CustomPriceFormatterFragment.BUTTON_HEIGHT
+            )
+
+            button.apply {
+                text = entry.key
+                setOnClickListener {
+                    applyThemeOptions(entry.value)
+                }
             }
+            switcher.addView(button)
+        }
+    }
+
+    private fun applyThemeOptions(theme: ChartOptions.() -> Unit) {
+        chartApi.applyOptions {
+            theme.invoke(this)
         }
     }
 }

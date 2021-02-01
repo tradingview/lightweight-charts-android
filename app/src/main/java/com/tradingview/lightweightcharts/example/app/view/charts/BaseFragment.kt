@@ -46,6 +46,7 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         subscribeOnChartReady(charts_view)
         applyChartOptions()
+        enableButtons(view)
     }
 
     abstract fun provideViewModel()
@@ -139,6 +140,8 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
     }
 
     abstract fun applyChartOptions()
+
+    open fun enableButtons(view: View) = Unit
 
     override fun onDestroyView() {
         super.onDestroyView()

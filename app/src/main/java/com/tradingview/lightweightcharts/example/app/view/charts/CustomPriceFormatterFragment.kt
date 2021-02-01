@@ -29,16 +29,6 @@ class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>(
         const val BUTTON_HEIGHT = 180
     }
 
-    var formatters = linkedMapOf(
-        "Dollar" to "\${price:#2:#2}",
-        "Pound" to "\u00A3{price:#2:#2}"
-    )
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        enableButtons(view)
-    }
-
     override fun provideViewModel() {
         viewModel = ViewModelProvider(this).get(CustomPriceFormatterViewModel::class.java)
     }
@@ -92,9 +82,14 @@ class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>(
         )
     }
 
-    private fun enableButtons(view: View) {
+    override fun enableButtons(view: View) {
         val switcher = view.findViewById<LinearLayout>(R.id.switcher_ll)
         switcher.visibility = VISIBLE
+
+        val formatters = mapOf(
+                "Dollar" to "\${price:#2:#2}",
+                "Pound" to "\u00A3{price:#2:#2}"
+        )
 
         formatters.forEach { entry ->
             val button = Button(context)
