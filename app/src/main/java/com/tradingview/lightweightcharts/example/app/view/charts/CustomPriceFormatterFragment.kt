@@ -1,6 +1,12 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.graphics.Color
+import android.os.Bundle
+import android.view.View
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
@@ -10,6 +16,7 @@ import com.tradingview.lightweightcharts.api.series.models.LineData
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
@@ -17,10 +24,20 @@ import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 
 class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>() {
 
-    var formatters = hashMapOf(
+    companion object {
+        const val BUTTON_WIDTH = 360
+        const val BUTTON_HEIGHT = 180
+    }
+
+    var formatters = linkedMapOf(
         "Dollar" to "\${price:#2:#2}",
-        "Pound" to "\\u00A3{price:#2:#2}"
+        "Pound" to "\u00A3{price:#2:#2}"
     )
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        enableButtons(view)
+    }
 
     override fun provideViewModel() {
         viewModel = ViewModelProvider(this).get(CustomPriceFormatterViewModel::class.java)
@@ -73,6 +90,23 @@ class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>(
                 onSeriesCreated(api)
             }
         )
+    }
+
+    private fun enableButtons(view: View) {
+        val switcher = view.findViewById<LinearLayout>(R.id.switcher_ll)
+        switcher.visibility = VISIBLE
+
+        formatters.forEach { entry ->
+            val button = Button(context)
+            button.layoutParams = ViewGroup.LayoutParams(BUTTON_WIDTH, BUTTON_HEIGHT)
+            button.apply {
+                text = entry.key
+                setOnClickListener {
+                    applyPriceFormat(entry.value)
+                }
+            }
+            switcher.addView(button)
+        }
     }
 
     private fun applyPriceFormat(template: String) {
