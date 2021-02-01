@@ -78,17 +78,11 @@ class CustomPriceFormatterFragment: BaseFragment<CustomPriceFormatterViewModel>(
     }
 
     override fun enableButtons(view: View) {
-        val switcher = view.findViewById<LinearLayout>(R.id.switcher_ll)
-        switcher.visibility = VISIBLE
-
-        val formatters = mapOf(
+        mapOf(
                 "Dollar" to "\${price:#2:#2}",
                 "Pound" to "\u00A3{price:#2:#2}"
-        )
-
-        formatters.forEach { entry ->
-            val button = createButton(entry.key) { applyPriceFormat(entry.value) }
-            switcher.addView(button)
+        ).forEach {
+            createButton(it.key) { applyPriceFormat(it.value) }
         }
     }
 

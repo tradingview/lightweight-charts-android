@@ -92,17 +92,11 @@ class CustomThemesFragment: BaseFragment<CustomThemesViewModel>() {
     }
 
     override fun enableButtons(view: View) {
-        val switcher = view.findViewById<LinearLayout>(R.id.switcher_ll)
-        switcher.visibility = View.VISIBLE
-
-        val themes = mapOf(
+        mapOf(
                 "Dark" to darkThemeOptions,
                 "Light" to lightThemeOptions
-        )
-
-        themes.forEach { entry ->
-            val button = createButton(entry.key) { applyThemeOptions(entry.value) }
-            switcher.addView(button)
+        ).forEach {
+            createButton(it.key) { applyThemeOptions(it.value) }
         }
     }
 

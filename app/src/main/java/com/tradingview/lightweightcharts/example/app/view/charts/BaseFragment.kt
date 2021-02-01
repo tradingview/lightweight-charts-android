@@ -4,8 +4,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
@@ -35,6 +37,7 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
     protected lateinit var viewModel: BaseViewModel
 
     protected val chartApi: ChartApi by lazy { charts_view.api }
+    val switcher: LinearLayout by lazy { switcher_ll }
 
     protected var series: MutableList<SeriesApi> = mutableListOf()
 
@@ -168,11 +171,18 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
         }
     }
 
-    protected fun createButton(buttonText: String, onClick: () -> Unit): Button {
-        return Button(context).apply {
+    protected fun createButton(buttonText: String, onClick: () -> Unit) {
+
+        if (switcher.visibility != VISIBLE) {
+            switcher.visibility = VISIBLE
+        }
+
+        val button = Button(context).apply {
             layoutParams = ViewGroup.LayoutParams(BUTTON_WIDTH, BUTTON_HEIGHT)
             text = buttonText
             setOnClickListener { onClick.invoke() }
         }
+
+        switcher.addView(button)
     }
 }
