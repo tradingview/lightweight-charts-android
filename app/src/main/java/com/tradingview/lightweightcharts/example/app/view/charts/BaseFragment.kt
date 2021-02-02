@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -38,6 +39,7 @@ abstract class BaseFragment<V: BaseViewModel>: Fragment() {
 
     protected val chartApi: ChartApi by lazy { charts_view.api }
     val switcher: LinearLayout by lazy { switcher_ll }
+    val chartFragment: FrameLayout by lazy { chart_fragment }
 
     protected var series: MutableList<SeriesApi> = mutableListOf()
 
