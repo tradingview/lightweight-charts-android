@@ -4,8 +4,8 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonSyntaxException
 import com.tradingview.lightweightcharts.api.options.models.HistogramSeriesOptions
 
-class HistogramSeriesOptionsSerializer : Serializer<HistogramSeriesOptions>() {
-    override fun serialize(json: JsonElement): HistogramSeriesOptions? {
+class HistogramSeriesOptionsDeserializer : Deserializer<HistogramSeriesOptions>() {
+    override fun deserialize(json: JsonElement): HistogramSeriesOptions? {
         return try {
             gson.fromJson(json, HistogramSeriesOptions::class.java)
         } catch (e: JsonSyntaxException) {

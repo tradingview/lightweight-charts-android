@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
+import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.repository.DynamicRepository
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class MainViewModel : ViewModel() {
     private val staticRepository = StaticRepository()
     private val dynamicRepository = DynamicRepository()
-    private var dataType: SeriesDataType = SeriesDataType.AREA
+    private var dataType: SeriesType = SeriesType.AREA
 
     private val data: MutableLiveData<Data> by lazy {
         MutableLiveData<Data>().also {
@@ -32,32 +32,32 @@ class MainViewModel : ViewModel() {
     fun loadData() {
         viewModelScope.launch {
             when(dataType) {
-                SeriesDataType.AREA -> {
+                SeriesType.AREA -> {
                     val areaSeriesData = staticRepository.getListAreaSeriesData()
-                    data.postValue(Data(areaSeriesData, SeriesDataType.AREA))
+                    data.postValue(Data(areaSeriesData, SeriesType.AREA))
                 }
-                SeriesDataType.HISTOGRAM -> {
+                SeriesType.HISTOGRAM -> {
                     val histogramData = staticRepository.getListHistogramSeriesData()
-                    data.postValue(Data(histogramData, SeriesDataType.HISTOGRAM))
+                    data.postValue(Data(histogramData, SeriesType.HISTOGRAM))
                 }
-                SeriesDataType.BAR -> {
+                SeriesType.BAR -> {
                     val barData = staticRepository.getListBarSeriesData()
-                    data.postValue(Data(barData, SeriesDataType.BAR))
+                    data.postValue(Data(barData, SeriesType.BAR))
                 }
-                SeriesDataType.CANDLESTICK -> {
+                SeriesType.CANDLESTICK -> {
                     val candlestickData = staticRepository.getListCandlestickSeriesData()
-                    data.postValue(Data(candlestickData, SeriesDataType.CANDLESTICK))
+                    data.postValue(Data(candlestickData, SeriesType.CANDLESTICK))
                 }
-                SeriesDataType.LINE -> {
+                SeriesType.LINE -> {
                     val lineData = staticRepository.getListLineSeriesData()
-                    data.postValue(Data(lineData, SeriesDataType.LINE))
+                    data.postValue(Data(lineData, SeriesType.LINE))
                 }
             }
 
         }
     }
 
-    fun selectSeries(seriesDataType: SeriesDataType) {
+    fun selectSeries(seriesDataType: SeriesType) {
         dataType = seriesDataType
         loadData()
     }

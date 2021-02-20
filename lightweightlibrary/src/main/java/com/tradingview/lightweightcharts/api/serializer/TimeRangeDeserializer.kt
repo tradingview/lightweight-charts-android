@@ -8,10 +8,10 @@ import com.tradingview.lightweightcharts.help.isNumber
 import com.tradingview.lightweightcharts.help.isString
 import kotlin.contracts.ExperimentalContracts
 
-class TimeRangeSerializer: Serializer<TimeRange>() {
+class TimeRangeDeserializer: Deserializer<TimeRange>() {
 
     @ExperimentalContracts
-    override fun serialize(json: JsonElement): TimeRange? {
+    override fun deserialize(json: JsonElement): TimeRange? {
         if (!json.isJsonObject) {
             return null
         }

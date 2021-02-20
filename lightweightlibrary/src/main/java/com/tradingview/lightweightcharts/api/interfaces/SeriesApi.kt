@@ -4,6 +4,7 @@ import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.common.PriceLine
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
+import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 
 interface SeriesApi {
@@ -22,6 +23,7 @@ interface SeriesApi {
         const val CREATE_PRICE_LINE = "createPriceLine"
         const val REMOVE_PRICE_LINE = "removePriceLine"
         const val UPDATE = "update"
+        const val SERIES_TYPE = "seriesType"
     }
 
     object Params {
@@ -97,4 +99,10 @@ interface SeriesApi {
      * @param line line to remove
      */
     fun removePriceLine(line: PriceLine)
+
+    /**
+     * Returns the type of this series
+     * @param onSeriesTypeReceived this *SeriesType*
+     */
+    fun seriesType(onSeriesTypeReceived: (SeriesType) -> Unit)
 }

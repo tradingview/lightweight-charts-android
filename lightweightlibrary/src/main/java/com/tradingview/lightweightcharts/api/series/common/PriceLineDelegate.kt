@@ -1,7 +1,7 @@
 package com.tradingview.lightweightcharts.api.series.common
 
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
-import com.tradingview.lightweightcharts.api.serializer.PriceLineOptionsSerializer
+import com.tradingview.lightweightcharts.api.serializer.PriceLineOptionsDeserializer
 import com.tradingview.lightweightcharts.api.series.common.PriceLine.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.series.common.PriceLine.Func.OPTIONS
 import com.tradingview.lightweightcharts.api.series.common.PriceLine.Params.LINE_ID
@@ -28,7 +28,7 @@ class PriceLineDelegate(
             OPTIONS,
             mapOf(LINE_ID to uuid),
             callback = block,
-            serializer = PriceLineOptionsSerializer()
+            deserializer = PriceLineOptionsDeserializer()
         )
     }
 

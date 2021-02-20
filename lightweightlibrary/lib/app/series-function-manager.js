@@ -127,6 +127,11 @@ export default class SeriesFunctionManager {
                 resolve(options)
             })
         })
+        this.functionManager.registerFunction("seriesType", (input, resolve) => {
+            this.findSeries(input, (series) => {
+                resolve(series.seriesType())
+            })
+        })
         this.functionManager.registerFunction("applyOptions", (input, resolve) => {
             this.findSeries(input, (series) => {
                 this._registerPriceFormatter(input.params, (params) => {

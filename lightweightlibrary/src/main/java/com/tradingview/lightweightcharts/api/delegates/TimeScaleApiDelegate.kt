@@ -21,9 +21,9 @@ import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.POSI
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.RANGE
 import com.tradingview.lightweightcharts.api.options.models.TimeScaleOptions
 import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
-import com.tradingview.lightweightcharts.api.serializer.TimeRangeSerializer
-import com.tradingview.lightweightcharts.api.serializer.TimeScaleOptionsSerializer
-import com.tradingview.lightweightcharts.api.serializer.TimeSerializer
+import com.tradingview.lightweightcharts.api.serializer.TimeRangeDeserializer
+import com.tradingview.lightweightcharts.api.serializer.TimeScaleOptionsDeserializer
+import com.tradingview.lightweightcharts.api.serializer.TimeDeserializer
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
@@ -36,7 +36,7 @@ class TimeScaleApiDelegate(
         controller.callFunction(
             SCROLL_POSITION,
             callback = onScrollPositionReceived,
-            serializer = PrimitiveSerializer.FloatSerializer
+            deserializer = PrimitiveSerializer.FloatDeserializer
         )
     }
 
@@ -60,7 +60,7 @@ class TimeScaleApiDelegate(
         controller.callFunction(
             GET_VISIBLE_RANGE,
             callback = onTimeRangeReceived,
-            serializer = TimeRangeSerializer()
+            deserializer = TimeRangeDeserializer()
         )
     }
 
@@ -92,7 +92,7 @@ class TimeScaleApiDelegate(
                 "time" to time
             ),
             callback = onCoordinateReceived,
-            serializer = PrimitiveSerializer.FloatSerializer
+            deserializer = PrimitiveSerializer.FloatDeserializer
         )
     }
 
@@ -103,7 +103,7 @@ class TimeScaleApiDelegate(
                 "x" to x
             ),
             callback = onTimeReceived,
-            serializer = TimeSerializer()
+            deserializer = TimeDeserializer()
         )
     }
 
@@ -114,7 +114,7 @@ class TimeScaleApiDelegate(
                 "logical" to logical
             ),
             callback = onCoordinateReceived,
-            serializer = PrimitiveSerializer.FloatSerializer
+            deserializer = PrimitiveSerializer.FloatDeserializer
         )
     }
 
@@ -125,7 +125,7 @@ class TimeScaleApiDelegate(
                 "x" to x
             ),
             callback = onLogicalReceived,
-            serializer = PrimitiveSerializer.IntSerializer
+            deserializer = PrimitiveSerializer.IntDeserializer
         )
     }
 
@@ -142,7 +142,7 @@ class TimeScaleApiDelegate(
         controller.callFunction(
             OPTIONS,
             callback = onOptionsReceived,
-            serializer = TimeScaleOptionsSerializer()
+            deserializer = TimeScaleOptionsDeserializer()
         )
     }
 
@@ -150,7 +150,7 @@ class TimeScaleApiDelegate(
         controller.callSubscribe(
             SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE,
             callback = onTimeRangeChanged,
-            serializer = TimeRangeSerializer()
+            deserializer = TimeRangeDeserializer()
         )
     }
 
