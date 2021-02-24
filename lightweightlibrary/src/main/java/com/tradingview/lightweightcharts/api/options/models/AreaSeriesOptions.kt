@@ -55,11 +55,11 @@ data class AreaSeriesOptions(
 
     @ColorInt
     @JsonAdapter(ColorAdapter::class)
-    override val crosshairMarkerBorderColor: IntColor? = null,
+    override var crosshairMarkerBorderColor: IntColor? = null,
 
     @ColorInt
     @JsonAdapter(ColorAdapter::class)
-    override val crosshairMarkerBackgroundColor: IntColor? = null,
+    override var crosshairMarkerBackgroundColor: IntColor? = null,
 
     override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,
