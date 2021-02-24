@@ -3,7 +3,7 @@ package com.tradingview.lightweightcharts.runtime.controller
 import com.google.gson.JsonElement
 import com.tradingview.lightweightcharts.Logger
 import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
-import com.tradingview.lightweightcharts.api.serializer.Serializer
+import com.tradingview.lightweightcharts.api.serializer.Deserializer
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.messaging.*
 import java.util.concurrent.ConcurrentHashMap
@@ -35,24 +35,24 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: ((T) -> Unit)?,
-        serializer: Serializer<out T>
+        deserializer: Deserializer<out T>
     ): String {
         @Suppress("UNCHECKED_CAST")
-        return callBridgeFunction(name, params, callback as? (Any?) -> Unit, serializer)
+        return callBridgeFunction(name, params, callback as? (Any?) -> Unit, deserializer)
     }
 
     private fun callBridgeFunction(
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: ((Any?) -> Unit)? = null,
-        serializer: Serializer<out Any?> = PrimitiveSerializer.NullSerializer
+        deserializer: Deserializer<out Any?> = PrimitiveSerializer.NullDeserializer
     ): String {
         val bridge = BridgeFunction(name, params)
 
         @Suppress("UNCHECKED_CAST")
         callbackBuffer[bridge.uuid] = BufferElement(
             callback,
-            serializer,
+            deserializer,
             Thread.currentThread().stackTrace
         )
 
@@ -65,13 +65,13 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: (T) -> Unit,
-        serializer: Serializer<out T>
+        deserializer: Deserializer<out T>
     ) {
         val bridge = BridgeSubscription(name, params)
         @Suppress("UNCHECKED_CAST")
         callbackBuffer[bridge.uuid] = BufferElement(
             callback as (Any?) -> Unit,
-            serializer,
+            deserializer,
             Thread.currentThread().stackTrace
         )
         messageBuffer.addLast(bridge)
@@ -147,12 +147,12 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
     data class BufferElement(
         val callback: ((Any?) -> Unit)? = null,
-        val serializer: Serializer<out Any?>,
+        val deserializer: Deserializer<out Any?>,
         val stackTrace: Array<StackTraceElement>,
         val isInactive: Boolean = false
     ) {
         fun invoke(jsonElement: JsonElement) {
-            callback?.invoke(serializer.serialize(jsonElement))
+            callback?.invoke(deserializer.deserialize(jsonElement))
         }
 
         fun makeInactive(): BufferElement = copy(isInactive = true)

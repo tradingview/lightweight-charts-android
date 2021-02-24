@@ -4,9 +4,10 @@ import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.tradingview.lightweightcharts.api.serializer.gson.GsonProvider
 
-abstract class Serializer<T> {
+
+abstract class Deserializer<T> {
 
     protected open val gson: Gson by lazy { GsonProvider.newInstance() }
 
-    abstract fun serialize(json: JsonElement): T?
+    abstract fun deserialize(json: JsonElement): T?
 }

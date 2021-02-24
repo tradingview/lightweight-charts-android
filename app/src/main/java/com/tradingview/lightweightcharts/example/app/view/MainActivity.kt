@@ -22,7 +22,6 @@ import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
 import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
 import com.tradingview.lightweightcharts.example.app.viewmodel.MainViewModel
@@ -151,7 +150,7 @@ class MainActivity : AppCompatActivity() {
         onSeriesCreated: (SeriesApi) -> Unit
     ) {
         when (data.type) {
-            SeriesDataType.AREA -> chartApi.addAreaSeries(
+            SeriesType.AREA -> chartApi.addAreaSeries(
                 options = AreaSeriesOptions(
                     priceFormat = PriceFormat.priceFormatCustom(
                         PriceFormatter("{price}$!"),
@@ -190,7 +189,7 @@ class MainActivity : AppCompatActivity() {
                 }
             )
 
-            SeriesDataType.LINE -> chartApi.addLineSeries(
+            SeriesType.LINE -> chartApi.addLineSeries(
                 options = LineSeriesOptions(
                     priceScaleId = priceScale
                 ),
@@ -200,7 +199,7 @@ class MainActivity : AppCompatActivity() {
                 }
             )
 
-            SeriesDataType.BAR -> chartApi.addBarSeries(
+            SeriesType.BAR -> chartApi.addBarSeries(
                 options = BarSeriesOptions(
                     priceScaleId = priceScale
                 ),
@@ -210,7 +209,7 @@ class MainActivity : AppCompatActivity() {
                 }
             )
 
-            SeriesDataType.CANDLESTICK -> chartApi.addCandlestickSeries(
+            SeriesType.CANDLESTICK -> chartApi.addCandlestickSeries(
                 options = CandlestickSeriesOptions(
                     priceScaleId = priceScale
                 ),
@@ -220,7 +219,7 @@ class MainActivity : AppCompatActivity() {
                 }
             )
 
-            SeriesDataType.HISTOGRAM -> chartApi.addHistogramSeries(
+            SeriesType.HISTOGRAM -> chartApi.addHistogramSeries(
                 options = HistogramSeriesOptions(
                     priceScaleId = priceScale
                 ),
@@ -242,13 +241,13 @@ class MainActivity : AppCompatActivity() {
             item.itemId == R.id.static_data -> {
                 lifecycleScope.launchWhenResumed {
                     realtimeDataJob?.cancelAndJoin()
-                    viewModel.selectSeries(SeriesDataType.AREA)
+                    viewModel.selectSeries(SeriesType.AREA)
                 }
                 return true
             }
             item.itemId == R.id.real_time_data -> {
                 clearSeries()
-                viewModel.selectSeries(SeriesDataType.AREA)
+                viewModel.selectSeries(SeriesType.AREA)
                 realtimeDataJob = lifecycleScope.launchWhenResumed {
                     viewModel.seriesFlow.collect {
                         leftSeries.lastOrNull()?.update(it)
@@ -305,11 +304,11 @@ class MainActivity : AppCompatActivity() {
                 realtimeDataJob?.cancelAndJoin()
                 viewModel.loadData()
                 when (menuItem.itemId) {
-                    R.id.menu_area_series -> viewModel.selectSeries(SeriesDataType.AREA)
-                    R.id.menu_bar_prices -> viewModel.selectSeries(SeriesDataType.BAR)
-                    R.id.menu_histogram_time -> viewModel.selectSeries(SeriesDataType.HISTOGRAM)
-                    R.id.menu_candlestick_time -> viewModel.selectSeries(SeriesDataType.CANDLESTICK)
-                    R.id.menu_line_time -> viewModel.selectSeries(SeriesDataType.LINE)
+                    R.id.menu_area_series -> viewModel.selectSeries(SeriesType.AREA)
+                    R.id.menu_bar_prices -> viewModel.selectSeries(SeriesType.BAR)
+                    R.id.menu_histogram_time -> viewModel.selectSeries(SeriesType.HISTOGRAM)
+                    R.id.menu_candlestick_time -> viewModel.selectSeries(SeriesType.CANDLESTICK)
+                    R.id.menu_line_time -> viewModel.selectSeries(SeriesType.LINE)
                     R.id.menu_view_pager -> {
                         startActivity(Intent(this@MainActivity, ViewPagerActivity::class.java))
                     }

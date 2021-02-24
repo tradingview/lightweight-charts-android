@@ -4,8 +4,8 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonSyntaxException
 import com.tradingview.lightweightcharts.api.options.models.CandlestickSeriesOptions
 
-class CandlestickSeriesOptionsSerializer : Serializer<CandlestickSeriesOptions>() {
-    override fun serialize(json: JsonElement): CandlestickSeriesOptions? {
+class CandlestickSeriesOptionsDeserializer : Deserializer<CandlestickSeriesOptions>() {
+    override fun deserialize(json: JsonElement): CandlestickSeriesOptions? {
         return try {
             gson.fromJson(
                 json,

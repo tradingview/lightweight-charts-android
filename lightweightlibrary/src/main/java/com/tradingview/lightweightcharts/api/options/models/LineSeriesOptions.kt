@@ -44,6 +44,15 @@ data class LineSeriesOptions(
     override var lineType: LineType? = null,
     override var crosshairMarkerVisible: Boolean? = null,
     override var crosshairMarkerRadius: Float? = null,
+
+    @ColorInt
+    @JsonAdapter(ColorAdapter::class)
+    override var crosshairMarkerBorderColor: IntColor? = null,
+
+    @ColorInt
+    @JsonAdapter(ColorAdapter::class)
+    override var crosshairMarkerBackgroundColor: IntColor? = null,
+
     override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,
     override var priceScaleId: PriceScaleId? = null,

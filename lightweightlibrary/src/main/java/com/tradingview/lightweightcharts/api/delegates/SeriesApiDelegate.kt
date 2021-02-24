@@ -6,6 +6,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.COORDINAT
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.CREATE_PRICE_LINE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.REMOVE_PRICE_LINE
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.SERIES_TYPE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.SET_MARKERS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.SET_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.UPDATE
@@ -19,15 +20,17 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
-import com.tradingview.lightweightcharts.api.serializer.Serializer
+import com.tradingview.lightweightcharts.api.serializer.Deserializer
+import com.tradingview.lightweightcharts.api.serializer.SeriesTypeDeserializer
 import com.tradingview.lightweightcharts.api.series.common.*
+import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 
 class SeriesApiDelegate<T: SeriesOptionsCommon>(
     override val uuid: String,
     private val controller: WebMessageController,
-    private val optionsSerializer: Serializer<out T>
+    private val optionsDeserializer: Deserializer<out T>
 ): SeriesApi {
 
     override fun setData(data: List<SeriesData>) {
@@ -48,7 +51,7 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
                 PRICE to price
             ),
             callback = onCoordinateReceived,
-            PrimitiveSerializer.FloatSerializer
+            PrimitiveSerializer.FloatDeserializer
         )
     }
 
@@ -60,7 +63,7 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
                 COORDINATE to coordinate
             ),
             callback = onPriceReceived,
-            PrimitiveSerializer.FloatSerializer
+            PrimitiveSerializer.FloatDeserializer
         )
     }
 
@@ -79,7 +82,7 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
             OPTIONS,
             mapOf(SERIES_UUID to uuid),
             callback = onOptionsReceived,
-            serializer = optionsSerializer
+            deserializer = optionsDeserializer
         )
     }
 
@@ -124,6 +127,15 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
                 SERIES_UUID to uuid,
                 BAR to bar
             )
+        )
+    }
+
+    override fun seriesType(onSeriesTypeReceived: (SeriesType) -> Unit) {
+        controller.callFunction(
+            SERIES_TYPE,
+            mapOf(SERIES_UUID to uuid),
+            callback = onSeriesTypeReceived,
+            deserializer = SeriesTypeDeserializer()
         )
     }
 }
