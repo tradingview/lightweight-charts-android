@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.webkit.WebView
 import androidx.webkit.WebViewClientCompat
@@ -105,6 +106,25 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
 
     override fun loadUrl(url: String) {
         throw UnsupportedOperationException()
+    }
+
+    @Deprecated(
+        "Use setBackground instead",
+        ReplaceWith("setBackground(ColorDrawable(color))", "color"),
+        DeprecationLevel.ERROR
+    )
+    override fun setBackgroundColor(color: Int) {
+        super.setBackground(background)
+    }
+
+    override fun setBackground(background: Drawable?) {
+        post {
+            //setBackgroundColor uses the native API of WebView
+            //but setBackground uses the default API of Android SDK.
+            //For the method setBackground to work correctly we need to set transparent color here
+            super.setBackgroundColor(0x00000000)
+        }
+        super.setBackground(background)
     }
 
     fun subscribeOnChartStateChange(subscriber: (State) -> Unit) {
