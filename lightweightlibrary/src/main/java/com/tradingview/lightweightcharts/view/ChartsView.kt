@@ -2,6 +2,8 @@ package com.tradingview.lightweightcharts.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.webkit.WebView
 import androidx.webkit.WebViewClientCompat
@@ -73,6 +75,19 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
                     }
                 }
             }
+        }
+    }
+
+    override fun setBackground(background: Drawable?) {
+        if (background is ColorDrawable) {
+            post {
+                //setBackgroundColor uses the native API of WebView
+                //but setBackground uses the default API of Android SDK.
+                //So we need to pass the value from xml straight to WebView API
+                setBackgroundColor(background.color)
+            }
+        } else {
+            super.setBackground(background)
         }
     }
 

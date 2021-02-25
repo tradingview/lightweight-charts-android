@@ -64,6 +64,10 @@ window.onresize = () => {
 onload = () => {
     window["chart"] = createChart(document.body, { 
         width: window.innerWidth, 
-        height: window.innerHeight
+        height: window.innerHeight,
+        layout: {
+            //default value is transparent background
+            backgroundColor: "#00000000"
+        }
     });
 }
