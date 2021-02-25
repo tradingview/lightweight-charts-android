@@ -78,17 +78,23 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
         }
     }
 
+    @Deprecated(
+        "Use setBackground instead",
+        ReplaceWith("setBackground(ColorDrawable(color))", "color"),
+        DeprecationLevel.ERROR
+    )
+    override fun setBackgroundColor(color: Int) {
+        super.setBackground(background)
+    }
+
     override fun setBackground(background: Drawable?) {
-        if (background is ColorDrawable) {
-            post {
-                //setBackgroundColor uses the native API of WebView
-                //but setBackground uses the default API of Android SDK.
-                //So we need to pass the value from xml straight to WebView API
-                setBackgroundColor(background.color)
-            }
-        } else {
-            super.setBackground(background)
+        post {
+            //setBackgroundColor uses the native API of WebView
+            //but setBackground uses the default API of Android SDK.
+            //For the method setBackground to work correctly we need to set transparent color here
+            super.setBackgroundColor(0x00000000)
         }
+        super.setBackground(background)
     }
 
     private fun checkSupportedFeature(): List<String> {
