@@ -43,6 +43,12 @@ class StaticRepository {
         }
     }
 
+    suspend fun getVolumeStudyAreaData(): MutableList<SeriesData> {
+        return withContext(Dispatchers.IO) {
+            return@withContext listVolumeStudyAreaData()
+        }
+    }
+
     suspend fun getVolumeStudySeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
             return@withContext listVolumeStudySeriesData()

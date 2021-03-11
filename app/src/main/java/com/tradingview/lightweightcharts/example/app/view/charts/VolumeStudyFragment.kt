@@ -11,20 +11,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.series.enums.LineWidth
+import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.viewmodel.BaseViewModel
 import com.tradingview.lightweightcharts.example.app.viewmodel.VolumeStudyViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_chart_fragment.*
 
 class VolumeStudyFragment: Fragment() {
 
-    private lateinit var viewModel: BaseViewModel
+    private lateinit var viewModel: VolumeStudyViewModel
 
     private val chartApi: ChartApi by lazy { charts_view.api }
-    private var series: MutableList<SeriesApi> = mutableListOf()
+    private var areaSeries: MutableList<SeriesApi> = mutableListOf()
+    private var volumeSeries: MutableList<SeriesApi> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,6 @@ class VolumeStudyFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         subscribeOnChartReady(charts_view)
         applyChartOptions()
-        enableButtons(view)
     }
 
     private fun provideViewModel() {
@@ -48,13 +49,22 @@ class VolumeStudyFragment: Fragment() {
     }
 
     private fun observeViewModelData() {
-        viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                this.series.forEach(chartApi::removeSeries)
-                this.series.clear()
-                this.series.add(series)
-            }
-        })
+        viewModel.apply {
+            areaSeriesData.observe(this@VolumeStudyFragment, { data ->
+                createAreaSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
+                    this@VolumeStudyFragment.areaSeries.forEach(chartApi::removeSeries)
+                    this@VolumeStudyFragment.areaSeries.clear()
+                    this@VolumeStudyFragment.areaSeries.add(series)
+                }
+            })
+            volumeSeriesData.observe(this@VolumeStudyFragment, { data ->
+                createVolumeSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
+                    this@VolumeStudyFragment.volumeSeries.forEach(chartApi::removeSeries)
+                    this@VolumeStudyFragment.volumeSeries.clear()
+                    this@VolumeStudyFragment.volumeSeries.add(series)
+                }
+            })
+        }
     }
 
     private fun subscribeOnChartReady(view: ChartsView) {
@@ -69,10 +79,6 @@ class VolumeStudyFragment: Fragment() {
                 }
             }
         }
-    }
-
-    private fun enableButtons(view: View) {
-
     }
 
     private fun applyChartOptions() {
@@ -99,12 +105,50 @@ class VolumeStudyFragment: Fragment() {
         }
     }
 
-    private fun createSeriesWithData(
+    private fun createAreaSeriesWithData(
             data: Data,
             priceScale: PriceScaleId,
             chartApi: ChartApi,
             onSeriesCreated: (SeriesApi) -> Unit
     ) {
+        chartApi.addAreaSeries(
+                options = AreaSeriesOptions(
+                        topColor = Color.argb(143, 38, 198, 218),
+                        bottomColor = Color.argb(10, 38, 198, 218),
+                        lineColor = Color.argb(255, 38, 198, 218),
+                        lineWidth = LineWidth.TWO,
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list)
+                    onSeriesCreated(api)
+                }
+        )
+    }
 
+    private fun createVolumeSeriesWithData(
+            data: Data,
+            priceScale: PriceScaleId,
+            chartApi: ChartApi,
+            onSeriesCreated: (SeriesApi) -> Unit
+    ) {
+        chartApi.addHistogramSeries(
+                options = HistogramSeriesOptions(
+                        color = Color.parseColor("#26a69a"),
+                        priceFormat = PriceFormat.priceFormatBuiltIn(
+                                type = PriceFormat.Type.VOLUME,
+                                precision = 1,
+                                minMove = 1f,
+                        ),
+                        priceScaleId = PriceScaleId(""),
+                        scaleMargins = PriceScaleMargins(
+                                top = 0.8f,
+                                bottom = 0f,
+                        )
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list)
+                    onSeriesCreated(api)
+                }
+        )
     }
 }
