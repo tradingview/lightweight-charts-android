@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.layout_chart_fragment.*
 
 class PriceLinesWithTitlesFragment: Fragment() {
 
-    private lateinit var viewModel: BaseViewModel
+    private lateinit var viewModel: PriceLinesWithTitlesViewModel
 
     private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()

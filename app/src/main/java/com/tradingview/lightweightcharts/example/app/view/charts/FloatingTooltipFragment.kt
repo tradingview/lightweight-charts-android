@@ -34,7 +34,7 @@ class FloatingTooltipFragment: Fragment() {
         const val TOOLTIP_HEIGHT = 300
     }
 
-    private lateinit var viewModel: BaseViewModel
+    private lateinit var viewModel: FloatingTooltipViewModel
 
     private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()

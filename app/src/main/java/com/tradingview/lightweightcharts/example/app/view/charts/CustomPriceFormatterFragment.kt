@@ -35,7 +35,7 @@ class CustomPriceFormatterFragment: Fragment() {
         const val BUTTON_HEIGHT = 180
     }
 
-    private lateinit var viewModel: BaseViewModel
+    private lateinit var viewModel: CustomPriceFormatterViewModel
 
     private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()

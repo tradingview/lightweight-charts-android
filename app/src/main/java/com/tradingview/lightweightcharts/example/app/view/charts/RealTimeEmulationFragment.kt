@@ -22,7 +22,7 @@ import kotlinx.coroutines.Job
 
 class RealTimeEmulationFragment: Fragment() {
 
-    private lateinit var viewModel: BaseViewModel
+    private lateinit var viewModel: RealTimeEmulationViewModel
 
     private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()

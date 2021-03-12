@@ -29,7 +29,7 @@ class CustomThemesFragment: Fragment() {
         const val BUTTON_HEIGHT = 180
     }
 
-    private lateinit var viewModel: BaseViewModel
+    private lateinit var viewModel: CustomThemesViewModel
 
     private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()

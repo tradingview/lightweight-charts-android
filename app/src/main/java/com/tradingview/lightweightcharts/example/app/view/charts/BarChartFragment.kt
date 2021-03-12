@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.layout_chart_fragment.*
 
 class BarChartFragment: Fragment() {
 
-    private lateinit var viewModel: BaseViewModel
+    private lateinit var viewModel: BarChartViewModel
 
     private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()
