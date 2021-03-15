@@ -16,7 +16,6 @@ import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.viewmodel.BaseViewModel
 import com.tradingview.lightweightcharts.example.app.viewmodel.PriceLinesWithTitlesViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_chart_fragment.*
@@ -42,7 +41,6 @@ class PriceLinesWithTitlesFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         subscribeOnChartReady(charts_view)
         applyChartOptions()
-        enableButtons(view)
     }
 
     private fun provideViewModel() {
@@ -55,6 +53,43 @@ class PriceLinesWithTitlesFragment: Fragment() {
                 this.series.forEach(chartApi::removeSeries)
                 this.series.clear()
                 this.series.add(series)
+
+                viewModel.fetchPrices()
+
+                series.createPriceLine(
+                        PriceLineOptions(
+                                price = viewModel.minimumPrice,
+                                color = Color.parseColor("#be1238"),
+                                lineWidth = LineWidth.TWO,
+                                lineStyle = LineStyle.SOLID,
+                                axisLabelVisible = true,
+                                title = "minimum price",
+                        )
+                )
+
+                series.createPriceLine(
+                        PriceLineOptions(
+                                price = viewModel.avgPrice,
+                                color = Color.parseColor("#be1238"),
+                                lineWidth = LineWidth.TWO,
+                                lineStyle = LineStyle.SOLID,
+                                axisLabelVisible = true,
+                                title = "average price",
+                        )
+                )
+
+                series.createPriceLine(
+                        PriceLineOptions(
+                                price = viewModel.maximumPrice,
+                                color = Color.parseColor("#be1238"),
+                                lineWidth = LineWidth.TWO,
+                                lineStyle = LineStyle.SOLID,
+                                axisLabelVisible = true,
+                                title = "maximum price",
+                        )
+                )
+
+                chartApi.timeScale.fitContent()
             }
         })
     }
@@ -71,10 +106,6 @@ class PriceLinesWithTitlesFragment: Fragment() {
                 }
             }
         }
-    }
-
-    private fun enableButtons(view: View) {
-
     }
 
     private fun applyChartOptions() {
@@ -120,6 +151,18 @@ class PriceLinesWithTitlesFragment: Fragment() {
             chartApi: ChartApi,
             onSeriesCreated: (SeriesApi) -> Unit
     ) {
-
+        chartApi.addLineSeries(
+                options = LineSeriesOptions(
+                        color = Color.rgb(0, 120, 255),
+                        lineWidth = LineWidth.TWO,
+                        crosshairMarkerVisible = false,
+                        lastValueVisible = false,
+                        priceLineVisible = false,
+                ),
+                onSeriesCreated = { api ->
+                    api.setData(data.list)
+                    onSeriesCreated(api)
+                }
+        )
     }
 }
