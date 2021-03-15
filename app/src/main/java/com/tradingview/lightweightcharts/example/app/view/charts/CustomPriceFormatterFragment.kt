@@ -14,15 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.api.series.enums.*
-import com.tradingview.lightweightcharts.api.series.models.LineData
-import com.tradingview.lightweightcharts.api.series.models.PriceFormat
+import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
+import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.plugins.AutoscaleInfoProvider
-import com.tradingview.lightweightcharts.example.app.viewmodel.BaseViewModel
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.view.ChartsView

@@ -9,12 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.options.models.CandlestickSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.viewmodel.BaseViewModel
 import com.tradingview.lightweightcharts.example.app.viewmodel.RealTimeEmulationViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_chart_fragment.*
@@ -41,7 +41,6 @@ class RealTimeEmulationFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         subscribeOnChartReady(charts_view)
         applyChartOptions()
-        enableButtons(view)
     }
 
     private fun provideViewModel() {
@@ -72,10 +71,6 @@ class RealTimeEmulationFragment: Fragment() {
         }
     }
 
-    private fun enableButtons(view: View) {
-
-    }
-
     private var realtimeDataJob: Job? = null
 
     private fun applyChartOptions() {
@@ -92,6 +87,12 @@ class RealTimeEmulationFragment: Fragment() {
             chartApi: ChartApi,
             onSeriesCreated: (SeriesApi) -> Unit
     ) {
-
+        chartApi.addCandlestickSeries(
+                options = CandlestickSeriesOptions(),
+                onSeriesCreated = { api ->
+                    api.setData(data.list)
+                    onSeriesCreated(api)
+                }
+        )
     }
 }
