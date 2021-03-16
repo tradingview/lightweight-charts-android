@@ -22,7 +22,7 @@ class ViewPagerViewModel : ViewModel() {
     val seriesData: LiveData<Data>
         get() = data
 
-    fun loadData() {
+    private fun loadData() {
         viewModelScope.launch {
             when(dataType) {
                 SeriesDataType.AREA -> {
@@ -31,10 +31,5 @@ class ViewPagerViewModel : ViewModel() {
                 }
             }
         }
-    }
-
-    fun selectSeries(seriesDataType: SeriesDataType) {
-        dataType = seriesDataType
-        loadData()
     }
 }
