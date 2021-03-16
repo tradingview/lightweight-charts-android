@@ -66,4 +66,10 @@ class StaticRepository {
             return@withContext priceLineOptions()
         }
     }
+
+    suspend fun getListAreaSeriesData(): MutableList<SeriesData> {
+        return withContext(Dispatchers.IO) {
+            return@withContext listAreaSeriesData()
+        }
+    }
 }

@@ -1729,6 +1729,19 @@ fun listVolumeStudySeriesData(): MutableList<SeriesData> {
     )
 }
 
+fun listAreaSeriesData(): MutableList<SeriesData> {
+    return mutableListOf(
+            LineData(Time.Utc(1560211200), 40.01f),
+            LineData(Time.Utc(1560297600), 52.38f),
+            LineData(Time.Utc(1560384000), 36.30f),
+            LineData(Time.Utc(1560470400), 34.48f),
+            LineData(Time.Utc(1560556800), 40.06f),
+            LineData(Time.Utc(1560643200), 56.94f),
+            LineData(Time.Utc(1560729600), 41.50f),
+            LineData(Time.Utc(1560816000), 34.82f)
+    )
+}
+
 fun priceScaleOptions() = PriceScaleOptions(autoScale = false, position = PriceAxisPosition.LEFT)
 fun timeScaleOptions() = TimeScaleOptions(visible = false)
 
