@@ -18,7 +18,9 @@ class RealTimeEmulationViewModel: ViewModel() {
     private val dynamicRepository = DynamicRepository()
 
     val seriesFlow: Flow<SeriesData>
-        get() = dynamicRepository.getListSeriesData()
+        get() = dynamicRepository.getListSeriesData(data.value!!) {
+            loadData()
+        }
 
     val seriesData: LiveData<Data>
         get() = data

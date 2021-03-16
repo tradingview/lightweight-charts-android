@@ -11,7 +11,6 @@ import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.flow.Flow
 
 abstract class BaseViewModel : ViewModel() {
-    protected val staticRepository = StaticRepository()
     private val dynamicRepository = DynamicRepository()
     private var dataType: SeriesDataType = SeriesDataType.AREA
 
@@ -24,13 +23,6 @@ abstract class BaseViewModel : ViewModel() {
     val seriesData: LiveData<Data>
         get() = data
 
-    val seriesFlow: Flow<SeriesData>
-        get() = dynamicRepository.getListSeriesData()
-
     abstract fun loadData()
 
-    fun selectSeries(seriesDataType: SeriesDataType) {
-        dataType = seriesDataType
-        loadData()
-    }
 }
