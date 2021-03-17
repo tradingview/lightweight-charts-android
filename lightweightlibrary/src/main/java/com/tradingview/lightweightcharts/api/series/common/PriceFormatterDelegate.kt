@@ -16,7 +16,7 @@ class PriceFormatterDelegate(
                 PriceFormatter.Params.PRICE to price
             ),
             callback = result,
-            PrimitiveSerializer.StringSerializer
+            PrimitiveSerializer.StringDeserializer
         )
     }
 

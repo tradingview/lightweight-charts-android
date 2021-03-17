@@ -19,6 +19,7 @@ data class TimeScaleOptions(
         var visible: Boolean? = null,
         var timeVisible: Boolean? = null,
         var secondsVisible: Boolean? = null,
+        var shiftVisibleRangeOnNewBar: Boolean? = null,
         var tickMarkFormatter: Plugin? = null
 )
 

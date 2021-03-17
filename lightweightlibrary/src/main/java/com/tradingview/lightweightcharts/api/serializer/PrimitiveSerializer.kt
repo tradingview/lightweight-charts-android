@@ -3,8 +3,8 @@ package com.tradingview.lightweightcharts.api.serializer
 import com.google.gson.JsonElement
 
 sealed class PrimitiveSerializer {
-    object StringSerializer: Serializer<String>() {
-        override fun serialize(json: JsonElement): String? {
+    object StringDeserializer: Deserializer<String>() {
+        override fun deserialize(json: JsonElement): String? {
             if (json.isJsonNull) {
                 return null
             }
@@ -12,8 +12,8 @@ sealed class PrimitiveSerializer {
         }
     }
 
-    object FloatSerializer: Serializer<Float>() {
-        override fun serialize(json: JsonElement): Float? {
+    object FloatDeserializer: Deserializer<Float>() {
+        override fun deserialize(json: JsonElement): Float? {
             if (json.isJsonNull) {
                 return null
             }
@@ -21,8 +21,8 @@ sealed class PrimitiveSerializer {
         }
     }
 
-    object IntSerializer: Serializer<Int>() {
-        override fun serialize(json: JsonElement): Int? {
+    object IntDeserializer: Deserializer<Int>() {
+        override fun deserialize(json: JsonElement): Int? {
             if (json.isJsonNull) {
                 return null
             }
@@ -30,8 +30,8 @@ sealed class PrimitiveSerializer {
         }
     }
 
-    object DoubleSerializer: Serializer<Double>() {
-        override fun serialize(json: JsonElement): Double? {
+    object DoubleDeserializer: Deserializer<Double>() {
+        override fun deserialize(json: JsonElement): Double? {
             if (json.isJsonNull) {
                 return null
             }
@@ -39,8 +39,8 @@ sealed class PrimitiveSerializer {
         }
     }
 
-    object NullSerializer: Serializer<Any>() {
-        override fun serialize(json: JsonElement): Any? {
+    object NullDeserializer: Deserializer<Any>() {
+        override fun deserialize(json: JsonElement): Any? {
             return null
         }
     }

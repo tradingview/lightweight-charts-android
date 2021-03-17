@@ -7,7 +7,7 @@ import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Func.OPTIO
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.CALLER
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.OPTIONS_PARAM
 import com.tradingview.lightweightcharts.api.options.models.PriceScaleOptions
-import com.tradingview.lightweightcharts.api.serializer.PriceScaleOptionsSerializer
+import com.tradingview.lightweightcharts.api.serializer.PriceScaleOptionsDeserializer
 import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 
@@ -31,7 +31,7 @@ class PriceScaleApiDelegate(
             OPTIONS,
             mapOf(CALLER to uuid),
             callback = onOptionsReceived,
-            serializer = PriceScaleOptionsSerializer()
+            deserializer = PriceScaleOptionsDeserializer()
         )
     }
 
@@ -40,7 +40,7 @@ class PriceScaleApiDelegate(
             WIDTH,
             mapOf(CALLER to uuid),
             callback = onWidthReceived,
-            serializer = PrimitiveSerializer.FloatSerializer
+            deserializer = PrimitiveSerializer.FloatDeserializer
         )
     }
 }

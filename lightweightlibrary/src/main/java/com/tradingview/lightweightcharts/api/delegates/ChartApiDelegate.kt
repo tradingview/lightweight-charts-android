@@ -33,7 +33,7 @@ class ChartApiDelegate(
         controller.callSubscribe(
             SUBSCRIBE_CROSSHAIR_MOVE,
             callback = onCrosshairMoved,
-            serializer = MouseEventParamsSerializer()
+            deserializer = MouseEventParamsDeserializer()
         )
     }
 
@@ -48,7 +48,7 @@ class ChartApiDelegate(
         controller.callSubscribe(
             SUBSCRIBE_ON_CLICK,
             callback = onClicked,
-            serializer = MouseEventParamsSerializer()
+            deserializer = MouseEventParamsDeserializer()
         )
     }
 
@@ -71,11 +71,11 @@ class ChartApiDelegate(
                     SeriesApiDelegate(
                         uuid,
                         controller,
-                        AreaSeriesOptionsSerializer()
+                        AreaSeriesOptionsDeserializer()
                     )
                 )
             },
-            PrimitiveSerializer.StringSerializer
+            PrimitiveSerializer.StringDeserializer
         )
     }
 
@@ -91,11 +91,11 @@ class ChartApiDelegate(
                     SeriesApiDelegate(
                         uuid,
                         controller,
-                        BarSeriesOptionsSerializer()
+                        BarSeriesOptionsDeserializer()
                     )
                 )
             },
-            PrimitiveSerializer.StringSerializer
+            PrimitiveSerializer.StringDeserializer
         )
     }
 
@@ -111,11 +111,11 @@ class ChartApiDelegate(
                     SeriesApiDelegate(
                         uuid,
                         controller,
-                        CandlestickSeriesOptionsSerializer()
+                        CandlestickSeriesOptionsDeserializer()
                     )
                 )
             },
-            PrimitiveSerializer.StringSerializer
+            PrimitiveSerializer.StringDeserializer
         )
     }
 
@@ -131,11 +131,11 @@ class ChartApiDelegate(
                     SeriesApiDelegate(
                         uuid,
                         controller,
-                        HistogramSeriesOptionsSerializer()
+                        HistogramSeriesOptionsDeserializer()
                     )
                 )
             },
-            PrimitiveSerializer.StringSerializer
+            PrimitiveSerializer.StringDeserializer
         )
     }
 
@@ -151,11 +151,11 @@ class ChartApiDelegate(
                     SeriesApiDelegate(
                         uuid,
                         controller,
-                        LineSeriesOptionsSerializer()
+                        LineSeriesOptionsDeserializer()
                     )
                 )
             },
-            PrimitiveSerializer.StringSerializer
+            PrimitiveSerializer.StringDeserializer
         )
     }
 
@@ -197,7 +197,7 @@ class ChartApiDelegate(
         controller.callFunction(
             CHART_OPTIONS,
             callback = onOptionsReceived,
-            serializer = ChartOptionsSerializer()
+            deserializer = ChartOptionsDeserializer()
         )
     }
 }

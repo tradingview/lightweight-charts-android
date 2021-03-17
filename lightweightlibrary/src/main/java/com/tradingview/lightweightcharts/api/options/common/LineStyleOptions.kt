@@ -12,4 +12,6 @@ interface LineStyleOptions {
     val lineType: LineType?
     val crosshairMarkerVisible: Boolean?
     val crosshairMarkerRadius: Float?
+    val crosshairMarkerBorderColor: IntColor?
+    val crosshairMarkerBackgroundColor: IntColor?
 }
