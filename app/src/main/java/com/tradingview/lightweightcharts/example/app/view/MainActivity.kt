@@ -2,24 +2,18 @@ package com.tradingview.lightweightcharts.example.app.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.webkit.WebView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
 import com.tradingview.lightweightcharts.example.app.R
-import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.router.FragmentFactory
 import com.tradingview.lightweightcharts.example.app.view.charts.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
-import kotlin.reflect.KClass
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawer: DrawerLayout

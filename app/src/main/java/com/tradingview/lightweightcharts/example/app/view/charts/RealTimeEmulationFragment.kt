@@ -16,7 +16,6 @@ import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.viewmodel.RealTimeEmulationViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_chart_fragment.*

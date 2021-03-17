@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 
@@ -33,14 +33,14 @@ class VolumeStudyViewModel: ViewModel() {
     private fun loadAreaData() {
         viewModelScope.launch {
             val barData = staticRepository.getVolumeStudyAreaData()
-            areaData.postValue(Data(barData, SeriesDataType.LINE))
+            areaData.postValue(Data(barData, SeriesType.LINE))
         }
     }
 
     private fun loadVolumeData() {
         viewModelScope.launch {
             val barData = staticRepository.getVolumeStudySeriesData()
-            volumeData.postValue(Data(barData, SeriesDataType.HISTOGRAM))
+            volumeData.postValue(Data(barData, SeriesType.HISTOGRAM))
         }
     }
 

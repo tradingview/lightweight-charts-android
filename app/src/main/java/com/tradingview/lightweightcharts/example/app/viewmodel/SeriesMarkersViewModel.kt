@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerPosition
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
+import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.BarData
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.model.SeriesDataType
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 import kotlin.math.floor
@@ -30,7 +30,7 @@ class SeriesMarkersViewModel: ViewModel() {
     private fun loadData() {
         viewModelScope.launch {
             val barData = staticRepository.getSeriesMarkersSeriesData()
-            data.postValue(Data(barData, SeriesDataType.CANDLESTICK))
+            data.postValue(Data(barData, SeriesType.CANDLESTICK))
         }
     }
 
