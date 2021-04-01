@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         WebView.setWebContentsDebuggingEnabled(true)
         setContentView(R.layout.activity_main)
         initializeNavigationDrawer()
+        startFragment(BarChartFragment::class.java)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
