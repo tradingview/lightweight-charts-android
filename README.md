@@ -15,7 +15,7 @@ In `/build.gradle`
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 ```

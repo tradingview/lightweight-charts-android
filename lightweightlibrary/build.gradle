@@ -84,6 +84,33 @@ afterEvaluate {
                 groupId 'com.tradingview'
                 artifactId 'lightweightcharts'
                 version android.defaultConfig.versionName
+                pom {
+                    name = 'Android Lightweight Charts'
+                    description = 'The Android Lightweight Charts is an Android wrapper of the TradingView Lightweight Charts library.'
+                    url = 'https://github.com/tradingview/lightweight-charts-android'
+
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            name = 'Alexandr Nevyantsev'
+                            email = 'anevyantsev@tradingview.com'
+                            organization = 'TradingView'
+                            organizationUrl = 'https://www.tradingview.com/'
+                        }
+                    }
+
+                    scm {
+                        connection = 'scm:git:git://github.com/tradingview/lightweight-charts-android.git'
+                        developerConnection = 'scm:git:ssh://github.com/tradingview/lightweight-charts-android.git'
+                        url = 'http://github.com/tradingview/lightweight-charts-android/tree/master'
+                    }
+                }
 
                 artifact androidSourcesJar
             }
