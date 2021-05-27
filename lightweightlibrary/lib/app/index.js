@@ -5,7 +5,7 @@ import PluginManager from './plugin-manager.js';
 import { logger } from './logger.js';
 
 const createChart = LightweightCharts.createChart
-window.LightweightCharts = { ...LightweightCharts }
+window.LightweightCharts = Object.assign({}, LightweightCharts)
 delete window.LightweightCharts.createChart
 
 logger.setLevel("warning")
