@@ -6,6 +6,8 @@ import { logger } from './logger.js';
 
 window.isBusinessDay = isBusinessDay
 window.isUTCTimestamp = isUTCTimestamp
+window.LightweightCharts = require('lightweight-charts')
+
 logger.setLevel("warning")
 
 onmessage = function (message) {
@@ -24,15 +26,15 @@ onmessage = function (message) {
     const functionManager = new FunctionManager(port)
 
     const pluginManager = new PluginManager()
-    window['pluginManager'] = pluginManager
+    window.pluginManager = pluginManager
 
     const functionsController = new ChartRegistrationFunctionsController(
-        window['chart'],
+        window.chart,
         functionManager,
         pluginManager
     )
     functionsController.registerFunctions()
-    window['functionsController'] = functionsController
+    window.functionsController = functionsController
 
     logger.d("Connection has been established")
     port.onmessage = function (event) {
@@ -58,11 +60,11 @@ onmessage = function (message) {
 }
 
 window.onresize = () => {
-    window["chart"].resize(window.innerWidth, window.innerHeight)
+    window.chart.resize(window.innerWidth, window.innerHeight)
 }
 
 onload = () => {
-    window["chart"] = createChart(document.body, { 
+    window.chart = createChart(document.body, {
         width: window.innerWidth, 
         height: window.innerHeight,
         layout: {
