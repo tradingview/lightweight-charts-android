@@ -10,7 +10,7 @@ android {
         targetCompatibility 1.8
     }
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.tradingview.lightweightcharts.example"
         minSdkVersion 21
