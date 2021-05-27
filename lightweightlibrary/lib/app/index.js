@@ -1,12 +1,12 @@
-import { createChart, isBusinessDay, isUTCTimestamp } from 'lightweight-charts';
+import * as LightweightCharts from 'lightweight-charts';
 import FunctionManager from './function-manager.js';
 import ChartRegistrationFunctionsController from './chart-registration-functions-controller.js';
 import PluginManager from './plugin-manager.js';
 import { logger } from './logger.js';
 
-window.isBusinessDay = isBusinessDay
-window.isUTCTimestamp = isUTCTimestamp
-window.LightweightCharts = require('lightweight-charts')
+const createChart = LightweightCharts.createChart
+window.LightweightCharts = { ...LightweightCharts }
+delete window.LightweightCharts.createChart
 
 logger.setLevel("warning")
 
