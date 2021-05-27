@@ -114,7 +114,7 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
         DeprecationLevel.ERROR
     )
     override fun setBackgroundColor(color: Int) {
-        super.setBackground(background)
+        super.setBackgroundColor(color)
     }
 
     override fun setBackground(background: Drawable?) {
