@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.runtime
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import android.webkit.WebView
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebMessagePortCompat
@@ -12,7 +13,7 @@ import com.tradingview.lightweightcharts.runtime.messaging.*
 
 @SuppressLint("RequiresFeature")
 class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePortCompat>) {
-    private val serializer = GsonProvider.newInstance()
+    private var serializer = GsonProvider.newInstance()
 
     private val jsPort = ports[1]
     private val nativePort = ports[0]
@@ -40,6 +41,8 @@ class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePo
     }
 
     fun sendMessage(bridgeMessage: BridgeMessage) {
+//        serializer = GsonProvider.newInstance()
+        val jsonMessage = serializer.toJson(bridgeMessage)
         nativePort.postMessage(webMessageOf(bridgeMessage))
     }
 
@@ -51,7 +54,9 @@ class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePo
         bridgeMessage: BridgeMessage,
         port: WebMessagePortCompat? = null
     ): WebMessageCompat {
-        return WebMessageCompat(serializer.toJson(bridgeMessage), port?.let { arrayOf(it) })
+        val jsonMessage = serializer.toJson(bridgeMessage)
+        Log.e("jsonMessage", jsonMessage)
+        return WebMessageCompat(jsonMessage, port?.let { arrayOf(it) })
     }
 
     private fun bridgeMessageOf(webMessage: WebMessageCompat): BridgeMessage {

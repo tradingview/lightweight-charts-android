@@ -5,16 +5,33 @@ import com.google.gson.*
 import com.tradingview.lightweightcharts.help.isString
 import java.lang.reflect.Type
 import kotlin.contracts.ExperimentalContracts
+import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.*
+import java.lang.IllegalStateException
 
-typealias IntColor = Int
+sealed class ColorWrapper {
+    class IntColor(val value: Int): ColorWrapper()
+    class EmptyColor: ColorWrapper()
+}
 
-class ColorAdapter : JsonSerializer<IntColor>, JsonDeserializer<IntColor> {
+fun Int.toIntColor(): IntColor {
+    return IntColor(this)
+}
+
+fun String.toIntColor(): IntColor {
+    return IntColor(this.toColor()!!)
+}
+
+class ColorAdapter : JsonSerializer<ColorWrapper>, JsonDeserializer<ColorWrapper> {
     override fun serialize(
-        src: IntColor?,
+        src: ColorWrapper?,
         typeOfSrc: Type?,
         context: JsonSerializationContext?
     ): JsonElement {
-        return src?.let { JsonPrimitive(it.toHexString()) } ?: JsonNull.INSTANCE
+        return when (src) {
+            is IntColor -> JsonPrimitive(src.value.toHexString())
+            is EmptyColor -> JsonPrimitive("")
+            else -> throw IllegalStateException("Color of unknown type: $typeOfSrc")
+        }
     }
 
     @ExperimentalContracts
@@ -24,13 +41,13 @@ class ColorAdapter : JsonSerializer<IntColor>, JsonDeserializer<IntColor> {
         context: JsonDeserializationContext?
     ): IntColor? {
          return when {
-             json.isString() -> json.asString.toColor()
+             json.isString() -> json.asString.toColor()?.let { IntColor(it) }
              else -> null
         }
     }
 }
 
-private fun IntColor.toHexString(): String {
+private fun Int.toHexString(): String {
     val alpha = String.format("%02x", Color.alpha(this))
     val red = String.format("%02x", Color.red(this))
     val green = String.format("%02x", Color.green(this))

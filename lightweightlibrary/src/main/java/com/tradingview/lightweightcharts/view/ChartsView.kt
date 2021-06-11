@@ -30,7 +30,7 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
         )
     }
 
-    open val logLevel = LogLevel.WARNING
+    open val logLevel = LogLevel.DEBUG
 
     val api by lazy { ChartApiDelegate(webMessageController) }
 

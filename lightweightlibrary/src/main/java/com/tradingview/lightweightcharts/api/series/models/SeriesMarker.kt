@@ -14,9 +14,8 @@ data class SeriesMarker(
      */
     val size: Int? = null,
 
-    @ColorInt
     @JsonAdapter(ColorAdapter::class)
-    val color: IntColor? = null,
+    val color: ColorWrapper = ColorWrapper.EmptyColor(),
 
     val id: String? = null,
     val text: String? = null

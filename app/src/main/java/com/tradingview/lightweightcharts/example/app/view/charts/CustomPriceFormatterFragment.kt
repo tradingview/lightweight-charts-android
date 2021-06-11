@@ -17,6 +17,7 @@ import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
@@ -85,8 +86,8 @@ class CustomPriceFormatterFragment: Fragment() {
     private fun applyChartOptions() {
         chartApi.applyOptions {
             layout = layoutOptions {
-                backgroundColor = Color.BLACK
-                textColor = Color.argb(204, 255, 255, 255)
+                backgroundColor = Color.BLACK.toIntColor()
+                textColor = Color.argb(204, 255, 255, 255).toIntColor()
             }
             localization = localizationOptions {
                 priceFormatter = PriceFormatter(template = "\${price:#2:#2}")
@@ -95,17 +96,17 @@ class CustomPriceFormatterFragment: Fragment() {
                 mode = CrosshairMode.NORMAL
             }
             rightPriceScale = priceScaleOptions {
-                borderColor = Color.argb(204, 255, 255, 255)
+                borderColor = Color.argb(204, 255, 255, 255).toIntColor()
             }
             timeScale = timeScaleOptions {
-                borderColor = Color.argb(204, 255, 255, 255)
+                borderColor = Color.argb(204, 255, 255, 255).toIntColor()
             }
             grid = gridOptions {
                 vertLines = gridLineOptions {
-                    color = Color.argb(51, 255, 255, 255)
+                    color = Color.argb(51, 255, 255, 255).toIntColor()
                 }
                 horzLines = gridLineOptions {
-                    color = Color.argb(51, 255, 255, 255)
+                    color = Color.argb(51, 255, 255, 255).toIntColor()
                 }
             }
         }
@@ -119,9 +120,9 @@ class CustomPriceFormatterFragment: Fragment() {
     ) {
         chartApi.addAreaSeries(
             options = AreaSeriesOptions(
-                topColor = Color.argb(128, 21, 101, 192),
-                bottomColor = Color.argb(128, 21, 101, 192),
-                lineColor = Color.argb(204, 255, 255, 255),
+                topColor = Color.argb(128, 21, 101, 192).toIntColor(),
+                bottomColor = Color.argb(128, 21, 101, 192).toIntColor(),
+                lineColor = Color.argb(204, 255, 255, 255).toIntColor(),
                 lineWidth = LineWidth.TWO,
             ),
             onSeriesCreated = { api ->

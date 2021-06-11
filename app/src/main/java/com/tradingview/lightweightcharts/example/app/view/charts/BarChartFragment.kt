@@ -13,6 +13,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
@@ -79,17 +80,17 @@ class BarChartFragment: Fragment() {
     private fun applyChartOptions() {
         chartApi.applyOptions {
             layout = layoutOptions {
-                backgroundColor = Color.WHITE
-                textColor = Color.argb(255, 33, 56, 77)
+                backgroundColor = Color.WHITE.toIntColor()
+                textColor = Color.argb(255, 33, 56, 77).toIntColor()
             }
             crosshair = crosshairOptions {
                 mode = CrosshairMode.NORMAL
             }
             rightPriceScale = priceScaleOptions {
-                borderColor = Color.argb(255, 197, 203, 206)
+                borderColor = Color.argb(255, 197, 203, 206).toIntColor()
             }
             timeScale = timeScaleOptions {
-                borderColor = Color.argb(255, 197, 203, 206)
+                borderColor = Color.argb(255, 197, 203, 206).toIntColor()
             }
         }
     }
@@ -104,8 +105,8 @@ class BarChartFragment: Fragment() {
             options = BarSeriesOptions(
                 priceScaleId = priceScale,
                 thinBars = true,
-                downColor = Color.BLACK,
-                upColor = Color.BLACK,
+                downColor = Color.BLACK.toIntColor(),
+                upColor = Color.BLACK.toIntColor(),
             ),
             onSeriesCreated = { api ->
                 api.setData(data.list)

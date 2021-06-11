@@ -7,7 +7,8 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
 import com.tradingview.lightweightcharts.api.series.models.ColorAdapter
-import com.tradingview.lightweightcharts.api.series.models.IntColor
+import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.IntColor
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
@@ -19,24 +20,21 @@ data class HistogramSeriesOptions(
     override var priceLineSource: PriceLineSource? = null,
     override var priceLineWidth: LineWidth? = null,
 
-    @ColorInt
     @JsonAdapter(ColorAdapter::class)
-    override var priceLineColor: IntColor? = null,
+    override var priceLineColor: ColorWrapper? = null,
 
     override var priceLineStyle: LineStyle? = null,
     override var priceFormat: PriceFormat? = null,
     override var baseLineVisible: Boolean? = null,
 
-    @ColorInt
     @JsonAdapter(ColorAdapter::class)
-    override var baseLineColor: IntColor? = null,
+    override var baseLineColor: ColorWrapper? = null,
 
     override var baseLineWidth: LineWidth? = null,
     override var baseLineStyle: LineStyle? = null,
 
-    @ColorInt
     @JsonAdapter(ColorAdapter::class)
-    override var color: IntColor? = null,
+    override var color: ColorWrapper? = null,
 
     override var base: Float? = null,
     override var overlay: Boolean? = null,
