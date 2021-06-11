@@ -41,8 +41,6 @@ class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePo
     }
 
     fun sendMessage(bridgeMessage: BridgeMessage) {
-//        serializer = GsonProvider.newInstance()
-        val jsonMessage = serializer.toJson(bridgeMessage)
         nativePort.postMessage(webMessageOf(bridgeMessage))
     }
 
