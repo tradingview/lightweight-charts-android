@@ -4,7 +4,6 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.IntColor
 
 interface LineStyleOptions {
     val color: ColorWrapper?

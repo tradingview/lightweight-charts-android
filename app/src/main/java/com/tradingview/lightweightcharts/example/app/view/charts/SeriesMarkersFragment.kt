@@ -11,8 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
 import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.*
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.api.series.models.toIntColor

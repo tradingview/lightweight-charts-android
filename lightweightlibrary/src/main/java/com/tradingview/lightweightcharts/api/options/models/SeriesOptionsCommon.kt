@@ -1,12 +1,11 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import com.tradingview.lightweightcharts.api.options.common.SeriesSpecificOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.PriceFormat
-import com.tradingview.lightweightcharts.api.options.common.SeriesSpecificOptions
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
 import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.IntColor
+import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 

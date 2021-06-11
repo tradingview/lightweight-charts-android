@@ -1,7 +1,5 @@
 package com.tradingview.lightweightcharts.api.series.models
 
-import androidx.annotation.ColorInt
-import com.google.gson.annotations.JsonAdapter
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerPosition
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
 
