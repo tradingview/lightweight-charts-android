@@ -1,17 +1,12 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import androidx.annotation.ColorInt
-import com.google.gson.annotations.JsonAdapter
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.ColorAdapter
 import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.*
 
 data class PriceLineOptions(
     var price: Float? = null,
 
-    @JsonAdapter(ColorAdapter::class)
     var color: ColorWrapper? = null,
 
     var lineWidth: LineWidth? = null,

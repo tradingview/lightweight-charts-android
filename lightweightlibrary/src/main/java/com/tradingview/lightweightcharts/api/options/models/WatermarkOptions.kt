@@ -1,12 +1,8 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import androidx.annotation.ColorInt
-import com.google.gson.annotations.JsonAdapter
 import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
 import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
-import com.tradingview.lightweightcharts.api.series.models.ColorAdapter
 import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.IntColor
 
 /**
  * Structure describing watermark options
@@ -15,7 +11,6 @@ data class WatermarkOptions (
     /**
      * Color of the watermark
      */
-    @JsonAdapter(ColorAdapter::class)
     var color: ColorWrapper? = null,
 
     /**

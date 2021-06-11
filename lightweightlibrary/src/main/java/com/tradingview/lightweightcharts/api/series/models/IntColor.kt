@@ -11,6 +11,32 @@ import java.lang.IllegalStateException
 sealed class ColorWrapper {
     class IntColor(val value: Int): ColorWrapper()
     class EmptyColor: ColorWrapper()
+
+    class ColorAdapter : JsonSerializer<ColorWrapper>, JsonDeserializer<ColorWrapper> {
+        override fun serialize(
+            src: ColorWrapper?,
+            typeOfSrc: Type?,
+            context: JsonSerializationContext?
+        ): JsonElement {
+            return when (src) {
+                is IntColor -> JsonPrimitive(src.value.toHexString())
+                is EmptyColor -> JsonPrimitive("")
+                else -> throw IllegalStateException("Color of unknown type: $typeOfSrc")
+            }
+        }
+
+        @ExperimentalContracts
+        override fun deserialize(
+            json: JsonElement?,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ): IntColor? {
+            return when {
+                json.isString() -> json.asString.toColor()?.let { IntColor(it) }
+                else -> null
+            }
+        }
+    }
 }
 
 fun Int.toIntColor(): IntColor {
@@ -19,32 +45,6 @@ fun Int.toIntColor(): IntColor {
 
 fun String.toIntColor(): IntColor {
     return IntColor(this.toColor()!!)
-}
-
-class ColorAdapter : JsonSerializer<ColorWrapper>, JsonDeserializer<ColorWrapper> {
-    override fun serialize(
-        src: ColorWrapper?,
-        typeOfSrc: Type?,
-        context: JsonSerializationContext?
-    ): JsonElement {
-        return when (src) {
-            is IntColor -> JsonPrimitive(src.value.toHexString())
-            is EmptyColor -> JsonPrimitive("")
-            else -> throw IllegalStateException("Color of unknown type: $typeOfSrc")
-        }
-    }
-
-    @ExperimentalContracts
-    override fun deserialize(
-        json: JsonElement?,
-        typeOfT: Type?,
-        context: JsonDeserializationContext?
-    ): IntColor? {
-         return when {
-             json.isString() -> json.asString.toColor()?.let { IntColor(it) }
-             else -> null
-        }
-    }
 }
 
 private fun Int.toHexString(): String {
