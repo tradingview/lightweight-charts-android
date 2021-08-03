@@ -12,6 +12,7 @@ import kotlin.math.roundToInt
 
 class DynamicRepository {
 
+    @Suppress("LongMethod")
     fun getListSeriesData(data: Data, onEmulationComplete: () -> Unit): Flow<SeriesData> {
         var lastClose = (data.list.last() as BarData).close
         var lastHigh = (data.list.last() as BarData).high

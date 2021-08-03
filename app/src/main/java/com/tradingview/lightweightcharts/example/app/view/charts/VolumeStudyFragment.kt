@@ -14,7 +14,7 @@ import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.series.models.toIntColor
+import com.tradingview.lightweightcharts.api.series.models.color.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.VolumeStudyViewModel
@@ -100,7 +100,7 @@ class VolumeStudyFragment: Fragment() {
                     color = Color.argb(0, 42, 46, 57).toIntColor()
                 }
                 horzLines = gridLineOptions {
-                    color = Color.argb(0.6f, 42f, 46f, 57f).toIntColor()
+                    color = Color.argb(153, 42, 46, 57).toIntColor()
                 }
             }
         }

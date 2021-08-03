@@ -5,7 +5,7 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
@@ -17,18 +17,18 @@ data class LineSeriesOptions(
     override var priceLineSource: PriceLineSource? = null,
     override var priceLineWidth: LineWidth? = null,
 
-    override var priceLineColor: ColorWrapper? = null,
+    override var priceLineColor: Colorable? = null,
 
     override var priceLineStyle: LineStyle? = null,
     override var priceFormat: PriceFormat? = null,
     override var baseLineVisible: Boolean? = null,
 
-    override var baseLineColor: ColorWrapper? = null,
+    override var baseLineColor: Colorable? = null,
 
     override var baseLineWidth: LineWidth? = null,
     override var baseLineStyle: LineStyle? = null,
 
-    override var color: ColorWrapper? = null,
+    override var color: Colorable? = null,
 
     override var lineStyle: LineStyle? = null,
     override var lineWidth: LineWidth? = null,
@@ -36,9 +36,9 @@ data class LineSeriesOptions(
     override var crosshairMarkerVisible: Boolean? = null,
     override var crosshairMarkerRadius: Float? = null,
 
-    override var crosshairMarkerBorderColor: ColorWrapper? = null,
+    override var crosshairMarkerBorderColor: Colorable? = null,
 
-    override var crosshairMarkerBackgroundColor: ColorWrapper? = null,
+    override var crosshairMarkerBackgroundColor: Colorable? = null,
 
     override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,

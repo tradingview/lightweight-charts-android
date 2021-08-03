@@ -2,12 +2,12 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 
 data class PriceLineOptions(
     var price: Float? = null,
 
-    var color: ColorWrapper? = null,
+    var color: Colorable? = null,
 
     var lineWidth: LineWidth? = null,
     var lineStyle: LineStyle? = null,

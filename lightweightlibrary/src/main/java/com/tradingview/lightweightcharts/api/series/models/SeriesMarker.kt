@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.series.models
 
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerPosition
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
 
 data class SeriesMarker(
     val time: Time? = null,
@@ -12,7 +13,7 @@ data class SeriesMarker(
      */
     val size: Int? = null,
 
-    val color: ColorWrapper? = null,
+    val color: IntColor? = null,
 
     val id: String? = null,
     val text: String? = null

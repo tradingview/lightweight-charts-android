@@ -2,7 +2,6 @@ package com.tradingview.lightweightcharts.runtime
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.util.Log
 import android.webkit.WebView
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebMessagePortCompat

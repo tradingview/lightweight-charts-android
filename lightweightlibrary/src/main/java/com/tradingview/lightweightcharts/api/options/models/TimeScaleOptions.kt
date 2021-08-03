@@ -1,22 +1,22 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class TimeScaleOptions(
-        var rightOffset: Float? = null,
-        var barSpacing: Float? = null,
-        var fixLeftEdge: Boolean? = null,
-        var lockVisibleTimeRangeOnResize: Boolean? = null,
-        var rightBarStaysOnScroll: Boolean? = null,
-        var borderVisible: Boolean? = null,
+    var rightOffset: Float? = null,
+    var barSpacing: Float? = null,
+    var fixLeftEdge: Boolean? = null,
+    var lockVisibleTimeRangeOnResize: Boolean? = null,
+    var rightBarStaysOnScroll: Boolean? = null,
+    var borderVisible: Boolean? = null,
 
-        var borderColor: ColorWrapper? = null,
-        var visible: Boolean? = null,
-        var timeVisible: Boolean? = null,
-        var secondsVisible: Boolean? = null,
-        var shiftVisibleRangeOnNewBar: Boolean? = null,
-        var tickMarkFormatter: Plugin? = null
+    var borderColor: Colorable? = null,
+    var visible: Boolean? = null,
+    var timeVisible: Boolean? = null,
+    var secondsVisible: Boolean? = null,
+    var shiftVisibleRangeOnNewBar: Boolean? = null,
+    var tickMarkFormatter: Plugin? = null
 )
 
 inline fun timeScaleOptions(init: TimeScaleOptions.() -> Unit): TimeScaleOptions {

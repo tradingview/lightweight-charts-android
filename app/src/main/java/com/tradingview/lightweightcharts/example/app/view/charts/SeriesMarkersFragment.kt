@@ -11,9 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.*
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.series.models.toIntColor
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
+import com.tradingview.lightweightcharts.api.series.models.color.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.SeriesMarkersViewModel
@@ -105,11 +105,11 @@ class SeriesMarkersFragment: Fragment() {
     ) {
         chartApi.addCandlestickSeries(
                 options = CandlestickSeriesOptions(
-                        upColor = IntColor(Color.argb(255, 38, 166, 154)),
-                        downColor = IntColor(Color.argb(255, 255, 82, 82)),
-                        wickUpColor = IntColor(Color.argb(255, 38, 166, 154)),
-                        wickDownColor = IntColor(Color.argb(255, 255, 82, 82)),
-                        borderVisible = false,
+                    upColor = IntColor(Color.argb(255, 38, 166, 154)),
+                    downColor = IntColor(Color.argb(255, 255, 82, 82)),
+                    wickUpColor = IntColor(Color.argb(255, 38, 166, 154)),
+                    wickDownColor = IntColor(Color.argb(255, 255, 82, 82)),
+                    borderVisible = false,
                 ),
                 onSeriesCreated = { api ->
                     api.setData(data.list)
@@ -118,6 +118,4 @@ class SeriesMarkersFragment: Fragment() {
         )
 
     }
-
-
 }

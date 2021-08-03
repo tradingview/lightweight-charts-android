@@ -2,7 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.options.enums.PriceAxisPosition
 import com.tradingview.lightweightcharts.api.series.enums.PriceScaleMode
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 
 data class PriceScaleOptions(
     /**
@@ -47,7 +47,7 @@ data class PriceScaleOptions(
      * Defines a color of the border between the price scale and the chart area.
      * It is ignored if borderVisible is false
      */
-    var borderColor: ColorWrapper? = null,
+    var borderColor: Colorable? = null,
 
     /**
      * Indicates whether the price scale displays only full lines of text or partial lines.

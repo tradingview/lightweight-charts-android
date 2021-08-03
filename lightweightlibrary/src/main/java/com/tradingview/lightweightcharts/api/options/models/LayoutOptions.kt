@@ -1,17 +1,17 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 
 data class LayoutOptions(
     /**
      * Background color of the chart area and the scales
      */
-    var backgroundColor: ColorWrapper? = null,
+    var backgroundColor: Colorable? = null,
 
     /**
      * Color of a text on the scales
      */
-    var textColor: ColorWrapper? = null,
+    var textColor: Colorable? = null,
 
     /**
      * Font size of a text on the scales in pixels
