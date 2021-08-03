@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.series.models
 
 import android.graphics.Color
 import com.google.gson.*
+import com.tradingview.lightweightcharts.api.series.exception.ColorParseException
 import com.tradingview.lightweightcharts.help.isString
 import java.lang.reflect.Type
 import kotlin.contracts.ExperimentalContracts
@@ -21,7 +22,7 @@ sealed class ColorWrapper {
             return when (src) {
                 is IntColor -> JsonPrimitive(src.value.toHexString())
                 is EmptyColor -> JsonPrimitive("")
-                else -> throw IllegalStateException("Color of unknown type: $typeOfSrc")
+                else -> throw IllegalStateException("Unknown type of color: $typeOfSrc")
             }
         }
 
@@ -44,7 +45,9 @@ fun Int.toIntColor(): IntColor {
 }
 
 fun String.toIntColor(): IntColor {
-    return IntColor(this.toColor()!!)
+    val color = this.toColor()
+        ?: throw ColorParseException("Color is empty")
+    return IntColor(color)
 }
 
 private fun Int.toHexString(): String {
@@ -57,10 +60,10 @@ private fun Int.toHexString(): String {
 
 private fun String.toColor(): Int? {
     return when {
-        isEmpty() -> null
+        isBlank() -> null
         get(0) == '#' -> parseHexColor()
         count() > 6 && subSequence(0, 4) == "rgba" -> parseRgbaColor()
-        else -> throw JsonParseException("Unknown color")
+        else -> throw ColorParseException("Unknown color")
     }
 }
 
@@ -78,7 +81,7 @@ private fun String.parseHexColor(): Int {
             val alpha = (color and rgbaAlphaMask) shl 24
             sRGBColor or alpha
         }
-        else -> throw JsonParseException("Unknown color")
+        else -> throw ColorParseException("Unknown color")
     }
     return argbColor.toInt()
 }
@@ -91,5 +94,5 @@ private fun String.parseRgbaColor(): Int {
         val blue = groups[3].toInt()
         val alpha = (groups[4].toFloat() * 255).toInt()
         return@let Color.argb(alpha, red, green, blue)
-    } ?: throw JsonParseException("Unknown color")
+    } ?: throw ColorParseException("Unknown color")
 }
