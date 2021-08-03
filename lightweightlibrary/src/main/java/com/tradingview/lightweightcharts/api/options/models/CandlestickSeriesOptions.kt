@@ -4,9 +4,10 @@ import com.tradingview.lightweightcharts.api.options.common.CandlestickStyleOpti
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class CandlestickSeriesOptions(
@@ -16,34 +17,34 @@ data class CandlestickSeriesOptions(
     override var priceLineSource: PriceLineSource? = null,
     override var priceLineWidth: LineWidth? = null,
 
-    override var priceLineColor: ColorWrapper? = null,
+    override var priceLineColor: IntColor? = null,
     override var priceLineStyle: LineStyle? = null,
     override var priceFormat: PriceFormat? = null,
     override var baseLineVisible: Boolean? = null,
 
-    override var baseLineColor: ColorWrapper? = null,
+    override var baseLineColor: Colorable? = null,
 
     override var baseLineWidth: LineWidth? = null,
     override var baseLineStyle: LineStyle? = null,
 
-    override var upColor: ColorWrapper? = null,
+    override var upColor: IntColor? = null,
 
-    override var downColor: ColorWrapper? = null,
+    override var downColor: IntColor? = null,
 
     override var wickVisible: Boolean? = null,
     override var borderVisible: Boolean? = null,
 
-    override var borderColor: ColorWrapper? = null,
+    override var borderColor: IntColor? = null,
 
-    override var borderUpColor: ColorWrapper? = null,
+    override var borderUpColor: IntColor? = null,
 
-    override var borderDownColor: ColorWrapper? = null,
+    override var borderDownColor: IntColor? = null,
 
-    override var wickColor: ColorWrapper? = null,
+    override var wickColor: IntColor? = null,
 
-    override var wickUpColor: ColorWrapper? = null,
+    override var wickUpColor: IntColor? = null,
 
-    override var wickDownColor: ColorWrapper? = null,
+    override var wickDownColor: IntColor? = null,
 
     override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,

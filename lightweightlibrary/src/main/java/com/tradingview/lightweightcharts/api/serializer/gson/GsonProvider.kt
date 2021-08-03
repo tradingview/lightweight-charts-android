@@ -4,7 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.*
-
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
+import com.tradingview.lightweightcharts.api.series.models.color.IntColorAdapter
 
 object GsonProvider {
     fun newInstance(): Gson {
@@ -26,7 +28,8 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeAdapter(LineWidth::class.java, LineWidth.LineWidthAdapter())
     registerTypeAdapter(PriceScaleMode::class.java, PriceScaleMode.PriceScaleModeAdapter())
     registerTypeAdapter(PriceScaleId::class.java, PriceScaleId.PriceScaleIdAdapter())
-    registerTypeAdapter(ColorWrapper::class.java, ColorWrapper.ColorAdapter())
+    registerTypeAdapter(Colorable::class.java, Colorable.ColorAdapter())
+    registerTypeAdapter(IntColor::class.java, IntColorAdapter())
 
     return this
 }

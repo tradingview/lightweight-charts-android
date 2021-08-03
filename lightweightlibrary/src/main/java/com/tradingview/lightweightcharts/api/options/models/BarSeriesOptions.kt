@@ -4,9 +4,10 @@ import com.tradingview.lightweightcharts.api.options.common.BarStyleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class BarSeriesOptions(
@@ -16,20 +17,20 @@ data class BarSeriesOptions(
     override var priceLineSource: PriceLineSource? = null,
     override var priceLineWidth: LineWidth? = null,
 
-    override var priceLineColor: ColorWrapper? = null,
+    override var priceLineColor: IntColor? = null,
 
     override var priceLineStyle: LineStyle? = null,
     override var priceFormat: PriceFormat? = null,
     override var baseLineVisible: Boolean? = null,
 
-    override var baseLineColor: ColorWrapper? = null,
+    override var baseLineColor: Colorable? = null,
 
     override var baseLineWidth: LineWidth? = null,
     override var baseLineStyle: LineStyle? = null,
 
-    override var upColor: ColorWrapper? = null,
+    override var upColor: IntColor? = null,
 
-    override var downColor: ColorWrapper? = null,
+    override var downColor: IntColor? = null,
 
     override var openVisible: Boolean? = null,
     override var thinBars: Boolean? = null,

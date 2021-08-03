@@ -1,10 +1,10 @@
 package com.tradingview.lightweightcharts.api.options.common
 
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
 
 interface BarStyleOptions {
-    val upColor: ColorWrapper?
-    val downColor: ColorWrapper?
+    val upColor: IntColor?
+    val downColor: IntColor?
     val openVisible: Boolean?
     val thinBars: Boolean?
 }

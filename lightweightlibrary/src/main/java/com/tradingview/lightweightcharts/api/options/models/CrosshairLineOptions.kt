@@ -1,10 +1,8 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import com.google.gson.annotations.JsonAdapter
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.ColorAdapter
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
 
 /** 
  * Structure describing a crosshair line (vertical or horizontal) 
@@ -14,7 +12,7 @@ data class CrosshairLineOptions(
      * Color of a certain crosshair line 
      */
 
-    var color: ColorWrapper? = null,
+    var color: IntColor? = null,
     /** 
      * Width of a certain crosshair line and corresponding scale label 
      */
@@ -38,8 +36,7 @@ data class CrosshairLineOptions(
     /** 
      * Background color of corresponding scale label 
      */
-    @JsonAdapter(ColorAdapter::class)
-    var labelBackgroundColor: ColorWrapper? = null
+    var labelBackgroundColor: IntColor? = null
 )
 
 inline fun crosshairLineOptions(init: CrosshairLineOptions.() -> Unit): CrosshairLineOptions {

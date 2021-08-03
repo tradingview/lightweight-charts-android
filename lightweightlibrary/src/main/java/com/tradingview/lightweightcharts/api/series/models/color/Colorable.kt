@@ -1,4 +1,4 @@
-package com.tradingview.lightweightcharts.api.series.models
+package com.tradingview.lightweightcharts.api.series.models.color
 
 import android.graphics.Color
 import com.google.gson.*
@@ -6,22 +6,18 @@ import com.tradingview.lightweightcharts.api.series.exception.ColorParseExceptio
 import com.tradingview.lightweightcharts.help.isString
 import java.lang.reflect.Type
 import kotlin.contracts.ExperimentalContracts
-import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.*
 import java.lang.IllegalStateException
 
-sealed class ColorWrapper {
-    class IntColor(val value: Int): ColorWrapper()
-    class EmptyColor: ColorWrapper()
-
-    class ColorAdapter : JsonSerializer<ColorWrapper>, JsonDeserializer<ColorWrapper> {
+interface Colorable {
+    class ColorAdapter : JsonSerializer<Colorable>, JsonDeserializer<Colorable> {
         override fun serialize(
-            src: ColorWrapper?,
+            src: Colorable?,
             typeOfSrc: Type?,
             context: JsonSerializationContext?
         ): JsonElement {
             return when (src) {
                 is IntColor -> JsonPrimitive(src.value.toHexString())
-                is EmptyColor -> JsonPrimitive("")
+                is NoColor -> JsonPrimitive("")
                 else -> throw IllegalStateException("Unknown type of color: $typeOfSrc")
             }
         }
@@ -31,8 +27,9 @@ sealed class ColorWrapper {
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
-        ): IntColor? {
+        ): Colorable? {
             return when {
+                json.isString() && json.asString.isBlank() -> NoColor
                 json.isString() -> json.asString.toColor()?.let { IntColor(it) }
                 else -> null
             }
@@ -40,17 +37,7 @@ sealed class ColorWrapper {
     }
 }
 
-fun Int.toIntColor(): IntColor {
-    return IntColor(this)
-}
-
-fun String.toIntColor(): IntColor {
-    val color = this.toColor()
-        ?: throw ColorParseException("Color is empty")
-    return IntColor(color)
-}
-
-private fun Int.toHexString(): String {
+internal fun Int.toHexString(): String {
     val alpha = String.format("%02x", Color.alpha(this))
     val red = String.format("%02x", Color.red(this))
     val green = String.format("%02x", Color.green(this))
@@ -58,7 +45,7 @@ private fun Int.toHexString(): String {
     return "#$red$green$blue$alpha"
 }
 
-private fun String.toColor(): Int? {
+internal fun String.toColor(): Int? {
     return when {
         isBlank() -> null
         get(0) == '#' -> parseHexColor()
