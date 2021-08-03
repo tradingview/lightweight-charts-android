@@ -53,8 +53,8 @@ Configure the chart layout.
 ```kotlin
 charts_view.api.applyOptions {
     layout = layoutOptions {
-        backgroundColor = Color.LTGRAY
-        textColor = Color.BLACK
+        backgroundColor = Color.LTGRAY.toIntColor()
+        textColor = Color.BLACK.toIntColor()
     }
     localization = localizationOptions {
         locale = "ru-RU"
