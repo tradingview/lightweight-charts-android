@@ -13,7 +13,7 @@ import com.tradingview.lightweightcharts.runtime.messaging.*
 
 @SuppressLint("RequiresFeature")
 class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePortCompat>) {
-    private var serializer = GsonProvider.newInstance()
+    private val serializer = GsonProvider.newInstance()
 
     private val jsPort = ports[1]
     private val nativePort = ports[0]
@@ -53,7 +53,6 @@ class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePo
         port: WebMessagePortCompat? = null
     ): WebMessageCompat {
         val jsonMessage = serializer.toJson(bridgeMessage)
-        Log.e("jsonMessage", jsonMessage)
         return WebMessageCompat(jsonMessage, port?.let { arrayOf(it) })
     }
 
