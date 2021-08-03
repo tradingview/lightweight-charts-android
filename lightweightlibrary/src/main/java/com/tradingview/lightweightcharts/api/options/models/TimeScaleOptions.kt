@@ -1,6 +1,6 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import com.tradingview.lightweightcharts.api.series.models.color.Colorable
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class TimeScaleOptions(
@@ -11,7 +11,7 @@ data class TimeScaleOptions(
     var rightBarStaysOnScroll: Boolean? = null,
     var borderVisible: Boolean? = null,
 
-    var borderColor: Colorable? = null,
+    var borderColor: IntColor? = null,
     var visible: Boolean? = null,
     var timeVisible: Boolean? = null,
     var secondsVisible: Boolean? = null,

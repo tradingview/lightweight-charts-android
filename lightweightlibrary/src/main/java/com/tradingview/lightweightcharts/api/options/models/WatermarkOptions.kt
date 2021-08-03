@@ -2,7 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
 import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
-import com.tradingview.lightweightcharts.api.series.models.color.Colorable
+import com.tradingview.lightweightcharts.api.series.models.color.IntColor
 
 /**
  * Structure describing watermark options
@@ -11,7 +11,7 @@ data class WatermarkOptions (
     /**
      * Color of the watermark
      */
-    var color: Colorable? = null,
+    var color: IntColor? = null,
 
     /**
      * Visibility of the watermark. If false, other parameters are ignored

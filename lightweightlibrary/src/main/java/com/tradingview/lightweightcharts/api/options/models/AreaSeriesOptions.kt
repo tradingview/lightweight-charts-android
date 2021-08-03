@@ -5,9 +5,9 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
-import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.color.Colorable
 import com.tradingview.lightweightcharts.api.series.models.color.IntColor
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
@@ -29,11 +29,11 @@ data class AreaSeriesOptions(
     override var baseLineWidth: LineWidth? = null,
     override var baseLineStyle: LineStyle? = null,
 
-    override var topColor: Colorable? = null,
+    override var topColor: IntColor? = null,
 
-    override var bottomColor: Colorable? = null,
+    override var bottomColor: IntColor? = null,
 
-    override var lineColor: Colorable? = null,
+    override var lineColor: IntColor? = null,
 
     override var lineStyle: LineStyle? = null,
     override var lineWidth: LineWidth? = null,
@@ -41,9 +41,9 @@ data class AreaSeriesOptions(
     override var crosshairMarkerVisible: Boolean? = null,
     override var crosshairMarkerRadius: Float? = null,
 
-    override var crosshairMarkerBorderColor: Colorable? = null,
+    override var crosshairMarkerBorderColor: IntColor? = null,
 
-    override var crosshairMarkerBackgroundColor: Colorable? = null,
+    override var crosshairMarkerBackgroundColor: IntColor? = null,
 
     override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,
