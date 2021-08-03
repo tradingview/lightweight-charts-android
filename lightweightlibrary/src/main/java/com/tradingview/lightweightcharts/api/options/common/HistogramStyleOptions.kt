@@ -1,8 +1,8 @@
 package com.tradingview.lightweightcharts.api.options.common
 
-import com.tradingview.lightweightcharts.api.series.models.IntColor
+import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
 
 interface HistogramStyleOptions {
-    val color: IntColor?
+    val color: ColorWrapper?
     val base: Float?
 }

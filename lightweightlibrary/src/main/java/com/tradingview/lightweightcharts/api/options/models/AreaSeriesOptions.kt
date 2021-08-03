@@ -1,14 +1,11 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import androidx.annotation.ColorInt
-import com.google.gson.annotations.JsonAdapter
+import com.tradingview.lightweightcharts.api.options.common.AreaStyleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.options.common.AreaStyleOptions
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
-import com.tradingview.lightweightcharts.api.series.models.ColorAdapter
-import com.tradingview.lightweightcharts.api.series.models.IntColor
+import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
@@ -20,32 +17,22 @@ data class AreaSeriesOptions(
     override var priceLineSource: PriceLineSource? = null,
     override var priceLineWidth: LineWidth? = null,
 
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    override var priceLineColor: IntColor? = null,
+    override var priceLineColor: ColorWrapper? = null,
 
     override var priceLineStyle: LineStyle? = null,
     override var priceFormat: PriceFormat? = null,
     override var baseLineVisible: Boolean? = null,
 
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    override var baseLineColor: IntColor? = null,
+    override var baseLineColor: ColorWrapper? = null,
 
     override var baseLineWidth: LineWidth? = null,
     override var baseLineStyle: LineStyle? = null,
 
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    override var topColor: IntColor? = null,
+    override var topColor: ColorWrapper? = null,
 
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    override var bottomColor: IntColor? = null,
+    override var bottomColor: ColorWrapper? = null,
 
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    override var lineColor: IntColor? = null,
+    override var lineColor: ColorWrapper? = null,
 
     override var lineStyle: LineStyle? = null,
     override var lineWidth: LineWidth? = null,
@@ -53,13 +40,9 @@ data class AreaSeriesOptions(
     override var crosshairMarkerVisible: Boolean? = null,
     override var crosshairMarkerRadius: Float? = null,
 
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    override var crosshairMarkerBorderColor: IntColor? = null,
+    override var crosshairMarkerBorderColor: ColorWrapper? = null,
 
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    override var crosshairMarkerBackgroundColor: IntColor? = null,
+    override var crosshairMarkerBackgroundColor: ColorWrapper? = null,
 
     override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,

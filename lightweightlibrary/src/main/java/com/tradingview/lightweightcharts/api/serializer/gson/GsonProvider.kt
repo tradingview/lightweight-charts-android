@@ -26,6 +26,7 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeAdapter(LineWidth::class.java, LineWidth.LineWidthAdapter())
     registerTypeAdapter(PriceScaleMode::class.java, PriceScaleMode.PriceScaleModeAdapter())
     registerTypeAdapter(PriceScaleId::class.java, PriceScaleId.PriceScaleIdAdapter())
+    registerTypeAdapter(ColorWrapper::class.java, ColorWrapper.ColorAdapter())
 
     return this
 }

@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.*
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.SeriesMarkersViewModel
@@ -74,22 +76,22 @@ class SeriesMarkersFragment: Fragment() {
     private fun applyChartOptions() {
         chartApi.applyOptions {
             layout = layoutOptions {
-                backgroundColor = Color.WHITE
-                textColor = Color.BLACK
+                backgroundColor = IntColor(Color.WHITE)
+                textColor = IntColor(Color.BLACK)
             }
             timeScale = timeScaleOptions {
                 timeVisible = true
-                borderColor = Color.parseColor("#D1D4DC")
+                borderColor = "#D1D4DC".toIntColor()
             }
             rightPriceScale = priceScaleOptions {
-                borderColor = Color.parseColor("#D1D4DC")
+                borderColor = "#D1D4DC".toIntColor()
             }
             grid = gridOptions {
                 horzLines = gridLineOptions {
-                    color = Color.parseColor("#F0F3FA")
+                    color = "#F0F3FA".toIntColor()
                 }
                 vertLines = gridLineOptions {
-                    color = Color.parseColor("#F0F3FA")
+                    color = "#F0F3FA".toIntColor()
                 }
             }
         }
@@ -103,10 +105,10 @@ class SeriesMarkersFragment: Fragment() {
     ) {
         chartApi.addCandlestickSeries(
                 options = CandlestickSeriesOptions(
-                        upColor = Color.argb(255, 38, 166, 154),
-                        downColor = Color.argb(255, 255, 82, 82),
-                        wickUpColor = Color.argb(255, 38, 166, 154),
-                        wickDownColor = Color.argb(255, 255, 82, 82),
+                        upColor = IntColor(Color.argb(255, 38, 166, 154)),
+                        downColor = IntColor(Color.argb(255, 255, 82, 82)),
+                        wickUpColor = IntColor(Color.argb(255, 38, 166, 154)),
+                        wickDownColor = IntColor(Color.argb(255, 255, 82, 82)),
                         borderVisible = false,
                 ),
                 onSeriesCreated = { api ->

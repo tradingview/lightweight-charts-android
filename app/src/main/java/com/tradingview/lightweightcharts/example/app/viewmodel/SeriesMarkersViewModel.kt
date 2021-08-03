@@ -10,6 +10,7 @@ import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
 import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.BarData
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
+import com.tradingview.lightweightcharts.api.series.models.toIntColor
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
@@ -57,7 +58,7 @@ class SeriesMarkersViewModel: ViewModel() {
                 indexOfMaxPrice -> SeriesMarker(
                             time = datesForMarkers[i].time,
                             position = SeriesMarkerPosition.ABOVE_BAR,
-                            color = Color.parseColor("#e91e63"),
+                            color = Color.parseColor("#e91e63").toIntColor(),
                             shape = SeriesMarkerShape.ARROW_DOWN,
                             text = "Sell @ ${floor((datesForMarkers[i] as BarData).high + 2)}"
                 )
@@ -65,7 +66,7 @@ class SeriesMarkersViewModel: ViewModel() {
                 indexOfMinPrice -> SeriesMarker(
                         time = datesForMarkers[i].time,
                         position = SeriesMarkerPosition.BELOW_BAR,
-                        color = Color.parseColor("#2196F3"),
+                        color = Color.parseColor("#2196F3").toIntColor(),
                         shape = SeriesMarkerShape.ARROW_UP,
                         text = "Buy @ ${floor((datesForMarkers[i] as BarData).low - 2)}"
                 )
@@ -79,7 +80,7 @@ class SeriesMarkersViewModel: ViewModel() {
         val circleMarker = SeriesMarker(
                 time = seriesDataList.get(seriesDataList.size - 48)?.time,
                 position = SeriesMarkerPosition.ABOVE_BAR,
-                color = Color.parseColor("#f68410"),
+                color = Color.parseColor("#f68410").toIntColor(),
                 shape = SeriesMarkerShape.CIRCLE,
                 text = "D"
         )

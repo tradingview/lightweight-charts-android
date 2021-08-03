@@ -1,7 +1,5 @@
 package com.tradingview.lightweightcharts.api.series.models
 
-import androidx.annotation.ColorInt
-import com.google.gson.annotations.JsonAdapter
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
 
 data class HistogramData(
@@ -10,7 +8,5 @@ data class HistogramData(
     /**
      * Optional color value for certain data item. If missed, color from HistogramSeriesOptions is used
      */
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    val color: IntColor? = null
+    val color: ColorWrapper? = null
 ): SeriesData

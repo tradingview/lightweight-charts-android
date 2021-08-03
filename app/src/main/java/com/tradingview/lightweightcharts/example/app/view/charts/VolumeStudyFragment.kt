@@ -14,6 +14,7 @@ import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.VolumeStudyViewModel
@@ -84,8 +85,8 @@ class VolumeStudyFragment: Fragment() {
     private fun applyChartOptions() {
         chartApi.applyOptions {
             layout = layoutOptions {
-                backgroundColor = Color.parseColor("#131722")
-                textColor = Color.parseColor("#d1d4dc")
+                backgroundColor = Color.parseColor("#131722").toIntColor()
+                textColor = Color.parseColor("#d1d4dc").toIntColor()
             }
             rightPriceScale = priceScaleOptions {
                 scaleMargins = priceScaleMargins {
@@ -96,10 +97,10 @@ class VolumeStudyFragment: Fragment() {
             }
             grid = gridOptions {
                 vertLines = gridLineOptions {
-                    color = Color.argb(0, 42, 46, 57)
+                    color = Color.argb(0, 42, 46, 57).toIntColor()
                 }
                 horzLines = gridLineOptions {
-                    color = Color.argb(0.6f, 42f, 46f, 57f)
+                    color = Color.argb(0.6f, 42f, 46f, 57f).toIntColor()
                 }
             }
         }
@@ -113,9 +114,9 @@ class VolumeStudyFragment: Fragment() {
     ) {
         chartApi.addAreaSeries(
                 options = AreaSeriesOptions(
-                        topColor = Color.argb(143, 38, 198, 218),
-                        bottomColor = Color.argb(10, 38, 198, 218),
-                        lineColor = Color.argb(255, 38, 198, 218),
+                        topColor = Color.argb(143, 38, 198, 218).toIntColor(),
+                        bottomColor = Color.argb(10, 38, 198, 218).toIntColor(),
+                        lineColor = Color.argb(255, 38, 198, 218).toIntColor(),
                         lineWidth = LineWidth.TWO,
                 ),
                 onSeriesCreated = { api ->
@@ -133,7 +134,7 @@ class VolumeStudyFragment: Fragment() {
     ) {
         chartApi.addHistogramSeries(
                 options = HistogramSeriesOptions(
-                        color = Color.parseColor("#26a69a"),
+                        color = Color.parseColor("#26a69a").toIntColor(),
                         priceFormat = PriceFormat.priceFormatBuiltIn(
                                 type = PriceFormat.Type.VOLUME,
                                 precision = 1,

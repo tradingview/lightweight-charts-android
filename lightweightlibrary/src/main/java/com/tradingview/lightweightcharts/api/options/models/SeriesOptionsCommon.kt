@@ -1,11 +1,11 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import com.tradingview.lightweightcharts.api.options.common.SeriesSpecificOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.PriceFormat
-import com.tradingview.lightweightcharts.api.options.common.SeriesSpecificOptions
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
-import com.tradingview.lightweightcharts.api.series.models.IntColor
+import com.tradingview.lightweightcharts.api.series.models.ColorWrapper
+import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
@@ -41,7 +41,7 @@ interface SeriesOptionsCommon: SeriesSpecificOptions {
     /**
      * Color of the price line. Ignored if priceLineVisible is false
      */
-    val priceLineColor: IntColor?
+    val priceLineColor: ColorWrapper?
 
     /**
      * Price line style. Suitable for percentage and indexedTo100 scales
@@ -61,7 +61,7 @@ interface SeriesOptionsCommon: SeriesSpecificOptions {
     /**
      * Color of the base line in IndexedTo100 mode
      */
-    val baseLineColor: IntColor?
+    val baseLineColor: ColorWrapper?
 
     /**
      * Base line width. Suitable for percentage and indexedTo100 scales.

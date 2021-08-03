@@ -2,35 +2,55 @@ package com.tradingview.lightweightcharts.api.series.models
 
 import android.graphics.Color
 import com.google.gson.*
+import com.tradingview.lightweightcharts.api.series.exception.ColorParseException
 import com.tradingview.lightweightcharts.help.isString
 import java.lang.reflect.Type
 import kotlin.contracts.ExperimentalContracts
+import com.tradingview.lightweightcharts.api.series.models.ColorWrapper.*
+import java.lang.IllegalStateException
 
-typealias IntColor = Int
+sealed class ColorWrapper {
+    class IntColor(val value: Int): ColorWrapper()
+    class EmptyColor: ColorWrapper()
 
-class ColorAdapter : JsonSerializer<IntColor>, JsonDeserializer<IntColor> {
-    override fun serialize(
-        src: IntColor?,
-        typeOfSrc: Type?,
-        context: JsonSerializationContext?
-    ): JsonElement {
-        return src?.let { JsonPrimitive(it.toHexString()) } ?: JsonNull.INSTANCE
-    }
+    class ColorAdapter : JsonSerializer<ColorWrapper>, JsonDeserializer<ColorWrapper> {
+        override fun serialize(
+            src: ColorWrapper?,
+            typeOfSrc: Type?,
+            context: JsonSerializationContext?
+        ): JsonElement {
+            return when (src) {
+                is IntColor -> JsonPrimitive(src.value.toHexString())
+                is EmptyColor -> JsonPrimitive("")
+                else -> throw IllegalStateException("Unknown type of color: $typeOfSrc")
+            }
+        }
 
-    @ExperimentalContracts
-    override fun deserialize(
-        json: JsonElement?,
-        typeOfT: Type?,
-        context: JsonDeserializationContext?
-    ): IntColor? {
-         return when {
-             json.isString() -> json.asString.toColor()
-             else -> null
+        @ExperimentalContracts
+        override fun deserialize(
+            json: JsonElement?,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
+        ): IntColor? {
+            return when {
+                json.isString() -> json.asString.toColor()?.let { IntColor(it) }
+                else -> null
+            }
         }
     }
 }
 
-private fun IntColor.toHexString(): String {
+fun Int.toIntColor(): IntColor {
+    return IntColor(this)
+}
+
+fun String.toIntColor(): IntColor {
+    val color = this.toColor()
+        ?: throw ColorParseException("Color is empty")
+    return IntColor(color)
+}
+
+private fun Int.toHexString(): String {
     val alpha = String.format("%02x", Color.alpha(this))
     val red = String.format("%02x", Color.red(this))
     val green = String.format("%02x", Color.green(this))
@@ -40,10 +60,10 @@ private fun IntColor.toHexString(): String {
 
 private fun String.toColor(): Int? {
     return when {
-        isEmpty() -> null
+        isBlank() -> null
         get(0) == '#' -> parseHexColor()
         count() > 6 && subSequence(0, 4) == "rgba" -> parseRgbaColor()
-        else -> throw JsonParseException("Unknown color")
+        else -> throw ColorParseException("Unknown color")
     }
 }
 
@@ -61,7 +81,7 @@ private fun String.parseHexColor(): Int {
             val alpha = (color and rgbaAlphaMask) shl 24
             sRGBColor or alpha
         }
-        else -> throw JsonParseException("Unknown color")
+        else -> throw ColorParseException("Unknown color")
     }
     return argbColor.toInt()
 }
@@ -74,5 +94,5 @@ private fun String.parseRgbaColor(): Int {
         val blue = groups[3].toInt()
         val alpha = (groups[4].toFloat() * 255).toInt()
         return@let Color.argb(alpha, red, green, blue)
-    } ?: throw JsonParseException("Unknown color")
+    } ?: throw ColorParseException("Unknown color")
 }

@@ -14,6 +14,7 @@ import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.PriceLinesWithTitlesViewModel
@@ -59,7 +60,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
                 series.createPriceLine(
                         PriceLineOptions(
                                 price = viewModel.minimumPrice,
-                                color = Color.parseColor("#be1238"),
+                                color = Color.parseColor("#be1238").toIntColor(),
                                 lineWidth = LineWidth.TWO,
                                 lineStyle = LineStyle.SOLID,
                                 axisLabelVisible = true,
@@ -70,7 +71,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
                 series.createPriceLine(
                         PriceLineOptions(
                                 price = viewModel.avgPrice,
-                                color = Color.parseColor("#be1238"),
+                                color = Color.parseColor("#be1238").toIntColor(),
                                 lineWidth = LineWidth.TWO,
                                 lineStyle = LineStyle.SOLID,
                                 axisLabelVisible = true,
@@ -81,7 +82,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
                 series.createPriceLine(
                         PriceLineOptions(
                                 price = viewModel.maximumPrice,
-                                color = Color.parseColor("#be1238"),
+                                color = Color.parseColor("#be1238").toIntColor(),
                                 lineWidth = LineWidth.TWO,
                                 lineStyle = LineStyle.SOLID,
                                 axisLabelVisible = true,
@@ -111,8 +112,8 @@ class PriceLinesWithTitlesFragment: Fragment() {
     private fun applyChartOptions() {
         chartApi.applyOptions {
             layout = layoutOptions {
-                textColor = Color.parseColor("#d1d4dc")
-                backgroundColor = Color.BLACK
+                textColor = Color.parseColor("#d1d4dc").toIntColor()
+                backgroundColor = Color.BLACK.toIntColor()
             }
             rightPriceScale = priceScaleOptions {
                 scaleMargins = priceScaleMargins {
@@ -123,7 +124,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
             crosshair = crosshairOptions {
                 vertLine = crosshairLineOptions {
                     width = LineWidth.FOUR
-                    color = Color.argb(0.1f, 224f, 227f, 235f)
+                    color = Color.argb(0.1f, 224f, 227f, 235f).toIntColor()
                     style = LineStyle.SOLID
                 }
                 horzLine = crosshairLineOptions {
@@ -133,10 +134,10 @@ class PriceLinesWithTitlesFragment: Fragment() {
             }
             grid = gridOptions {
                 vertLines = gridLineOptions {
-                    color = Color.argb(0, 42, 46, 57)
+                    color = Color.argb(0, 42, 46, 57).toIntColor()
                 }
                 horzLines = gridLineOptions {
-                    color = Color.argb(0, 42, 46, 57)
+                    color = Color.argb(0, 42, 46, 57).toIntColor()
                 }
             }
             handleScroll = handleScrollOptions {
@@ -153,7 +154,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
     ) {
         chartApi.addLineSeries(
                 options = LineSeriesOptions(
-                        color = Color.rgb(0, 120, 255),
+                        color = Color.rgb(0, 120, 255).toIntColor(),
                         lineWidth = LineWidth.TWO,
                         crosshairMarkerVisible = false,
                         lastValueVisible = false,

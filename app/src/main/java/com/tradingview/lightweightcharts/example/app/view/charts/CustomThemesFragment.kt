@@ -15,6 +15,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomThemesViewModel
@@ -81,46 +82,46 @@ class CustomThemesFragment: Fragment() {
 
     private val darkThemeOptions: ChartOptions.() -> Unit = {
         layout = layoutOptions {
-            backgroundColor = Color.parseColor("#2B2B43")
-            textColor = Color.parseColor("#D9D9D9")
+            backgroundColor = Color.parseColor("#2B2B43").toIntColor()
+            textColor = Color.parseColor("#D9D9D9").toIntColor()
         }
         watermark = watermarkOptions {
-            color = Color.argb(0, 0, 0, 0)
+            color = Color.argb(0, 0, 0, 0).toIntColor()
         }
         crosshair = crosshairOptions {
             vertLine = crosshairLineOptions {
-                color = Color.parseColor("#758696")
-                labelBackgroundColor = Color.parseColor("#758696")
+                color = Color.parseColor("#758696").toIntColor()
+                labelBackgroundColor = Color.parseColor("#758696").toIntColor()
             }
             horzLine = crosshairLineOptions {
-                color = Color.parseColor("#758696")
-                labelBackgroundColor = Color.parseColor("#758696")
+                color = Color.parseColor("#758696").toIntColor()
+                labelBackgroundColor = Color.parseColor("#758696").toIntColor()
             }
         }
         grid = gridOptions {
             vertLines = gridLineOptions {
-                color = Color.parseColor("#2B2B43")
+                color = Color.parseColor("#2B2B43").toIntColor()
             }
             horzLines = gridLineOptions {
-                color = Color.parseColor("#363C4E")
+                color = Color.parseColor("#363C4E").toIntColor()
             }
         }
     }
 
     private val lightThemeOptions: ChartOptions.() -> Unit = {
         layout = layoutOptions {
-            backgroundColor = Color.WHITE
-            textColor = Color.parseColor("#191919")
+            backgroundColor = Color.WHITE.toIntColor()
+            textColor = Color.parseColor("#191919").toIntColor()
         }
         watermark = watermarkOptions {
-            color = Color.argb(0, 0, 0, 0)
+            color = Color.argb(0, 0, 0, 0).toIntColor()
         }
         grid = gridOptions {
             vertLines = gridLineOptions {
                 visible = false
             }
             horzLines = gridLineOptions {
-                color = Color.parseColor("#f0f3fa")
+                color = Color.parseColor("#f0f3fa").toIntColor()
             }
         }
     }
@@ -133,9 +134,9 @@ class CustomThemesFragment: Fragment() {
     ) {
         chartApi.addAreaSeries(
                 options = AreaSeriesOptions(
-                        topColor = Color.argb(143, 33, 150, 243),
-                        bottomColor = Color.argb(10, 33, 150, 243),
-                        lineColor = Color.argb(204, 33, 150, 243),
+                        topColor = Color.argb(143, 33, 150, 243).toIntColor(),
+                        bottomColor = Color.argb(10, 33, 150, 243).toIntColor(),
+                        lineColor = Color.argb(204, 33, 150, 243).toIntColor(),
                         lineWidth = LineWidth.TWO,
                 ),
                 onSeriesCreated = { api ->

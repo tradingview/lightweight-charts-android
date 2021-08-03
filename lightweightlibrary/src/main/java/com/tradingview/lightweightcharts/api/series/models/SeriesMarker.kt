@@ -1,7 +1,5 @@
 package com.tradingview.lightweightcharts.api.series.models
 
-import androidx.annotation.ColorInt
-import com.google.gson.annotations.JsonAdapter
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerPosition
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
 
@@ -14,9 +12,7 @@ data class SeriesMarker(
      */
     val size: Int? = null,
 
-    @ColorInt
-    @JsonAdapter(ColorAdapter::class)
-    val color: IntColor? = null,
+    val color: ColorWrapper = ColorWrapper.EmptyColor(),
 
     val id: String? = null,
     val text: String? = null

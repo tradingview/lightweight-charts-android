@@ -18,6 +18,7 @@ import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.api.series.models.Time
+import com.tradingview.lightweightcharts.api.series.models.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.view.util.Tooltip
@@ -91,8 +92,8 @@ class FloatingTooltipFragment: Fragment() {
     private fun applyChartOptions() {
         chartApi.applyOptions {
             layout = layoutOptions {
-                backgroundColor = Color.WHITE
-                textColor = Color.parseColor("#333333")
+                backgroundColor = Color.WHITE.toIntColor()
+                textColor = Color.parseColor("#333333").toIntColor()
             }
             crosshair = crosshairOptions {
                 vertLine = crosshairLineOptions {
@@ -111,10 +112,10 @@ class FloatingTooltipFragment: Fragment() {
             }
             grid = gridOptions {
                 horzLines = gridLineOptions {
-                    color = Color.parseColor("#eeeeee")
+                    color = Color.parseColor("#eeeeee").toIntColor()
                 }
                 vertLines = gridLineOptions {
-                    color = Color.WHITE
+                    color = Color.WHITE.toIntColor()
                 }
             }
         }
@@ -177,9 +178,9 @@ class FloatingTooltipFragment: Fragment() {
     ) {
         chartApi.addAreaSeries(
                 options = AreaSeriesOptions(
-                        topColor = Color.argb(143, 0, 150, 136),
-                        bottomColor = Color.argb(10, 0, 150, 136),
-                        lineColor = Color.argb(255, 0, 150, 136),
+                        topColor = Color.argb(143, 0, 150, 136).toIntColor(),
+                        bottomColor = Color.argb(10, 0, 150, 136).toIntColor(),
+                        lineColor = Color.argb(255, 0, 150, 136).toIntColor(),
                         lineWidth = LineWidth.TWO,
                 ),
                 onSeriesCreated = { api ->
