@@ -12,7 +12,7 @@ data class SeriesMarker(
      */
     val size: Int? = null,
 
-    val color: ColorWrapper = ColorWrapper.EmptyColor(),
+    val color: ColorWrapper? = null,
 
     val id: String? = null,
     val text: String? = null
