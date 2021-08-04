@@ -3,6 +3,7 @@ package com.tradingview.lightweightcharts.api.series.models
 import com.google.gson.*
 import java.lang.IllegalStateException
 import java.lang.reflect.Type
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,9 +26,23 @@ sealed class Time {
     }
 
     data class StringTime(val source: String, val locale: Locale = Locale.getDefault()) : Time() {
+        init {
+            try {
+                tryParseDate(source, locale)
+            } catch (exception: IllegalStateException) {
+                throw IllegalArgumentException("Date format is not supported", exception)
+            } catch (exception: ParseException) {
+                throw IllegalArgumentException("Date could not be parsed", exception)
+            }
+        }
+
         override val date: Date
-            get() = SimpleDateFormat("yyyy-MM-dd", locale).parse(source)
-                ?: throw IllegalStateException("Time format is not supported")
+            get() = tryParseDate(source, locale)
+
+        private fun tryParseDate(stringDate: String, locale: Locale): Date {
+            return SimpleDateFormat("yyyy-MM-dd", locale).parse(stringDate)
+                ?: throw IllegalStateException("Date format is not supported")
+        }
     }
 
     abstract val date: Date

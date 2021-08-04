@@ -28,7 +28,7 @@ export default class FunctionManager {
         const fn = this.functions.find((value) => { return value.name === data.fn })
 
         if (fn === undefined) {
-            this.throwFatalError(`${data.fn} is not found`, data)
+            this.throwFatalError(new Error(`${data.fn} is not found`), data)
             return
         }
 
@@ -44,7 +44,7 @@ export default class FunctionManager {
                 }))
             })
         } catch (e) {
-            this.throwFatalError(e.message, data)
+            this.throwFatalError(e, data)
         }
     }
 
@@ -52,7 +52,7 @@ export default class FunctionManager {
         const fn = this.functions.find((value) => { return value.name === data.fn })
 
         if (fn === undefined) {
-            this.throwFatalError(`${data.fn} is not found`, data)
+            this.throwFatalError(new Error(`${data.fn} is not found`), data)
             return
         }
 
@@ -75,7 +75,7 @@ export default class FunctionManager {
         const fn = this.functions.find((value) => { return value.name === data.fn })
 
         if (fn === undefined) {
-            this.throwFatalError(`Function:${data.fn} is not found`, data)
+            this.throwFatalError(new Error(`Function:${data.fn} is not found`), data)
             return
         }
 
@@ -83,7 +83,7 @@ export default class FunctionManager {
         const subscription = this.subscriptions.get(id)
 
         if (subscription === undefined) {
-            this.throwFatalError(`Subscriber:${data.fn} with uuid:${data.uuid} is not found`, data)
+            this.throwFatalError(new Error(`Subscriber:${data.fn} with uuid:${data.uuid} is not found`), data)
             return
         }
 
@@ -99,16 +99,14 @@ export default class FunctionManager {
         }))
     }
 
-    throwFatalError(message, data) {
-        logger.e(message)
+    throwFatalError(error, data) {
+        logger.e(error.message)
 
         if (data === undefined) {
             data = {}
         }
 
-        if (!data.hasOwnProperty("message")) {
-            data.message = message
-        }
+        data.message = error.stack
 
         this.port.postMessage(JSON.stringify({
             messageType: "Message::FatalError",

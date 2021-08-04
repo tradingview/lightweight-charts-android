@@ -1,4 +1,4 @@
-import * as LightweightCharts from 'lightweight-charts';
+import * as LightweightCharts from 'lightweight';
 import FunctionManager from './function-manager.js';
 import ChartRegistrationFunctionsController from './chart-registration-functions-controller.js';
 import PluginManager from './plugin-manager.js';

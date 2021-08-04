@@ -102,7 +102,7 @@ export default class TimeScaleFunctionManager {
     fetchTimeScale(input, callback) {
         let scale = this.cache.get(input.params.timeScaleId)
         if (scale === undefined) {
-            this.functionManager.throwFatalError(`TimeScale with uuid:${input.uuid} is not found`, input)
+            this.functionManager.throwFatalError(new Error(`TimeScale with uuid:${input.uuid} is not found`), input)
         } else {
             callback(scale)
         }
