@@ -178,7 +178,7 @@ export default class SeriesFunctionManager {
         this.functionManager.registerFunction("formatPrice", (input, resolve) => {
             let formatter = this.cache.get(input.params.formatterId)
             if (formatter === undefined) {
-                this.functionManager.throwFatalError(`Formatter with uuid:${input.uuid} is not found`, input)
+                this.functionManager.throwFatalError(new Error(`Formatter with uuid:${input.uuid} is not found`), input)
             } else {
                 resolve(formatter.format(input.params.price))
             }
@@ -188,7 +188,7 @@ export default class SeriesFunctionManager {
     findSeries(input, callback) {
         let series = this.cache.get(input.params.seriesId)
         if (series === undefined) {
-            this.functionManager.throwFatalError(`${seriesName} with uuid:${input.uuid} is not found`, input)
+            this.functionManager.throwFatalError(new Error(`${seriesName} with uuid:${input.uuid} is not found`), input)
         } else {
             callback(series)
         }
@@ -201,7 +201,7 @@ export default class SeriesFunctionManager {
             }
         }
 
-        this.functionManager.throwFatalError(`Series id is not found`, input)
+        this.functionManager.throwFatalError(new Error(`Series id is not found`), input)
 
         return undefined
     }
@@ -209,7 +209,7 @@ export default class SeriesFunctionManager {
     findLine(input, callback) {
         let line = this.cache.get(input.params.lineId)
         if (line === undefined) {
-            this.functionManager.throwFatalError(`PriceLine with uuid:${input.uuid} is not found`, input)
+            this.functionManager.throwFatalError(new Error(`PriceLine with uuid:${input.uuid} is not found`), input)
         } else {
             callback(line)
         }

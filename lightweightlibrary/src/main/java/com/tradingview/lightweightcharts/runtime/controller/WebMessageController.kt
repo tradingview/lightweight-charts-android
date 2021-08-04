@@ -53,7 +53,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         callbackBuffer[bridge.uuid] = BufferElement(
             callback,
             deserializer,
-            Thread.currentThread().stackTrace
+            getStackTrace()
         )
 
         messageBuffer.addLast(bridge)
@@ -72,7 +72,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         callbackBuffer[bridge.uuid] = BufferElement(
             callback as (Any?) -> Unit,
             deserializer,
-            Thread.currentThread().stackTrace
+            getStackTrace()
         )
         messageBuffer.addLast(bridge)
         sendMessages()
@@ -119,11 +119,44 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
             is BridgeFatalError -> {
                 val element = callbackBuffer.remove(bridgeMessage.uuid)
-                val exception = IllegalStateException()
+                val message = bridgeMessage.message.split('\n').first()
+                val jsException = IllegalStateException(message).apply {
+                    val regex = getStackTraceRegex()
+                    val trace = regex.findAll(bridgeMessage.message).map { result ->
+                        val values = result.groupValues
+                        StackTraceElement(
+                            "jsCode",
+                            values[1],
+                            values[2],
+                            values[3].toInt()
+                        )
+                    }.toList()
+                    stackTrace = trace.toTypedArray()
+                }
+
+                val exception = IllegalStateException(jsException)
                 exception.stackTrace = element?.stackTrace ?: emptyArray()
-                throw IllegalStateException(bridgeMessage.message, exception)
+                throw exception
             }
         }
+    }
+
+    private fun getStackTraceRegex(): Regex {
+        val methodGroup = "(\\S+)"
+        val fileGroup = "(file:[^:]+)"
+        val lineGroup = "(\\d+)"
+        val columnGroup = "(\\d+)"
+        val pattern = "at\\s+$methodGroup\\s+[(]$fileGroup:$lineGroup:$columnGroup[)]"
+        return Regex(pattern)
+    }
+
+    private fun getStackTrace(): Array<StackTraceElement> {
+        return Thread.currentThread().stackTrace
+            //remove current class name from the stacktrace
+            .filter { it.className != WebMessageController::class.qualifiedName }
+            //remove getCurrentThread and getStackTrace from the stacktrace
+            .drop(2)
+            .toTypedArray()
     }
 
     private fun sendMessages() {
