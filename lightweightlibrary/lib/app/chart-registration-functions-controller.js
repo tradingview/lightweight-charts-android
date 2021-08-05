@@ -99,6 +99,11 @@ export default class ChartRegistrationFunctionsController {
             })
         })
 
+        this.functionManager.registerFunction("takeScreenshot", (input, resolve) => {
+            let chartScreenshot = this.chart.takeScreenshot()
+            resolve(chartScreenshot.toDataURL('image/jpeg', 1.0))
+        })
+
     }
 
 }

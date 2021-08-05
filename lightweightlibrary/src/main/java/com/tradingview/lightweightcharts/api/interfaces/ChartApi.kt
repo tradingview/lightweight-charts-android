@@ -1,5 +1,6 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
+import android.graphics.Bitmap
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.models.*
 
@@ -13,6 +14,7 @@ interface ChartApi {
         const val PRICE_SCALE = "priceScale"
         const val APPLY_OPTIONS = "chartApplyOptions"
         const val CHART_OPTIONS = "chartOptions"
+        const val TAKE_SCREENSHOT = "takeScreenshot"
     }
 
     object Params {
@@ -23,7 +25,7 @@ interface ChartApi {
 
     /**
      * Returns API to manipulate the time scale
-     * @returns - target API
+     * @return target API
      */
     val timeScale: TimeScaleApi
 
@@ -36,7 +38,7 @@ interface ChartApi {
     /**
      * Creates an area series with specified parameters
      * @param options - customization parameters of the series being created
-     * @returns an interface of the created series
+     * @return an interface of the created series
      */
     fun addAreaSeries(
             options: AreaSeriesOptions = AreaSeriesOptions(),
@@ -46,7 +48,7 @@ interface ChartApi {
     /**
      * Creates a bar series with specified parameters
      * @param options - customization parameters of the series being created
-     * @returns an interface of the created series
+     * @return an interface of the created series
      */
     fun addBarSeries(
             options: BarSeriesOptions = BarSeriesOptions(),
@@ -56,7 +58,7 @@ interface ChartApi {
     /**
      * Creates a candlestick series with specified parameters
      * @param options - customization parameters of the series being created
-     * @returns an interface of the created series
+     * @return an interface of the created series
      */
     fun addCandlestickSeries(
             options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
@@ -66,7 +68,7 @@ interface ChartApi {
     /**
      * Creates a histogram series with specified parameters
      * @param options - customization parameters of the series being created
-     * @returns an interface of the created series
+     * @return an interface of the created series
      */
     fun addHistogramSeries(
             options: HistogramSeriesOptions = HistogramSeriesOptions(),
@@ -76,7 +78,7 @@ interface ChartApi {
     /**
      * Creates a line series with specified parameters
      * @param options - customization parameters of the series being created
-     * @returns an interface of the created series
+     * @return an interface of the created series
      */
     fun addLineSeries(
             options: LineSeriesOptions = LineSeriesOptions(),
@@ -111,7 +113,7 @@ interface ChartApi {
 
     /**
      * Returns API to manipulate the price scale
-     * @returns - target API
+     * @return target API
      */
     fun priceScale(id: PriceScaleId): PriceScaleApi
 
@@ -135,7 +137,13 @@ interface ChartApi {
 
     /**
      * Returns currently applied options
-     * @returns - full set of currently applied options, including defaults
+     * @return - full set of currently applied options, including defaults
      */
     fun options(onOptionsReceived: (options: ChartOptions) -> Unit)
+
+    /**
+     * Returns bitmap with captured chart
+     * @return bitmap with captured chart
+     */
+    fun takeScreenshot(onScreenshotReady: (Bitmap) -> Unit)
 }
