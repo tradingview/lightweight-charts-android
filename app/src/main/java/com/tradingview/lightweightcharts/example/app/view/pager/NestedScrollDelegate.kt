@@ -1,10 +1,11 @@
-package com.tradingview.lightweightcharts.view.gesture
+package com.tradingview.lightweightcharts.example.app.view.pager
 
 import android.content.Context
 import android.util.TypedValue
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ViewGroup
+import com.tradingview.lightweightcharts.view.gesture.TouchDelegate
 import kotlin.math.abs
 
 class NestedScrollDelegate(private val context: Context) : TouchDelegate {
@@ -41,7 +42,7 @@ class NestedScrollDelegate(private val context: Context) : TouchDelegate {
             }
 
             MotionEvent.ACTION_DOWN -> {
-                if (eventX > limitToScrollParent ) {
+                if (eventX > limitToScrollParent) {
                     view.requestDisallowInterceptTouchEvent(true)
                 }
                 lastXDown = eventX

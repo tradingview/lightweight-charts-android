@@ -1,4 +1,4 @@
-package com.tradingview.lightweightcharts.example.app.view
+package com.tradingview.lightweightcharts.example.app.view.pager
 
 import android.os.Bundle
 import android.view.View
@@ -26,6 +26,7 @@ class ViewPagerActivity : AppCompatActivity() {
         private lateinit var series: SeriesApi
 
         fun bind() {
+            view.charts_view.addTouchDelegate(NestedScrollDelegate(activity))
             view.charts_view.subscribeOnChartStateChange { state ->
                 //Do not add new series when ViewHolder is rebinding
                 if (state is ChartsView.State.Ready && ::series.isInitialized.not()) {

@@ -13,6 +13,7 @@ import com.google.android.material.navigation.NavigationView
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.router.FragmentFactory
 import com.tradingview.lightweightcharts.example.app.view.charts.*
+import com.tradingview.lightweightcharts.example.app.view.pager.ViewPagerActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

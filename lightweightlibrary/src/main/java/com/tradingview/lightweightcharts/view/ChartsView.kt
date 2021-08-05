@@ -11,7 +11,6 @@ import com.tradingview.lightweightcharts.api.delegates.ChartApiDelegate
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.messaging.LogLevel
-import com.tradingview.lightweightcharts.view.gesture.NestedScrollDelegate
 import com.tradingview.lightweightcharts.view.gesture.TouchDelegate
 import java.lang.Exception
 import java.util.HashMap
@@ -73,7 +72,6 @@ open class ChartsView @JvmOverloads constructor(
                 }
             }
         }
-        webView.addTouchDelegate(NestedScrollDelegate(context))
         addView(webView)
     }
 
