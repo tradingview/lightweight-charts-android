@@ -54,7 +54,7 @@ class SeriesMarkersFragment: Fragment() {
                 this.series.clear()
                 this.series.add(series)
 
-                series.setMarkers(viewModel.createMarkers())
+                series.setMarkers(viewModel.markers)
             }
         })
     }
