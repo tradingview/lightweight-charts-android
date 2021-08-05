@@ -33,8 +33,8 @@ internal class WebSession @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        touchDelegates.forEach { it.beforeTouchEvent() }
-        return touchDelegates.any { it.onTouchEvent(event) } || super.onTouchEvent(event)
+        touchDelegates.forEach { it.beforeTouchEvent(this) }
+        return touchDelegates.any { it.onTouchEvent(this, event) } || super.onTouchEvent(event)
     }
 
     fun addTouchDelegate(touchDelegate: TouchDelegate) {
