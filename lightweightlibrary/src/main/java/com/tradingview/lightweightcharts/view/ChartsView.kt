@@ -2,7 +2,6 @@ package com.tradingview.lightweightcharts.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -17,7 +16,6 @@ import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.messaging.LogLevel
 import java.lang.Exception
-import java.lang.UnsupportedOperationException
 import java.util.HashMap
 
 @SuppressLint("RequiresFeature")
