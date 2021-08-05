@@ -1,4 +1,4 @@
-package com.tradingview.lightweightcharts.api.series.models.color
+package com.tradingview.lightweightcharts.api.chart.models.color
 
 import com.google.gson.*
 import com.tradingview.lightweightcharts.api.series.exception.ColorParseException

@@ -2,7 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.color.IntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 
 data class PriceLineOptions(
     var price: Float? = null,
