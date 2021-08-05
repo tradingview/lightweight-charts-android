@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -38,6 +39,8 @@ class BarChartFragment: Fragment() {
 
     private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()
+
+    private val switcher: LinearLayout by lazy { switcher_ll }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +88,20 @@ class BarChartFragment: Fragment() {
     }
 
     private fun enableButtons(view: View) {
-        view.findViewById<Button>(R.id.button_capture).setOnClickListener {
-            shareScreenshot()
+        if (switcher.visibility != View.VISIBLE) {
+            switcher.visibility = View.VISIBLE
         }
+
+        val button = Button(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                CustomPriceFormatterFragment.BUTTON_WIDTH,
+                CustomPriceFormatterFragment.BUTTON_HEIGHT
+            )
+            text = "Screenshot"
+            setOnClickListener { shareScreenshot() }
+        }
+
+        switcher.addView(button)
     }
 
     @NeedsPermission(
