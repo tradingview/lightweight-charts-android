@@ -1,6 +1,6 @@
 package com.tradingview.lightweightcharts.api.options.common
 
-import com.tradingview.lightweightcharts.api.series.models.color.IntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 
 interface BarStyleOptions {
     val upColor: IntColor?

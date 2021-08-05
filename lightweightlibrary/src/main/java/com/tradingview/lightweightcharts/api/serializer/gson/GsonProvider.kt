@@ -4,9 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.*
-import com.tradingview.lightweightcharts.api.series.models.color.Colorable
-import com.tradingview.lightweightcharts.api.series.models.color.IntColor
-import com.tradingview.lightweightcharts.api.series.models.color.IntColorAdapter
+import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColorAdapter
 
 object GsonProvider {
     fun newInstance(): Gson {

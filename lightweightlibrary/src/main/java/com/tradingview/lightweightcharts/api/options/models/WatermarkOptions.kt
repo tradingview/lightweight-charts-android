@@ -2,7 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
 import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
-import com.tradingview.lightweightcharts.api.series.models.color.IntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 
 /**
  * Structure describing watermark options

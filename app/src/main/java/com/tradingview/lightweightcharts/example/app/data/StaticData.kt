@@ -7,7 +7,7 @@ import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.*
-import com.tradingview.lightweightcharts.api.series.models.color.toIntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 
 @Suppress("LongMethod")
 fun listBarChartSeriesData(): MutableList<SeriesData> {

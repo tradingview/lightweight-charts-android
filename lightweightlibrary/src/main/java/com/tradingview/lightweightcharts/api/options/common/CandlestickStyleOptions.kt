@@ -1,6 +1,6 @@
 package com.tradingview.lightweightcharts.api.options.common
 
-import com.tradingview.lightweightcharts.api.series.models.color.IntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 
 /** Structure describing a drawing style of the candlestick chart  */
 interface CandlestickStyleOptions {

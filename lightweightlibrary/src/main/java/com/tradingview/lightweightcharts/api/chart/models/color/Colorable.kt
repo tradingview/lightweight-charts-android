@@ -1,4 +1,4 @@
-package com.tradingview.lightweightcharts.api.series.models.color
+package com.tradingview.lightweightcharts.api.chart.models.color
 
 import android.graphics.Color
 import com.google.gson.*
