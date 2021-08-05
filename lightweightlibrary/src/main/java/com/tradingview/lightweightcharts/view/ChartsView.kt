@@ -2,9 +2,11 @@ package com.tradingview.lightweightcharts.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.webkit.WebView
+import android.widget.FrameLayout
 import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature.*
@@ -14,11 +16,15 @@ import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.messaging.LogLevel
 import java.lang.Exception
-import java.lang.UnsupportedOperationException
 import java.util.HashMap
 
 @SuppressLint("RequiresFeature")
-open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(context, attrs) {
+open class ChartsView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+    defStyleRes: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
     companion object {
         private const val DEFAULT_URL = "file:///android_asset/com/tradingview/lightweightcharts/index.html"
@@ -29,6 +35,8 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
             WEB_MESSAGE_PORT_POST_MESSAGE
         )
     }
+
+    private val webView = WebView(context, attrs, defStyleRes)
 
     open val logLevel = LogLevel.WARNING
 
@@ -47,34 +55,41 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
     private val notSupportedFeatures: List<String> = checkSupportedFeature()
 
     private val channel: WebMessageChannel by lazy {
-        WebViewCompat.createWebMessageChannel(this)
+        WebViewCompat.createWebMessageChannel(webView)
             .asList()
             .let { WebMessageChannel(logLevel, it) }
-            .apply { initConnection(this@ChartsView) }
+            .apply { initConnection(webView) }
     }
 
 
     init {
-        @SuppressLint("SetJavaScriptEnabled")
-        settings.javaScriptEnabled = true
-        settings.domStorageEnabled = true
+        with(webView) {
+            layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
+            setBackgroundColor(0x00000000)
+            visibility = View.INVISIBLE
 
-        webViewClient = object : WebViewClientCompat() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                when {
-                    notSupportedFeatures.isEmpty() -> {
-                        webMessageController.setWebMessageChannel(channel)
-                        state = State.Ready()
-                    }
-                    else -> {
-                        state = State.Error(
-                            Exception("WebView does not support features: $notSupportedFeatures")
-                        )
+            @SuppressLint("SetJavaScriptEnabled")
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            webViewClient = object : WebViewClientCompat() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    when {
+                        notSupportedFeatures.isEmpty() -> {
+                            visibility = View.VISIBLE
+                            webMessageController.setWebMessageChannel(channel)
+                            state = State.Ready()
+                        }
+                        else -> {
+                            state = State.Error(
+                                Exception("WebView does not support features: $notSupportedFeatures")
+                            )
+                        }
                     }
                 }
             }
         }
+        addView(webView)
     }
 
     private fun checkSupportedFeature(): List<String> {
@@ -91,40 +106,13 @@ open class ChartsView(context: Context, attrs: AttributeSet? = null): WebView(co
             webMessageController.setWebMessageChannel(channel)
         } else {
             state = State.Preparing()
-            super.loadUrl(DEFAULT_URL)
+            webView.loadUrl(DEFAULT_URL)
         }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         webMessageController.clearWebMessageChannel()
-    }
-
-    override fun loadUrl(url: String, additionalHttpHeaders: MutableMap<String, String>) {
-        throw UnsupportedOperationException()
-    }
-
-    override fun loadUrl(url: String) {
-        throw UnsupportedOperationException()
-    }
-
-    @Deprecated(
-        "Use setBackground instead",
-        ReplaceWith("setBackground(ColorDrawable(color))", "color"),
-        DeprecationLevel.ERROR
-    )
-    override fun setBackgroundColor(color: Int) {
-        super.setBackgroundColor(color)
-    }
-
-    override fun setBackground(background: Drawable?) {
-        post {
-            //setBackgroundColor uses the native API of WebView
-            //but setBackground uses the default API of Android SDK.
-            //For the method setBackground to work correctly we need to set transparent color here
-            super.setBackgroundColor(0x00000000)
-        }
-        super.setBackground(background)
     }
 
     fun subscribeOnChartStateChange(subscriber: (State) -> Unit) {
