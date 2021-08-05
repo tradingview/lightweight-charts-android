@@ -6,6 +6,7 @@ data class LayoutOptions(
     /**
      * Background color of the chart area and the scales
      */
+    @Deprecated("Use background of ChartsView instead")
     var backgroundColor: IntColor? = null,
 
     /**
