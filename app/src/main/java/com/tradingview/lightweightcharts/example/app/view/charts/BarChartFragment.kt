@@ -1,13 +1,20 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
+import android.Manifest
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
@@ -19,8 +26,12 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_chart_fragment.*
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.RuntimePermissions
+import java.io.File
+import java.io.FileOutputStream
 
-
+@RuntimePermissions
 class BarChartFragment: Fragment() {
 
     private lateinit var viewModel: BarChartViewModel
@@ -73,7 +84,31 @@ class BarChartFragment: Fragment() {
         }
     }
 
-    private fun enableButtons(view: View) = Unit
+    private fun enableButtons(view: View) {
+        view.findViewById<Button>(R.id.button_capture).setOnClickListener {
+            shareScreenshot()
+        }
+    }
+
+    @NeedsPermission(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+    fun shareScreenshot() {
+        chartApi.takeScreenshot(ImageMimeType.WEBP) { bitmap ->
+            val context = requireContext()
+
+            val picturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val file = File(picturesDir, "share.webp")
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, FileOutputStream(file))
+
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "image/webp"
+            val uri = FileProvider.getUriForFile(context, "com.tradingview.fileprovider", file)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            context.startActivity(Intent.createChooser(shareIntent, "Share image using"))
+        }
+    }
 
     private fun applyChartOptions() {
         chartApi.applyOptions {
