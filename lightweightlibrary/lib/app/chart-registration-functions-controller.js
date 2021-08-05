@@ -100,8 +100,9 @@ export default class ChartRegistrationFunctionsController {
         })
 
         this.functionManager.registerFunction("takeScreenshot", (input, resolve) => {
+            const mimeType = input.params.mimeType
             let chartScreenshot = this.chart.takeScreenshot()
-            resolve(chartScreenshot.toDataURL('image/jpeg', 1.0))
+            resolve(chartScreenshot.toDataURL(mimeType, 1.0))
         })
 
     }

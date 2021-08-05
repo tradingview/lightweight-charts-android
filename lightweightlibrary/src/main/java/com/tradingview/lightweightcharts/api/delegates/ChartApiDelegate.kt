@@ -1,6 +1,7 @@
 package com.tradingview.lightweightcharts.api.delegates
 
 import android.graphics.Bitmap
+import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.CHART_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.PRICE_SCALE
@@ -17,6 +18,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_LINE_
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.TAKE_SCREENSHOT
+import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.MIME
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
@@ -203,9 +205,10 @@ class ChartApiDelegate(
         )
     }
 
-    override fun takeScreenshot(onScreenshotReady: Bitmap.() -> Unit) {
+    override fun takeScreenshot(mimeType: ImageMimeType, onScreenshotReady: Bitmap.() -> Unit) {
         controller.callFunction(
             TAKE_SCREENSHOT,
+            mapOf(MIME to mimeType),
             callback = onScreenshotReady,
             deserializer = BitmapDeserializer()
         )

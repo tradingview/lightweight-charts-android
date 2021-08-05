@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
@@ -94,15 +95,15 @@ class BarChartFragment: Fragment() {
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
     fun shareScreenshot() {
-        chartApi.takeScreenshot { bitmap ->
+        chartApi.takeScreenshot(ImageMimeType.WEBP) { bitmap ->
             val context = requireContext()
 
             val picturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            val file = File(picturesDir, "share.jpg")
+            val file = File(picturesDir, "share.webp")
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, FileOutputStream(file))
 
             val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "image/jpg"
+            shareIntent.type = "image/webp"
             val uri = FileProvider.getUriForFile(context, "com.tradingview.fileprovider", file)
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
             context.startActivity(Intent.createChooser(shareIntent, "Share image using"))

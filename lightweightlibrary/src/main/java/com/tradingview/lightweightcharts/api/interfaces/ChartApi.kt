@@ -1,6 +1,7 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
 import android.graphics.Bitmap
+import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.models.*
 
@@ -21,6 +22,7 @@ interface ChartApi {
         const val UUID = "uuid"
         const val TEXT = "text"
         const val OPTIONS = "options"
+        const val MIME = "mimeType"
     }
 
     /**
@@ -145,5 +147,5 @@ interface ChartApi {
      * Returns bitmap with captured chart
      * @return bitmap with captured chart
      */
-    fun takeScreenshot(onScreenshotReady: (Bitmap) -> Unit)
+    fun takeScreenshot(mimeType: ImageMimeType, onScreenshotReady: (Bitmap) -> Unit)
 }
