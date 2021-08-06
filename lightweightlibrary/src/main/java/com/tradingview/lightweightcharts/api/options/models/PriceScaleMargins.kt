@@ -5,14 +5,14 @@ package com.tradingview.lightweightcharts.api.options.models
  */
 data class PriceScaleMargins(
     /**
-     * Top margin in percentages.
-     * Must be greater or equal to 0 and less than 100
+     * Top margin in float.
+     * Must be greater or equal to 0f and less than 1f
      */
     var top: Float? = null,
 
     /**
-     *  Bottom margin in percentages.
-     *  Must be greater or equal to 0 and less than 100
+     *  Bottom margin in float.
+     *  Must be greater or equal to 0f and less than 1f
      */
     var bottom: Float? = null
 )
