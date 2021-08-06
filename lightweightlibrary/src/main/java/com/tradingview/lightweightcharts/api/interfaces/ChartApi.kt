@@ -39,7 +39,7 @@ interface ChartApi {
 
     /**
      * Creates an area series with specified parameters
-     * @param options - customization parameters of the series being created
+     * @param options customization parameters of the series being created
      * @return an interface of the created series
      */
     fun addAreaSeries(
@@ -49,8 +49,8 @@ interface ChartApi {
 
     /**
      * Creates a bar series with specified parameters
-     * @param options - customization parameters of the series being created
-     * @return an interface of the created series
+     * @param options customization parameters of the series being created
+     * @param onSeriesCreated returns an interface of the created series
      */
     fun addBarSeries(
             options: BarSeriesOptions = BarSeriesOptions(),
@@ -59,8 +59,8 @@ interface ChartApi {
 
     /**
      * Creates a candlestick series with specified parameters
-     * @param options - customization parameters of the series being created
-     * @return an interface of the created series
+     * @param options customization parameters of the series being created
+     * @param onSeriesCreated returns an interface of the created series
      */
     fun addCandlestickSeries(
             options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
@@ -69,8 +69,8 @@ interface ChartApi {
 
     /**
      * Creates a histogram series with specified parameters
-     * @param options - customization parameters of the series being created
-     * @return an interface of the created series
+     * @param options customization parameters of the series being created
+     * @param onSeriesCreated returns an interface of the created series
      */
     fun addHistogramSeries(
             options: HistogramSeriesOptions = HistogramSeriesOptions(),
@@ -79,8 +79,8 @@ interface ChartApi {
 
     /**
      * Creates a line series with specified parameters
-     * @param options - customization parameters of the series being created
-     * @return an interface of the created series
+     * @param options customization parameters of the series being created
+     * @param onSeriesCreated returns an interface of the created series
      */
     fun addLineSeries(
             options: LineSeriesOptions = LineSeriesOptions(),
@@ -125,13 +125,13 @@ interface ChartApi {
 
     /**
      * Applies new options to the chart
-     * @param options - any subset of chart options
+     * @param options any subset of chart options
      */
     fun applyOptions(options: ChartOptions)
 
     /**
      * Applies new options to the chart
-     * @param options - any subset of chart options
+     * @param options any subset of chart options
      */
     fun applyOptions(options: ChartOptions.() -> Unit) {
         applyOptions(ChartOptions().apply(options))
@@ -139,13 +139,14 @@ interface ChartApi {
 
     /**
      * Returns currently applied options
-     * @return - full set of currently applied options, including defaults
+     * @param onOptionsReceived returns full set of currently applied options, including defaults
      */
     fun options(onOptionsReceived: (options: ChartOptions) -> Unit)
 
     /**
-     * Returns bitmap with captured chart
-     * @return bitmap with captured chart
+     * Taking screenshot of the chart and returns a bitmap with captured chart
+     * @param mimeType type of a bitmap
+     * @param onScreenshotReady returns a bitmap with captured chart
      */
     fun takeScreenshot(mimeType: ImageMimeType, onScreenshotReady: (Bitmap) -> Unit)
 }

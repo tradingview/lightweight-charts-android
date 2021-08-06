@@ -11,8 +11,8 @@ data class CrosshairLineOptions(
     /** 
      * Color of a certain crosshair line 
      */
-
     var color: IntColor? = null,
+
     /** 
      * Width of a certain crosshair line and corresponding scale label 
      */
