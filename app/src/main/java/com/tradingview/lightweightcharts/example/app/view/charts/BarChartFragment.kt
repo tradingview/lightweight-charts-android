@@ -138,6 +138,8 @@ class BarChartFragment: Fragment() {
             }
             timeScale = timeScaleOptions {
                 borderColor = Color.argb(255, 197, 203, 206).toIntColor()
+                fixRightEdge = true
+                minBarSpacing = 0.7f
             }
         }
     }
