@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "main": "src/index.js",
   "dependencies": {
-    "lightweight-charts": "3.3.0"
+    "lightweight-charts": "3.5.0"
   },
   "devDependencies": {
     "webpack": "^5.48.0",
