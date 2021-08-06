@@ -3,11 +3,7 @@ package com.tradingview.lightweightcharts.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.webkit.WebView
 import android.widget.FrameLayout
-import androidx.webkit.WebViewClientCompat
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature.*
 import com.tradingview.lightweightcharts.Logger
@@ -15,6 +11,7 @@ import com.tradingview.lightweightcharts.api.delegates.ChartApiDelegate
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.messaging.LogLevel
+import com.tradingview.lightweightcharts.view.gesture.TouchDelegate
 import java.lang.Exception
 import java.util.HashMap
 
@@ -36,7 +33,7 @@ open class ChartsView @JvmOverloads constructor(
         )
     }
 
-    private val webView = WebView(context, attrs, defStyleRes)
+    private val webView = WebSession(context, attrs, defStyleRes)
 
     open val logLevel = LogLevel.WARNING
 
@@ -61,42 +58,21 @@ open class ChartsView @JvmOverloads constructor(
             .apply { initConnection(webView) }
     }
 
-
     init {
-        with(webView) {
-            layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-            setBackgroundColor(0x00000000)
-            visibility = View.INVISIBLE
-
-            @SuppressLint("SetJavaScriptEnabled")
-            settings.javaScriptEnabled = true
-            settings.domStorageEnabled = true
-            webViewClient = object : WebViewClientCompat() {
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    super.onPageFinished(view, url)
-                    when {
-                        notSupportedFeatures.isEmpty() -> {
-                            visibility = View.VISIBLE
-                            webMessageController.setWebMessageChannel(channel)
-                            state = State.Ready()
-                        }
-                        else -> {
-                            state = State.Error(
-                                Exception("WebView does not support features: $notSupportedFeatures")
-                            )
-                        }
-                    }
+        webView.onSessionReady {
+            state = when {
+                notSupportedFeatures.isEmpty() -> {
+                    webMessageController.setWebMessageChannel(channel)
+                    State.Ready()
+                }
+                else -> {
+                    State.Error(
+                        Exception("WebView does not support features: $notSupportedFeatures")
+                    )
                 }
             }
         }
         addView(webView)
-    }
-
-    private fun checkSupportedFeature(): List<String> {
-        return HashMap<String, Boolean>(features.size)
-            .apply { features.forEach { this[it] = isFeatureSupported(it) } }
-            .filter { !it.value }
-            .keys.toList()
     }
 
     override fun onAttachedToWindow() {
@@ -122,6 +98,21 @@ open class ChartsView @JvmOverloads constructor(
 
     fun unsubscribeOnChartStateChange(subscriber: (State) -> Unit) {
         onStateChanged.remove(subscriber)
+    }
+
+    fun addTouchDelegate(touchDelegate: TouchDelegate) {
+        webView.addTouchDelegate(touchDelegate)
+    }
+
+    fun removeTouchDelegate(touchDelegate: TouchDelegate) {
+        webView.removeTouchDelegate(touchDelegate)
+    }
+
+    private fun checkSupportedFeature(): List<String> {
+        return HashMap<String, Boolean>(features.size)
+            .apply { features.forEach { this[it] = isFeatureSupported(it) } }
+            .filter { !it.value }
+            .keys.toList()
     }
 
     interface State {
