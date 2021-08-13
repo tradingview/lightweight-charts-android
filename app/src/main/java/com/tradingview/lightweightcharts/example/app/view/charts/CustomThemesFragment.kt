@@ -5,36 +5,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomThemesViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
-import kotlinx.android.synthetic.main.layout_chart_fragment.*
+import kotlinx.android.synthetic.main.layout_chart_fragment.charts_view
+import kotlinx.android.synthetic.main.layout_themes_chart_fragment.*
 
 class CustomThemesFragment: Fragment() {
-
-    companion object {
-        const val BUTTON_WIDTH = 360
-        const val BUTTON_HEIGHT = 180
-    }
 
     private lateinit var viewModel: CustomThemesViewModel
 
     private var series: MutableList<SeriesApi> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.layout_chart_fragment, container, false)
+        return inflater.inflate(R.layout.layout_themes_chart_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +37,8 @@ class CustomThemesFragment: Fragment() {
         observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
-        enableButtons(view)
+        dark_theme_btn.setOnClickListener { applyThemeOptions(darkThemeOptions) }
+        light_theme_btn.setOnClickListener { applyThemeOptions(lightThemeOptions) }
     }
 
     private fun provideViewModel() {
@@ -141,30 +136,6 @@ class CustomThemesFragment: Fragment() {
 
     private fun applyChartOptions() {
         applyThemeOptions(darkThemeOptions)
-    }
-
-    private fun enableButtons(view: View) {
-        mapOf(
-                "Dark" to darkThemeOptions,
-                "Light" to lightThemeOptions
-        ).forEach {
-            createButton(it.key) { applyThemeOptions(it.value) }
-        }
-    }
-
-    protected fun createButton(buttonText: String, onClick: () -> Unit) {
-
-        if (switcher_ll.visibility != View.VISIBLE) {
-            switcher_ll.visibility = View.VISIBLE
-        }
-
-        val button = Button(context).apply {
-            layoutParams = ViewGroup.LayoutParams(BUTTON_WIDTH, BUTTON_HEIGHT)
-            text = buttonText
-            setOnClickListener { onClick.invoke() }
-        }
-
-        switcher_ll.addView(button)
     }
 
     private fun applyThemeOptions(theme: ChartOptions.() -> Unit) {

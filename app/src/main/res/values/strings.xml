@@ -2,4 +2,9 @@
     <string name="app_name">LightweightCharts</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="screenshot">Screenshot</string>
+    <string name="dollar">Dollar</string>
+    <string name="pound">Pound</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
 </resources>

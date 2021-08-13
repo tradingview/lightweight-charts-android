@@ -9,25 +9,23 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
+import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
-import com.tradingview.lightweightcharts.api.delegates.ChartApiDelegate
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
-import kotlinx.android.synthetic.main.layout_chart_fragment.*
+import kotlinx.android.synthetic.main.layout_bar_chart_fragment.*
+import kotlinx.android.synthetic.main.layout_chart_fragment.charts_view
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 import java.io.File
@@ -40,7 +38,7 @@ class BarChartFragment: Fragment() {
     private var series: MutableList<SeriesApi> = mutableListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.layout_chart_fragment, container, false)
+        return inflater.inflate(R.layout.layout_bar_chart_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +47,7 @@ class BarChartFragment: Fragment() {
         observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
-        enableButtons(view)
+        screenshot_btn.setOnClickListener { shareScreenshot() }
     }
 
     private fun provideViewModel() {
@@ -77,23 +75,6 @@ class BarChartFragment: Fragment() {
                 }
             }
         }
-    }
-
-    private fun enableButtons(view: View) {
-        if (switcher_ll.visibility != View.VISIBLE) {
-            switcher_ll.visibility = View.VISIBLE
-        }
-
-        val button = Button(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                CustomPriceFormatterFragment.BUTTON_WIDTH,
-                CustomPriceFormatterFragment.BUTTON_HEIGHT
-            )
-            text = "Screenshot"
-            setOnClickListener { shareScreenshot() }
-        }
-
-        switcher_ll.addView(button)
     }
 
     @NeedsPermission(
