@@ -27,25 +27,25 @@ class RealTimeEmulationFragment: Fragment() {
 
     private lateinit var viewModel: RealTimeEmulationViewModel
 
-    private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()
     private var realtimeDataJob: Job? = null
-
-    @InternalCoroutinesApi
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_chart_fragment, container, false)
     }
 
+    @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        provideViewModel()
+        observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        realtimeDataJob?.cancel()
     }
 
     private fun provideViewModel() {
@@ -54,9 +54,8 @@ class RealTimeEmulationFragment: Fragment() {
 
     @InternalCoroutinesApi
     private fun observeViewModelData() {
-        viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                this.series.forEach(chartApi::removeSeries)
+        viewModel.seriesData.observe(viewLifecycleOwner, { data ->
+            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                 this.series.clear()
                 this.series.add(series)
 
@@ -84,7 +83,7 @@ class RealTimeEmulationFragment: Fragment() {
     }
 
     private fun applyChartOptions() {
-        chartApi.applyOptions {
+        charts_view.api.applyOptions {
             crosshair = crosshairOptions {
                 mode = CrosshairMode.NORMAL
             }

@@ -31,15 +31,7 @@ class CustomThemesFragment: Fragment() {
 
     private lateinit var viewModel: CustomThemesViewModel
 
-    private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()
-    private val switcher: LinearLayout by lazy { switcher_ll }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_chart_fragment, container, false)
@@ -47,6 +39,8 @@ class CustomThemesFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        provideViewModel()
+        observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
         enableButtons(view)
@@ -57,9 +51,8 @@ class CustomThemesFragment: Fragment() {
     }
 
     private fun observeViewModelData() {
-        viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                this.series.forEach(chartApi::removeSeries)
+        viewModel.seriesData.observe(viewLifecycleOwner, { data ->
+            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                 this.series.clear()
                 this.series.add(series)
             }
@@ -161,8 +154,8 @@ class CustomThemesFragment: Fragment() {
 
     protected fun createButton(buttonText: String, onClick: () -> Unit) {
 
-        if (switcher.visibility != View.VISIBLE) {
-            switcher.visibility = View.VISIBLE
+        if (switcher_ll.visibility != View.VISIBLE) {
+            switcher_ll.visibility = View.VISIBLE
         }
 
         val button = Button(context).apply {
@@ -171,11 +164,11 @@ class CustomThemesFragment: Fragment() {
             setOnClickListener { onClick.invoke() }
         }
 
-        switcher.addView(button)
+        switcher_ll.addView(button)
     }
 
     private fun applyThemeOptions(theme: ChartOptions.() -> Unit) {
-        chartApi.applyOptions {
+        charts_view.api.applyOptions {
             theme.invoke(this)
         }
     }

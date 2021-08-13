@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         WebView.setWebContentsDebuggingEnabled(true)
         setContentView(R.layout.activity_main)
         initializeNavigationDrawer()
-        startFragment(BarChartFragment::class.java)
+        startFragment(BarChartFragment::class.java, false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -68,13 +68,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun <T : Fragment> startFragment(fragmentClass: Class<T>) {
+    private fun <T : Fragment> startFragment(
+        fragmentClass: Class<T>,
+        shouldAddToBackStack: Boolean = true
+    ) {
         supportFragmentManager
-                .beginTransaction()
-                .replace(
-                        R.id.fragment_container_fl,
-                        FragmentFactory.getInstance(fragmentClass)
+            .beginTransaction().apply {
+                replace(
+                    R.id.fragment_container_fl,
+                    FragmentFactory.getInstance(fragmentClass)
                 )
-                .commit()
+                if (shouldAddToBackStack) {
+                    addToBackStack(null)
+                }
+                commit()
+            }
     }
 }

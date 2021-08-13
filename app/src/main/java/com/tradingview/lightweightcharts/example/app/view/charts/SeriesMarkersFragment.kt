@@ -24,14 +24,7 @@ class SeriesMarkersFragment: Fragment() {
 
     private lateinit var viewModel: SeriesMarkersViewModel
 
-    private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_chart_fragment, container, false)
@@ -39,6 +32,8 @@ class SeriesMarkersFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        provideViewModel()
+        observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
     }
@@ -48,9 +43,8 @@ class SeriesMarkersFragment: Fragment() {
     }
 
     private fun observeViewModelData() {
-        viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                this.series.forEach(chartApi::removeSeries)
+        viewModel.seriesData.observe(viewLifecycleOwner, { data ->
+            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                 this.series.clear()
                 this.series.add(series)
 
@@ -74,7 +68,7 @@ class SeriesMarkersFragment: Fragment() {
     }
 
     private fun applyChartOptions() {
-        chartApi.applyOptions {
+        charts_view.api.applyOptions {
             layout = layoutOptions {
                 backgroundColor = IntColor(Color.WHITE)
                 textColor = IntColor(Color.BLACK)

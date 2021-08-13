@@ -25,14 +25,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
 
     private lateinit var viewModel: PriceLinesWithTitlesViewModel
 
-    private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_chart_fragment, container, false)
@@ -40,6 +33,8 @@ class PriceLinesWithTitlesFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        provideViewModel()
+        observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
     }
@@ -50,8 +45,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
 
     private fun observeViewModelData() {
         viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                this.series.forEach(chartApi::removeSeries)
+            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                 this.series.clear()
                 this.series.add(series)
 
@@ -90,7 +84,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
                         )
                 )
 
-                chartApi.timeScale.fitContent()
+                charts_view.api.timeScale.fitContent()
             }
         })
     }
@@ -110,7 +104,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
     }
 
     private fun applyChartOptions() {
-        chartApi.applyOptions {
+        charts_view.api.applyOptions {
             layout = layoutOptions {
                 textColor = Color.parseColor("#d1d4dc").toIntColor()
                 backgroundColor = Color.BLACK.toIntColor()
