@@ -4,55 +4,43 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
-import kotlinx.android.synthetic.main.layout_chart_fragment.*
+import kotlinx.android.synthetic.main.layout_chart_fragment.charts_view
+import kotlinx.android.synthetic.main.layout_price_formatter_chart_fragment.*
 
 class CustomPriceFormatterFragment: Fragment() {
 
-    companion object {
-        const val BUTTON_WIDTH = 360
-        const val BUTTON_HEIGHT = 180
-    }
-
     private lateinit var viewModel: CustomPriceFormatterViewModel
 
-    private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()
-    private val switcher: LinearLayout by lazy { switcher_ll }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.layout_chart_fragment, container, false)
+        return inflater.inflate(R.layout.layout_price_formatter_chart_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        provideViewModel()
+        observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
-        enableButtons(view)
+        dollar_btn.setOnClickListener { applyPriceFormat("\${price:#2:#2}") }
+        pound_btn.setOnClickListener { applyPriceFormat("\u00A3{price:#2:#2}") }
     }
 
     private fun provideViewModel() {
@@ -60,9 +48,8 @@ class CustomPriceFormatterFragment: Fragment() {
     }
 
     private fun observeViewModelData() {
-        viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                this.series.forEach(chartApi::removeSeries)
+        viewModel.seriesData.observe(viewLifecycleOwner, { data ->
+            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                 this.series.clear()
                 this.series.add(series)
             }
@@ -84,7 +71,7 @@ class CustomPriceFormatterFragment: Fragment() {
     }
 
     private fun applyChartOptions() {
-        chartApi.applyOptions {
+        charts_view.api.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.BLACK.toIntColor()
                 textColor = Color.argb(204, 255, 255, 255).toIntColor()
@@ -132,32 +119,8 @@ class CustomPriceFormatterFragment: Fragment() {
         )
     }
 
-    private fun enableButtons(view: View) {
-        mapOf(
-                "Dollar" to "\${price:#2:#2}",
-                "Pound" to "\u00A3{price:#2:#2}"
-        ).forEach {
-            createButton(it.key) { applyPriceFormat(it.value) }
-        }
-    }
-
-    private fun createButton(buttonText: String, onClick: () -> Unit) {
-
-        if (switcher.visibility != VISIBLE) {
-            switcher.visibility = VISIBLE
-        }
-
-        val button = Button(context).apply {
-            layoutParams = ViewGroup.LayoutParams(BUTTON_WIDTH, BUTTON_HEIGHT)
-            text = buttonText
-            setOnClickListener { onClick.invoke() }
-        }
-
-        switcher.addView(button)
-    }
-
     private fun applyPriceFormat(template: String) {
-        chartApi.applyOptions {
+        charts_view.api.applyOptions {
             localization = localizationOptions {
                 priceFormatter = PriceFormatter(template = template)
             }

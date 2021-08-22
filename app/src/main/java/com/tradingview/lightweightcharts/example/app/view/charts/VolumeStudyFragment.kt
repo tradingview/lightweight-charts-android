@@ -25,15 +25,8 @@ class VolumeStudyFragment: Fragment() {
 
     private lateinit var viewModel: VolumeStudyViewModel
 
-    private val chartApi: ChartApi by lazy { charts_view.api }
     private var areaSeries: MutableList<SeriesApi> = mutableListOf()
     private var volumeSeries: MutableList<SeriesApi> = mutableListOf()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_chart_fragment, container, false)
@@ -41,6 +34,8 @@ class VolumeStudyFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        provideViewModel()
+        observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
     }
@@ -52,15 +47,13 @@ class VolumeStudyFragment: Fragment() {
     private fun observeViewModelData() {
         viewModel.apply {
             areaSeriesData.observe(this@VolumeStudyFragment, { data ->
-                createAreaSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                    this@VolumeStudyFragment.areaSeries.forEach(chartApi::removeSeries)
+                createAreaSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                     this@VolumeStudyFragment.areaSeries.clear()
                     this@VolumeStudyFragment.areaSeries.add(series)
                 }
             })
             volumeSeriesData.observe(this@VolumeStudyFragment, { data ->
-                createVolumeSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                    this@VolumeStudyFragment.volumeSeries.forEach(chartApi::removeSeries)
+                createVolumeSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                     this@VolumeStudyFragment.volumeSeries.clear()
                     this@VolumeStudyFragment.volumeSeries.add(series)
                 }
@@ -83,7 +76,7 @@ class VolumeStudyFragment: Fragment() {
     }
 
     private fun applyChartOptions() {
-        chartApi.applyOptions {
+        charts_view.api.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.parseColor("#131722").toIntColor()
                 textColor = Color.parseColor("#d1d4dc").toIntColor()

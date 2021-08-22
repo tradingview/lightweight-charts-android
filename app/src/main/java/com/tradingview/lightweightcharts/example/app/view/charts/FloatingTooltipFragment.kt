@@ -36,15 +36,8 @@ class FloatingTooltipFragment: Fragment() {
 
     private lateinit var viewModel: FloatingTooltipViewModel
 
-    private val chartApi: ChartApi by lazy { charts_view.api }
     private var series: MutableList<SeriesApi> = mutableListOf()
     private val chartFragment: FrameLayout by lazy { chart_fragment }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_chart_fragment, container, false)
@@ -52,6 +45,8 @@ class FloatingTooltipFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        provideViewModel()
+        observeViewModelData()
         subscribeOnChartReady(charts_view)
         applyChartOptions()
     }
@@ -62,8 +57,7 @@ class FloatingTooltipFragment: Fragment() {
 
     private fun observeViewModelData() {
         viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, chartApi) { series ->
-                this.series.forEach(chartApi::removeSeries)
+            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                 this.series.clear()
                 this.series.add(series)
             }
@@ -85,7 +79,7 @@ class FloatingTooltipFragment: Fragment() {
     }
 
     private fun applyChartOptions() {
-        chartApi.applyOptions {
+        charts_view.api.applyOptions {
             layout = layoutOptions {
                 backgroundColor = Color.WHITE.toIntColor()
                 textColor = Color.parseColor("#333333").toIntColor()
@@ -125,7 +119,7 @@ class FloatingTooltipFragment: Fragment() {
         val tooltip = Tooltip(requireContext())
         tooltip.setSymbolName("Apple Inc.")
 
-        chartApi.subscribeCrosshairMove { event ->
+        charts_view.api.subscribeCrosshairMove { event ->
 
             if (event.seriesPrices.isNullOrEmpty()) {
                 return@subscribeCrosshairMove
