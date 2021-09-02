@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.tradingview:lightweightcharts:3.5.0'
-//    implementation project(":lightweightlibrary")
+//    implementation 'com.tradingview:lightweightcharts:3.5.0'
+    implementation project(":lightweightlibrary")
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

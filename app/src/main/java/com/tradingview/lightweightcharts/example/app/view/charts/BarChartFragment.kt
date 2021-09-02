@@ -82,7 +82,7 @@ class BarChartFragment: Fragment() {
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
     fun shareScreenshot() {
-        (charts_view.api as ChartApi).takeScreenshot(ImageMimeType.WEBP) { bitmap ->
+        charts_view.api.takeScreenshot(ImageMimeType.WEBP) { bitmap ->
             val context = requireContext()
 
             val picturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)

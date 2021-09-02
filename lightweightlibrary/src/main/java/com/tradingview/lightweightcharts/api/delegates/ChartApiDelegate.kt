@@ -205,7 +205,7 @@ class ChartApiDelegate(
         )
     }
 
-    override fun takeScreenshot(mimeType: ImageMimeType, onScreenshotReady: Bitmap.() -> Unit) {
+    override fun takeScreenshot(mimeType: ImageMimeType, onScreenshotReady: (Bitmap) -> Unit) {
         controller.callFunction(
             TAKE_SCREENSHOT,
             mapOf(MIME to mimeType),
