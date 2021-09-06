@@ -110,7 +110,7 @@ export default class SeriesFunctionManager {
         })
         this.functionManager.registerFunction("coordinateToPrice", (input, resolve) => {
             this.findSeries(input, (series) => {
-                resolve(series.coordinateToPrice(input.params.price))
+                resolve(series.coordinateToPrice(input.params.coordinate))
             })
         })
         this.functionManager.registerFunction("options", (input, resolve) => {
