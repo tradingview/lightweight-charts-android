@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "477964599794",
+    "project_id": "lightweight-demo-abb31",
+    "storage_bucket": "lightweight-demo-abb31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477964599794:android:93cd910206f24620f36b6b",
+        "android_client_info": {
+          "package_name": "com.tradingview.lightweightcharts.example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477964599794-4hqme4iip73nc819bd8b7rg3lu1dre3t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqTh2IPrJUWvuf2gNULax6N4b0pKGpkx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477964599794-4hqme4iip73nc819bd8b7rg3lu1dre3t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
