@@ -119,6 +119,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
             is BridgeFatalError -> {
                 val element = callbackBuffer.remove(bridgeMessage.uuid)
+
                 val message = bridgeMessage.message.split('\n').first()
                 val jsException = IllegalStateException(message).apply {
                     val regex = getStackTraceRegex()
@@ -132,11 +133,13 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
                         )
                     }.toList()
                     stackTrace = trace.toTypedArray()
+
+                    val exception = IllegalStateException()
+                    exception.stackTrace = element?.stackTrace ?: emptyArray()
+                    initCause(exception)
                 }
 
-                val exception = IllegalStateException(jsException)
-                exception.stackTrace = element?.stackTrace ?: emptyArray()
-                throw exception
+                throw jsException
             }
         }
     }
