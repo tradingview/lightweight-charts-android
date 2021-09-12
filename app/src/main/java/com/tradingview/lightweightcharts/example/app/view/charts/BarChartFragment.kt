@@ -99,6 +99,12 @@ class BarChartFragment: Fragment() {
 
     private fun applyChartOptions() {
         charts_view.api.applyOptions {
+            handleScale = handleScaleOptions {
+                kineticScroll = kineticScrollOptions {
+                    touch = false
+                    mouse = false
+                }
+            }
             layout = layoutOptions {
                 backgroundColor = Color.WHITE.toIntColor()
                 textColor = Color.argb(255, 33, 56, 77).toIntColor()

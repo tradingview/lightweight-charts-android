@@ -57,7 +57,12 @@ data class ChartOptions(
     /**
      * Structure that describes scaling behavior
      */
-    var handleScale: HandleScaleOptions? = null
+    var handleScale: HandleScaleOptions? = null,
+
+    /**
+     * Structure that describes kinetic scroll behavior
+     */
+    var kineticScroll: KineticScrollOptions? = null,
 )
 
 inline fun chartOptions(init: ChartOptions.() -> Unit): ChartOptions {
