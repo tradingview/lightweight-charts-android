@@ -30,6 +30,8 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeAdapter(PriceScaleId::class.java, PriceScaleId.PriceScaleIdAdapter())
     registerTypeAdapter(Colorable::class.java, Colorable.ColorAdapter())
     registerTypeAdapter(IntColor::class.java, IntColorAdapter())
+    registerTypeAdapter(LastPriceAnimationMode::class.java,
+        LastPriceAnimationMode.LastPriceAnimationModeAdapter())
 
     return this
 }

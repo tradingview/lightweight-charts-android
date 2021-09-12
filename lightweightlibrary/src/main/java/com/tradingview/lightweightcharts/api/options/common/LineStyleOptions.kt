@@ -4,6 +4,7 @@ import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.series.enums.LastPriceAnimationMode
 
 interface LineStyleOptions {
     val color: IntColor?
@@ -14,4 +15,5 @@ interface LineStyleOptions {
     val crosshairMarkerRadius: Float?
     val crosshairMarkerBorderColor: IntColor?
     val crosshairMarkerBackgroundColor: IntColor?
+    val lastPriceAnimation: LastPriceAnimationMode?
 }
