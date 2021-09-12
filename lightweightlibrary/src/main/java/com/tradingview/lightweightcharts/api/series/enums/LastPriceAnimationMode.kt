@@ -5,11 +5,23 @@ import com.tradingview.lightweightcharts.help.isNumber
 import java.lang.reflect.Type
 import kotlin.contracts.ExperimentalContracts
 
+/**
+ * This enum is used to specify the type of the last price animation for series such as area or line
+ */
 enum class LastPriceAnimationMode(val value: Int) {
+    /**
+     * Animation is always disabled
+     */
     DISABLED(0),
 
+    /**
+     * Animation is always enabled
+     */
     CONTINUOUS(1),
 
+    /**
+     * Animation is active some time after data update
+     */
     ON_DATA_UPDATE(2);
 
     companion object {
