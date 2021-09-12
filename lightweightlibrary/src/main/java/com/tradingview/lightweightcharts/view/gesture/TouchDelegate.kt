@@ -2,8 +2,6 @@ package com.tradingview.lightweightcharts.view.gesture
 
 import android.view.MotionEvent
 import android.view.ViewGroup
-import android.webkit.WebView
-import com.tradingview.lightweightcharts.view.WebSession
 
 interface TouchDelegate {
     /**
