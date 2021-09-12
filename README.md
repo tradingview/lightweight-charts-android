@@ -25,7 +25,7 @@ In `/gradle_module/build.gradle`
 ```groovy
 dependencies {
     //...
-    implementation 'com.tradingview:lightweightcharts:3.5.1'
+    implementation 'com.tradingview:lightweightcharts:3.6.0'
 }
 ```
 
