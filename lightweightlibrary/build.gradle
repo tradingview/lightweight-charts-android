@@ -19,8 +19,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
 
-        versionCode 12
-        versionName "3.6.0"
+        versionCode 13
+        versionName "3.6.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
