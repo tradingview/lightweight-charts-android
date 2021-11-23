@@ -18,46 +18,42 @@ export default class SeriesCreationService {
         });
     }
 
-    _registerAutoscaleInfoProvider(params, onSuccess) {
-        new Promise((resolve) => {
-            if (!params.options.autoscaleInfoProvider) {
-                resolve()
-                return
-            }
+    _registerAutoscaleInfoProvider(params, callback) {
+        if (!params.options.autoscaleInfoProvider) {
+            callback(params);
+            return;
+        }
 
-            const plugin = params.options.autoscaleInfoProvider
-            this.pluginManager.register(plugin, (fun) => {
-                params.options.autoscaleInfoProvider = fun
-                resolve()
-            })
-        }).then(() => {
-            onSuccess(params)
-        })
+        const plugin = params.options.autoscaleInfoProvider;
+        this.pluginManager.register(plugin, (fun) => {
+            params.options.autoscaleInfoProvider = fun;
+            callback(params);
+        });
     }
 
-    _registerPriceFormatter(params, onSuccess) {
-        new Promise((resolve) => {
-            if (!params.options.priceFormat || !params.options.priceFormat.formatter) {
-                resolve()
-                return
-            }
+    _registerPriceFormatter(params, callback) {
+        if (!params.options.priceFormat || !params.options.priceFormat.formatter) {
+            callback(params);
+            return;
+        }
 
-            const plugin = params.options.priceFormat.formatter
-            this.pluginManager.register(plugin, (fun) => {
-                params.options.priceFormat.formatter = fun
-                resolve()
-            })
-        }).then(() => {
-            onSuccess(params)
-        })
+        const plugin = params.options.priceFormat.formatter;
+        this.pluginManager.register(plugin, (fun) => {
+            params.options.priceFormat.formatter = fun;
+            callback(params);
+        });
     }
 
-    _registerPlugins(rawParams, onSuccess) {
+    _registerPlugins(rawParams, callback) {
         this._registerAutoscaleInfoProvider(rawParams, (autoscaleParams) => {
             this._registerPriceFormatter(autoscaleParams, (params) => {
-                onSuccess(params)
-            })
-        })
+                callback(params);
+            });
+        });
+    }
+
+    _addSeries(uuid, series) {
+        this.seriesCache.set(uuid, series);
     }
 
     _seriesFunctions() {
@@ -69,10 +65,6 @@ export default class SeriesCreationService {
             new AddHistogramSeries(this.chart),
             new AddBaselineSeries(this.chart)
         ];
-    }
-
-    _addSeries(uuid, series) {
-        this.seriesCache.set(uuid, series);
     }
 }
 
