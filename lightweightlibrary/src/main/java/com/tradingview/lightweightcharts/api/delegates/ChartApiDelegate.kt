@@ -22,6 +22,7 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.MIME
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_BASELINE_SERIES
 import com.tradingview.lightweightcharts.api.options.common.BaselineStyleOptions
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.api.options.models.*
@@ -169,7 +170,7 @@ class ChartApiDelegate(
         onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
         controller.callFunction(
-            ADD_LINE_SERIES,
+            ADD_BASELINE_SERIES,
             mapOf(OPTIONS to options),
             { uuid ->
                 onSeriesCreated(

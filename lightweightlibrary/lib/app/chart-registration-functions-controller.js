@@ -1,4 +1,4 @@
-import SeriesFunctionManager from "./series-function-manager.js";
+import SeriesFunctionManager from "./series/series-function-manager.js";
 import SubscriptionsFunctionManager from "./subscriptions-function-manager";
 import PriceScaleFunctionManager from "./price-scale-function-manager";
 import TimeScaleFunctionManager from "./time-scale-function-manager";
