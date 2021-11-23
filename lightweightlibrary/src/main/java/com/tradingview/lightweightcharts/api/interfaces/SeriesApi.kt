@@ -11,6 +11,7 @@ interface SeriesApi {
 
     object Func {
         const val ADD_LINE_SERIES = "addLineSeries"
+        const val ADD_BASELINE_SERIES = "addBaselineSeries"
         const val ADD_AREA_SERIES = "addAreaSeries"
         const val ADD_BAR_SERIES = "addBarSeries"
         const val ADD_CANDLESTICK_SERIES = "addCandlestickSeries"

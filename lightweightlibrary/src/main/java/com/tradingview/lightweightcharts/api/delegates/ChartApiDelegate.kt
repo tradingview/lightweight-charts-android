@@ -22,6 +22,7 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.MIME
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.PRICE_SCALE_ID
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.options.common.BaselineStyleOptions
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.serializer.*
@@ -145,6 +146,26 @@ class ChartApiDelegate(
 
     override fun addLineSeries(
         options: LineSeriesOptions,
+        onSeriesCreated: (api: SeriesApi) -> Unit
+    ) {
+        controller.callFunction(
+            ADD_LINE_SERIES,
+            mapOf(OPTIONS to options),
+            { uuid ->
+                onSeriesCreated(
+                    SeriesApiDelegate(
+                        uuid,
+                        controller,
+                        LineSeriesOptionsDeserializer()
+                    )
+                )
+            },
+            PrimitiveSerializer.StringDeserializer
+        )
+    }
+
+    override fun addBaselineSeries(
+        options: BaselineStyleOptions,
         onSeriesCreated: (api: SeriesApi) -> Unit
     ) {
         controller.callFunction(
