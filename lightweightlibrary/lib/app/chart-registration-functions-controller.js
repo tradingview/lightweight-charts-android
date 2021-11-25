@@ -3,6 +3,7 @@ import SubscriptionsFunctionManager from "./subscriptions-function-manager";
 import PriceScaleFunctionManager from "./price-scale-function-manager";
 import TimeScaleFunctionManager from "./time-scale-function-manager";
 import { logger } from './logger.js';
+import { Locator } from "./service-locator/locator.js";
 
 export default class ChartRegistrationFunctionsController {
 
@@ -14,8 +15,7 @@ export default class ChartRegistrationFunctionsController {
     }
 
     registerFunctions() {
-
-        const series = new SeriesFunctionManager(this.chart, this.functionManager, this.pluginManager)
+        const series = Locator.resolve(SeriesFunctionManager.name)
         series.register()
 
         const subscriptions = new SubscriptionsFunctionManager(

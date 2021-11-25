@@ -1,15 +1,20 @@
+import FunctionManager from "../function-manager";
+import PluginManager from "../plugin-manager";
+import LineCache from "./line-cache";
+import LineService from "./line-service";
 import PriceFormatterService from "./price-formatter";
+import SeriesCache from "./series-cache";
 
 export default class SeriesInstanceService {
 
-    constructor(chart, seriesCache, functionManager, pluginManager) {
-        this.chart = chart;
-        this.seriesCache = seriesCache;
-        this.functionManager = functionManager;
-        this.pluginManager = pluginManager;
-        this.lineCache = new Map();
-        this.priceFormatterService = new PriceFormatterService(pluginManager);
-        this.lineService = new LineService(functionManager, this.lineCache);
+    constructor(locator) {
+        this.chart = locator.resolve("chart");
+        this.seriesCache = locator.resolve(SeriesCache.name);
+        this.functionManager = locator.resolve(FunctionManager.name);
+        this.pluginManager = locator.resolve(PluginManager.name);
+        this.lineCache = locator.resolve(LineCache.name);
+        this.priceFormatterService = locator.resolve(PriceFormatterService.name);
+        this.lineService = locator.resolve(LineService.name);
     }
 
     register() {
@@ -59,24 +64,6 @@ export default class SeriesInstanceService {
             this.functionManager.throwFatalError(new Error(`${seriesName} with uuid:${input.uuid} is not found`), input)
         } else {
             callback(series)
-        }
-    }
-}
-
-
-class LineService {
-    constructor(functionManager, lineCache) {
-        this.functionManager = functionManager;
-        this.lineCache = lineCache;
-    }
-
-    getLine(input, callback) {
-        let line = this.lineCache.get(input.params.lineId);
-        if (line === undefined) {
-            const error = new Error(`PriceLine with uuid:${input.uuid} is not found`);
-            this.functionManager.throwFatalError(error, input);
-        } else {
-            callback(line);
         }
     }
 }

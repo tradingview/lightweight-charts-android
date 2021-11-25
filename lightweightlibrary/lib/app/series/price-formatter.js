@@ -1,6 +1,14 @@
+import PluginManager from "../plugin-manager";
+import ServiceLocator from "../service-locator/locator";
+
 export default class PriceFormatterService {
-    constructor(pluginManager) {
-        this.pluginManager = pluginManager;
+
+    /**
+     * 
+     * @param {ServiceLocator} locator 
+     */
+    constructor(locator) {
+        this.pluginManager = locator.resolve(PluginManager.name);
     }
 
     register(params, callback) {

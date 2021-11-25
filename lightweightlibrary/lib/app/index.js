@@ -3,6 +3,8 @@ import FunctionManager from './function-manager.js';
 import ChartRegistrationFunctionsController from './chart-registration-functions-controller.js';
 import PluginManager from './plugin-manager.js';
 import { logger } from './logger.js';
+import { Locator } from './service-locator/locator.js';
+import { initLocator } from './service-locator/locator-component.js';
 
 const createChart = LightweightCharts.createChart
 window.LightweightCharts = Object.assign({}, LightweightCharts)
@@ -27,6 +29,8 @@ onmessage = function (message) {
 
     const pluginManager = new PluginManager()
     window.pluginManager = pluginManager
+
+    initLocator(functionManager, pluginManager, window.chart);
 
     const functionsController = new ChartRegistrationFunctionsController(
         window.chart,

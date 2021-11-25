@@ -1,10 +1,19 @@
+import FunctionManager from "../function-manager";
+import PluginManager from "../plugin-manager";
+import ServiceLocator from "../service-locator/locator";
+import SeriesCache from "./series-cache";
+
 export default class SeriesCreationService {
 
-    constructor(chart, seriesCache, functionManager, pluginManager) {
-        this.chart = chart;
-        this.seriesCache = seriesCache;
-        this.functionManager = functionManager;
-        this.pluginManager = pluginManager;
+    /**
+     * 
+     * @param {ServiceLocator} locator 
+     */
+    constructor(locator) {
+        this.chart = locator.resolve("chart");
+        this.seriesCache = locator.resolve(SeriesCache.name);
+        this.functionManager = locator.resolve(FunctionManager.name);
+        this.pluginManager = locator.resolve(PluginManager.name);
     }
 
     register() {
