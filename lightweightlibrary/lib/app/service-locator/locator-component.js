@@ -7,6 +7,8 @@ import SeriesCache from "../series/series-cache";
 import SeriesCreationService from "../series/series-creation";
 import SeriesFunctionManager from "../series/series-function-manager";
 import SeriesInstanceService from "../series/series-instance";
+import TimeScaleFunctionManager from "../time-scale/time-scale-function-manager";
+import TimeScaleInstanceService from "../time-scale/time-scale-instance";
 import { Locator } from "./locator";
 
 export function initLocator(functionManager, pluginManager, chart) {
@@ -24,13 +26,16 @@ class LocatorComponent {
         this.registerLineCache();
         this.registerLineService();
         this.registerSeriesCache();
-        
+
         this.registerSeriesFunctionManager();
 
         this.registerSeriesCreationService();
         this.registerSeriesInstanceService();
     
         this.registerPriceFormatterService();
+
+        this.registerTimeScaleFunctionManager();
+        this.registerTimeScaleInstanceService();
     }
 
     registerLineCache() {
@@ -59,5 +64,13 @@ class LocatorComponent {
     
     registerPriceFormatterService() {
         Locator.register(PriceFormatterService.name, () => new PriceFormatterService(Locator));
+    }
+
+    registerTimeScaleFunctionManager() {
+        Locator.register(TimeScaleFunctionManager.name,  () => new TimeScaleFunctionManager(Locator));
+    }
+
+    registerTimeScaleInstanceService() {
+        Locator.register(TimeScaleInstanceService.name, () => new TimeScaleInstanceService(Locator));
     }
 }

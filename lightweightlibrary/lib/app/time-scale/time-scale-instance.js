@@ -1,41 +1,57 @@
-import { logger } from "./logger"
+import FunctionManager from "../function-manager";
+import PluginManager from "../plugin-manager";
+import ServiceLocator from "../service-locator/locator";
 
-export default class TimeScaleFunctionManager {
+export default class TimeScaleInstanceService {
 
-    constructor(chart, functionManager, pluginManager) {
-        this.chart = chart
-        this.functionManager = functionManager
-        this.pluginManager = pluginManager
+    /**
+     * 
+     * @param {ServiceLocator} locator 
+     */
+    constructor(locator) {
+        this.chart = locator.resolve("chart");
+        this.pluginManager = locator.resolve(PluginManager.name);
+        this.functionManager = locator.resolve(FunctionManager.name);
     }
 
     _timeScale() {
-        return this.chart.timeScale()
+        return this.chart.timeScale();
     }
     
     _registerTickMarkFormatter(params, onSuccess) {
-        new Promise((resolve) => {
-            if (!params.options.tickMarkFormatter) {
-                resolve()
-                return
-            }
+        if (!params.options.tickMarkFormatter) {
+            onSuccess(params);
+            return;
+        }
 
-            const plugin = params.options.tickMarkFormatter
-            this.pluginManager.register(plugin, (fun) => {
-                params.options.tickMarkFormatter = fun
-                resolve()
-            })
-        }).then(() => {
-            onSuccess(params)
-        })
+        const plugin = params.options.tickMarkFormatter;
+        this.pluginManager.register(plugin, (fun) => {
+            params.options.tickMarkFormatter = fun;
+            onSuccess(params);
+        });
+    }
+
+    _timeScaleInstanceMethods() {
+        return [
+            new ScrollPosition(),
+            new ScrollToPosition()
+        ];
     }
 
     register() {
-        this.functionManager.registerFunction("scrollPosition", (input, resolve) => {
-            resolve(this._timeScale().scrollPosition())
-        })
-        this.functionManager.registerFunction("scrollToPosition", (input, resolve) => {
-            this._timeScale().scrollToPosition(input.params.position, input.params.animated)
-        })
+        this._timeScaleInstanceMethods().forEach((method) => {
+            this.functionManager.registerFunction(method.name, (input, resolve) => {
+                method.invoke(this._timeScale(), input.params, resolve).bind(this);
+            });
+        });
+        
+
+        // this.functionManager.registerFunction("scrollPosition", (input, resolve) => {
+        //     resolve(this._timeScale().scrollPosition())
+        // })
+        // this.functionManager.registerFunction("scrollToPosition", (input, resolve) => {
+        //     this._timeScale().scrollToPosition(input.params.position, input.params.animated)
+        // })
         this.functionManager.registerFunction("timeScaleOptions", (input, resolve) => {
             const options = this._timeScale().options()
             if (options.tickMarkFormatter) {
@@ -98,13 +114,28 @@ export default class TimeScaleFunctionManager {
             }
         )
     }
+}
 
-    fetchTimeScale(input, callback) {
-        let scale = this.cache.get(input.params.timeScaleId)
-        if (scale === undefined) {
-            this.functionManager.throwFatalError(new Error(`TimeScale with uuid:${input.uuid} is not found`), input)
-        } else {
-            callback(scale)
-        }
+class TimeScaleMethod {
+    constructor(name, invoke) {
+        this.name = name;
+        this.invoke = invoke;
     }
 }
+
+class ScrollPosition extends TimeScaleMethod {
+    constructor() {
+        super("scrollPosition", (timeScale, params, resolve) => {
+            resolve(timeScale.scrollPosition());
+        });
+    }
+}
+
+class ScrollToPosition extends TimeScaleMethod {
+    constructor() {
+        super("scrollToPosition", (timeScale, params, resolve) => {
+            timeScale.scrollToPosition(params.position, params.animated);
+        });
+    }
+}
+
