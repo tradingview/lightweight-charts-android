@@ -2,10 +2,10 @@ import { logger } from './logger.js'
 
 export default class SubscriptionsFunctionManager {
 
-    constructor(chart, functionManager, getSeriesId) {
+    constructor(chart, functionManager, seriesFunctionManager) {
         this.chart = chart
         this.functionManager = functionManager
-        this.getSeriesId = getSeriesId
+        this.seriesFunctionManager = seriesFunctionManager
     }
 
     register() {
@@ -16,7 +16,7 @@ export default class SubscriptionsFunctionManager {
                     const subscription = (params) => {
                         let customSeries = []
                         params.seriesPrices.forEach((value, key, map) => {
-                            customSeries.push({ id: this.getSeriesId(key, input), prices: value })
+                            customSeries.push({ id: this.seriesFunctionManager.getSeriesId(key, input), prices: value })
                         })
                         params.seriesPrices = customSeries
                         callback(params)
@@ -43,10 +43,11 @@ export default class SubscriptionsFunctionManager {
             "subscribeCrosshairMove",
             (input, callback) => {
                 try {
+                    console.error(this.seriesFunctionManager)
                     const subscription = (params) => {
                         let customSeries = []
                         params.seriesPrices.forEach((value, key, map) => {
-                            customSeries.push({ id: this.getSeriesId(key, input), prices: value })
+                            customSeries.push({ id: this.seriesFunctionManager.getSeriesId(key, input), prices: value })
                         })
                         params.seriesPrices = customSeries
                         callback(params)

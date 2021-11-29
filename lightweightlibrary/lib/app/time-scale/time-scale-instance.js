@@ -1,6 +1,7 @@
 import FunctionManager from "../function-manager";
 import PluginManager from "../plugin-manager";
 import ServiceLocator from "../service-locator/locator";
+import TickMarkFormatterService from "./tick-mark-formatter";
 
 export default class TimeScaleInstanceService {
 
@@ -10,31 +11,36 @@ export default class TimeScaleInstanceService {
      */
     constructor(locator) {
         this.chart = locator.resolve("chart");
+
+        /** @type {PluginManager} */
         this.pluginManager = locator.resolve(PluginManager.name);
+
+        /** @type {FunctionManager} */
         this.functionManager = locator.resolve(FunctionManager.name);
+
+        /** @type {TickMarkFormatterService} */
+        this.tickMarkFormatter = locator.resolve(TickMarkFormatterService.name);
     }
 
     _timeScale() {
         return this.chart.timeScale();
     }
-    
-    _registerTickMarkFormatter(params, onSuccess) {
-        if (!params.options.tickMarkFormatter) {
-            onSuccess(params);
-            return;
-        }
-
-        const plugin = params.options.tickMarkFormatter;
-        this.pluginManager.register(plugin, (fun) => {
-            params.options.tickMarkFormatter = fun;
-            onSuccess(params);
-        });
-    }
 
     _timeScaleInstanceMethods() {
         return [
             new ScrollPosition(),
-            new ScrollToPosition()
+            new ScrollToPosition(),
+            new TimeScaleOptions(this.pluginManager),
+            new TimeScaleApplyOptions(this.tickMarkFormatter),
+            new ScrollToRealTime(),
+            new GetVisibleRange(),
+            new SetVisibleRange(),
+            new ResetTimeScale(),
+            new FitContent(),
+            new TimeToCoordinate(),
+            new CoordinateToTime(),
+            new LogicalToCoordinate(),
+            new CoordinateToLogical()
         ];
     }
 
@@ -45,72 +51,14 @@ export default class TimeScaleInstanceService {
             });
         });
         
-
-        // this.functionManager.registerFunction("scrollPosition", (input, resolve) => {
-        //     resolve(this._timeScale().scrollPosition())
-        // })
-        // this.functionManager.registerFunction("scrollToPosition", (input, resolve) => {
-        //     this._timeScale().scrollToPosition(input.params.position, input.params.animated)
-        // })
-        this.functionManager.registerFunction("timeScaleOptions", (input, resolve) => {
-            const options = this._timeScale().options()
-            if (options.tickMarkFormatter) {
-                const fun = options.tickMarkFormatter
-                options.tickMarkFormatter = this.pluginManager.getPlugin(fun)
-            }
-            resolve(options)
-        })
-        this.functionManager.registerFunction("timeScaleApplyOptions", (input, resolve) => {
-            this._registerTickMarkFormatter(input.params, (params) => {
-                this._timeScale().applyOptions(params.options)
-            })
-        })
-        this.functionManager.registerFunction("scrollToRealTime", (input, resolve) => {
-            this._timeScale().scrollToRealTime()
-        })
-        this.functionManager.registerFunction("getVisibleRange", (input, resolve) => {
-            resolve(this._timeScale().getVisibleRange())
-        })
-        this.functionManager.registerFunction("setVisibleRange", (input, resolve) => {
-            this._timeScale().setVisibleRange(input.params.range)
-        })
-        this.functionManager.registerFunction("resetTimeScale", (input, resolve) => {
-            this._timeScale().resetTimeScale()
-        })
-        this.functionManager.registerFunction("fitContent", (input, resolve) => {
-            this._timeScale().fitContent()
-        })
-        this.functionManager.registerFunction("timeToCoordinate", (input, resolve) => {
-            resolve(this._timeScale().timeToCoordinate(input.params.time))
-        })
-        this.functionManager.registerFunction("coordinateToTime", (input, resolve) => {
-            resolve(this._timeScale().coordinateToTime(input.params.x))
-        })
-        this.functionManager.registerFunction("logicalToCoordinate", (input, resolve) => {
-            resolve(this._timeScale().logicalToCoordinate(input.params.logical))
-        })
-        this.functionManager.registerFunction("coordinateToLogical", (input, resolve) => {
-            resolve(this._timeScale().coordinateToLogical(input.params.x))
-        })
         this.functionManager.registerSubscription(
             "subscribeVisibleTimeRangeChange",
-            (input, callback) => {
-                try {
-                    const subscription = callback
-                    this._timeScale().subscribeVisibleTimeRangeChange(subscription)
-                    logger.d("subscribeVisibleTimeRangeChange successful")
-                    return subscription
-                } catch (error) {
-                    logger.e('subscribeVisibleTimeRangeChange has been failed', error)
-                }
+            (input, subscription) => {
+                this._timeScale().subscribeVisibleTimeRangeChange(subscription);
+                return subscription;
             },
             (subscription) => {
-                try {
-                    this._timeScale().unsubscribeVisibleTimeRangeChange(subscription)
-                    logger.d("unsubscribeVisibleTimeRangeChange successful")
-                } catch (error) {
-                    logger.e('unsubscribeVisibleTimeRangeChange has been failed', error)
-                }
+                this._timeScale().unsubscribeVisibleTimeRangeChange(subscription);
             }
         )
     }
@@ -123,19 +71,125 @@ class TimeScaleMethod {
     }
 }
 
-class ScrollPosition extends TimeScaleMethod {
+class TimeScaleMethodWithReturn extends TimeScaleMethod {
+    constructor(name, invoke) {
+        super(name, (timeScale, params, resolve) => {
+            resolve(invoke(timeScale, params));
+        });
+    }
+}
+
+class ScrollPosition extends TimeScaleMethodWithReturn {
     constructor() {
-        super("scrollPosition", (timeScale, params, resolve) => {
-            resolve(timeScale.scrollPosition());
+        super("scrollPosition", (timeScale, params) => {
+            return timeScale.scrollPosition();
         });
     }
 }
 
 class ScrollToPosition extends TimeScaleMethod {
     constructor() {
-        super("scrollToPosition", (timeScale, params, resolve) => {
+        super("scrollToPosition", (timeScale, params) => {
             timeScale.scrollToPosition(params.position, params.animated);
         });
     }
 }
 
+class TimeScaleOptions extends TimeScaleMethodWithReturn {
+    constructor(pluginManager) {
+        super("timeScaleOptions", (timeScale, params) => {
+            const options = timeScale.options();
+            if (options.tickMarkFormatter) {
+                const fun = options.tickMarkFormatter;
+                options.tickMarkFormatter = pluginManager.getPlugin(fun);
+            }
+            return options;
+        });
+    }
+}
+
+class TimeScaleApplyOptions extends TimeScaleMethod {
+    /**
+     * 
+     * @param {TickMarkFormatterService} tickMarkFormatter 
+     */
+    constructor(tickMarkFormatter) {
+        super("timeScaleApplyOptions", (timeScale, params) => {
+            tickMarkFormatter.register(params, (paramsWithPlugin) => {
+                timeScale.applyOptions(paramsWithPlugin.options);
+            });
+        })
+    }
+}
+
+class ScrollToRealTime extends TimeScaleMethod {
+    constructor() {
+        super("scrollToRealTime", (timeScale, params) => {
+            timeScale.scrollToRealTime();
+        });
+    }
+}
+
+class GetVisibleRange extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("getVisibleRange", (timeScale, params) => {
+            return timeScale.getVisibleRange();
+        });
+    }
+}
+
+class SetVisibleRange extends TimeScaleMethod {
+    constructor() {
+        super("setVisibleRange", (timeScale, params) => {
+            timeScale.setVisibleRange(params.range);
+        });
+    }
+}
+
+class ResetTimeScale extends TimeScaleMethod {
+    constructor() {
+        super("resetTimeScale", (timeScale, params) => {
+            timeScale.resetTimeScale();
+        });
+    }
+}
+
+class FitContent extends TimeScaleMethod {
+    constructor() {
+        super("fitContent", (timeScale, params) => {
+            timeScale.fitContent();
+        });
+    }
+}
+
+class TimeToCoordinate extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("timeToCoordinate", (timeScale, params) => {
+            return timeScale.timeToCoordinate(params.time);
+        });
+    }
+}
+
+class CoordinateToTime extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("coordinateToTime", (timeScale, params) => {
+            return timeScale.coordinateToTime(params.x);
+        });
+    }
+}
+
+class LogicalToCoordinate extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("logicalToCoordinate", (timeScale, params) => {
+            return timeScale.logicalToCoordinate(params.logical);
+        });
+    }
+}
+
+class CoordinateToLogical extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("coordinateToLogical", (timeScale, params) => {
+            return timeScale.coordinateToLogical(params.x);
+        });
+    }
+}

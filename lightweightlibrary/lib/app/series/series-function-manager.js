@@ -1,3 +1,4 @@
+import FunctionManager from '../function-manager.js';
 import { logger } from '../logger.js'
 import ServiceLocator from '../service-locator/locator.js';
 import SeriesCache from './series-cache.js';
@@ -11,7 +12,9 @@ export default class SeriesFunctionManager {
      * @param {ServiceLocator} locator 
      */
     constructor(locator) {
+        /** @type {SeriesCache} */
         this.seriesCache = locator.resolve(SeriesCache.name);
+        this.functionManager = locator.resolve(FunctionManager.name);
         this.seriesCreationService = locator.resolve(SeriesCreationService.name);
         this.seriesInstanceService = locator.resolve(SeriesInstanceService.name);
     }

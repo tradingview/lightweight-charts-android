@@ -15,13 +15,13 @@ export default class ChartRegistrationFunctionsController {
     }
 
     registerFunctions() {
-        const series = Locator.resolve(SeriesFunctionManager.name)
-        series.register()
+        const seriesFunctionManager = Locator.resolve(SeriesFunctionManager.name)
+        seriesFunctionManager.register()
 
         const subscriptions = new SubscriptionsFunctionManager(
             this.chart,
             this.functionManager,
-            (seriesObject, params) => { return series.getSeriesId(seriesObject, params) }
+            seriesFunctionManager
         )
         subscriptions.register()
 

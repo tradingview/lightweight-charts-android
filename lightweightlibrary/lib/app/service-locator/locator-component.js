@@ -7,6 +7,7 @@ import SeriesCache from "../series/series-cache";
 import SeriesCreationService from "../series/series-creation";
 import SeriesFunctionManager from "../series/series-function-manager";
 import SeriesInstanceService from "../series/series-instance";
+import TickMarkFormatterService from "../time-scale/tick-mark-formatter";
 import TimeScaleFunctionManager from "../time-scale/time-scale-function-manager";
 import TimeScaleInstanceService from "../time-scale/time-scale-instance";
 import { Locator } from "./locator";
@@ -36,6 +37,7 @@ class LocatorComponent {
 
         this.registerTimeScaleFunctionManager();
         this.registerTimeScaleInstanceService();
+        this.registerTickMarkFormatterService();
     }
 
     registerLineCache() {
@@ -72,5 +74,9 @@ class LocatorComponent {
 
     registerTimeScaleInstanceService() {
         Locator.register(TimeScaleInstanceService.name, () => new TimeScaleInstanceService(Locator));
+    }
+
+    registerTickMarkFormatterService() {
+        Locator.register(TickMarkFormatterService.name, () => new TickMarkFormatterService(Locator));
     }
 }
