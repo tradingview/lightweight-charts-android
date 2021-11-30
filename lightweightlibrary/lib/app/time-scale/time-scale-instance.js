@@ -47,7 +47,7 @@ export default class TimeScaleInstanceService {
     register() {
         this._timeScaleInstanceMethods().forEach((method) => {
             this.functionManager.registerFunction(method.name, (input, resolve) => {
-                method.invoke(this._timeScale(), input.params, resolve).bind(this);
+                method.invoke(this._timeScale(), input.params, resolve);
             });
         });
         
@@ -60,7 +60,7 @@ export default class TimeScaleInstanceService {
             (subscription) => {
                 this._timeScale().unsubscribeVisibleTimeRangeChange(subscription);
             }
-        )
+        );
     }
 }
 
