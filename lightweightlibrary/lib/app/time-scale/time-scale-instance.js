@@ -46,37 +46,39 @@ export default class TimeScaleInstanceService {
         ];
     }
 
+    _timeScaleInstanceSusbcriptions() {
+        return [
+            new SubscribeVisibleTimeRangeChange(),
+            new SubscribeSizeChange()
+        ];
+    }
+
     register() {
         this._timeScaleInstanceMethods().forEach((method) => {
             this.functionManager.registerFunction(method.name, (input, resolve) => {
                 method.invoke(this._timeScale(), input.params, resolve);
             });
         });
-        
-        this.functionManager.registerSubscription(
-            "subscribeVisibleTimeRangeChange",
-            (input, callback) => {
-                this._timeScale().subscribeVisibleTimeRangeChange(callback);
-                return callback;
-            },
-            (subscription) => {
-                this._timeScale().unsubscribeVisibleTimeRangeChange(subscription);
-            }
-        );
 
-        this.functionManager.registerSubscription(
-            "subscribeTimeScaleSizeChange",
-            (input, callback) => {
-                const subcription = (width, height) => {
-                    callback({width: width, height: height});
-                };
-                this._timeScale().subscribeSizeChange(subcription);
-                return subcription;
-            },
-            (subscription) => {
-                this._timeScale().unsubscribeSizeChange(subscription);
-            }
-        );
+        this._timeScaleInstanceSusbcriptions().forEach((subscription) => {
+            this.functionManager.registerSubscription(
+                subscription.name, 
+                (input, callback) => {
+                    return subscription.subscribe(this._timeScale(), callback);
+                },
+                (subscription) => {
+                    subscription.unsubscribe(this._timeScale(), subscription);
+                }
+            );
+        });
+    }
+}
+
+class TimeScaleSubscription {
+    constructor(name, subscribe, unsubscribe) {
+        this.name = name;
+        this.subscribe = subscribe;
+        this.unsubscribe = unsubscribe;
     }
 }
 
@@ -223,5 +225,38 @@ class Height extends TimeScaleMethodWithReturn {
         super("timeScaleHeight", (timeScale, params) => {
             return timeScale.height();
         });
+    }
+}
+
+class SubscribeVisibleTimeRangeChange extends TimeScaleSubscription {
+    constructor() {
+        super(
+            "subscribeVisibleTimeRangeChange", 
+            (timeScale, callback) => {
+                timeScale.subscribeVisibleTimeRangeChange(callback);
+                return callback;
+            },
+            (timeScale, subscription) => {
+                timeScale.unsubscribeVisibleTimeRangeChange(subscription);
+            }
+        );
+    }
+}
+
+class SubscribeSizeChange extends TimeScaleSubscription {
+    constructor() {
+        super(
+            "subscribeTimeScaleSizeChange",
+            (timeScale, callback) => {
+                const subcription = (width, height) => {
+                    callback({width: width, height: height});
+                };
+                timeScale.subscribeSizeChange(subcription);
+                return subcription;
+            },
+            (timeScale, subscription) => {
+                timeScale.unsubscribeSizeChange(subscription);
+            }
+        );
     }
 }
