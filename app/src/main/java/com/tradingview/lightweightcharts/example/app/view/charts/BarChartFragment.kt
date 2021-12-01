@@ -6,10 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import android.util.SizeF
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,11 +20,8 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.series.models.Time
-import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.model.Data
-import com.tradingview.lightweightcharts.example.app.plugins.TickMarkFormatter
 import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_bar_chart_fragment.*
@@ -89,32 +82,19 @@ class BarChartFragment: Fragment() {
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
     fun shareScreenshot() {
-        val timeScaleApi = charts_view.api.timeScale
-        val subscribe: (SizeF) -> Unit = {
-            Log.i("asd", it.toString())
-        }
-        timeScaleApi.subscribeSizeChange(subscribe)
-        timeScaleApi.unsubscribeSizeChange(subscribe)
-//        timeScaleApi.height {
-//            Log.i("asd", it.toString())
-//        }
-//        timeScaleApi.coordinateToLogical(-300f) {
-//            Log.i("asd", it.toString())
-//        }
+        charts_view.api.takeScreenshot(ImageMimeType.WEBP) { bitmap ->
+            val context = requireContext()
 
-//        charts_view.api.takeScreenshot(ImageMimeType.WEBP) { bitmap ->
-//            val context = requireContext()
-//
-//            val picturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-//            val file = File(picturesDir, "share.webp")
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, FileOutputStream(file))
-//
-//            val shareIntent = Intent(Intent.ACTION_SEND)
-//            shareIntent.type = "image/webp"
-//            val uri = FileProvider.getUriForFile(context, "com.tradingview.fileprovider", file)
-//            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-//            context.startActivity(Intent.createChooser(shareIntent, "Share image using"))
-//        }
+            val picturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            val file = File(picturesDir, "share.webp")
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, FileOutputStream(file))
+
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "image/webp"
+            val uri = FileProvider.getUriForFile(context, "com.tradingview.fileprovider", file)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            context.startActivity(Intent.createChooser(shareIntent, "Share image using"))
+        }
     }
 
     private fun applyChartOptions() {
