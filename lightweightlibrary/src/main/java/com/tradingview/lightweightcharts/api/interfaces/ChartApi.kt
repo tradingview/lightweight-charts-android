@@ -88,6 +88,17 @@ interface ChartApi {
         onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
+    /**
+     * A baseline chart is another way of displaying quantitative data.
+     * It's basically two colored areas (top and bottom) between
+     * the line connecting all data points and the baseline line.
+     * A baseline series has a crosshair marker - a round mark
+     * which is moving along the series' line
+     * while the cursor is moving on a chart along the time scale.
+     *
+     * @param options customization parameters of the series being created
+     * @param onSeriesCreated returns an interface of the created series
+     */
     fun addBaselineSeries(
         options: BaselineStyleOptions,
         onSeriesCreated: (api: SeriesApi) -> Unit

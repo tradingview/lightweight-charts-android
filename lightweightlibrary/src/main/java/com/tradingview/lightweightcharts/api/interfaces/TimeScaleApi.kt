@@ -130,11 +130,23 @@ interface TimeScaleApi {
      */
     fun unsubscribeVisibleTimeRangeChange(onTimeRangeChanged: (params: TimeRange?) -> Unit)
 
+    /**
+     * Returns a current width of the time scale
+     */
     fun width(onWidthReceived: (Float) -> Unit)
 
+    /**
+     * Returns a current height of the time scale
+     */
     fun height(onHeightReceived: (Float) -> Unit)
 
+    /**
+     * Allows to subscribe to the size change event
+     */
     fun subscribeSizeChange(onSizeChange: (size: SizeF) -> Unit)
 
+    /**
+     * Removes a subscription to size changes
+     */
     fun unsubscribeSizeChange(onSizeChange: (size: SizeF) -> Unit)
 }
