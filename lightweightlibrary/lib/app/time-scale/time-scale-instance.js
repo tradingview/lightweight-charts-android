@@ -40,7 +40,9 @@ export default class TimeScaleInstanceService {
             new TimeToCoordinate(),
             new CoordinateToTime(),
             new LogicalToCoordinate(),
-            new CoordinateToLogical()
+            new CoordinateToLogical(),
+            new Width(),
+            new Height()
         ];
     }
 
@@ -53,12 +55,26 @@ export default class TimeScaleInstanceService {
         
         this.functionManager.registerSubscription(
             "subscribeVisibleTimeRangeChange",
-            (input, subscription) => {
-                this._timeScale().subscribeVisibleTimeRangeChange(subscription);
-                return subscription;
+            (input, callback) => {
+                this._timeScale().subscribeVisibleTimeRangeChange(callback);
+                return callback;
             },
             (subscription) => {
                 this._timeScale().unsubscribeVisibleTimeRangeChange(subscription);
+            }
+        );
+
+        this.functionManager.registerSubscription(
+            "subscribeTimeScaleSizeChange",
+            (input, callback) => {
+                const subcription = (width, height) => {
+                    callback({width: width, height: height});
+                };
+                this._timeScale().subscribeSizeChange(subcription);
+                return subcription;
+            },
+            (subscription) => {
+                this._timeScale().unsubscribeSizeChange(subscription);
             }
         );
     }
@@ -190,6 +206,22 @@ class CoordinateToLogical extends TimeScaleMethodWithReturn {
     constructor() {
         super("coordinateToLogical", (timeScale, params) => {
             return timeScale.coordinateToLogical(params.x);
+        });
+    }
+}
+
+class Width extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("timeScaleWidth", (timeScale, params) => {
+            return timeScale.width();
+        });
+    }
+}
+
+class Height extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("timeScaleHeight", (timeScale, params) => {
+            return timeScale.height();
         });
     }
 }
