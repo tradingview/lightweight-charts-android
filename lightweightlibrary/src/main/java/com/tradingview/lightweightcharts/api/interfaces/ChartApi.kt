@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.interfaces
 
 import android.graphics.Bitmap
 import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
+import com.tradingview.lightweightcharts.api.options.common.BaselineStyleOptions
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.models.*
 
@@ -43,8 +44,8 @@ interface ChartApi {
      * @return an interface of the created series
      */
     fun addAreaSeries(
-            options: AreaSeriesOptions = AreaSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi) -> Unit
+        options: AreaSeriesOptions = AreaSeriesOptions(),
+        onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -53,8 +54,8 @@ interface ChartApi {
      * @param onSeriesCreated returns an interface of the created series
      */
     fun addBarSeries(
-            options: BarSeriesOptions = BarSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi) -> Unit
+        options: BarSeriesOptions = BarSeriesOptions(),
+        onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -63,8 +64,8 @@ interface ChartApi {
      * @param onSeriesCreated returns an interface of the created series
      */
     fun addCandlestickSeries(
-            options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi) -> Unit
+        options: CandlestickSeriesOptions = CandlestickSeriesOptions(),
+        onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -73,8 +74,8 @@ interface ChartApi {
      * @param onSeriesCreated returns an interface of the created series
      */
     fun addHistogramSeries(
-            options: HistogramSeriesOptions = HistogramSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi) -> Unit
+        options: HistogramSeriesOptions = HistogramSeriesOptions(),
+        onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -83,8 +84,24 @@ interface ChartApi {
      * @param onSeriesCreated returns an interface of the created series
      */
     fun addLineSeries(
-            options: LineSeriesOptions = LineSeriesOptions(),
-            onSeriesCreated: (api: SeriesApi) -> Unit
+        options: LineSeriesOptions = LineSeriesOptions(),
+        onSeriesCreated: (api: SeriesApi) -> Unit
+    )
+
+    /**
+     * A baseline chart is another way of displaying quantitative data.
+     * It's basically two colored areas (top and bottom) between
+     * the line connecting all data points and the baseline line.
+     * A baseline series has a crosshair marker - a round mark
+     * which is moving along the series' line
+     * while the cursor is moving on a chart along the time scale.
+     *
+     * @param options customization parameters of the series being created
+     * @param onSeriesCreated returns an interface of the created series
+     */
+    fun addBaselineSeries(
+        options: BaselineStyleOptions,
+        onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
     /**
@@ -119,8 +136,10 @@ interface ChartApi {
      */
     fun priceScale(id: PriceScaleId): PriceScaleApi
 
-    @Deprecated("Using ChartApi.priceScale() method without arguments " +
-            "has been deprecated, pass valid price scale id instead")
+    @Deprecated(
+        "Using ChartApi.priceScale() method without arguments " +
+                "has been deprecated, pass valid price scale id instead"
+    )
     fun priceScale(): PriceScaleApi
 
     /**

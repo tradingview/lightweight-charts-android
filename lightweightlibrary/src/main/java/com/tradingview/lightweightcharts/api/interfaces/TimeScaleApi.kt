@@ -1,5 +1,6 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
+import android.util.SizeF
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.api.options.models.TimeScaleOptions
 import com.tradingview.lightweightcharts.api.series.models.Time
@@ -21,6 +22,9 @@ interface TimeScaleApi {
         const val COORDINATE_TO_TIME = "coordinateToTime"
         const val LOGICAL_TO_COORDINATE = "logicalToCoordinate"
         const val COORDINATE_TO_LOGICAL = "coordinateToLogical"
+        const val WIDTH = "timeScaleWidth"
+        const val HEIGHT = "timeScaleHeight"
+        const val SUBSCRIBE_SIZE_CHANGE = "subscribeTimeScaleSizeChange"
     }
 
     object Params {
@@ -126,5 +130,23 @@ interface TimeScaleApi {
      */
     fun unsubscribeVisibleTimeRangeChange(onTimeRangeChanged: (params: TimeRange?) -> Unit)
 
+    /**
+     * Returns a current width of the time scale
+     */
+    fun width(onWidthReceived: (Float) -> Unit)
 
+    /**
+     * Returns a current height of the time scale
+     */
+    fun height(onHeightReceived: (Float) -> Unit)
+
+    /**
+     * Allows to subscribe to the size change event
+     */
+    fun subscribeSizeChange(onSizeChange: (size: SizeF) -> Unit)
+
+    /**
+     * Removes a subscription to size changes
+     */
+    fun unsubscribeSizeChange(onSizeChange: (size: SizeF) -> Unit)
 }

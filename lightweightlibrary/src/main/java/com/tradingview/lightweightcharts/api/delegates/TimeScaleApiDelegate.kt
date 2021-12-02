@@ -1,11 +1,13 @@
 package com.tradingview.lightweightcharts.api.delegates
 
+import android.util.SizeF
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.COORDINATE_TO_LOGICAL
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.COORDINATE_TO_TIME
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.FIT_CONTENT
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.GET_VISIBLE_RANGE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.HEIGHT
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.LOGICAL_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.RESET_TIME_SCALE
@@ -13,17 +15,16 @@ import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SCROLL
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SCROLL_TO_POSITION
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SCROLL_TO_REAL_TIME
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SET_VISIBLE_RANGE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SUBSCRIBE_SIZE_CHANGE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.TIME_TO_COORDINATE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.WIDTH
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.ANIMATED
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.OPTIONS_PARAM
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.POSITION
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.RANGE
 import com.tradingview.lightweightcharts.api.options.models.TimeScaleOptions
-import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
-import com.tradingview.lightweightcharts.api.serializer.TimeRangeDeserializer
-import com.tradingview.lightweightcharts.api.serializer.TimeScaleOptionsDeserializer
-import com.tradingview.lightweightcharts.api.serializer.TimeDeserializer
+import com.tradingview.lightweightcharts.api.serializer.*
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
@@ -158,6 +159,37 @@ class TimeScaleApiDelegate(
         controller.callUnsubscribe(
             SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE,
             subscription = onTimeRangeChanged
+        )
+    }
+
+    override fun width(onWidthReceived: (Float) -> Unit) {
+        controller.callFunction(
+            WIDTH,
+            callback = onWidthReceived,
+            deserializer = PrimitiveSerializer.FloatDeserializer
+        )
+    }
+
+    override fun height(onHeightReceived: (Float) -> Unit) {
+        controller.callFunction(
+            HEIGHT,
+            callback = onHeightReceived,
+            deserializer = PrimitiveSerializer.FloatDeserializer
+        )
+    }
+
+    override fun subscribeSizeChange(onSizeChange: (size: SizeF) -> Unit) {
+        controller.callSubscribe(
+            SUBSCRIBE_SIZE_CHANGE,
+            callback = onSizeChange,
+            deserializer = SizeDeserializer()
+        )
+    }
+
+    override fun unsubscribeSizeChange(onSizeChange: (size: SizeF) -> Unit) {
+        controller.callUnsubscribe(
+            SUBSCRIBE_SIZE_CHANGE,
+            subscription = onSizeChange
         )
     }
 }
