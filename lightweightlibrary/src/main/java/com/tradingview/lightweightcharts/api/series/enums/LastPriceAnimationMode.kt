@@ -2,8 +2,8 @@ package com.tradingview.lightweightcharts.api.series.enums
 
 import com.google.gson.*
 import com.tradingview.lightweightcharts.help.isNumber
+import com.tradingview.lightweightcharts.help.requireInt
 import java.lang.reflect.Type
-import kotlin.contracts.ExperimentalContracts
 
 /**
  * This enum is used to specify the type of the last price animation for series such as area or line
@@ -40,14 +40,13 @@ enum class LastPriceAnimationMode(val value: Int) {
             return src?.let { JsonPrimitive(it.value) } ?: JsonNull.INSTANCE
         }
 
-        @ExperimentalContracts
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
         ): LastPriceAnimationMode {
             return when {
-                json.isNumber() -> from(json.asInt)
+                json.isNumber() -> from(json.requireInt())
                 else -> DISABLED
             }
         }

@@ -6,11 +6,9 @@ import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.help.isNumber
 import com.tradingview.lightweightcharts.help.isString
-import kotlin.contracts.ExperimentalContracts
 
 class TimeRangeDeserializer: Deserializer<TimeRange>() {
 
-    @ExperimentalContracts
     override fun deserialize(json: JsonElement): TimeRange? {
         if (!json.isJsonObject) {
             return null

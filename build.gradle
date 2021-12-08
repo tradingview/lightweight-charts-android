@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.4.31'
+    ext.kotlin_version = '1.6.0'
     repositories {
         google()
         mavenCentral()
@@ -8,7 +8,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.10'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
@@ -16,14 +16,13 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.1.1"
+    id "io.gitlab.arturbosch.detekt" version "1.18.1"
 }
 
 detekt {
-    version = "1.1.1"
-    input = files(".")
-    filters = ".*/resources/.*,.*/build/.*"
-    config = files("default-detekt-config.yml")
+    source = files(".")
+    buildUponDefaultConfig = false
+    config = files("$projectDir/default-detekt-config.yml")
 }
 
 allprojects {

@@ -34,7 +34,6 @@ class RealTimeEmulationFragment: Fragment() {
         return inflater.inflate(R.layout.layout_chart_fragment, container, false)
     }
 
-    @InternalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         provideViewModel()
@@ -52,7 +51,6 @@ class RealTimeEmulationFragment: Fragment() {
         viewModel = ViewModelProvider(this).get(RealTimeEmulationViewModel::class.java)
     }
 
-    @InternalCoroutinesApi
     private fun observeViewModelData() {
         viewModel.seriesData.observe(viewLifecycleOwner, { data ->
             createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->

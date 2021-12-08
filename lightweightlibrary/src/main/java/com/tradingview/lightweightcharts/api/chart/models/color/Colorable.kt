@@ -4,8 +4,8 @@ import android.graphics.Color
 import com.google.gson.*
 import com.tradingview.lightweightcharts.api.series.exception.ColorParseException
 import com.tradingview.lightweightcharts.help.isString
+import com.tradingview.lightweightcharts.help.requireString
 import java.lang.reflect.Type
-import kotlin.contracts.ExperimentalContracts
 import java.lang.IllegalStateException
 
 interface Colorable {
@@ -22,15 +22,14 @@ interface Colorable {
             }
         }
 
-        @ExperimentalContracts
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
         ): Colorable? {
             return when {
-                json.isString() && json.asString.isBlank() -> NoColor
-                json.isString() -> json.asString.toColor()?.let { IntColor(it) }
+                json.isString() && json.requireString().isBlank() -> NoColor
+                json.isString() -> json.requireString().toColor()?.let { IntColor(it) }
                 else -> null
             }
         }
