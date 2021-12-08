@@ -31,8 +31,8 @@ android {
 }
 
 dependencies {
-//    implementation 'com.tradingview:lightweightcharts:3.6.0'
-    implementation project(":lightweightlibrary")
+    implementation 'com.tradingview:lightweightcharts:3.7.0'
+//    implementation project(":lightweightlibrary")
 
     implementation platform('com.google.firebase:firebase-bom:28.4.0')
     implementation 'com.google.firebase:firebase-crashlytics'
