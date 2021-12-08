@@ -2,8 +2,8 @@ package com.tradingview.lightweightcharts.api.series.models
 
 import com.google.gson.*
 import com.tradingview.lightweightcharts.help.isString
+import com.tradingview.lightweightcharts.help.requireString
 import java.lang.reflect.Type
-import kotlin.contracts.ExperimentalContracts
 
 data class PriceScaleId(val value: String) {
     companion object {
@@ -20,14 +20,13 @@ data class PriceScaleId(val value: String) {
             return JsonPrimitive(src?.value ?: "")
         }
 
-        @ExperimentalContracts
         override fun deserialize(
                 json: JsonElement?,
                 typeOfT: Type?,
                 context: JsonDeserializationContext?
         ): PriceScaleId {
             return when {
-                json.isString() -> when(val value = json.asString) {
+                json.isString() -> when(val value = json.requireString()) {
                     LEFT.value -> LEFT
                     RIGHT.value -> RIGHT
                     else -> PriceScaleId(value)

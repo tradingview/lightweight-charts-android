@@ -2,8 +2,8 @@ package com.tradingview.lightweightcharts.api.series.enums
 
 import com.google.gson.*
 import com.tradingview.lightweightcharts.help.isNumber
+import com.tradingview.lightweightcharts.help.requireInt
 import java.lang.reflect.Type
-import kotlin.contracts.ExperimentalContracts
 
 enum class PriceScaleMode(val value: Int) {
     NORMAL(0),
@@ -24,14 +24,13 @@ enum class PriceScaleMode(val value: Int) {
             return JsonPrimitive(src?.value ?: 0)
         }
 
-        @ExperimentalContracts
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
         ): PriceScaleMode {
             return when {
-                json.isNumber() -> from(json.asInt)
+                json.isNumber() -> from(json.requireInt())
                 else -> NORMAL
             }
         }

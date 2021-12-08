@@ -2,8 +2,8 @@ package com.tradingview.lightweightcharts.api.series.enums
 
 import com.google.gson.*
 import com.tradingview.lightweightcharts.help.isNumber
+import com.tradingview.lightweightcharts.help.requireInt
 import java.lang.reflect.Type
-import kotlin.contracts.ExperimentalContracts
 
 enum class LineWidth(val value: Int) {
     ONE(1),
@@ -24,14 +24,13 @@ enum class LineWidth(val value: Int) {
             return JsonPrimitive(src?.value ?: 1)
         }
 
-        @ExperimentalContracts
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
             context: JsonDeserializationContext?
         ): LineWidth {
             return when {
-                json.isNumber() -> from(json.asInt)
+                json.isNumber() -> from(json.requireInt())
                 else -> ONE
             }
         }

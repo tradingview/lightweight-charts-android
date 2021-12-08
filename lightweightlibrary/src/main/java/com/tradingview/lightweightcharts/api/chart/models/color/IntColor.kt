@@ -3,8 +3,8 @@ package com.tradingview.lightweightcharts.api.chart.models.color
 import com.google.gson.*
 import com.tradingview.lightweightcharts.api.series.exception.ColorParseException
 import com.tradingview.lightweightcharts.help.isString
+import com.tradingview.lightweightcharts.help.requireString
 import java.lang.reflect.Type
-import kotlin.contracts.ExperimentalContracts
 
 class IntColor(val value: Int): Colorable
 
@@ -20,14 +20,14 @@ class IntColorAdapter : JsonSerializer<IntColor>, JsonDeserializer<IntColor> {
         }
     }
 
-    @ExperimentalContracts
+
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
         context: JsonDeserializationContext?
     ): IntColor? {
         return when {
-            json.isString() -> json.asString.toColor()?.let { IntColor(it) }
+            json.isString() -> json.requireString().toColor()?.let { IntColor(it) }
             else -> null
         }
     }

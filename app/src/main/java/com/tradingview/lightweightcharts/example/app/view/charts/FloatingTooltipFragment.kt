@@ -26,7 +26,6 @@ import com.tradingview.lightweightcharts.example.app.viewmodel.FloatingTooltipVi
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.android.synthetic.main.layout_chart_fragment.*
 
-
 class FloatingTooltipFragment: Fragment() {
 
     companion object {
