@@ -5,12 +5,12 @@ package com.tradingview.lightweightcharts.api.options.models
  */
 data class KineticScrollOptions(
     /**
-     * If true, kinetic scroll is enabled via mouse
+     * If true, kinetic scroll is enabled via touch gestures
      */
     var touch: Boolean? = null,
 
     /**
-     * If true, kinetic scroll is enabled via touch gestures
+     * If true, kinetic scroll is enabled via mouse
      */
     var mouse: Boolean? = null,
 )
