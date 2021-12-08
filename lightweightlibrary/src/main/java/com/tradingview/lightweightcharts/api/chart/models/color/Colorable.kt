@@ -16,7 +16,7 @@ interface Colorable {
             context: JsonSerializationContext?
         ): JsonElement {
             return when (src) {
-                is IntColor -> JsonPrimitive(src.value.toHexString())
+                is IntColor -> JsonPrimitive(src.value.toRgbaString())
                 is NoColor -> JsonPrimitive("")
                 else -> throw IllegalStateException("Unknown type of color: $typeOfSrc")
             }
@@ -37,11 +37,13 @@ interface Colorable {
 }
 
 internal fun Int.toHexString(): String {
-    val alpha = String.format("%02x", Color.alpha(this))
-    val red = String.format("%02x", Color.red(this))
-    val green = String.format("%02x", Color.green(this))
-    val blue = String.format("%02x", Color.blue(this))
-    return "#$red$green$blue$alpha"
+    val color = toRgba()
+    return "#${color.hexRed}${color.hexGreen}${color.hexBlue}${color.hexAlpha}"
+}
+
+internal fun Int.toRgbaString(): String {
+    val color = toRgba()
+    return "rgba(${color.red},${color.green},${color.blue},${color.alpha.toFloat() / 255f})"
 }
 
 internal fun String.toColor(): Int? {
@@ -81,4 +83,36 @@ private fun String.parseRgbaColor(): Int {
         val alpha = (groups[4].toFloat() * 255).toInt()
         return@let Color.argb(alpha, red, green, blue)
     } ?: throw ColorParseException("Unknown color")
+}
+
+internal data class ArgbColor(
+    val alpha: Int,
+    val red: Int,
+    val green: Int,
+    val blue: Int
+) {
+    val hexAlpha: String
+        get() = hexFormat(alpha)
+
+    val hexRed: String
+        get() = hexFormat(red)
+
+    val hexGreen: String
+        get() = hexFormat(green)
+
+    val hexBlue: String
+        get() = hexFormat(blue)
+
+    private fun hexFormat(param: Int): String {
+        return String.format("%02x", param)
+    }
+}
+
+private fun Int.toRgba(): ArgbColor {
+    return ArgbColor(
+        alpha = Color.alpha(this),
+        red = Color.red(this),
+        green = Color.green(this),
+        blue = Color.blue(this)
+    )
 }
