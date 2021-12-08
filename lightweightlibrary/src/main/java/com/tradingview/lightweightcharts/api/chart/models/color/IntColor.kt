@@ -15,7 +15,7 @@ class IntColorAdapter : JsonSerializer<IntColor>, JsonDeserializer<IntColor> {
         context: JsonSerializationContext?
     ): JsonElement {
         return when (src) {
-            is IntColor -> JsonPrimitive(src.value.toHexString())
+            is IntColor -> JsonPrimitive(src.value.toRgbaString())
             else -> JsonNull.INSTANCE
         }
     }
