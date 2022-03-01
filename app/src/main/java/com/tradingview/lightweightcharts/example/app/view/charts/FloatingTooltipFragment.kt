@@ -6,37 +6,30 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
+import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
 import com.tradingview.lightweightcharts.example.app.R
-import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.view.util.Tooltip
 import com.tradingview.lightweightcharts.example.app.viewmodel.FloatingTooltipViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
-import kotlinx.android.synthetic.main.layout_chart_fragment.*
 
 class FloatingTooltipFragment: Fragment() {
-
-    companion object {
-        const val TOOLTIP_WIDTH = 300
-        const val TOOLTIP_HEIGHT = 300
-    }
-
+    private val viewModelProvider get() = ViewModelProvider(this)
     private lateinit var viewModel: FloatingTooltipViewModel
 
-    private var series: MutableList<SeriesApi> = mutableListOf()
-    private val chartFragment: FrameLayout by lazy { chart_fragment }
+    private lateinit var areaSeries: SeriesApi
+
+    private val tooltip get() = requireView().findViewById<Tooltip>(R.id.tooltip)
+    private val chartsView get() = requireView().findViewById<ChartsView>(R.id.charts_view)
+
+    private val chartApi get() = chartsView.api
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.layout_chart_fragment, container, false)
@@ -44,43 +37,34 @@ class FloatingTooltipFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-        subscribeOnChartReady(charts_view)
-        applyChartOptions()
-    }
-
-    private fun provideViewModel() {
-        viewModel = ViewModelProvider(this).get(FloatingTooltipViewModel::class.java)
-    }
-
-    private fun observeViewModelData() {
-        viewModel.seriesData.observe(this, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
-                this.series.clear()
-                this.series.add(series)
-            }
-        })
-    }
-
-    private fun subscribeOnChartReady(view: ChartsView) {
-        view.subscribeOnChartStateChange { state ->
-            when (state) {
-                is ChartsView.State.Preparing -> Unit
-                is ChartsView.State.Ready -> {
-                    Toast.makeText(context, "Chart ${view.id} is ready", Toast.LENGTH_SHORT).show()
+        viewModel = viewModelProvider[FloatingTooltipViewModel::class.java]
+        viewModel.seriesData.observe(viewLifecycleOwner) { data ->
+            chartApi.addAreaSeries(
+                options = AreaSeriesOptions(
+                    topColor = Color.argb(143, 0, 150, 136).toIntColor(),
+                    bottomColor = Color.argb(10, 0, 150, 136).toIntColor(),
+                    lineColor = Color.argb(255, 0, 150, 136).toIntColor(),
+                    lineWidth = LineWidth.TWO,
+                ),
+                onSeriesCreated = { api ->
+                    areaSeries = api
+                    areaSeries.setData(data.list)
                 }
-                is ChartsView.State.Error -> {
-                    Toast.makeText(context, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
-                }
-            }
+            )
         }
+        applyChartOptions()
+        chartApi.subscribeCrosshairMove(onCrosshairMove)
+    }
+
+    override fun onDestroyView() {
+        chartApi.unsubscribeCrosshairMove(onCrosshairMove)
+        super.onDestroyView()
     }
 
     private fun applyChartOptions() {
-        charts_view.api.applyOptions {
+        chartApi.applyOptions {
             layout = layoutOptions {
-                backgroundColor = Color.WHITE.toIntColor()
+                background = SolidColor(Color.WHITE)
                 textColor = Color.parseColor("#333333").toIntColor()
             }
             crosshair = crosshairOptions {
@@ -107,48 +91,33 @@ class FloatingTooltipFragment: Fragment() {
                 }
             }
         }
-
-        attachTooltipToCrosshair()
     }
 
-    private fun attachTooltipToCrosshair() {
-        val layoutParams = LinearLayout.LayoutParams(TOOLTIP_WIDTH, TOOLTIP_HEIGHT)
-        val displayMetrics = requireContext().resources.displayMetrics
-        val dpScreenHeight = displayMetrics.heightPixels / displayMetrics.density
-        val tooltip = Tooltip(requireContext())
-        tooltip.setSymbolName("Apple Inc.")
 
-        charts_view.api.subscribeCrosshairMove { event ->
+    private val onCrosshairMove: (MouseEventParams) -> Unit = onCrosshairMove@{ mouseEventParams ->
+        val prices = mouseEventParams.seriesPrices
+        if (prices.isNullOrEmpty()) {
+            tooltip.visibility = View.GONE
+            return@onCrosshairMove
+        }
 
-            if (event.seriesPrices.isNullOrEmpty()) {
-                return@subscribeCrosshairMove
+        tooltip.visibility = View.VISIBLE
+
+        val price = prices.first().prices.value ?: 0f
+
+        val businessDay = mouseEventParams.time as Time.BusinessDay
+        val time = "${businessDay.year}-${businessDay.month}-${businessDay.day}"
+
+        areaSeries.priceToCoordinate(price) { coordinate ->
+            if (coordinate == null) {
+                return@priceToCoordinate
             }
 
-            val price = event.seriesPrices!!.firstOrNull()?.prices?.value ?: 0f
-            val time = "${(event.time as Time.BusinessDay).year}-" +
-                    "${(event.time as Time.BusinessDay).month}-" +
-                    "${(event.time as Time.BusinessDay).day}"
-
-            series.first().priceToCoordinate(price) { coordinate ->
-
-                if (coordinate == null) {
-                    return@priceToCoordinate
-                }
-
-                if (chartFragment.children.last() is Tooltip) {
-                    chartFragment.removeViewAt(chartFragment.childCount - 1)
-                }
-
-                val coordinateY = 0f.coerceAtLeast((dpScreenHeight - TOOLTIP_HEIGHT).coerceAtMost(coordinate))
-
-                layoutParams.leftMargin = dpToPx(event.point?.x)
-                layoutParams.topMargin = dpToPx(coordinateY)
-
-                tooltip.layoutParams = layoutParams
-                tooltip.setPrice(price.toString())
-                tooltip.setDate(time)
-                chartFragment.addView(tooltip, chartFragment.childCount)
-            }
+            tooltip.translationX = dpToPx(mouseEventParams.point?.x).toFloat()
+            tooltip.translationY = dpToPx(coordinate).toFloat()
+            tooltip.setPrice(price.toString())
+            tooltip.setDate(time)
+            tooltip.setSymbolName("Apple Inc.")
         }
     }
 
@@ -156,25 +125,5 @@ class FloatingTooltipFragment: Fragment() {
         return value?.let {
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, it, resources.displayMetrics).toInt()
         } ?: 0
-    }
-
-    private fun createSeriesWithData(
-            data: Data,
-            priceScale: PriceScaleId,
-            chartApi: ChartApi,
-            onSeriesCreated: (SeriesApi) -> Unit
-    ) {
-        chartApi.addAreaSeries(
-                options = AreaSeriesOptions(
-                        topColor = Color.argb(143, 0, 150, 136).toIntColor(),
-                        bottomColor = Color.argb(10, 0, 150, 136).toIntColor(),
-                        lineColor = Color.argb(255, 0, 150, 136).toIntColor(),
-                        lineWidth = LineWidth.TWO,
-                ),
-                onSeriesCreated = { api ->
-                    api.setData(data.list)
-                    onSeriesCreated(api)
-                }
-        )
     }
 }

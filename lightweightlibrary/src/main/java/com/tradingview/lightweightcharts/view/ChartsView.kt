@@ -3,6 +3,7 @@ package com.tradingview.lightweightcharts.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature.*
@@ -75,20 +76,18 @@ open class ChartsView @JvmOverloads constructor(
         addView(webView)
     }
 
+    final override fun addView(child: View?) {
+        super.addView(child)
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         if (state is State.Ready) {
             Logger.d("Reattach to window")
-            webMessageController.setWebMessageChannel(channel)
         } else {
             state = State.Preparing()
             webView.loadUrl(DEFAULT_URL)
         }
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        webMessageController.clearWebMessageChannel()
     }
 
     fun subscribeOnChartStateChange(subscriber: (State) -> Unit) {

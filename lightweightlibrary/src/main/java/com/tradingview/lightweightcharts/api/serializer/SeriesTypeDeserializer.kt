@@ -9,7 +9,7 @@ class SeriesTypeDeserializer: Deserializer<SeriesType>() {
 
     override fun deserialize(json: JsonElement): SeriesType? {
         if (json.isString()) {
-            return SeriesType.valueOf(json.asString.toUpperCase(Locale.ENGLISH))
+            return SeriesType.valueOf(json.asString.uppercase(Locale.ENGLISH))
         }
         return null
     }
