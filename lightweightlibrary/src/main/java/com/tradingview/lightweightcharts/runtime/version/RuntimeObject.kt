@@ -1,5 +1,5 @@
 package com.tradingview.lightweightcharts.runtime.version
 
-interface RuntimeObject {
+internal interface RuntimeObject {
     fun getVersion(): Int
 }
