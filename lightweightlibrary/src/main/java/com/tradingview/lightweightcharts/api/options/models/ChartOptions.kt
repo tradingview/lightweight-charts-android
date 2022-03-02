@@ -63,6 +63,11 @@ data class ChartOptions(
      * Structure that describes kinetic scroll behavior
      */
     var kineticScroll: KineticScrollOptions? = null,
+
+    /**
+     * Structure that describes tracking mode's behavior
+     */
+    var trackingMode: TrackingModeOptions? = null,
 )
 
 inline fun chartOptions(init: ChartOptions.() -> Unit): ChartOptions {
