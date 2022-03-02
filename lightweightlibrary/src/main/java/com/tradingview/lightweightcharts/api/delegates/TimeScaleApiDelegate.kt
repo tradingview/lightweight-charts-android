@@ -28,10 +28,15 @@ import com.tradingview.lightweightcharts.api.serializer.*
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
+import com.tradingview.lightweightcharts.runtime.version.ChartRuntimeObject
 
 class TimeScaleApiDelegate(
     private val controller: WebMessageController
-) : TimeScaleApi {
+) : TimeScaleApi, ChartRuntimeObject {
+
+    override fun getVersion(): Int {
+        return controller.hashCode()
+    }
 
     override fun scrollPosition(onScrollPositionReceived: (Float) -> Unit) {
         controller.callFunction(

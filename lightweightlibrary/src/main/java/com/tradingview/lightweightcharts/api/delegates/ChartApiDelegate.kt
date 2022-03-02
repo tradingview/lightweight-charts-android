@@ -29,10 +29,15 @@ import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.serializer.*
 import com.tradingview.lightweightcharts.api.series.models.*
+import com.tradingview.lightweightcharts.runtime.version.ChartRuntimeObject
 
 class ChartApiDelegate(
     private val controller: WebMessageController
-) : ChartApi {
+) : ChartApi, ChartRuntimeObject {
+
+    override fun getVersion(): Int {
+        return controller.hashCode()
+    }
 
     override val timeScale: TimeScaleApi = TimeScaleApiDelegate(controller)
 
@@ -191,6 +196,12 @@ class ChartApiDelegate(
     }
 
     override fun removeSeries(seriesApi: SeriesApi, onSeriesDeleted: () -> Unit) {
+        if (seriesApi is ChartRuntimeObject) {
+            assert(seriesApi.getVersion() == getVersion()) {
+                "The object should be removed by the same ChartApi as it was created"
+            }
+        }
+
         controller.callFunction(
             REMOVE_SERIES,
             mapOf(SERIES_UUID to seriesApi.uuid),

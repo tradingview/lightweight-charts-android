@@ -176,11 +176,6 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         sendMessages()
     }
 
-    fun clearWebMessageChannel() {
-        webMessageChannel?.setOnBridgeMessageListener(null)
-        webMessageChannel = null
-    }
-
     data class BufferElement(
         val callback: ((Any?) -> Unit)? = null,
         val deserializer: Deserializer<out Any?>,

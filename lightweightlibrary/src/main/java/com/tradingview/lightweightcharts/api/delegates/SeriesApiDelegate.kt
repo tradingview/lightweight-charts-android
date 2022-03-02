@@ -26,12 +26,17 @@ import com.tradingview.lightweightcharts.api.series.common.*
 import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
+import com.tradingview.lightweightcharts.runtime.version.ChartRuntimeObject
 
 class SeriesApiDelegate<T: SeriesOptionsCommon>(
     override val uuid: String,
     private val controller: WebMessageController,
     private val optionsDeserializer: Deserializer<out T>
-): SeriesApi {
+): SeriesApi, ChartRuntimeObject {
+
+    override fun getVersion(): Int {
+        return controller.hashCode()
+    }
 
     override fun setData(data: List<SeriesData>) {
         controller.callFunction(

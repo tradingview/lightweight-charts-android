@@ -3,7 +3,7 @@ package com.tradingview.lightweightcharts.api.series.models
 import com.google.gson.*
 import java.lang.reflect.Type
 
-data class BarPrices (
+data class BarPrices(
     val id: String,
     val prices: BarPrice
 ) {
