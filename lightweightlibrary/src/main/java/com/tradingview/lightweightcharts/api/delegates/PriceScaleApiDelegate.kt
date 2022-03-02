@@ -10,12 +10,12 @@ import com.tradingview.lightweightcharts.api.options.models.PriceScaleOptions
 import com.tradingview.lightweightcharts.api.serializer.PriceScaleOptionsDeserializer
 import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
-import com.tradingview.lightweightcharts.runtime.version.RuntimeObject
+import com.tradingview.lightweightcharts.runtime.version.ChartRuntimeObject
 
 class PriceScaleApiDelegate(
     override val uuid: String,
     private val controller: WebMessageController
-): PriceScaleApi, RuntimeObject {
+): PriceScaleApi, ChartRuntimeObject {
 
     override fun getVersion(): Int {
         return controller.hashCode()
