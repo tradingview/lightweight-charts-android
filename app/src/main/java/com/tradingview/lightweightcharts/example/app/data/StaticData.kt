@@ -1060,7 +1060,8 @@ fun listBarChartSeriesBarData(): MutableList<SeriesData> {
             open = 194.38f,
             high = 196.47f,
             low = 193.75f,
-            close = 194.08f
+            close = 194.08f,
+            color = Color.GREEN.toIntColor()
         )
     )
 }
