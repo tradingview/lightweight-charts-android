@@ -23,10 +23,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 
 class RealTimeEmulationFragment: Fragment() {
+    private val chartsView get() = requireView().findViewById<ChartsView>(R.id.charts_view)
+    private val chartApi get() = chartsView.api
 
-    private lateinit var viewModel: RealTimeEmulationViewModel
-
-    private var series: MutableList<SeriesApi> = mutableListOf()
     private var realtimeDataJob: Job? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,70 +34,29 @@ class RealTimeEmulationFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        provideViewModel()
-        observeViewModelData()
-        subscribeOnChartReady(charts_view)
-        applyChartOptions()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        realtimeDataJob?.cancel()
-    }
-
-    private fun provideViewModel() {
-        viewModel = ViewModelProvider(this).get(RealTimeEmulationViewModel::class.java)
-    }
-
-    private fun observeViewModelData() {
-        viewModel.seriesData.observe(viewLifecycleOwner, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
-                this.series.clear()
-                this.series.add(series)
-
-                realtimeDataJob = lifecycleScope.launchWhenResumed {
-                    viewModel.seriesFlow.collect {
-                        this@RealTimeEmulationFragment.series.lastOrNull()?.update(it)
+        val viewModelProvider = ViewModelProvider(this)
+        val viewModel = viewModelProvider[RealTimeEmulationViewModel::class.java]
+        viewModel.seriesData.observe(viewLifecycleOwner) { data ->
+            chartApi.addCandlestickSeries(
+                options = CandlestickSeriesOptions(),
+                onSeriesCreated = { series ->
+                    series.setData(data.list)
+                    realtimeDataJob = lifecycleScope.launchWhenResumed {
+                        viewModel.seriesFlow.collect(series::update)
                     }
                 }
-            }
-        })
-    }
-
-    private fun subscribeOnChartReady(view: ChartsView) {
-        view.subscribeOnChartStateChange { state ->
-            when (state) {
-                is ChartsView.State.Preparing -> Unit
-                is ChartsView.State.Ready -> {
-                    Toast.makeText(context, "Chart ${view.id} is ready", Toast.LENGTH_SHORT).show()
-                }
-                is ChartsView.State.Error -> {
-                    Toast.makeText(context, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
-                }
-            }
+            )
         }
-    }
 
-    private fun applyChartOptions() {
-        charts_view.api.applyOptions {
+        chartApi.applyOptions {
             crosshair = crosshairOptions {
                 mode = CrosshairMode.NORMAL
             }
         }
     }
 
-    private fun createSeriesWithData(
-            data: Data,
-            priceScale: PriceScaleId,
-            chartApi: ChartApi,
-            onSeriesCreated: (SeriesApi) -> Unit
-    ) {
-        chartApi.addCandlestickSeries(
-                options = CandlestickSeriesOptions(),
-                onSeriesCreated = { api ->
-                    api.setData(data.list)
-                    onSeriesCreated(api)
-                }
-        )
+    override fun onDestroy() {
+        realtimeDataJob?.cancel()
+        super.onDestroy()
     }
 }
