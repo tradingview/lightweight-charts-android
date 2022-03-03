@@ -1,8 +1,6 @@
 package com.tradingview.lightweightcharts.api.chart.models.color.surface
 
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
+import com.google.gson.*
 import com.google.gson.annotations.SerializedName
 import com.tradingview.lightweightcharts.api.serializer.gson.GsonProvider
 import java.lang.IllegalStateException
@@ -20,7 +18,7 @@ interface SurfaceColor {
         VERTICAL_GRADIENT
     }
 
-    class SurfaceColorAdapter : JsonDeserializer<SurfaceColor?> {
+    class SurfaceColorAdapter : JsonDeserializer<SurfaceColor?>, JsonSerializer<SurfaceColor> {
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
@@ -37,6 +35,15 @@ interface SurfaceColor {
                 "gradient" -> gson.fromJson(json, VerticalGradientColor::class.java)
                 else -> throw IllegalStateException("Unknown type of color")
             }
+        }
+
+        override fun serialize(
+            src: SurfaceColor?,
+            typeOfSrc: Type?,
+            context: JsonSerializationContext?
+        ): JsonElement {
+            val gson = GsonProvider.newInstance()
+            return gson.toJsonTree(src)
         }
     }
 }
