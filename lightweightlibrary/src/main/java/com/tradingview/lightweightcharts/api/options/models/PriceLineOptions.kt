@@ -11,6 +11,7 @@ data class PriceLineOptions(
 
     var lineWidth: LineWidth? = null,
     var lineStyle: LineStyle? = null,
+    var lineVisible: Boolean? = null,
     var axisLabelVisible: Boolean? = null,
     var title: String? = null
 )
