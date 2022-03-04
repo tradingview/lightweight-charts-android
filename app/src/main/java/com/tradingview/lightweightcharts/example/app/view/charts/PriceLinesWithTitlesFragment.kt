@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.*
@@ -45,7 +46,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
     }
 
     private fun observeViewModelData() {
-        viewModel.seriesData.observe(this, { data ->
+        viewModel.seriesData.observe(viewLifecycleOwner) { data ->
             createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
                 this.series.clear()
                 this.series.add(series)
@@ -53,41 +54,41 @@ class PriceLinesWithTitlesFragment: Fragment() {
                 viewModel.fetchPrices()
 
                 series.createPriceLine(
-                        PriceLineOptions(
-                                price = viewModel.minimumPrice,
-                                color = Color.parseColor("#be1238").toIntColor(),
-                                lineWidth = LineWidth.TWO,
-                                lineStyle = LineStyle.SOLID,
-                                axisLabelVisible = true,
-                                title = "minimum price",
-                        )
+                    PriceLineOptions(
+                        price = viewModel.minimumPrice,
+                        color = Color.parseColor("#be1238").toIntColor(),
+                        lineWidth = LineWidth.TWO,
+                        lineStyle = LineStyle.SOLID,
+                        axisLabelVisible = true,
+                        title = "minimum price",
+                    )
                 )
 
                 series.createPriceLine(
-                        PriceLineOptions(
-                                price = viewModel.avgPrice,
-                                color = Color.parseColor("#be1238").toIntColor(),
-                                lineWidth = LineWidth.TWO,
-                                lineStyle = LineStyle.SOLID,
-                                axisLabelVisible = true,
-                                title = "average price",
-                        )
+                    PriceLineOptions(
+                        price = viewModel.avgPrice,
+                        color = Color.parseColor("#be1238").toIntColor(),
+                        lineWidth = LineWidth.TWO,
+                        lineStyle = LineStyle.SOLID,
+                        axisLabelVisible = true,
+                        title = "average price",
+                    )
                 )
 
-                series.createPriceLine(
-                        PriceLineOptions(
-                                price = viewModel.maximumPrice,
-                                color = Color.parseColor("#be1238").toIntColor(),
-                                lineWidth = LineWidth.TWO,
-                                lineStyle = LineStyle.SOLID,
-                                axisLabelVisible = true,
-                                title = "maximum price",
-                        )
+                val priceLine = series.createPriceLine(
+                    PriceLineOptions(
+                        price = viewModel.maximumPrice,
+                        color = Color.parseColor("#be1238").toIntColor(),
+                        lineWidth = LineWidth.TWO,
+                        lineStyle = LineStyle.SOLID,
+                        axisLabelVisible = true,
+                        title = "maximum price",
+                    )
                 )
 
                 charts_view.api.timeScale.fitContent()
             }
-        })
+        }
     }
 
     private fun subscribeOnChartReady(view: ChartsView) {
@@ -108,7 +109,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
         charts_view.api.applyOptions {
             layout = layoutOptions {
                 textColor = Color.parseColor("#d1d4dc").toIntColor()
-                backgroundColor = Color.BLACK.toIntColor()
+                background = SolidColor(Color.BLACK)
             }
             rightPriceScale = priceScaleOptions {
                 scaleMargins = priceScaleMargins {
@@ -118,8 +119,8 @@ class PriceLinesWithTitlesFragment: Fragment() {
             }
             crosshair = crosshairOptions {
                 vertLine = crosshairLineOptions {
-                    width = LineWidth.FOUR
-                    color = Color.argb(0.1f, 224f, 227f, 235f).toIntColor()
+                    width = LineWidth.THREE
+                    color = Color.YELLOW.toIntColor()
                     style = LineStyle.SOLID
                 }
                 horzLine = crosshairLineOptions {

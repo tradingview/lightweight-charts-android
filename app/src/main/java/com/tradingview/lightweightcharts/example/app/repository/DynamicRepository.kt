@@ -1,7 +1,8 @@
 package com.tradingview.lightweightcharts.example.app.repository
 
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
-import com.tradingview.lightweightcharts.api.series.models.BarData
+import com.tradingview.lightweightcharts.api.series.models.CandlestickData
+import com.tradingview.lightweightcharts.api.series.models.OhlcData
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.example.app.model.Data
 import kotlinx.coroutines.delay
@@ -14,10 +15,11 @@ class DynamicRepository {
 
     @Suppress("LongMethod")
     fun getListSeriesData(data: Data, onEmulationComplete: () -> Unit): Flow<SeriesData> {
-        var lastClose = (data.list.last() as BarData).close
-        var lastHigh = (data.list.last() as BarData).high
-        var lastLow = (data.list.last() as BarData).low
-        var lastOpen = (data.list.last() as BarData).open
+        val lastData = data.list.last() as OhlcData
+        var lastClose = lastData.close
+        var lastHigh = lastData.high
+        var lastLow = lastData.low
+        var lastOpen = lastData.open
         var lastIndex = data.list.size - 2
 
         var targetIndex = lastIndex + 105 + (Math.random() + 30).roundToInt()
@@ -29,7 +31,7 @@ class DynamicRepository {
         return flow {
             val date = Date()
             while (true) {
-                var currentBarData: BarData
+                var currentCandlestickData: OhlcData
 
                 delay(200)
                 val deltaY = targetPrice - lastClose
@@ -40,7 +42,7 @@ class DynamicRepository {
                 val noisedPrice = basePrice * noise
 
                 if (ticksInCurrentBar == 0) {
-                    currentBarData = BarData(
+                    currentCandlestickData = CandlestickData(
                             time = Time.Utc.fromDate(date),
                             open = noisedPrice,
                             high = noisedPrice,
@@ -48,7 +50,7 @@ class DynamicRepository {
                             close = noisedPrice,
                     )
                 } else {
-                    currentBarData = BarData(
+                    currentCandlestickData = CandlestickData(
                             time = Time.Utc.fromDate(date),
                             open = lastOpen,
                             high = lastHigh.coerceAtLeast(noisedPrice),
@@ -57,12 +59,12 @@ class DynamicRepository {
                     )
                 }
 
-                emit(currentBarData)
+                emit(currentCandlestickData)
 
-                lastOpen = currentBarData.open
-                lastHigh = currentBarData.high
-                lastLow = currentBarData.low
-                lastClose = currentBarData.close
+                lastOpen = currentCandlestickData.open
+                lastHigh = currentCandlestickData.high
+                lastLow = currentCandlestickData.low
+                lastClose = currentCandlestickData.close
 
                 if (++ticksInCurrentBar == 5) {
                     date.time = date.time + 86000L * 1000L
@@ -86,6 +88,6 @@ class DynamicRepository {
     }
 
     private fun getRandomPrice(): Int {
-        return 10 + (Math.random() * 10000).roundToInt() / 100
+        return 10 + (Math.random() * 1000).roundToInt() / 100
     }
 }

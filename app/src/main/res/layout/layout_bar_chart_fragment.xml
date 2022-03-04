@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.tradingview.lightweightcharts.view.ChartsView
+    <com.tradingview.lightweightcharts.example.app.view.DebugChartsView
         android:id="@+id/charts_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -3,9 +3,9 @@ package com.tradingview.lightweightcharts.api.series.models
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 
 /**
- * Structure describing a single item of data for bar series
+ * Structure describing a single item of data for candlestick series
  */
-data class BarData(
+data class CandlestickData(
     override val time: Time,
     override val open: Float,
     override val high: Float,
@@ -15,4 +15,12 @@ data class BarData(
      * Optional color value for certain data item. If missed, color from options is used
      */
     val color: IntColor? = null,
-): OhlcData
+    /**
+     * Optional border color value for certain data item. If missed, color from options is used
+     */
+    val borderColor: IntColor? = null,
+    /**
+     * Optional wick color value for certain data item. If missed, color from options is used
+     */
+    val wickColor: IntColor? = null,
+) : OhlcData

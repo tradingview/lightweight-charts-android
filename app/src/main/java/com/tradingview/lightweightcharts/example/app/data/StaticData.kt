@@ -10,7 +10,7 @@ import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 
 @Suppress("LongMethod")
-fun listBarChartSeriesData(): MutableList<SeriesData> {
+fun listBarChartSeriesBarData(): MutableList<SeriesData> {
     return mutableListOf(
         BarData(
             time = Time.StringTime("2018-10-19"),
@@ -1060,13 +1060,14 @@ fun listBarChartSeriesData(): MutableList<SeriesData> {
             open = 194.38f,
             high = 196.47f,
             low = 193.75f,
-            close = 194.08f
+            close = 194.08f,
+            color = Color.GREEN.toIntColor()
         )
     )
 }
 
 @Suppress("LongMethod")
-fun listCustomPriceFormatterSeriesData(): MutableList<SeriesData> {
+fun listCustomPriceFormatterSeriesLineData(): MutableList<SeriesData> {
     return mutableListOf(
         LineData(Time.StringTime("2018-10-19"), 72.35f),
         LineData(Time.StringTime("2018-10-22"), 72.57f),
@@ -1222,7 +1223,7 @@ fun listCustomPriceFormatterSeriesData(): MutableList<SeriesData> {
 }
 
 @Suppress("LongMethod")
-fun listCustomThemesSeriesData(): MutableList<SeriesData> {
+fun listCustomThemesSeriesLineData(): MutableList<SeriesData> {
     return mutableListOf(
         LineData(Time.StringTime("2018-10-19"), 35.98f),
         LineData(Time.StringTime("2018-10-22"), 35.75f),
@@ -1378,7 +1379,7 @@ fun listCustomThemesSeriesData(): MutableList<SeriesData> {
 }
 
 @Suppress("LongMethod")
-fun listFloatingTooltipSeriesData(): MutableList<SeriesData> {
+fun listFloatingTooltipSeriesLineData(): MutableList<SeriesData> {
     return mutableListOf(
         LineData(Time.StringTime("2018-03-28"), 154f),
         LineData(Time.StringTime("2018-03-29"), 154.2f),
@@ -1684,7 +1685,7 @@ fun listFloatingTooltipSeriesData(): MutableList<SeriesData> {
 }
 
 @Suppress("LongMethod")
-fun listPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
+fun listPriceLinesWithTitlesSeriesLineData(): MutableList<SeriesData> {
     return mutableListOf(
         LineData(Time.BusinessDay(year = 2018, month = 1, day = 1), value = 27.58405298746434f),
         LineData(Time.BusinessDay(year = 2018, month = 1, day = 2), value = 31.74088841431117f),
@@ -2054,1052 +2055,1052 @@ fun listPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
 }
 
 @Suppress("LongMethod")
-fun listRealTimeEmulationSeriesData(): MutableList<SeriesData> {
+fun listRealTimeEmulationSeriesCandlestickData(): MutableList<SeriesData> {
     return mutableListOf(
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-19"),
             open = 54.62f,
             high = 55.50f,
             low = 54.52f,
             close = 54.90f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-22"),
             open = 55.08f,
             high = 55.27f,
             low = 54.61f,
             close = 54.98f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-23"),
             open = 56.09f,
             high = 57.47f,
             low = 56.09f,
             close = 57.21f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-24"),
             open = 57.00f,
             high = 58.44f,
             low = 56.41f,
             close = 57.42f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-25"),
             open = 57.46f,
             high = 57.63f,
             low = 56.17f,
             close = 56.43f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-26"),
             open = 56.26f,
             high = 56.62f,
             low = 55.19f,
             close = 55.51f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-29"),
             open = 55.81f,
             high = 57.15f,
             low = 55.72f,
             close = 56.48f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-30"),
             open = 56.92f,
             high = 58.80f,
             low = 56.92f,
             close = 58.18f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-10-31"),
             open = 58.32f,
             high = 58.32f,
             low = 56.76f,
             close = 57.09f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-01"),
             open = 56.98f,
             high = 57.28f,
             low = 55.55f,
             close = 56.05f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-02"),
             open = 56.34f,
             high = 57.08f,
             low = 55.92f,
             close = 56.63f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-05"),
             open = 56.51f,
             high = 57.45f,
             low = 56.51f,
             close = 57.21f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-06"),
             open = 57.02f,
             high = 57.35f,
             low = 56.65f,
             close = 57.21f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-07"),
             open = 57.55f,
             high = 57.78f,
             low = 57.03f,
             close = 57.65f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-08"),
             open = 57.70f,
             high = 58.44f,
             low = 57.66f,
             close = 58.27f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-09"),
             open = 58.32f,
             high = 59.20f,
             low = 57.94f,
             close = 58.46f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-12"),
             open = 58.84f,
             high = 59.40f,
             low = 58.54f,
             close = 58.72f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-13"),
             open = 59.09f,
             high = 59.14f,
             low = 58.32f,
             close = 58.66f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-14"),
             open = 59.13f,
             high = 59.32f,
             low = 58.41f,
             close = 58.94f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-15"),
             open = 58.85f,
             high = 59.09f,
             low = 58.45f,
             close = 59.08f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-16"),
             open = 59.06f,
             high = 60.39f,
             low = 58.91f,
             close = 60.21f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-19"),
             open = 60.25f,
             high = 61.32f,
             low = 60.18f,
             close = 60.62f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-20"),
             open = 61.03f,
             high = 61.58f,
             low = 59.17f,
             close = 59.46f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-21"),
             open = 59.26f,
             high = 59.90f,
             low = 58.88f,
             close = 59.16f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-23"),
             open = 58.86f,
             high = 59.00f,
             low = 58.29f,
             close = 58.64f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-26"),
             open = 58.64f,
             high = 59.51f,
             low = 58.31f,
             close = 59.17f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-27"),
             open = 59.21f,
             high = 60.70f,
             low = 59.18f,
             close = 60.65f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-28"),
             open = 60.70f,
             high = 60.73f,
             low = 59.64f,
             close = 60.06f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-29"),
             open = 59.42f,
             high = 59.79f,
             low = 59.26f,
             close = 59.45f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-11-30"),
             open = 59.57f,
             high = 60.37f,
             low = 59.48f,
             close = 60.30f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-03"),
             open = 59.50f,
             high = 59.75f,
             low = 57.69f,
             close = 58.16f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-04"),
             open = 58.10f,
             high = 59.40f,
             low = 57.96f,
             close = 58.09f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-06"),
             open = 58.18f,
             high = 58.64f,
             low = 57.16f,
             close = 58.08f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-07"),
             open = 57.91f,
             high = 58.43f,
             low = 57.34f,
             close = 57.68f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-10"),
             open = 57.80f,
             high = 58.37f,
             low = 56.87f,
             close = 58.27f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-11"),
             open = 58.77f,
             high = 59.40f,
             low = 58.63f,
             close = 58.85f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-12"),
             open = 57.79f,
             high = 58.19f,
             low = 57.23f,
             close = 57.25f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-13"),
             open = 57.00f,
             high = 57.50f,
             low = 56.81f,
             close = 57.09f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-14"),
             open = 56.95f,
             high = 57.50f,
             low = 56.75f,
             close = 57.08f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-17"),
             open = 57.06f,
             high = 57.31f,
             low = 55.53f,
             close = 55.95f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-18"),
             open = 55.94f,
             high = 56.69f,
             low = 55.31f,
             close = 55.65f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-19"),
             open = 55.72f,
             high = 56.92f,
             low = 55.50f,
             close = 55.86f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-20"),
             open = 55.92f,
             high = 56.01f,
             low = 54.26f,
             close = 55.07f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-21"),
             open = 54.84f,
             high = 56.53f,
             low = 54.24f,
             close = 54.92f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-24"),
             open = 54.68f,
             high = 55.04f,
             low = 52.94f,
             close = 53.05f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-26"),
             open = 53.23f,
             high = 54.47f,
             low = 52.40f,
             close = 54.44f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-27"),
             open = 54.31f,
             high = 55.17f,
             low = 53.35f,
             close = 55.15f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-28"),
             open = 55.37f,
             high = 55.86f,
             low = 54.90f,
             close = 55.27f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2018-12-31"),
             open = 55.53f,
             high = 56.23f,
             low = 55.07f,
             close = 56.22f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-02"),
             open = 56.16f,
             high = 56.16f,
             low = 55.28f,
             close = 56.02f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-03"),
             open = 56.30f,
             high = 56.99f,
             low = 56.06f,
             close = 56.22f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-04"),
             open = 56.49f,
             high = 56.89f,
             low = 55.95f,
             close = 56.36f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-07"),
             open = 56.76f,
             high = 57.26f,
             low = 56.55f,
             close = 56.72f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-08"),
             open = 57.27f,
             high = 58.69f,
             low = 57.05f,
             close = 58.38f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-09"),
             open = 57.68f,
             high = 57.72f,
             low = 56.85f,
             close = 57.05f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-10"),
             open = 57.29f,
             high = 57.70f,
             low = 56.87f,
             close = 57.60f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-11"),
             open = 57.84f,
             high = 58.26f,
             low = 57.42f,
             close = 58.02f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-14"),
             open = 57.83f,
             high = 58.15f,
             low = 57.67f,
             close = 58.03f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-15"),
             open = 57.74f,
             high = 58.29f,
             low = 57.58f,
             close = 58.10f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-16"),
             open = 57.93f,
             high = 57.93f,
             low = 57.00f,
             close = 57.08f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-17"),
             open = 57.16f,
             high = 57.40f,
             low = 56.21f,
             close = 56.83f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-18"),
             open = 56.92f,
             high = 57.47f,
             low = 56.84f,
             close = 57.09f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-22"),
             open = 57.23f,
             high = 57.39f,
             low = 56.40f,
             close = 56.99f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-23"),
             open = 56.98f,
             high = 57.87f,
             low = 56.93f,
             close = 57.76f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-24"),
             open = 57.61f,
             high = 57.65f,
             low = 56.50f,
             close = 57.07f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-25"),
             open = 57.18f,
             high = 57.47f,
             low = 56.23f,
             close = 56.40f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-28"),
             open = 56.12f,
             high = 56.22f,
             low = 54.80f,
             close = 55.07f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-29"),
             open = 53.62f,
             high = 54.30f,
             low = 52.97f,
             close = 53.28f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-30"),
             open = 53.10f,
             high = 54.02f,
             low = 52.28f,
             close = 54.00f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-01-31"),
             open = 54.05f,
             high = 55.19f,
             low = 53.53f,
             close = 55.06f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-01"),
             open = 55.21f,
             high = 55.30f,
             low = 54.47f,
             close = 54.55f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-04"),
             open = 54.60f,
             high = 54.69f,
             low = 53.67f,
             close = 54.04f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-05"),
             open = 54.10f,
             high = 54.34f,
             low = 53.61f,
             close = 54.14f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-06"),
             open = 54.11f,
             high = 54.37f,
             low = 53.68f,
             close = 53.79f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-07"),
             open = 53.61f,
             high = 53.73f,
             low = 53.02f,
             close = 53.57f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-08"),
             open = 53.36f,
             high = 53.96f,
             low = 53.30f,
             close = 53.95f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-11"),
             open = 54.13f,
             high = 54.37f,
             low = 53.86f,
             close = 54.05f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-12"),
             open = 54.45f,
             high = 54.77f,
             low = 54.19f,
             close = 54.42f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-13"),
             open = 54.35f,
             high = 54.77f,
             low = 54.28f,
             close = 54.48f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-14"),
             open = 54.38f,
             high = 54.52f,
             low = 53.95f,
             close = 54.03f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-15"),
             open = 54.48f,
             high = 55.19f,
             low = 54.32f,
             close = 55.16f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-19"),
             open = 55.06f,
             high = 55.66f,
             low = 54.82f,
             close = 55.44f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-20"),
             open = 55.37f,
             high = 55.91f,
             low = 55.24f,
             close = 55.76f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-21"),
             open = 55.55f,
             high = 56.72f,
             low = 55.46f,
             close = 56.15f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-22"),
             open = 56.43f,
             high = 57.13f,
             low = 56.40f,
             close = 56.92f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-25"),
             open = 57.00f,
             high = 57.27f,
             low = 56.55f,
             close = 56.78f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-26"),
             open = 56.82f,
             high = 57.09f,
             low = 56.46f,
             close = 56.64f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-27"),
             open = 56.55f,
             high = 56.73f,
             low = 56.35f,
             close = 56.72f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-02-28"),
             open = 56.74f,
             high = 57.61f,
             low = 56.72f,
             close = 56.92f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-01"),
             open = 57.02f,
             high = 57.15f,
             low = 56.35f,
             close = 56.96f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-04"),
             open = 57.15f,
             high = 57.34f,
             low = 55.66f,
             close = 56.24f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-05"),
             open = 56.09f,
             high = 56.17f,
             low = 55.51f,
             close = 56.08f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-06"),
             open = 56.19f,
             high = 56.42f,
             low = 55.45f,
             close = 55.68f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-07"),
             open = 55.76f,
             high = 56.40f,
             low = 55.72f,
             close = 56.30f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-08"),
             open = 56.36f,
             high = 56.68f,
             low = 56.00f,
             close = 56.53f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-11"),
             open = 56.76f,
             high = 57.62f,
             low = 56.75f,
             close = 57.58f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-12"),
             open = 57.63f,
             high = 58.11f,
             low = 57.36f,
             close = 57.43f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-13"),
             open = 57.37f,
             high = 57.74f,
             low = 57.34f,
             close = 57.66f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-14"),
             open = 57.71f,
             high = 58.09f,
             low = 57.51f,
             close = 57.95f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-15"),
             open = 58.04f,
             high = 58.51f,
             low = 57.93f,
             close = 58.39f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-18"),
             open = 58.27f,
             high = 58.32f,
             low = 57.56f,
             close = 58.07f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-19"),
             open = 58.10f,
             high = 58.20f,
             low = 57.31f,
             close = 57.50f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-20"),
             open = 57.51f,
             high = 58.05f,
             low = 57.11f,
             close = 57.67f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-21"),
             open = 57.58f,
             high = 58.49f,
             low = 57.57f,
             close = 58.29f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-22"),
             open = 58.16f,
             high = 60.00f,
             low = 58.13f,
             close = 59.76f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-25"),
             open = 59.63f,
             high = 60.19f,
             low = 59.53f,
             close = 60.08f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-26"),
             open = 60.30f,
             high = 60.69f,
             low = 60.17f,
             close = 60.63f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-27"),
             open = 60.56f,
             high = 61.19f,
             low = 60.48f,
             close = 60.88f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-28"),
             open = 60.88f,
             high = 60.89f,
             low = 58.44f,
             close = 59.08f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-03-29"),
             open = 59.20f,
             high = 59.27f,
             low = 58.32f,
             close = 59.13f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-01"),
             open = 59.39f,
             high = 59.41f,
             low = 58.79f,
             close = 59.09f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-02"),
             open = 59.22f,
             high = 59.23f,
             low = 58.34f,
             close = 58.53f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-03"),
             open = 58.78f,
             high = 59.07f,
             low = 58.41f,
             close = 58.87f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-04"),
             open = 58.84f,
             high = 59.10f,
             low = 58.77f,
             close = 58.99f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-05"),
             open = 59.02f,
             high = 59.09f,
             low = 58.82f,
             close = 59.09f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-08"),
             open = 59.02f,
             high = 59.13f,
             low = 58.72f,
             close = 59.13f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-09"),
             open = 58.37f,
             high = 58.56f,
             low = 58.04f,
             close = 58.40f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-10"),
             open = 58.40f,
             high = 58.70f,
             low = 58.36f,
             close = 58.61f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-11"),
             open = 58.65f,
             high = 58.73f,
             low = 58.20f,
             close = 58.56f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-12"),
             open = 58.75f,
             high = 58.79f,
             low = 58.52f,
             close = 58.74f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-15"),
             open = 58.91f,
             high = 58.95f,
             low = 58.59f,
             close = 58.71f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-16"),
             open = 58.79f,
             high = 58.98f,
             low = 58.66f,
             close = 58.79f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-17"),
             open = 58.40f,
             high = 58.46f,
             low = 57.64f,
             close = 57.78f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-18"),
             open = 57.51f,
             high = 58.20f,
             low = 57.28f,
             close = 58.04f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-22"),
             open = 58.14f,
             high = 58.49f,
             low = 57.89f,
             close = 58.37f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-23"),
             open = 57.62f,
             high = 57.72f,
             low = 56.30f,
             close = 57.15f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-24"),
             open = 57.34f,
             high = 57.57f,
             low = 56.73f,
             close = 57.08f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-25"),
             open = 56.82f,
             high = 56.90f,
             low = 55.75f,
             close = 55.85f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-26"),
             open = 56.06f,
             high = 56.81f,
             low = 55.83f,
             close = 56.58f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-29"),
             open = 56.75f,
             high = 57.17f,
             low = 56.71f,
             close = 56.84f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-04-30"),
             open = 56.99f,
             high = 57.45f,
             low = 56.76f,
             close = 57.19f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-01"),
             open = 57.23f,
             high = 57.30f,
             low = 56.52f,
             close = 56.52f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-02"),
             open = 56.81f,
             high = 58.23f,
             low = 56.68f,
             close = 56.99f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-03"),
             open = 57.15f,
             high = 57.36f,
             low = 56.87f,
             close = 57.24f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-06"),
             open = 56.83f,
             high = 57.09f,
             low = 56.74f,
             close = 56.91f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-07"),
             open = 56.69f,
             high = 56.81f,
             low = 56.33f,
             close = 56.63f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-08"),
             open = 56.66f,
             high = 56.70f,
             low = 56.25f,
             close = 56.38f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-09"),
             open = 56.12f,
             high = 56.56f,
             low = 55.93f,
             close = 56.48f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-10"),
             open = 56.49f,
             high = 57.04f,
             low = 56.26f,
             close = 56.91f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-13"),
             open = 56.72f,
             high = 57.34f,
             low = 56.66f,
             close = 56.75f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-14"),
             open = 56.76f,
             high = 57.19f,
             low = 56.50f,
             close = 56.55f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-15"),
             open = 56.51f,
             high = 56.84f,
             low = 56.17f,
             close = 56.81f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-16"),
             open = 57.00f,
             high = 57.80f,
             low = 56.82f,
             close = 57.38f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-17"),
             open = 57.06f,
             high = 58.48f,
             low = 57.01f,
             close = 58.09f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-20"),
             open = 59.15f,
             high = 60.54f,
             low = 58.00f,
             close = 59.01f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-21"),
             open = 59.10f,
             high = 59.63f,
             low = 58.76f,
             close = 59.50f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-22"),
             open = 59.09f,
             high = 59.37f,
             low = 58.96f,
             close = 59.25f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-23"),
             open = 59.00f,
             high = 59.27f,
             low = 58.54f,
             close = 58.87f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-24"),
             open = 59.07f,
             high = 59.36f,
             low = 58.67f,
             close = 59.32f
         ),
-        BarData(
+        CandlestickData(
             Time.StringTime("2019-05-28"),
             open = 59.21f,
             high = 59.66f,

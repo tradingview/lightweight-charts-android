@@ -9,37 +9,37 @@ import kotlinx.coroutines.withContext
 class StaticRepository {
     suspend fun getBarChartSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listBarChartSeriesData()
+            return@withContext listBarChartSeriesBarData()
         }
     }
 
     suspend fun getCustomPriceFormatterSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listCustomPriceFormatterSeriesData()
+            return@withContext listCustomPriceFormatterSeriesLineData()
         }
     }
 
     suspend fun getCustomThemesSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listCustomThemesSeriesData()
+            return@withContext listCustomThemesSeriesLineData()
         }
     }
 
     suspend fun getFloatingTooltipSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listFloatingTooltipSeriesData()
+            return@withContext listFloatingTooltipSeriesLineData()
         }
     }
 
     suspend fun getPriceLinesWithTitlesSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listPriceLinesWithTitlesSeriesData()
+            return@withContext listPriceLinesWithTitlesSeriesLineData()
         }
     }
 
     suspend fun getRealTimeEmulationSeriesData(): MutableList<SeriesData> {
         return withContext(Dispatchers.IO) {
-            return@withContext listRealTimeEmulationSeriesData()
+            return@withContext listRealTimeEmulationSeriesCandlestickData()
         }
     }
 

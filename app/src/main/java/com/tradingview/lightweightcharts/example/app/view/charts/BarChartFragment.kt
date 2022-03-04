@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
+import com.tradingview.lightweightcharts.api.options.enums.TrackingModeExitMode
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
@@ -118,6 +119,7 @@ class BarChartFragment: Fragment() {
                 fixRightEdge = true
                 minBarSpacing = 0.7f
             }
+            trackingMode = TrackingModeOptions(exitMode = TrackingModeExitMode.ON_TOUCH_END)
         }
     }
 }

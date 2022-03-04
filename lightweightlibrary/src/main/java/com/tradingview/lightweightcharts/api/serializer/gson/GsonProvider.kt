@@ -6,7 +6,9 @@ import com.tradingview.lightweightcharts.api.series.enums.*
 import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SurfaceColor
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColorAdapter
+import com.tradingview.lightweightcharts.api.options.enums.TrackingModeExitMode
 
 object GsonProvider {
     fun newInstance(): Gson {
@@ -30,8 +32,11 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeAdapter(PriceScaleId::class.java, PriceScaleId.PriceScaleIdAdapter())
     registerTypeAdapter(Colorable::class.java, Colorable.ColorAdapter())
     registerTypeAdapter(IntColor::class.java, IntColorAdapter())
+    registerTypeAdapter(SurfaceColor::class.java, SurfaceColor.SurfaceColorAdapter())
     registerTypeAdapter(LastPriceAnimationMode::class.java,
         LastPriceAnimationMode.LastPriceAnimationModeAdapter())
+    registerTypeAdapter(TrackingModeExitMode::class.java,
+        TrackingModeExitMode.TrackingModeExitModeAdapter())
 
     return this
 }
