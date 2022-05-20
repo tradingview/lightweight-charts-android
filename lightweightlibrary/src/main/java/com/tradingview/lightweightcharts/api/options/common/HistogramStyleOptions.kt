@@ -5,4 +5,5 @@ import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 interface HistogramStyleOptions {
     val color: IntColor?
     val base: Float?
+    val cornerRadius: Float?
 }

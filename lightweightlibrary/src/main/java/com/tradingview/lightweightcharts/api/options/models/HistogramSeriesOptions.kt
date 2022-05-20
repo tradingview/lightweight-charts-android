@@ -30,6 +30,8 @@ data class HistogramSeriesOptions(
 
     override var color: IntColor? = null,
 
+    override val cornerRadius: Float? = null,
+
     override var base: Float? = null,
     override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,

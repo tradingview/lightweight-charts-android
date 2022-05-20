@@ -9,4 +9,8 @@ enum class SeriesMarkerPosition {
     BELOW_BAR,
     @SerializedName("inBar")
     IN_BAR,
+    @SerializedName("top")
+    TOP,
+    @SerializedName("bottom")
+    BOTTOM,
 }

@@ -46,6 +46,10 @@ data class CandlestickSeriesOptions(
 
     override var wickDownColor: IntColor? = null,
 
+    override var cornerRadius: Float? = null,
+
+    override var wickWidth: Float? = null,
+
     override var overlay: Boolean? = null,
     override var scaleMargins: PriceScaleMargins? = null,
     override var priceScaleId: PriceScaleId? = null,

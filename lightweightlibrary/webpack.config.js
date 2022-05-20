@@ -7,7 +7,7 @@ const config = {
     },
     resolve: {
         alias: {
-            lightweight$: path.resolve(__dirname, './node_modules/lightweight-charts/dist/lightweight-charts.esm.development.js'),
+            lightweight$: path.resolve(__dirname, './node_modules/newton-lightweight-charts/dist/lightweight-charts.esm.development.js'),
         },
     },
 };

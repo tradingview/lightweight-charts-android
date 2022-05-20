@@ -1,13 +1,13 @@
 {
   "private": true,
-  "name": "lightweight-android",
-  "version": "3.8.0",
+  "name": "newton-lightweight-charts-android",
+  "version": "3.8.4",
   "description": "Financial lightweight charts built with HTML5 canvas",
   "author": "TradingView, Inc.",
   "license": "Apache-2.0",
   "main": "src/index.js",
   "dependencies": {
-    "lightweight-charts": "3.8.0"
+    "newton-lightweight-charts": "3.8.4"
   },
   "devDependencies": {
     "webpack": "^5.48.0",

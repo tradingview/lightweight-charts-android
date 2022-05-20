@@ -39,4 +39,7 @@ interface CandlestickStyleOptions {
 
     /** Color of falling candlestick wicks. Ignored if wickVisible == false or wickColor is specified */
     val wickDownColor: IntColor?
+
+    val cornerRadius: Float?
+    val wickWidth: Float?
 }

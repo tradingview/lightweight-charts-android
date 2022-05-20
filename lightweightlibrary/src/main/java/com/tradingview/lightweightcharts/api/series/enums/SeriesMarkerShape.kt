@@ -7,6 +7,8 @@ enum class SeriesMarkerShape {
     CIRCLE,
     @SerializedName("square")
     SQUARE,
+    @SerializedName("roundedSquare")
+    ROUNDED_SQUARE,
     @SerializedName("arrowUp")
     ARROW_UP,
     @SerializedName("arrowDown")
