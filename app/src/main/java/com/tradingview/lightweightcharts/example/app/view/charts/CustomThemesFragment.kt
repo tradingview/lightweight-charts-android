@@ -11,33 +11,42 @@ import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
+import com.tradingview.lightweightcharts.api.options.models.ChartOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairLineOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
+import com.tradingview.lightweightcharts.api.options.models.gridLineOptions
+import com.tradingview.lightweightcharts.api.options.models.gridOptions
+import com.tradingview.lightweightcharts.api.options.models.layoutOptions
+import com.tradingview.lightweightcharts.api.options.models.watermarkOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.example.app.R
+import com.tradingview.lightweightcharts.example.app.databinding.LayoutThemesChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomThemesViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
-import kotlinx.android.synthetic.main.layout_themes_chart_fragment.*
 
-class CustomThemesFragment: Fragment() {
+class CustomThemesFragment : Fragment() {
 
     private lateinit var viewModel: CustomThemesViewModel
 
+    private lateinit var binding: LayoutThemesChartFragmentBinding
+
     private var series: MutableList<SeriesApi> = mutableListOf()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.layout_themes_chart_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return LayoutThemesChartFragmentBinding.inflate(inflater, container, false)
+            .also { binding = it }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         provideViewModel()
         observeViewModelData()
-        subscribeOnChartReady(charts_view)
+        subscribeOnChartReady(binding.chartsView)
         applyChartOptions()
-        dark_theme_btn.setOnClickListener { applyThemeOptions(darkThemeOptions) }
-        light_theme_btn.setOnClickListener { applyThemeOptions(lightThemeOptions) }
+        binding.darkThemeBtn.setOnClickListener { applyThemeOptions(darkThemeOptions) }
+        binding.lightThemeBtn.setOnClickListener { applyThemeOptions(lightThemeOptions) }
     }
 
     private fun provideViewModel() {
@@ -45,12 +54,12 @@ class CustomThemesFragment: Fragment() {
     }
 
     private fun observeViewModelData() {
-        viewModel.seriesData.observe(viewLifecycleOwner, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
+        viewModel.seriesData.observe(viewLifecycleOwner) { data ->
+            createSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
                 this.series.clear()
                 this.series.add(series)
             }
-        })
+        }
     }
 
     private fun subscribeOnChartReady(view: ChartsView) {
@@ -114,22 +123,22 @@ class CustomThemesFragment: Fragment() {
     }
 
     private fun createSeriesWithData(
-            data: Data,
-            priceScale: PriceScaleId,
-            chartApi: ChartApi,
-            onSeriesCreated: (SeriesApi) -> Unit
+        data: Data,
+        priceScale: PriceScaleId,
+        chartApi: ChartApi,
+        onSeriesCreated: (SeriesApi) -> Unit,
     ) {
         chartApi.addAreaSeries(
-                options = AreaSeriesOptions(
-                        topColor = Color.argb(143, 33, 150, 243).toIntColor(),
-                        bottomColor = Color.argb(10, 33, 150, 243).toIntColor(),
-                        lineColor = Color.argb(204, 33, 150, 243).toIntColor(),
-                        lineWidth = LineWidth.TWO,
-                ),
-                onSeriesCreated = { api ->
-                    api.setData(data.list)
-                    onSeriesCreated(api)
-                }
+            options = AreaSeriesOptions(
+                topColor = Color.argb(143, 33, 150, 243).toIntColor(),
+                bottomColor = Color.argb(10, 33, 150, 243).toIntColor(),
+                lineColor = Color.argb(204, 33, 150, 243).toIntColor(),
+                lineWidth = LineWidth.TWO,
+            ),
+            onSeriesCreated = { api ->
+                api.setData(data.list)
+                onSeriesCreated(api)
+            }
         )
     }
 
@@ -138,7 +147,7 @@ class CustomThemesFragment: Fragment() {
     }
 
     private fun applyThemeOptions(theme: ChartOptions.() -> Unit) {
-        charts_view.api.applyOptions {
+        binding.chartsView.api.applyOptions {
             theme.invoke(this)
         }
     }

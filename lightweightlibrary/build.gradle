@@ -3,8 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "31.0.0"
+    compileSdkVersion 33
+    buildToolsVersion "33.0.0"
 
     defaultConfig {
         /*
@@ -16,10 +16,8 @@ android {
         the device. If running on a device with a lower API level, this will always return false.
          */
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 33
 
-        versionCode 15
-        versionName "3.8.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -31,14 +29,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.tradingview.lightweightcharts'
 
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.webkit:webkit:1.4.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'androidx.webkit:webkit:1.6.0'
+    implementation 'com.google.code.gson:gson:2.9.1'
 }
 
 import org.apache.tools.ant.taskdefs.condition.Os
