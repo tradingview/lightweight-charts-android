@@ -74,9 +74,14 @@ data class TimeScaleOptions(
     /**
      * Allows to override the tick marks formatter
      */
-    var tickMarkFormatter: Plugin? = null
+    var tickMarkFormatter: Plugin? = null,
+
+    /**
+     * Draw small vertical line on time axis labels.
+     */
+    var ticksVisible: Boolean? = null,
 )
 
 inline fun timeScaleOptions(init: TimeScaleOptions.() -> Unit): TimeScaleOptions {
-        return TimeScaleOptions().apply(init)
+    return TimeScaleOptions().apply(init)
 }
