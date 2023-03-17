@@ -43,6 +43,7 @@ class ViewPagerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityViewPagerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.viewPager.adapter = object : RecyclerView.Adapter<ChartsViewHolder>() {
             override fun onCreateViewHolder(
