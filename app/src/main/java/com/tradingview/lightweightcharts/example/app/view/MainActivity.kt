@@ -6,26 +6,30 @@ import android.view.MenuItem
 import android.webkit.WebView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.navigation.NavigationView
 import com.tradingview.lightweightcharts.example.app.R
+import com.tradingview.lightweightcharts.example.app.databinding.ActivityMainBinding
 import com.tradingview.lightweightcharts.example.app.router.FragmentFactory
-import com.tradingview.lightweightcharts.example.app.view.charts.*
+import com.tradingview.lightweightcharts.example.app.view.charts.BarChartFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.CustomPriceFormatterFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.CustomThemesFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.FloatingTooltipFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.PriceLinesWithTitlesFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.RealTimeEmulationFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.SeriesMarkersFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.VolumeStudyFragment
 import com.tradingview.lightweightcharts.example.app.view.pager.ViewPagerActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var drawer: DrawerLayout
+    private lateinit var binding: ActivityMainBinding
     private lateinit var actionBar: ActionBarDrawerToggle
-    private lateinit var navigationView: NavigationView
     private val context: MainActivity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WebView.setWebContentsDebuggingEnabled(true)
-        setContentView(R.layout.activity_main)
+        setContentView(ActivityMainBinding.inflate(layoutInflater).also { binding = it }.root)
         initializeNavigationDrawer()
         startFragment(BarChartFragment::class.java, false)
     }
@@ -38,15 +42,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeNavigationDrawer() {
-        drawer = findViewById(R.id.drawer_layout)
-        actionBar = ActionBarDrawerToggle(context, drawer_layout, R.string.open, R.string.close)
-        navigationView = findViewById(R.id.navigation_view)
+        actionBar = ActionBarDrawerToggle(context, binding.drawerLayout, R.string.open, R.string.close)
 
-        drawer.addDrawerListener(actionBar)
+        binding.drawerLayout.addDrawerListener(actionBar)
         actionBar.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             lifecycleScope.launchWhenResumed {
 
                 when (menuItem.itemId) {
@@ -63,14 +65,14 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            drawer.closeDrawers()
+            binding.drawerLayout.closeDrawers()
             true
         }
     }
 
     private fun <T : Fragment> startFragment(
         fragmentClass: Class<T>,
-        shouldAddToBackStack: Boolean = true
+        shouldAddToBackStack: Boolean = true,
     ) {
         supportFragmentManager
             .beginTransaction().apply {
