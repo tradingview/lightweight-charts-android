@@ -41,8 +41,6 @@ data class BaselineSeriesOptions(
     override val crosshairMarkerBackgroundColor: Colorable? = null,
     override val lastPriceAnimation: LastPriceAnimationMode? = null,
 
-    override var overlay: Boolean? = null,
-    override var scaleMargins: PriceScaleMargins? = null,
     override var priceScaleId: PriceScaleId? = null,
     override var autoscaleInfoProvider: Plugin? = null,
     override var visible: Boolean? = null

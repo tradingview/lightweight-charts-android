@@ -1,19 +1,18 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-import com.tradingview.lightweightcharts.api.options.common.SeriesSpecificOptions
+import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
-import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 /**
  * Structure describing options common for all types of series
  */
-interface SeriesOptionsCommon: SeriesSpecificOptions {
+interface SeriesOptionsCommon {
     /**
      * Visibility of the label with the latest visible price on the price scale
      */

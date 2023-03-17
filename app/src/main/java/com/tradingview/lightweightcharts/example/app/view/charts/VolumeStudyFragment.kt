@@ -14,7 +14,6 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.HistogramSeriesOptions
-import com.tradingview.lightweightcharts.api.options.models.PriceScaleMargins
 import com.tradingview.lightweightcharts.api.options.models.gridLineOptions
 import com.tradingview.lightweightcharts.api.options.models.gridOptions
 import com.tradingview.lightweightcharts.api.options.models.layoutOptions
@@ -144,10 +143,12 @@ class VolumeStudyFragment : Fragment() {
                     minMove = 1f,
                 ),
                 priceScaleId = PriceScaleId(""),
-                scaleMargins = PriceScaleMargins(
-                    top = 0.8f,
-                    bottom = 0f,
-                )
+//                todo support  https://tradingview.github.io/lightweight-charts/docs/migrations/from-v3-to-v4#scalemargins-option-has-been-removed-from-series-options
+//                scaleMargins = PriceScaleMargins(
+//                    top = 0.8f,
+//                    bottom = 0f,
+//                )
+
             ),
             onSeriesCreated = { api ->
                 api.setData(data.list)
