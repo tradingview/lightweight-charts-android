@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
@@ -78,7 +79,7 @@ class CustomThemesFragment : Fragment() {
 
     private val darkThemeOptions: ChartOptions.() -> Unit = {
         layout = layoutOptions {
-            backgroundColor = Color.parseColor("#2B2B43").toIntColor()
+            background = SolidColor(Color.parseColor("#2B2B43").toIntColor())
             textColor = Color.parseColor("#D9D9D9").toIntColor()
         }
         watermark = watermarkOptions {
@@ -106,7 +107,7 @@ class CustomThemesFragment : Fragment() {
 
     private val lightThemeOptions: ChartOptions.() -> Unit = {
         layout = layoutOptions {
-            backgroundColor = Color.WHITE.toIntColor()
+            background = SolidColor(Color.WHITE.toIntColor())
             textColor = Color.parseColor("#191919").toIntColor()
         }
         watermark = watermarkOptions {

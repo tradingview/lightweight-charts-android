@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
@@ -80,7 +81,7 @@ class CustomPriceFormatterFragment : Fragment() {
     private fun applyChartOptions() {
         binding.chartsView.api.applyOptions {
             layout = layoutOptions {
-                backgroundColor = Color.BLACK.toIntColor()
+                background = SolidColor(Color.BLACK.toIntColor())
                 textColor = Color.argb(204, 255, 255, 255).toIntColor()
             }
             localization = localizationOptions {
