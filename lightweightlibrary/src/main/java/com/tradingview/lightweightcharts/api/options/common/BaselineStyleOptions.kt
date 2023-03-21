@@ -3,6 +3,7 @@ package com.tradingview.lightweightcharts.api.options.common
 import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
 import com.tradingview.lightweightcharts.api.series.enums.LastPriceAnimationMode
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
+import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.BaseValueType
 
@@ -56,6 +57,12 @@ interface BaselineStyleOptions {
     val lineStyle: LineStyle?
 
     /**
+     * Line type.
+     *
+     */
+    val lineType: LineType?
+
+    /**
      * Show the crosshair marker.
      */
     val crosshairMarkerVisible: Boolean?
@@ -78,6 +85,11 @@ interface BaselineStyleOptions {
      * @see com.tradingview.lightweightcharts.api.chart.models.color.NoColor
      */
     val crosshairMarkerBackgroundColor: Colorable?
+
+    /**
+     * Crosshair marker border width in pixels.
+     */
+    val crosshairMarkerBorderWidth: Float?
 
     /**
      * Last price animation mode.

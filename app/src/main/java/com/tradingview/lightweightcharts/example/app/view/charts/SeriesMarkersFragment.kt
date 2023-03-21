@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
@@ -77,7 +78,7 @@ class SeriesMarkersFragment : Fragment() {
     private fun applyChartOptions() {
         binding.chartsView.api.applyOptions {
             layout = layoutOptions {
-                backgroundColor = IntColor(Color.WHITE)
+                background = SolidColor(IntColor(Color.WHITE))
                 textColor = IntColor(Color.BLACK)
             }
             timeScale = timeScaleOptions {
