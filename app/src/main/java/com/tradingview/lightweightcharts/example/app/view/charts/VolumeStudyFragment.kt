@@ -14,6 +14,8 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.HistogramSeriesOptions
+import com.tradingview.lightweightcharts.api.options.models.PriceScaleMargins
+import com.tradingview.lightweightcharts.api.options.models.PriceScaleOptions
 import com.tradingview.lightweightcharts.api.options.models.gridLineOptions
 import com.tradingview.lightweightcharts.api.options.models.gridOptions
 import com.tradingview.lightweightcharts.api.options.models.layoutOptions
@@ -29,7 +31,8 @@ import com.tradingview.lightweightcharts.view.ChartsView
 
 class VolumeStudyFragment : Fragment() {
 
-    private lateinit var viewModel: VolumeStudyViewModel
+    private val vm by lazy { ViewModelProvider(this)[VolumeStudyViewModel::class.java] }
+
 
     private lateinit var binding: LayoutChartFragmentBinding
 
@@ -43,31 +46,25 @@ class VolumeStudyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        provideViewModel()
         observeViewModelData()
         subscribeOnChartReady(binding.chartsView)
         applyChartOptions()
     }
 
-    private fun provideViewModel() {
-        viewModel = ViewModelProvider(this).get(VolumeStudyViewModel::class.java)
-    }
-
-    private fun observeViewModelData() {
-        viewModel.apply {
-            areaSeriesData.observe(viewLifecycleOwner) { data ->
-                createAreaSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
-                    this@VolumeStudyFragment.areaSeries.clear()
-                    this@VolumeStudyFragment.areaSeries.add(series)
-                }
-            }
-            volumeSeriesData.observe(viewLifecycleOwner) { data ->
-                createVolumeSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
-                    this@VolumeStudyFragment.volumeSeries.clear()
-                    this@VolumeStudyFragment.volumeSeries.add(series)
-                }
+    private fun observeViewModelData() = vm.run {
+        areaSeriesData.observe(viewLifecycleOwner) { data ->
+            createAreaSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
+                this@VolumeStudyFragment.areaSeries.clear()
+                this@VolumeStudyFragment.areaSeries.add(series)
             }
         }
+        volumeSeriesData.observe(viewLifecycleOwner) { data ->
+            createVolumeSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
+                this@VolumeStudyFragment.volumeSeries.clear()
+                this@VolumeStudyFragment.volumeSeries.add(series)
+            }
+        }
+
     }
 
     private fun subscribeOnChartReady(view: ChartsView) {
@@ -142,15 +139,18 @@ class VolumeStudyFragment : Fragment() {
                     precision = 1,
                     minMove = 1f,
                 ),
-                priceScaleId = PriceScaleId(""),
-//                todo support  https://tradingview.github.io/lightweight-charts/docs/migrations/from-v3-to-v4#scalemargins-option-has-been-removed-from-series-options
-//                scaleMargins = PriceScaleMargins(
-//                    top = 0.8f,
-//                    bottom = 0f,
-//                )
-
+                priceScaleId = PriceScaleId.RIGHT,
             ),
             onSeriesCreated = { api ->
+                chartApi.priceScale(PriceScaleId.RIGHT)
+                    .applyOptions(PriceScaleOptions().apply {
+                        scaleMargins = PriceScaleMargins(
+                            top = 0.8f,
+                            bottom = 0f,
+                        )
+                    })
+
+
                 api.setData(data.list)
                 onSeriesCreated(api)
             }
