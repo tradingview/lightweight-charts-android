@@ -5,7 +5,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.COORDINATE_TO_PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.CREATE_PRICE_LINE
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_SCALE
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_SCALE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.REMOVE_PRICE_LINE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.SERIES_TYPE
@@ -97,7 +97,7 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
 
     override fun priceScale(): PriceScaleApi {
         val uuid = controller.callFunction(
-            PRICE_SCALE,
+            PRICE_SCALE_SERIES,
             mapOf(
                 SERIES_UUID to uuid,
             )

@@ -10,20 +10,20 @@ export default class PriceScaleInstanceService {
     }
 
     register() {
-        this._seriesInstanceMethods().forEach((method) => {
+        this._priceScaleInstanceMethods().forEach((method) => {
             this.functionManager.registerFunction(method.name, (input, resolve) => {
                 const scale = this.priceScaleCache.get(input.params.caller)
                 if (scale === undefined) {
                     this.functionManager.throwFatalError(new Error(`PriceScale with uuid:${input.caller} is not found`), input)
                 } else {
-                    method.invoke(scale,input.params,resolve)
+                    method.invoke(scale, input.params, resolve)
                 }
             });
         });
 
     }
 
-    _seriesInstanceMethods() {
+    _priceScaleInstanceMethods() {
         return [
             new ApplyOptions(),
             new PriceScaleWidth(),
@@ -37,19 +37,11 @@ export default class PriceScaleInstanceService {
         ];
     }
 
-    _findSeries(input, callback) {
-        let series = this.seriesCache.get(input.params.seriesId)
-        if (series === undefined) {
-            this.functionManager.throwFatalError(new Error(`${seriesName} with uuid:${input.uuid} is not found`), input)
-        } else {
-            callback(series)
-        }
-    }
 }
 
 /**
  * ==============================================================
- * Methods of series instance
+ * Methods of price-scale instance
  * ==============================================================
  */
 class PriceScaleInstanceMethod {
@@ -61,7 +53,7 @@ class PriceScaleInstanceMethod {
 
 class ApplyOptions extends PriceScaleInstanceMethod {
     constructor() {
-        super("priceScaleApplyOptions", function(scale, params, resolve) {
+        super("priceScaleApplyOptions", function (scale, params, resolve) {
             scale.applyOptions(params.options)
         });
     }
@@ -70,7 +62,7 @@ class ApplyOptions extends PriceScaleInstanceMethod {
 
 class PriceScaleWidth extends PriceScaleInstanceMethod {
     constructor() {
-        super("priceScaleWidth", function(scale, params, resolve) {
+        super("priceScaleWidth", function (scale, params, resolve) {
             resolve(scale.width())
         });
     }

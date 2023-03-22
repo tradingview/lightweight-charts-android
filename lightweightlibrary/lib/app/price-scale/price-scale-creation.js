@@ -1,5 +1,4 @@
 import FunctionManager from "../function-manager.js";
-import ServiceLocator from "../service-locator/locator.js";
 import PriceScaleCache from "./price-scale-cache.js";
 import SeriesCache from "../series/series-cache.js";
 
@@ -55,7 +54,7 @@ class PriceScaleChart extends SeriesCreationMethod {
 
 class SeriesPriceScaleChart extends SeriesCreationMethod {
     constructor(seriesCache) {
-        super("seriesPriceScale", function (input) {
+        super("priceScaleSeries", function (input) {
             const series = this._findSeries(input);
             return series.priceScale();
         })

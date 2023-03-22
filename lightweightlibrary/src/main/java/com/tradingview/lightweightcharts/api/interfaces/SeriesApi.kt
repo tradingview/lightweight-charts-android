@@ -20,7 +20,7 @@ interface SeriesApi {
         const val PRICE_TO_COORDINATE = "priceToCoordinate"
         const val COORDINATE_TO_PRICE = "coordinateToPrice"
         const val APPLY_OPTIONS = "applyOptions"
-        const val PRICE_SCALE = "seriesPriceScale"
+        const val PRICE_SCALE_SERIES = "priceScaleSeries"
         const val SET_MARKERS = "setMarkers"
         const val CREATE_PRICE_LINE = "createPriceLine"
         const val REMOVE_PRICE_LINE = "removePriceLine"

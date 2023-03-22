@@ -1,5 +1,3 @@
-import { logger } from './logger.js'
-
 export default class PriceScaleFunctionManager {
 
     constructor(chart, functionManager) {

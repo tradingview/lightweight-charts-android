@@ -1,5 +1,4 @@
 import FunctionManager from '../function-manager.js';
-import ServiceLocator from '../service-locator/locator.js';
 import PriceScaleCreationService from './price-scale-creation.js';
 import PriceScaleInstanceService from './price-scale-instance.js';
 
