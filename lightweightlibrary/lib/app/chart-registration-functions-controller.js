@@ -1,13 +1,13 @@
 import SeriesFunctionManager from "./series/series-function-manager.js";
 import SubscriptionsFunctionManager from "./subscriptions-function-manager";
-import PriceScaleFunctionManager from "./price-scale-function-manager";
 import TimeScaleFunctionManager from "./time-scale/time-scale-function-manager";
 import { logger } from './logger.js';
 import { Locator } from "./service-locator/locator.js";
+import PriceScaleFunctionManager from "./price-scale/price-scale-function-manager";
 
 export default class ChartRegistrationFunctionsController {
 
-  constructor(chart, functionManager, pluginManager) {
+    constructor(chart, functionManager, pluginManager) {
         this.chart = chart
         this.functionManager = functionManager
         this.pluginManager = pluginManager
@@ -15,21 +15,21 @@ export default class ChartRegistrationFunctionsController {
     }
 
     registerFunctions() {
-        const seriesFunctionManager = Locator.resolve(SeriesFunctionManager.name)
-        seriesFunctionManager.register()
+        const seriesFunctionManager = Locator.resolve(SeriesFunctionManager.name);
+        seriesFunctionManager.register();
 
         const subscriptions = new SubscriptionsFunctionManager(
             this.chart,
             this.functionManager,
             seriesFunctionManager
         )
-        subscriptions.register()
+        subscriptions.register();
 
-        const timeScale = Locator.resolve(TimeScaleFunctionManager.name)
-        timeScale.register()
+        const timeScale = Locator.resolve(TimeScaleFunctionManager.name);
+        timeScale.register();
+        const priceScale = Locator.resolve(PriceScaleFunctionManager.name);
+        priceScale.register();
 
-        const priceScale = new PriceScaleFunctionManager(this.chart, this.functionManager)
-        priceScale.register()
 
         this.functionManager.registerFunction("remove", (params, resolve) => {
             this.cache.clear()

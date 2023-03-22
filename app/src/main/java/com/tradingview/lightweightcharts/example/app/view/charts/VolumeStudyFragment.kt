@@ -139,16 +139,15 @@ class VolumeStudyFragment : Fragment() {
                     precision = 1,
                     minMove = 1f,
                 ),
-                priceScaleId = PriceScaleId.RIGHT,
+                priceScaleId = PriceScaleId(""),
             ),
             onSeriesCreated = { api ->
-                chartApi.priceScale(PriceScaleId.RIGHT)
-                    .applyOptions(PriceScaleOptions().apply {
-                        scaleMargins = PriceScaleMargins(
-                            top = 0.8f,
-                            bottom = 0f,
-                        )
-                    })
+                api.priceScale().applyOptions(PriceScaleOptions().apply {
+                    scaleMargins = PriceScaleMargins(
+                        top = 0.8f,
+                        bottom = 0f,
+                    )
+                })
 
 
                 api.setData(data.list)

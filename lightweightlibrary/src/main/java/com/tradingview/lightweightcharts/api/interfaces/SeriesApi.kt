@@ -1,9 +1,9 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
-import com.tradingview.lightweightcharts.api.series.common.SeriesData
-import com.tradingview.lightweightcharts.api.series.common.PriceLine
-import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
+import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
+import com.tradingview.lightweightcharts.api.series.common.PriceLine
+import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 
@@ -20,6 +20,7 @@ interface SeriesApi {
         const val PRICE_TO_COORDINATE = "priceToCoordinate"
         const val COORDINATE_TO_PRICE = "coordinateToPrice"
         const val APPLY_OPTIONS = "applyOptions"
+        const val PRICE_SCALE = "seriesPriceScale"
         const val SET_MARKERS = "setMarkers"
         const val CREATE_PRICE_LINE = "createPriceLine"
         const val REMOVE_PRICE_LINE = "removePriceLine"
@@ -64,6 +65,11 @@ interface SeriesApi {
      * @param onOptionsReceived full set of currently applied options, including defaults
      */
     fun options(onOptionsReceived: (SeriesOptionsCommon) -> Unit)
+
+    /**
+     * Returns interface of the price scale the series is currently attached
+     */
+    fun priceScale(): PriceScaleApi
 
     /**
      * Sets or replaces series data

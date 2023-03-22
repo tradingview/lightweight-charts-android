@@ -10,6 +10,10 @@ import SeriesInstanceService from "../series/series-instance";
 import TickMarkFormatterService from "../time-scale/tick-mark-formatter";
 import TimeScaleFunctionManager from "../time-scale/time-scale-function-manager";
 import TimeScaleInstanceService from "../time-scale/time-scale-instance";
+import PriceScaleCache from "../price-scale/price-scale-cache";
+import PriceScaleCreationService from "../price-scale/price-scale-creation";
+import PriceScaleInstanceService from "../price-scale/price-scale-instance";
+import PriceScaleFunctionManager from "../price-scale/price-scale-function-manager";
 import { Locator } from "./locator";
 
 export function initLocator(functionManager, pluginManager, chart) {
@@ -37,6 +41,13 @@ class LocatorComponent {
 
         this.registerTimeScaleFunctionManager();
         this.registerTimeScaleInstanceService();
+
+        this.registerPriceScaleCache();
+        this.registerPriceScaleCreationService();
+        this.registerPriceScaleInstanceService();
+        this.registerPriceScaleFunctionManager();
+
+
         this.registerTickMarkFormatterService();
     }
 
@@ -50,6 +61,10 @@ class LocatorComponent {
 
     registerSeriesCache() {
         Locator.register(SeriesCache.name, () => new SeriesCache());
+    }
+
+    registerPriceScaleCache() {
+        Locator.register(PriceScaleCache.name, () => new PriceScaleCache());
     }
 
     registerSeriesFunctionManager() {
@@ -74,6 +89,18 @@ class LocatorComponent {
 
     registerTimeScaleInstanceService() {
         Locator.register(TimeScaleInstanceService.name, () => new TimeScaleInstanceService(Locator));
+    }
+
+    registerPriceScaleCreationService(){
+        Locator.register(PriceScaleCreationService.name, () => new PriceScaleCreationService(Locator));
+    }
+
+    registerPriceScaleInstanceService(){
+        Locator.register(PriceScaleInstanceService.name, () => new PriceScaleInstanceService(Locator));
+    }
+
+    registerPriceScaleFunctionManager(){
+        Locator.register(PriceScaleFunctionManager.name, () => new PriceScaleFunctionManager(Locator));
     }
 
     registerTickMarkFormatterService() {
