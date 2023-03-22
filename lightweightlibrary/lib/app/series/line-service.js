@@ -1,5 +1,4 @@
 import FunctionManager from "../function-manager";
-import ServiceLocator from "../service-locator/locator";
 import LineCache from "./line-cache";
 
 export default class LineService {

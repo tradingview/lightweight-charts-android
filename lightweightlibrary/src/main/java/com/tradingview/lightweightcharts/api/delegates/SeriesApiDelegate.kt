@@ -1,9 +1,11 @@
 package com.tradingview.lightweightcharts.api.delegates
 
+import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.COORDINATE_TO_PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.CREATE_PRICE_LINE
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_SCALE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.REMOVE_PRICE_LINE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.SERIES_TYPE
@@ -19,10 +21,12 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
-import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.api.serializer.Deserializer
+import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.api.serializer.SeriesTypeDeserializer
-import com.tradingview.lightweightcharts.api.series.common.*
+import com.tradingview.lightweightcharts.api.series.common.PriceLine
+import com.tradingview.lightweightcharts.api.series.common.PriceLineDelegate
+import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
@@ -89,6 +93,16 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
             callback = onOptionsReceived,
             deserializer = optionsDeserializer
         )
+    }
+
+    override fun priceScale(): PriceScaleApi {
+        val uuid = controller.callFunction(
+            PRICE_SCALE_SERIES,
+            mapOf(
+                SERIES_UUID to uuid,
+            )
+        )
+        return PriceScaleApiDelegate(uuid, controller)
     }
 
     override fun setMarkers(data: List<SeriesMarker>) {

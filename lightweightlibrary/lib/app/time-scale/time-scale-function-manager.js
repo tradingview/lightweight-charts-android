@@ -1,4 +1,3 @@
-import ServiceLocator from "../service-locator/locator";
 import TimeScaleInstanceService from "./time-scale-instance";
 
 export default class TimeScaleFunctionManager {
