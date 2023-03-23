@@ -7,19 +7,18 @@ import android.webkit.WebView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.ActivityMainBinding
 import com.tradingview.lightweightcharts.example.app.router.FragmentFactory
-import com.tradingview.lightweightcharts.example.app.view.charts.BarChartFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.ChartTypeFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.CustomPriceFormatterFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.CustomThemesFragment
-import com.tradingview.lightweightcharts.example.app.view.charts.FloatingTooltipFragment
-import com.tradingview.lightweightcharts.example.app.view.charts.PriceLinesWithTitlesFragment
-import com.tradingview.lightweightcharts.example.app.view.charts.RealTimeEmulationFragment
-import com.tradingview.lightweightcharts.example.app.view.charts.SeriesMarkersFragment
-import com.tradingview.lightweightcharts.example.app.view.charts.VolumeStudyFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.CustomTooltipFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.IndicatorsAndMarkersFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.PriceScalesFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.SeriesDataFragment
 import com.tradingview.lightweightcharts.example.app.view.pager.ViewPagerActivity
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,43 +30,54 @@ class MainActivity : AppCompatActivity() {
         WebView.setWebContentsDebuggingEnabled(true)
         setContentView(ActivityMainBinding.inflate(layoutInflater).also { binding = it }.root)
         initializeNavigationDrawer()
-        startFragment(BarChartFragment::class.java, false)
+        startFragment(ChartTypeFragment::class.java, false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when {
-            actionBar.onOptionsItemSelected(item) -> return true
-            else -> return super.onOptionsItemSelected(item)
+        return when {
+            actionBar.onOptionsItemSelected(item) -> true
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun initializeNavigationDrawer() {
         actionBar = ActionBarDrawerToggle(context, binding.drawerLayout, R.string.open, R.string.close)
-
         binding.drawerLayout.addDrawerListener(actionBar)
         actionBar.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            lifecycleScope.launchWhenResumed {
-
-                when (menuItem.itemId) {
-                    R.id.menu_bar_chart -> startFragment(BarChartFragment::class.java)
-                    R.id.menu_custom_price_formatter -> startFragment(CustomPriceFormatterFragment::class.java)
-                    R.id.menu_custom_themes -> startFragment(CustomThemesFragment::class.java)
-                    R.id.menu_floating_tooltip -> startFragment(FloatingTooltipFragment::class.java)
-                    R.id.menu_volume_study -> startFragment(VolumeStudyFragment::class.java)
-                    R.id.menu_real_time_emulation -> startFragment(RealTimeEmulationFragment::class.java)
-                    R.id.menu_series_markers -> startFragment(SeriesMarkersFragment::class.java)
-                    R.id.menu_price_lines_with_titles -> startFragment(PriceLinesWithTitlesFragment::class.java)
-                    R.id.menu_view_pager -> {
-                        startActivity(Intent(this@MainActivity, ViewPagerActivity::class.java))
-                    }
+            when (menuItem.itemId) {
+                R.id.menu_chart_type -> startFragment(ChartTypeFragment::class.java)
+                R.id.menu_custom_themes -> startFragment(CustomThemesFragment::class.java)
+                R.id.menu_range_switcher -> {}
+                R.id.menu_legend -> {}
+                R.id.menu_series_compare -> {}
+                R.id.menu_actions -> {}
+                R.id.menu_custom_tooltips -> startFragment(CustomTooltipFragment::class.java)
+                R.id.menu_custom_price_formatter -> startFragment(CustomPriceFormatterFragment::class.java)
+                R.id.menu_price_scales -> startFragment(PriceScalesFragment::class.java)
+                R.id.menu_data -> startFragment(SeriesDataFragment::class.java)
+                R.id.menu_indicators_and_markers -> {
+                    // todo join with startFragment(RealTimeEmulationFragment::class.java)
+                    startFragment(IndicatorsAndMarkersFragment::class.java)
+                }
+                R.id.menu_view_pager -> {
+                    startActivity(Intent(this@MainActivity, ViewPagerActivity::class.java))
                 }
             }
             binding.drawerLayout.closeDrawers()
             true
         }
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            updateTitle()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateTitle()
     }
 
     private fun <T : Fragment> startFragment(
@@ -85,5 +95,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 commit()
             }
+    }
+
+    private fun updateTitle() {
+        (supportFragmentManager.findFragmentById(R.id.fragment_container_fl) as? ITitleFragment)?.fragmentTitleRes
+            ?.let { title -> setTitle(title) }
     }
 }

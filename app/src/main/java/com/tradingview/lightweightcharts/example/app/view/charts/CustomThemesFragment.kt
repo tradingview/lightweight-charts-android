@@ -22,12 +22,15 @@ import com.tradingview.lightweightcharts.api.options.models.layoutOptions
 import com.tradingview.lightweightcharts.api.options.models.watermarkOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutThemesChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomThemesViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 
-class CustomThemesFragment : Fragment() {
+class CustomThemesFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.custom_themes
 
     private lateinit var viewModel: CustomThemesViewModel
 

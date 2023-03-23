@@ -23,13 +23,16 @@ import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutPriceFormatterChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
 
-class CustomPriceFormatterFragment : Fragment() {
+class CustomPriceFormatterFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.custom_formator
 
     private lateinit var viewModel: CustomPriceFormatterViewModel
 

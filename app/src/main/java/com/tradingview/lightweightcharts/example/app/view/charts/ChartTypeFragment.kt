@@ -18,10 +18,18 @@ import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.options.enums.TrackingModeExitMode
-import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.options.models.BarSeriesOptions
+import com.tradingview.lightweightcharts.api.options.models.TrackingModeOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
+import com.tradingview.lightweightcharts.api.options.models.handleScaleOptions
+import com.tradingview.lightweightcharts.api.options.models.kineticScrollOptions
+import com.tradingview.lightweightcharts.api.options.models.layoutOptions
+import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
+import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import permissions.dispatcher.NeedsPermission
@@ -30,7 +38,9 @@ import java.io.File
 import java.io.FileOutputStream
 
 @RuntimePermissions
-class BarChartFragment: Fragment() {
+class ChartTypeFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.chart_type
+
     private val chartsView get() = requireView().findViewById<ChartsView>(R.id.charts_view)
     private val screenshotButton get() = requireView().findViewById<Button>(R.id.screenshot_btn)
 

@@ -7,4 +7,24 @@
     <string name="pound">Pound</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
+
+
+    <string name="customizing">Customizing</string>
+    <string name="chart_type">Chart Type</string>
+    <string name="custom_themes">Custom Themes</string>
+    <string name="range_switcher">Range Switcher</string>
+    <string name="legend">Legend</string>
+    <string name="series_compare">Series Compare</string>
+    <string name="actions">Actions</string>
+    <string name="custom_tooltips">Custom Tooltips</string>
+    <string name="custom_formator">Custom Formator</string>
+    <string name="price_scales">Price Scales</string>
+    <string name="data">Data</string>
+    <string name="indicators_and_markers">Indicators &amp; Markers</string>
+
+    <string name="additional">Additional</string>
+    <string name="touch_delegate">Touch Delegate</string>
+
+
+
 </resources>
