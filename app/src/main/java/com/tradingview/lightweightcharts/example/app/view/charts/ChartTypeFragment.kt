@@ -9,14 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.enums.TrackingModeExitMode
 import com.tradingview.lightweightcharts.api.options.models.TrackingModeOptions
 import com.tradingview.lightweightcharts.api.options.models.applyAreaSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.applyBarSeriesOptions
-import com.tradingview.lightweightcharts.api.options.models.barSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.candlestickSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
 import com.tradingview.lightweightcharts.api.options.models.handleScaleOptions
@@ -30,8 +28,11 @@ import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.FragmentChartTypeBinding
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
+import com.tradingview.lightweightcharts.example.app.view.util.nextFloat
+import com.tradingview.lightweightcharts.example.app.view.util.randomColor
 import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
+import kotlin.random.Random
 
 class ChartTypeFragment : Fragment(), ITitleFragment {
     override val fragmentTitleRes = R.string.chart_type
@@ -62,7 +63,6 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
                 is ChartsView.State.Ready -> {
                     vm.seriesBarData.observe(viewLifecycleOwner) { data ->
                         chartTypeIndex = 0
-                        chartApi.applyDefOptions()
                     }
                 }
                 is ChartsView.State.Error -> {
@@ -84,6 +84,7 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
         if (chartTypeIndex == null)
             return
 
+        chartApi.applyRandOptions()
         typeChips.forEachIndexed { index, chip ->
             chip.isChecked = index == chartTypeIndex
         }
@@ -101,6 +102,8 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
         chartApi.addCandlestickSeries(
             options = candlestickSeriesOptions {
                 priceScaleId = PriceScaleId.RIGHT
+                upColor = resources.randomColor(R.array.green_array)
+                downColor = resources.randomColor(R.array.red_array)
             },
             onSeriesCreated = { series ->
                 curSeries = series
@@ -113,6 +116,7 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
         chartApi.addLineSeries(
             options = lineSeriesOptions {
                 priceScaleId = PriceScaleId.RIGHT
+                color = resources.randomColor(R.array.blue_array)
             },
             onSeriesCreated = { series ->
                 curSeries = series
@@ -122,25 +126,17 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
     }
 
     private fun addBarsSeries() {
-
-        chartApi.addBarSeries(
-            options = barSeriesOptions {
-                priceScaleId = PriceScaleId.RIGHT
+        chartApi.addBarSeries { series ->
+            curSeries = series
+            series.applyBarSeriesOptions {
+                priceScaleId = PriceScaleId("")
                 thinBars = true
-                downColor = Color.BLACK.toIntColor()
-                upColor = Color.BLACK.toIntColor()
-            },
-            onSeriesCreated = { series ->
-                curSeries = series
-                series.applyBarSeriesOptions {
-                    priceScaleId = PriceScaleId.LEFT
-                    thinBars = true
-                    downColor = Color.BLACK.toIntColor()
-                    upColor = Color.BLACK.toIntColor()
-                }
-                series.setData(vm.seriesBarData.value!!.list)
+                downColor = resources.randomColor(R.array.red_array)
+                upColor = resources.randomColor(R.array.gray_array)
             }
-        )
+            series.setData(vm.seriesBarData.value!!.list)
+        }
+
     }
 
     private fun addAreaSeries() {
@@ -149,12 +145,15 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
             series.setData(vm.seriesAreaData.value!!.list)
 
             series.applyAreaSeriesOptions {
-                priceScaleId = PriceScaleId.LEFT
+                priceScaleId = PriceScaleId.RIGHT
+                lineColor = resources.randomColor(R.array.green_array)
+                topColor = resources.randomColor(R.array.green_array)
+                bottomColor = resources.randomColor(R.array.gray_array)
             }
         }
     }
 
-    private fun ChartApi.applyDefOptions() = applyOptions {
+    private fun ChartApi.applyRandOptions() = applyOptions {
         handleScale = handleScaleOptions {
             kineticScroll = kineticScrollOptions {
                 touch = false
@@ -163,18 +162,18 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
         }
         layout = layoutOptions {
             background = SolidColor(Color.WHITE)
-            textColor = resources.getColor(R.color.blue_1).toIntColor()
+            textColor = resources.randomColor(R.array.blue_array)
         }
         crosshair = crosshairOptions {
             mode = CrosshairMode.NORMAL
         }
         rightPriceScale = priceScaleOptions {
-            borderColor = resources.getColor(R.color.gray_1).toIntColor()
+            borderColor = resources.randomColor(R.array.gray_array)
         }
         timeScale = timeScaleOptions {
-            borderColor = resources.getColor(R.color.gray_1).toIntColor()
+            borderColor = resources.randomColor(R.array.gray_array)
             fixRightEdge = true
-            minBarSpacing = 0.7f
+            minBarSpacing = Random.nextFloat(0.5f, 1.5f)
         }
         trackingMode = TrackingModeOptions(exitMode = TrackingModeExitMode.ON_TOUCH_END)
     }
