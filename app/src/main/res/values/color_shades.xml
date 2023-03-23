@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <array name="red_array">
         <item>@color/red_1</item>
         <item>@color/red_2</item>
@@ -19,7 +18,6 @@
     </array>
 
 
-
     <array name="green_array">
         <item>@color/green_1</item>
         <item>@color/green_2</item>
@@ -29,12 +27,12 @@
     </array>
 
 
-    <array name="gray_array">
-        <item>@color/gray_1</item>
-        <item>@color/gray_2</item>
-        <item>@color/gray_3</item>
-        <item>@color/gray_4</item>
-        <item>@color/gray_5</item>
+    <array name="white_array">
+        <item>@color/white_1</item>
+        <item>@color/white_2</item>
+        <item>@color/white_3</item>
+        <item>@color/white_4</item>
+        <item>@color/white_5</item>
     </array>
 
     <array name="dark_gray_array">
@@ -44,5 +42,24 @@
         <item>@color/dark_gray_4</item>
         <item>@color/dark_gray_5</item>
     </array>
+
+
+    <array name="cyan_array">
+        <item>@color/cyan_1</item>
+        <item>@color/cyan_2</item>
+        <item>@color/cyan_3</item>
+        <item>@color/cyan_4</item>
+        <item>@color/cyan_5</item>
+    </array>
+
+
+    <array name="dark_cyan_array">
+        <item>@color/dark_cyan_1</item>
+        <item>@color/dark_cyan_2</item>
+        <item>@color/dark_cyan_3</item>
+        <item>@color/dark_cyan_4</item>
+        <item>@color/dark_cyan_5</item>
+    </array>
+
 
 </resources>

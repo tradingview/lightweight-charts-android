@@ -30,6 +30,7 @@ import com.tradingview.lightweightcharts.example.app.databinding.FragmentChartTy
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.view.util.nextFloat
 import com.tradingview.lightweightcharts.example.app.view.util.randomColor
+import com.tradingview.lightweightcharts.example.app.view.util.randomColorTransparent
 import com.tradingview.lightweightcharts.example.app.viewmodel.BarChartViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlin.random.Random
@@ -41,9 +42,9 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
 
     private lateinit var binding: FragmentChartTypeBinding
     private val chartApi get() = binding.chartsView.api
-    private val typeChips get() = binding.run { listOf(chipCandles, chipLine, chipBars, chipArea) }
     private var curSeries: SeriesApi? = null
 
+    private val typeChips get() = binding.run { listOf(chipCandles, chipLine, chipBars, chipArea) }
     private var chartTypeIndex: Int? = null
         set(value) {
             field = value
@@ -132,7 +133,7 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
                 priceScaleId = PriceScaleId("")
                 thinBars = true
                 downColor = resources.randomColor(R.array.red_array)
-                upColor = resources.randomColor(R.array.gray_array)
+                upColor = resources.randomColor(R.array.white_array)
             }
             series.setData(vm.seriesBarData.value!!.list)
         }
@@ -148,7 +149,7 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
                 priceScaleId = PriceScaleId.RIGHT
                 lineColor = resources.randomColor(R.array.green_array)
                 topColor = resources.randomColor(R.array.green_array)
-                bottomColor = resources.randomColor(R.array.gray_array)
+                bottomColor = resources.randomColorTransparent(R.array.white_array)
             }
         }
     }
@@ -168,10 +169,10 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
             mode = CrosshairMode.NORMAL
         }
         rightPriceScale = priceScaleOptions {
-            borderColor = resources.randomColor(R.array.gray_array)
+            borderColor = resources.randomColor(R.array.white_array)
         }
         timeScale = timeScaleOptions {
-            borderColor = resources.randomColor(R.array.gray_array)
+            borderColor = resources.randomColor(R.array.white_array)
             fixRightEdge = true
             minBarSpacing = Random.nextFloat(0.5f, 1.5f)
         }
