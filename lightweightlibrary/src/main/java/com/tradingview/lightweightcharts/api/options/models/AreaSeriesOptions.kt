@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.common.AreaStyleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LastPriceAnimationMode
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
@@ -165,4 +166,8 @@ data class AreaSeriesOptions(
 
 inline fun areaSeriesOptions(init: AreaSeriesOptions.() -> Unit): AreaSeriesOptions {
     return AreaSeriesOptions().apply(init)
+}
+
+inline fun SeriesApi.applyAreaSeriesOptions(init: AreaSeriesOptions.() -> Unit) {
+    applyOptions(AreaSeriesOptions().apply(init))
 }

@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.common.BarStyleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
@@ -36,9 +37,14 @@ data class BarSeriesOptions(
     override var thinBars: Boolean? = null,
     override var priceScaleId: PriceScaleId? = null,
     override var autoscaleInfoProvider: Plugin? = null,
-    override var visible: Boolean? = null
+    override var visible: Boolean? = null,
 ) : SeriesOptionsCommon, BarStyleOptions
 
 inline fun barSeriesOptions(init: BarSeriesOptions.() -> Unit): BarSeriesOptions {
     return BarSeriesOptions().apply(init)
+}
+
+
+inline fun SeriesApi.applyBarSeriesOptions(init: BarSeriesOptions.() -> Unit) {
+    applyOptions(BarSeriesOptions().apply(init))
 }

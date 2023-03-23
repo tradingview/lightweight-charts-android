@@ -24,7 +24,10 @@
 
     <string name="additional">Additional</string>
     <string name="touch_delegate">Touch Delegate</string>
-
+    <string name="candles">Candles</string>
+    <string name="line">Line</string>
+    <string name="bars">Bars</string>
+    <string name="area">Area</string>
 
 
 </resources>

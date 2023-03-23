@@ -5,4 +5,11 @@
     <color name="colorAccent">#D81B60</color>
     <color name="tooltipSymbolName">#009688</color>
     <color name="tooltipPrice">#21384d</color>
+
+
+    <color name="blue_1">#21384D</color>
+
+
+    <color name="gray_1">#C5CBCE</color>
+
 </resources>

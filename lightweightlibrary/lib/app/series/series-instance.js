@@ -144,7 +144,7 @@ class SeriesType extends SeriesInstanceMethod {
 
 class ApplyOptions extends SeriesInstanceMethod {
     constructor(priceFormatterService) {
-        super("applyOptions", function(series, params, resolve) {
+        super("applyOptionsSeries", function(series, params, resolve) {
             priceFormatterService.register(params, (paramsWithFormatter) => {
                 series.applyOptions(paramsWithFormatter.options);
                 resolve();
