@@ -130,10 +130,10 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
         chartApi.addBarSeries { series ->
             curSeries = series
             series.applyBarSeriesOptions {
-                priceScaleId = PriceScaleId("")
+                priceScaleId = PriceScaleId.RIGHT
                 thinBars = true
+                upColor = resources.randomColor(R.array.green_array)
                 downColor = resources.randomColor(R.array.red_array)
-                upColor = resources.randomColor(R.array.white_array)
             }
             series.setData(vm.seriesBarData.value!!.list)
         }

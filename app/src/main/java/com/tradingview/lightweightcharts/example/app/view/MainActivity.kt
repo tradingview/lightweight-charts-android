@@ -16,6 +16,7 @@ import com.tradingview.lightweightcharts.example.app.view.charts.CustomThemesFra
 import com.tradingview.lightweightcharts.example.app.view.charts.CustomTooltipFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.IndicatorsAndMarkersFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.PriceScalesFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.RangeSwitcherFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.SeriesDataFragment
 import com.tradingview.lightweightcharts.example.app.view.pager.ViewPagerActivity
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_chart_type -> startFragment(ChartTypeFragment::class.java)
                 R.id.menu_custom_themes -> startFragment(CustomThemesFragment::class.java)
-                R.id.menu_range_switcher -> {}
+                R.id.menu_range_switcher -> startFragment(RangeSwitcherFragment::class.java)
                 R.id.menu_legend -> {}
                 R.id.menu_series_compare -> {}
                 R.id.menu_actions -> {}

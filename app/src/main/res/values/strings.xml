@@ -29,6 +29,10 @@
     <string name="bars">Bars</string>
     <string name="area">Area</string>
     <string name="colorful">Colorful</string>
+    <string name="day1">1D</string>
+    <string name="week1">1W</string>
+    <string name="month1">1M</string>
+    <string name="year1">1Y</string>
 
 
 </resources>
