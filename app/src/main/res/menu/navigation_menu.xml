@@ -18,14 +18,6 @@
                     android:title="@string/range_switcher"
                     />
                 <item
-                    android:id="@+id/menu_legend"
-                    android:title="@string/legend"
-                    />
-                <item
-                    android:id="@+id/menu_series_compare"
-                    android:title="@string/series_compare"
-                    />
-                <item
                     android:id="@+id/menu_actions"
                     android:title="@string/actions"
                     />
@@ -45,6 +37,12 @@
                 <item
                     android:id="@+id/menu_data"
                     android:title="@string/data"
+                    />
+
+
+                <item
+                    android:id="@+id/menu_realtime_emulator"
+                    android:title="@string/realtime"
                     />
 
                 <item

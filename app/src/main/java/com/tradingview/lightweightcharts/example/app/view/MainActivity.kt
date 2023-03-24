@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.ActivityMainBinding
 import com.tradingview.lightweightcharts.example.app.router.FragmentFactory
+import com.tradingview.lightweightcharts.example.app.view.charts.ChartActionsFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.ChartTypeFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.CustomPriceFormatterFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.CustomThemesFragment
@@ -17,6 +18,7 @@ import com.tradingview.lightweightcharts.example.app.view.charts.CustomTooltipFr
 import com.tradingview.lightweightcharts.example.app.view.charts.IndicatorsAndMarkersFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.PriceScalesFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.RangeSwitcherFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.RealTimeEmulationFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.SeriesDataFragment
 import com.tradingview.lightweightcharts.example.app.view.pager.ViewPagerActivity
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
@@ -52,17 +54,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_chart_type -> startFragment(ChartTypeFragment::class.java)
                 R.id.menu_custom_themes -> startFragment(CustomThemesFragment::class.java)
                 R.id.menu_range_switcher -> startFragment(RangeSwitcherFragment::class.java)
-                R.id.menu_legend -> {}
-                R.id.menu_series_compare -> {}
-                R.id.menu_actions -> {}
+                R.id.menu_actions -> startFragment(ChartActionsFragment::class.java)
                 R.id.menu_custom_tooltips -> startFragment(CustomTooltipFragment::class.java)
                 R.id.menu_custom_price_formatter -> startFragment(CustomPriceFormatterFragment::class.java)
                 R.id.menu_price_scales -> startFragment(PriceScalesFragment::class.java)
                 R.id.menu_data -> startFragment(SeriesDataFragment::class.java)
-                R.id.menu_indicators_and_markers -> {
-                    // todo join with startFragment(RealTimeEmulationFragment::class.java)
-                    startFragment(IndicatorsAndMarkersFragment::class.java)
-                }
+                R.id.menu_realtime_emulator -> startFragment(RealTimeEmulationFragment::class.java)
+                R.id.menu_indicators_and_markers -> startFragment(IndicatorsAndMarkersFragment::class.java)
                 R.id.menu_view_pager -> {
                     startActivity(Intent(this@MainActivity, ViewPagerActivity::class.java))
                 }

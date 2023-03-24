@@ -33,6 +33,8 @@
     <string name="week1">1W</string>
     <string name="month1">1M</string>
     <string name="year1">1Y</string>
+    <string name="realtime">Realtime</string>
+    <string name="to_realtime">To Realtime</string>
 
 
 </resources>
