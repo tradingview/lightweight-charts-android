@@ -16,6 +16,7 @@ import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.options.models.CandlestickSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
+import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.FragmentChartActionsBinding
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
@@ -30,6 +31,9 @@ class ChartActionsFragment : Fragment(), ITitleFragment {
 
     private val chartsView get() = binding.chartsView
     private val chartApi get() = chartsView.api
+    private val timeScaleApi get() = chartApi.timeScale
+    private val leftPriceScale get() = chartApi.priceScale(PriceScaleId.LEFT)
+    private val rightPriceScale get() = chartApi.priceScale(PriceScaleId.RIGHT)
 
     private lateinit var binding: FragmentChartActionsBinding
 
@@ -67,9 +71,6 @@ class ChartActionsFragment : Fragment(), ITitleFragment {
             shareScreenshot()
         }
 
-        binding.chipToRealtime.setOnClickListener {
-            chartApi.timeScale.scrollToRealTime()
-        }
     }
 
     override fun onDestroy() {

@@ -16,6 +16,7 @@
     <string name="legend">Legend</string>
     <string name="series_compare">Series Compare</string>
     <string name="actions">Actions</string>
+    <string name="timescale_actions">Timescale actions</string>
     <string name="custom_tooltips">Custom Tooltips</string>
     <string name="custom_formator">Custom Formator</string>
     <string name="price_scales">Price Scales</string>
@@ -35,6 +36,13 @@
     <string name="year1">1Y</string>
     <string name="realtime">Realtime</string>
     <string name="to_realtime">To Realtime</string>
+    <string name="custom_1">Custom 1</string>
+    <string name="custom_2">Custom 2</string>
+    <string name="fit">Fit</string>
+    <string name="reset">Rest</string>
+    <string name="save_range">Save Range</string>
+    <string name="restore_range">Restore range</string>
+    <string name="intercept_touch">Intercept Touch</string>
 
 
 </resources>

@@ -20,6 +20,7 @@ import com.tradingview.lightweightcharts.example.app.view.charts.PriceScalesFrag
 import com.tradingview.lightweightcharts.example.app.view.charts.RangeSwitcherFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.RealTimeEmulationFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.SeriesDataFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.TimeScaleActionsFragment
 import com.tradingview.lightweightcharts.example.app.view.pager.ViewPagerActivity
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         WebView.setWebContentsDebuggingEnabled(true)
         setContentView(ActivityMainBinding.inflate(layoutInflater).also { binding = it }.root)
         initializeNavigationDrawer()
-        startFragment(ChartTypeFragment::class.java, false)
+        startFragment(TimeScaleActionsFragment::class.java, false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_custom_themes -> startFragment(CustomThemesFragment::class.java)
                 R.id.menu_range_switcher -> startFragment(RangeSwitcherFragment::class.java)
                 R.id.menu_actions -> startFragment(ChartActionsFragment::class.java)
+                R.id.menu_time_scale_actions -> startFragment(TimeScaleActionsFragment::class.java)
                 R.id.menu_custom_tooltips -> startFragment(CustomTooltipFragment::class.java)
                 R.id.menu_custom_price_formatter -> startFragment(CustomPriceFormatterFragment::class.java)
                 R.id.menu_price_scales -> startFragment(PriceScalesFragment::class.java)

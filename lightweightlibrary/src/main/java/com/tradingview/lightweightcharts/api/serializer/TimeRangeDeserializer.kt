@@ -7,7 +7,7 @@ import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.help.isNumber
 import com.tradingview.lightweightcharts.help.isString
 
-class TimeRangeDeserializer: Deserializer<TimeRange>() {
+class TimeRangeDeserializer : Deserializer<TimeRange>() {
 
     override fun deserialize(json: JsonElement): TimeRange? {
         if (!json.isJsonObject) {
@@ -33,8 +33,11 @@ class TimeRangeDeserializer: Deserializer<TimeRange>() {
                     )
                 }
 
-                val fromDate = from.asJsonObject.let(::parseBusinessDay)
-                val toDate = to.asJsonObject.let(::parseBusinessDay)
+                val fromDate = runCatching { from.asJsonObject.let(::parseBusinessDay) }.getOrNull()
+                    ?: Time.Utc(to.asLong)
+
+                val toDate = runCatching { to.asJsonObject.let(::parseBusinessDay) }.getOrNull()
+                    ?: Time.Utc(to.asLong)
 
                 TimeRange(fromDate, toDate)
             }
