@@ -43,6 +43,7 @@
     <string name="save_range">Save Range</string>
     <string name="restore_range">Restore range</string>
     <string name="intercept_touch">Intercept Touch</string>
+    <string name="custom_options">Custom Options</string>
 
 
 </resources>

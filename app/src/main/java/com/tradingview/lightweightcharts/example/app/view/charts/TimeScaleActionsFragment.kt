@@ -30,6 +30,7 @@ class TimeScaleActionsFragment : Fragment(), ITitleFragment {
     private val timeScaleApi get() = chartApi.timeScale
 
     private var savedRange: TimeRange? = null
+    private var subscribeVisibleRange: TimeRange? = null
     private var captureTouch = false // capture all touch events for log by coordinates
 
     private lateinit var binding: FragmentChartTimescaleActionsBinding
@@ -43,6 +44,10 @@ class TimeScaleActionsFragment : Fragment(), ITitleFragment {
     private var touchedCoordinateFromLogical: Float? = null
 
     private var refreshTimer: CountDownTimer? = null
+
+    private val onTimeRangeChanged: (params: TimeRange?) -> Unit = {
+        subscribeVisibleRange = it
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentChartTimescaleActionsBinding.inflate(inflater, container, false)
@@ -82,11 +87,24 @@ class TimeScaleActionsFragment : Fragment(), ITitleFragment {
                 timeScaleApi.getVisibleRange {
                     savedRange = it
                 }
+
+                // timeScaleApi.subscribeVisibleTimeRangeChange(onTimeRangeChanged)
             }
-            chipRestoreRange.setOnClickListener { savedRange?.let { timeScaleApi.setVisibleRange(it) } }
+            chipRestoreRange.setOnClickListener {
+                savedRange?.let { timeScaleApi.setVisibleRange(it) }
+
+                // timeScaleApi.unsubscribeVisibleTimeRangeChange(onTimeRangeChanged)
+            }
 
             chipInterceptTouch.setOnCheckedChangeListener { buttonView, isChecked ->
                 captureTouch = isChecked
+            }
+
+            chipCustomOptions.setOnClickListener {
+                //emulate change in runtime
+                timeScaleApi.applyOptions {
+                    ticksVisible = true
+                }
             }
 
             chartsView.addTouchDelegate(object : TouchDelegate {
@@ -142,11 +160,10 @@ class TimeScaleActionsFragment : Fragment(), ITitleFragment {
             timeScaleApi.height { height ->
                 binding.tvDebugValues.text = buildString {
                     appendLine("timescale size ${width} - ${height}")
+                    if (subscribeVisibleRange != null) appendLine("timerange ${subscribeVisibleRange?.from} - ${subscribeVisibleRange?.to}")
                     appendLine("touched time ${touchedTime}")
                     appendLine("touched logical ${touchedLogical}")
                     appendLine("touched coordinate ${touchedCoordinateFromTime} - ${touchedCoordinateFromLogical}")
-
-
                 }
             }
         }
