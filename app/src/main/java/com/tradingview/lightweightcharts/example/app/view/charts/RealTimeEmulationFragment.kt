@@ -11,11 +11,14 @@ import com.tradingview.lightweightcharts.api.options.models.CandlestickSeriesOpt
 import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.example.app.R
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.RealTimeEmulationViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlinx.coroutines.Job
 
-class RealTimeEmulationFragment: Fragment() {
+class RealTimeEmulationFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.realtime
+
     private val chartsView get() = requireView().findViewById<ChartsView>(R.id.charts_view)
     private val chartApi get() = chartsView.api
 

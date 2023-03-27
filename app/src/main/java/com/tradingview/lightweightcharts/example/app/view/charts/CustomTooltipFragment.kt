@@ -9,18 +9,29 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairLineOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
+import com.tradingview.lightweightcharts.api.options.models.gridLineOptions
+import com.tradingview.lightweightcharts.api.options.models.gridOptions
+import com.tradingview.lightweightcharts.api.options.models.layoutOptions
+import com.tradingview.lightweightcharts.api.options.models.priceScaleMargins
+import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
+import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
+import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
+import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.example.app.R
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.view.util.Tooltip
 import com.tradingview.lightweightcharts.example.app.viewmodel.FloatingTooltipViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 
-class FloatingTooltipFragment: Fragment() {
+class CustomTooltipFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.custom_tooltips
+
     private val viewModelProvider get() = ViewModelProvider(this)
     private lateinit var viewModel: FloatingTooltipViewModel
 

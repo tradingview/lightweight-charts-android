@@ -20,12 +20,16 @@ import com.tradingview.lightweightcharts.api.options.models.layoutOptions
 import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
 import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.SeriesMarkersViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 
-class SeriesMarkersFragment : Fragment() {
+class SeriesDataFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.data
+
 
     private lateinit var viewModel: SeriesMarkersViewModel
 

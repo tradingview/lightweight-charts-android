@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.common.CandlestickStyleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
@@ -53,4 +54,8 @@ data class CandlestickSeriesOptions(
 
 inline fun candlestickSeriesOptions(init: CandlestickSeriesOptions.() -> Unit): CandlestickSeriesOptions {
     return CandlestickSeriesOptions().apply(init)
+}
+
+inline fun SeriesApi.applyCandlestickSeriesOptions(init: CandlestickSeriesOptions.() -> Unit) {
+    applyOptions(CandlestickSeriesOptions().apply(init))
 }

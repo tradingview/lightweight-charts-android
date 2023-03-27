@@ -82,7 +82,7 @@ class SeriesInstanceMethod {
 
 class SetData extends SeriesInstanceMethod {
     constructor() {
-        super("setSeries", function(series, params, resolve) {
+        super("setSeries", function (series, params, resolve) {
             series.setData(params.data);
         });
     }
@@ -90,7 +90,7 @@ class SetData extends SeriesInstanceMethod {
 
 class RemoveSeries extends SeriesInstanceMethod {
     constructor(chart, seriesCache) {
-        super("removeSeries", function(series, params, resolve) {
+        super("removeSeries", function (series, params, resolve) {
             seriesCache.delete(params.seriesId);
             chart.removeSeries(series);
             resolve();
@@ -100,7 +100,7 @@ class RemoveSeries extends SeriesInstanceMethod {
 
 class PriceToCoordinate extends SeriesInstanceMethod {
     constructor() {
-        super("priceToCoordinate", function(series, params, resolve) {
+        super("priceToCoordinate", function (series, params, resolve) {
             resolve(series.priceToCoordinate(params.price));
         });
     }
@@ -108,7 +108,7 @@ class PriceToCoordinate extends SeriesInstanceMethod {
 
 class CoordinateToPrice extends SeriesInstanceMethod {
     constructor() {
-        super("coordinateToPrice", function(series, params, resolve) {
+        super("coordinateToPrice", function (series, params, resolve) {
             resolve(series.coordinateToPrice(input.params.coordinate));
         });
     }
@@ -116,7 +116,7 @@ class CoordinateToPrice extends SeriesInstanceMethod {
 
 class Options extends SeriesInstanceMethod {
     constructor(pluginManager) {
-        super("options", function(series, params, resolve) {
+        super("options", function (series, params, resolve) {
             let options = series.options();
 
             if (options.priceFormat.formatter !== undefined) {
@@ -136,7 +136,7 @@ class Options extends SeriesInstanceMethod {
 
 class SeriesType extends SeriesInstanceMethod {
     constructor() {
-        super("seriesType", function(series, params, resolve) {
+        super("seriesType", function (series, params, resolve) {
             resolve(series.seriesType());
         });
     }
@@ -144,7 +144,7 @@ class SeriesType extends SeriesInstanceMethod {
 
 class ApplyOptions extends SeriesInstanceMethod {
     constructor(priceFormatterService) {
-        super("applyOptions", function(series, params, resolve) {
+        super("applyOptionsSeries", function (series, params, resolve) {
             priceFormatterService.register(params, (paramsWithFormatter) => {
                 series.applyOptions(paramsWithFormatter.options);
                 resolve();
@@ -155,7 +155,7 @@ class ApplyOptions extends SeriesInstanceMethod {
 
 class SetMarkers extends SeriesInstanceMethod {
     constructor() {
-        super("setMarkers", function(series, params, resolve) {
+        super("setMarkers", function (series, params, resolve) {
             series.setMarkers(params.data);
         });
     }
@@ -166,7 +166,7 @@ class CreatePriceLine extends SeriesInstanceMethod {
         /**
          * {this} - raw input of method
          */
-        super("createPriceLine", function(series, params, resolve) {
+        super("createPriceLine", function (series, params, resolve) {
             let priceLine = series.createPriceLine(params.options);
             lineCache.set(this.input.uuid, priceLine);
         });
@@ -178,7 +178,7 @@ class RemovePriceLine extends SeriesInstanceMethod {
         /**
          * {this} - raw input of method
          */
-        super("removePriceLine", function(series, params, resolve) {
+        super("removePriceLine", function (series, params, resolve) {
             lineService.getLine(this.input, (line) => {
                 lineCache.delete(params.lineId);
                 series.removePriceLine(line);
@@ -189,7 +189,7 @@ class RemovePriceLine extends SeriesInstanceMethod {
 
 class Update extends SeriesInstanceMethod {
     constructor() {
-        super("update", function(series, params, resolve) {
+        super("update", function (series, params, resolve) {
             series.update(params.bar);
         });
     }
@@ -209,7 +209,7 @@ class PriceLineInstanceMethod {
 
 class PriceLineOptions extends PriceLineInstanceMethod {
     constructor() {
-        super("priceLineOptions", function(line, params, resolve) {
+        super("priceLineOptions", function (line, params, resolve) {
             resolve(line.options());
         });
     }
@@ -217,7 +217,7 @@ class PriceLineOptions extends PriceLineInstanceMethod {
 
 class PriceLineApplyOptions extends PriceLineInstanceMethod {
     constructor() {
-        super("priceLineApplyOptions", function(line, params, resolve) {
+        super("priceLineApplyOptions", function (line, params, resolve) {
             line.applyOptions(params.options);
         });
     }

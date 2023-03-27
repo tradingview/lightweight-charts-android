@@ -24,15 +24,17 @@ import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.VolumeStudyViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 
-class VolumeStudyFragment : Fragment() {
+class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.indicators_and_markers
 
     private val vm by lazy { ViewModelProvider(this)[VolumeStudyViewModel::class.java] }
-
 
     private lateinit var binding: LayoutChartFragmentBinding
 
@@ -54,14 +56,14 @@ class VolumeStudyFragment : Fragment() {
     private fun observeViewModelData() = vm.run {
         areaSeriesData.observe(viewLifecycleOwner) { data ->
             createAreaSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
-                this@VolumeStudyFragment.areaSeries.clear()
-                this@VolumeStudyFragment.areaSeries.add(series)
+                this@IndicatorsAndMarkersFragment.areaSeries.clear()
+                this@IndicatorsAndMarkersFragment.areaSeries.add(series)
             }
         }
         volumeSeriesData.observe(viewLifecycleOwner) { data ->
             createVolumeSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
-                this@VolumeStudyFragment.volumeSeries.clear()
-                this@VolumeStudyFragment.volumeSeries.add(series)
+                this@IndicatorsAndMarkersFragment.volumeSeries.clear()
+                this@IndicatorsAndMarkersFragment.volumeSeries.add(series)
             }
         }
 
