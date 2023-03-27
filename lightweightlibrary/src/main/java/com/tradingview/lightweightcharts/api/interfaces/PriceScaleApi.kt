@@ -25,6 +25,8 @@ interface PriceScaleApi {
      */
     fun applyOptions(options: PriceScaleOptions)
 
+    fun applyOptions(options: PriceScaleOptions.() -> Unit) = applyOptions(PriceScaleOptions().apply(options))
+
     /**
      * Returns currently applied options of the price scale
      * @param onOptionsReceived full set of currently applied options, including defaults

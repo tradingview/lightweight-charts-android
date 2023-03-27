@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         WebView.setWebContentsDebuggingEnabled(true)
         setContentView(ActivityMainBinding.inflate(layoutInflater).also { binding = it }.root)
         initializeNavigationDrawer()
-        startFragment(TimeScaleActionsFragment::class.java, false)
+        startFragment(ChartTypeFragment::class.java, false)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
