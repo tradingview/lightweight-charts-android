@@ -5,6 +5,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.COORDINATE_TO_PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.CREATE_PRICE_LINE
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.GET_MARKERS_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_SCALE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.REMOVE_PRICE_LINE
@@ -23,6 +24,7 @@ import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.serializer.Deserializer
 import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
+import com.tradingview.lightweightcharts.api.serializer.SeriesMarkersDeserializer
 import com.tradingview.lightweightcharts.api.serializer.SeriesTypeDeserializer
 import com.tradingview.lightweightcharts.api.series.common.PriceLine
 import com.tradingview.lightweightcharts.api.series.common.PriceLineDelegate
@@ -32,11 +34,11 @@ import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.version.ChartRuntimeObject
 
-class SeriesApiDelegate<T: SeriesOptionsCommon>(
+class SeriesApiDelegate<T : SeriesOptionsCommon>(
     override val uuid: String,
     private val controller: WebMessageController,
-    private val optionsDeserializer: Deserializer<out T>
-): SeriesApi, ChartRuntimeObject {
+    private val optionsDeserializer: Deserializer<out T>,
+) : SeriesApi, ChartRuntimeObject {
 
     override fun getVersion(): Int {
         return controller.hashCode()
@@ -112,6 +114,17 @@ class SeriesApiDelegate<T: SeriesOptionsCommon>(
                 SERIES_UUID to uuid,
                 DATA to data
             )
+        )
+    }
+
+    override fun markers(markersReceived: (List<SeriesMarker>) -> Unit) {
+        controller.callFunction(
+            GET_MARKERS_SERIES,
+            mapOf(
+                SERIES_UUID to uuid,
+            ),
+            callback = markersReceived,
+            deserializer = SeriesMarkersDeserializer()
         )
     }
 

@@ -45,6 +45,7 @@ export default class SeriesInstanceService {
             new SeriesType(),
             new ApplyOptions(this.priceFormatterService),
             new SetMarkers(),
+            new GetMarkers(),
             new CreatePriceLine(this.lineCache),
             new RemovePriceLine(this.lineService, this.lineCache),
             new Update()
@@ -157,6 +158,14 @@ class SetMarkers extends SeriesInstanceMethod {
     constructor() {
         super("setMarkers", function (series, params, resolve) {
             series.setMarkers(params.data);
+        });
+    }
+}
+
+class GetMarkers extends SeriesInstanceMethod {
+    constructor() {
+        super("getMarkersSeries", function (series, params, resolve) {
+            resolve(series.markers());
         });
     }
 }
