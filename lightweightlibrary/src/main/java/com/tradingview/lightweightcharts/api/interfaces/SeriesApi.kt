@@ -22,6 +22,7 @@ interface SeriesApi {
         const val APPLY_OPTIONS = "applyOptionsSeries"
         const val PRICE_SCALE_SERIES = "priceScaleSeries"
         const val SET_MARKERS = "setMarkers"
+        const val GET_MARKERS_SERIES = "getMarkersSeries"
         const val CREATE_PRICE_LINE = "createPriceLine"
         const val REMOVE_PRICE_LINE = "removePriceLine"
         const val UPDATE = "update"
@@ -94,6 +95,12 @@ interface SeriesApi {
      * Several markers with same time are allowed.
      */
     fun setMarkers(data: List<SeriesMarker>)
+
+
+    /**
+     * Returns an list of series markers.
+     */
+    fun markers(markersReceived: (List<SeriesMarker>) -> Unit)
 
     /**
      * Creates a new price line
