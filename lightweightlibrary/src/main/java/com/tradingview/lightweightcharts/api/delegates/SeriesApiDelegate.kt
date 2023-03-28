@@ -5,6 +5,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.COORDINATE_TO_PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.CREATE_PRICE_LINE
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.DATA_BY_INDEX_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.GET_MARKERS_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_SCALE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.PRICE_TO_COORDINATE
@@ -17,11 +18,15 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.BAR
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.DATA
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.LINE_ID
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.LOGICAL_INDEX
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.MISMATCH_DIRECTION
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
+import com.tradingview.lightweightcharts.api.options.enums.MismatchDirection
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
+import com.tradingview.lightweightcharts.api.serializer.ClassSimpleDeserializer
 import com.tradingview.lightweightcharts.api.serializer.Deserializer
 import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.api.serializer.SeriesMarkersDeserializer
@@ -105,6 +110,24 @@ class SeriesApiDelegate<T : SeriesOptionsCommon>(
             )
         )
         return PriceScaleApiDelegate(uuid, controller)
+    }
+
+    override fun <T : SeriesData> dataByIndex(
+        clazz: Class<T>,
+        logicalIndex: Int,
+        direction: MismatchDirection,
+        dataReceived: (T) -> Unit,
+    ) {
+        controller.callFunction(
+            DATA_BY_INDEX_SERIES,
+            mapOf(
+                SERIES_UUID to uuid,
+                LOGICAL_INDEX to logicalIndex,
+                MISMATCH_DIRECTION to direction.value
+            ),
+            callback = dataReceived,
+            deserializer = ClassSimpleDeserializer(clazz)
+        )
     }
 
     override fun setMarkers(data: List<SeriesMarker>) {
