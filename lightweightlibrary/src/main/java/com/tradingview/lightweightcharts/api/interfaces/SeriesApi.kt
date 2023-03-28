@@ -1,5 +1,6 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
+import com.tradingview.lightweightcharts.api.options.enums.MismatchDirection
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.series.common.PriceLine
@@ -21,6 +22,7 @@ interface SeriesApi {
         const val COORDINATE_TO_PRICE = "coordinateToPrice"
         const val APPLY_OPTIONS = "applyOptionsSeries"
         const val PRICE_SCALE_SERIES = "priceScaleSeries"
+        const val DATA_BY_INDEX_SERIES = "dataByIndexSeries"
         const val SET_MARKERS = "setMarkers"
         const val GET_MARKERS_SERIES = "getMarkersSeries"
         const val CREATE_PRICE_LINE = "createPriceLine"
@@ -37,6 +39,9 @@ interface SeriesApi {
         const val COORDINATE = "coordinate"
         const val OPTIONS = "options"
         const val BAR = "bar"
+        const val LOGICAL_INDEX = "logicalIndex"
+        const val MISMATCH_DIRECTION = "mismatchDirection"
+
     }
 
     val uuid: String
@@ -89,6 +94,16 @@ interface SeriesApi {
     fun update(bar: SeriesData)
 
     /**
+     * Returns a bar data by provided logical index.
+     */
+    fun <T : SeriesData> dataByIndex(
+        clazz: Class<T>,
+        logicalIndex: Int,
+        direction: MismatchDirection = MismatchDirection.None,
+        dataReceived: (T) -> Unit,
+    )
+
+    /**
      * Sets markers for the series
      * @param data array of series markers.
      * This array should be sorted by time.
@@ -120,3 +135,9 @@ interface SeriesApi {
      */
     fun seriesType(onSeriesTypeReceived: (SeriesType) -> Unit)
 }
+
+inline fun <reified T : SeriesData> SeriesApi.dataByIndex(
+    logicalIndex: Int,
+    direction: MismatchDirection = MismatchDirection.None,
+    noinline dataReceived: (T) -> Unit,
+) = dataByIndex(T::class.java, logicalIndex, direction, dataReceived)

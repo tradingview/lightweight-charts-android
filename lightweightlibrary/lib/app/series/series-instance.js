@@ -42,6 +42,7 @@ export default class SeriesInstanceService {
             new PriceToCoordinate(),
             new CoordinateToPrice(),
             new Options(),
+            new DataByIndex(),
             new SeriesType(),
             new ApplyOptions(this.priceFormatterService),
             new SetMarkers(),
@@ -150,6 +151,15 @@ class ApplyOptions extends SeriesInstanceMethod {
                 series.applyOptions(paramsWithFormatter.options);
                 resolve();
             });
+        });
+    }
+}
+
+class DataByIndex extends SeriesInstanceMethod {
+    constructor() {
+        super("dataByIndexSeries", function (series, params, resolve) {
+            const d = series.dataByIndex(params.logicalIndex, params.mismatchDirection)
+            resolve(d)
         });
     }
 }
