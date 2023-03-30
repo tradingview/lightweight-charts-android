@@ -15,21 +15,20 @@ export default class ChartRegistrationFunctionsController {
     }
 
     registerFunctions() {
-        const seriesFunctionManager = Locator.resolve(SeriesFunctionManager.name);
-        seriesFunctionManager.register();
+        const seriesFunctionManager = Locator.resolve(SeriesFunctionManager.name)
+        seriesFunctionManager.register()
 
         const subscriptions = new SubscriptionsFunctionManager(
             this.chart,
             this.functionManager,
             seriesFunctionManager
         )
-        subscriptions.register();
+        subscriptions.register()
 
-        const timeScale = Locator.resolve(TimeScaleFunctionManager.name);
-        timeScale.register();
-        const priceScale = Locator.resolve(PriceScaleFunctionManager.name);
-        priceScale.register();
-
+        const timeScale = Locator.resolve(TimeScaleFunctionManager.name)
+        timeScale.register()
+        const priceScale = Locator.resolve(PriceScaleFunctionManager.name)
+        priceScale.register()
 
         this.functionManager.registerFunction("remove", (params, resolve) => {
             this.cache.clear()

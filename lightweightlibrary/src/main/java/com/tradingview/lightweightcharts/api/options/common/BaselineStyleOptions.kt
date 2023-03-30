@@ -58,7 +58,6 @@ interface BaselineStyleOptions {
 
     /**
      * Line type.
-     *
      */
     val lineType: LineType?
 

@@ -33,6 +33,5 @@ class ContainerWrapper {
 }
 
 export const Locator = new ServiceLocator();
-window.locator = Locator
 
 import './locator-component';
