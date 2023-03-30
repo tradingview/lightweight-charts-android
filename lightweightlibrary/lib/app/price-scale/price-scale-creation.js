@@ -8,8 +8,8 @@ export default class PriceScaleCreationService {
      * 
      * @param {ServiceLocator} locator 
      */
-    constructor(locator,) {
-        this.chart = locator.resolve("chart");
+    constructor(locator) {
+        this.chart = locator.resolve("chart")
         this.pricescalesCache = locator.resolve(PriceScaleCache.name);
         this.seriesCache = locator.resolve(SeriesCache.name);
         this.functionManager = locator.resolve(FunctionManager.name);
