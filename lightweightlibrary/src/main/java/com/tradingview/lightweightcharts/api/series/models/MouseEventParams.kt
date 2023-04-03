@@ -20,6 +20,10 @@ data class MouseEventParams(
      */
     val seriesData: List<BarPrices>? = null,
 
+    /**
+     * The SeriesApi uuid at the point of the mouse event.
+     */
+    val hoveredSeries: String? = null,
 
     /**
      * The underlying source mouse or touch event data, if available

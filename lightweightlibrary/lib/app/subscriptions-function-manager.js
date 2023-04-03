@@ -56,6 +56,10 @@ export default class SubscriptionsFunctionManager {
                         })
                         params.seriesData = customSeries
 
+                        if (params.hoveredSeries) {
+                            params.hoveredSeries = this.seriesFunctionManager.getSeriesId(params.hoveredSeries, input)
+                        }
+
                         callback(params)
                     }
                     chart.subscribeCrosshairMove(subscription)
