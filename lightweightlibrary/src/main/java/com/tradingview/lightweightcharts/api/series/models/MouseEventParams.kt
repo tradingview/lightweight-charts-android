@@ -18,7 +18,7 @@ data class MouseEventParams(
     /**
      * Data of all series at the location of the event in the chart.
      */
-    val seriesPrices: List<BarPrices>? = null,
+    val seriesData: List<BarPrices>? = null,
 
 
     /**

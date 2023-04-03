@@ -22,12 +22,12 @@ import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
 import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
-import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.view.util.Tooltip
 import com.tradingview.lightweightcharts.example.app.viewmodel.FloatingTooltipViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
+import java.text.SimpleDateFormat
 
 class CustomTooltipFragment : Fragment(), ITitleFragment {
     override val fragmentTitleRes = R.string.custom_tooltips
@@ -36,6 +36,8 @@ class CustomTooltipFragment : Fragment(), ITitleFragment {
     private lateinit var viewModel: FloatingTooltipViewModel
 
     private lateinit var areaSeries: SeriesApi
+
+    private val dateFormat by lazy { SimpleDateFormat.getDateInstance() }
 
     private val tooltip get() = requireView().findViewById<Tooltip>(R.id.tooltip)
     private val chartsView get() = requireView().findViewById<ChartsView>(R.id.charts_view)
@@ -106,7 +108,7 @@ class CustomTooltipFragment : Fragment(), ITitleFragment {
 
 
     private val onCrosshairMove: (MouseEventParams) -> Unit = onCrosshairMove@{ mouseEventParams ->
-        val prices = mouseEventParams.seriesPrices
+        val prices = mouseEventParams.seriesData
         if (prices.isNullOrEmpty()) {
             tooltip.visibility = View.GONE
             return@onCrosshairMove
@@ -116,8 +118,8 @@ class CustomTooltipFragment : Fragment(), ITitleFragment {
 
         val price = prices.first().prices.value ?: 0f
 
-        val businessDay = mouseEventParams.time as Time.BusinessDay
-        val time = "${businessDay.year}-${businessDay.month}-${businessDay.day}"
+        val crosshairDate = mouseEventParams.time!!.date
+        val time = dateFormat.format(crosshairDate)
 
         areaSeries.priceToCoordinate(price) { coordinate ->
             if (coordinate == null) {
