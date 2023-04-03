@@ -1,4 +1,4 @@
-import { logger } from './logger.js'
+import {logger} from './logger.js'
 
 export default class SubscriptionsFunctionManager {
 
@@ -16,7 +16,7 @@ export default class SubscriptionsFunctionManager {
                     const subscription = (params) => {
                         let customSeries = []
                         params.seriesPrices.forEach((value, key, map) => {
-                            customSeries.push({ id: this.seriesFunctionManager.getSeriesId(key, input), prices: value })
+                            customSeries.push({id: this.seriesFunctionManager.getSeriesId(key, input), prices: value})
                         })
                         params.seriesPrices = customSeries
                         callback(params)
@@ -45,11 +45,21 @@ export default class SubscriptionsFunctionManager {
                 try {
                     console.error(this.seriesFunctionManager)
                     const subscription = (params) => {
+                        params.sourceEvent = this.selectProps(
+                            "clientX", "clientY", "pageX", "pageY", "screenX", "screenY",
+                            "localX", "localY", "ctrlKey", "altKey", "shiftKey", "metaKey"
+                        )(params.sourceEvent)
+
                         let customSeries = []
-                        params.seriesPrices.forEach((value, key, map) => {
-                            customSeries.push({ id: this.seriesFunctionManager.getSeriesId(key, input), prices: value })
+                        params.seriesData.forEach((value, key, map) => {
+                            customSeries.push({id: this.seriesFunctionManager.getSeriesId(key, input), prices: value})
                         })
-                        params.seriesPrices = customSeries
+                        params.seriesData = customSeries
+
+                        if (params.hoveredSeries) {
+                            params.hoveredSeries = this.seriesFunctionManager.getSeriesId(params.hoveredSeries, input)
+                        }
+
                         callback(params)
                     }
                     chart.subscribeCrosshairMove(subscription)
@@ -70,5 +80,18 @@ export default class SubscriptionsFunctionManager {
             }
         )
     }
+
+
+    selectProps(...props) {
+        return function (obj) {
+            const newObj = {};
+            props.forEach(name => {
+                newObj[name] = obj[name];
+            });
+
+            return newObj;
+        }
+    }
+
 
 }
