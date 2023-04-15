@@ -9,53 +9,53 @@ data class TouchMouseEventData(
     /**
      * The X coordinate of the mouse pointer in local (DOM content) coordinates.
      */
-    var clientX: Float,
+    var clientX: Float?,
     /**
      * The Y coordinate of the mouse pointer in local (DOM content) coordinates.
      */
-    var clientY: Float,
+    var clientY: Float?,
     /**
      * The X coordinate of the mouse pointer relative to the whole document.
      */
-    var pageX: Float,
+    var pageX: Float?,
     /**
      * The Y coordinate of the mouse pointer relative to the whole document.
      */
-    var pageY: Float,
+    var pageY: Float?,
     /**
      * The X coordinate of the mouse pointer in global (screen) coordinates.
      * The X coordinate of the mouse pointer in global (screen) coordinates.
      */
-    var screenX: Float,
+    var screenX: Float?,
     /**
      * The Y coordinate of the mouse pointer in global (screen) coordinates.
      */
-    var screenY: Float,
+    var screenY: Float?,
     /**
      * The X coordinate of the mouse pointer relative to the chart / price axis / time axis canvas element.
      */
-    var localX: Float,
+    var localX: Float?,
     /**
      * The Y coordinate of the mouse pointer relative to the chart / price axis / time axis canvas element.
      */
-    var localY: Float,
+    var localY: Float?,
 
     /**
      * Returns a boolean value that is true if the Ctrl key was active when the key event was generated.
      */
-    var ctrlKey: Boolean,
+    var ctrlKey: Boolean?,
     /**
      * Returns a boolean value that is true if the Alt (Option or ⌥ on macOS) key was active when the
      * key event was generated.
      */
-    var altKey: Boolean,
+    var altKey: Boolean?,
     /**
      * Returns a boolean value that is true if the Shift key was active when the key event was generated.
      */
-    var shiftKey: Boolean,
+    var shiftKey: Boolean?,
     /**
      * Returns a boolean value that is true if the Meta key (on Mac keyboards, the ⌘ Command key; on
      * Windows keyboards, the Windows key (⊞)) was active when the key event was generated.
      */
-    var metaKey: Boolean,
+    var metaKey: Boolean?,
     )
