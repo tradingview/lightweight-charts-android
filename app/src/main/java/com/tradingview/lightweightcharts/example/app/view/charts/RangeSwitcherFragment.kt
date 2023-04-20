@@ -45,6 +45,7 @@ class RangeSwitcherFragment : Fragment(), ITitleFragment {
             when (state) {
                 is ChartsView.State.Preparing -> Unit
                 is ChartsView.State.Ready -> {
+                    curSeries = null
                     vm.seriesDailyAreaData.observe(viewLifecycleOwner) { data ->
                         rangeIndex = 0
                     }

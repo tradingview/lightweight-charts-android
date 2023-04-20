@@ -63,6 +63,7 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
                 is ChartsView.State.Preparing -> Unit
                 is ChartsView.State.Ready -> {
                     vm.seriesBarData.observe(viewLifecycleOwner) { data ->
+                        curSeries = null
                         chartTypeIndex = 0
                     }
                 }
@@ -82,7 +83,7 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
 
 
     private fun refreshUI() {
-        if (chartTypeIndex == null)
+        if (!isAdded || chartTypeIndex == null)
             return
 
         chartApi.applyRandOptions()
