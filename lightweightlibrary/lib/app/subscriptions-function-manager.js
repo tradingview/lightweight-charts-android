@@ -39,11 +39,9 @@ export default class SubscriptionsFunctionManager {
             }
         )
 
-        this.functionManager.registerSubscription(
-            "subscribeCrosshairMove",
+        this.functionManager.registerSubscription("subscribeCrosshairMove",
             (input, callback) => {
                 try {
-                    console.error(this.seriesFunctionManager)
                     const subscription = (params) => {
                         params.sourceEvent = this.selectProps(
                             "clientX", "clientY", "pageX", "pageY", "screenX", "screenY",
@@ -86,7 +84,9 @@ export default class SubscriptionsFunctionManager {
         return function (obj) {
             const newObj = {};
             props.forEach(name => {
-                newObj[name] = obj[name];
+                if (obj && obj.hasOwnProperty(name)) {
+                    newObj[name] = obj[name];
+                }
             });
 
             return newObj;
