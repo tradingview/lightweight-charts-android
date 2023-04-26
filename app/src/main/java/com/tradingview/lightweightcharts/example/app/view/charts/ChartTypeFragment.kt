@@ -67,6 +67,7 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
                         chartTypeIndex = 0
                     }
                 }
+
                 is ChartsView.State.Error -> {
                     Toast.makeText(context, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
                 }
@@ -79,11 +80,15 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
             }
         }
 
+        vm.seriesBarData.observe(viewLifecycleOwner) {
+            refreshUI()
+        }
+
     }
 
 
     private fun refreshUI() {
-        if (!isAdded || chartTypeIndex == null)
+        if (!isAdded || chartTypeIndex == null || vm.seriesBarData.value == null)
             return
 
         chartApi.applyRandOptions()

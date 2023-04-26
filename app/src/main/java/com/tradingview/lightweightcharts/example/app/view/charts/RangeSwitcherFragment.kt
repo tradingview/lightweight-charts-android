@@ -50,6 +50,7 @@ class RangeSwitcherFragment : Fragment(), ITitleFragment {
                         rangeIndex = 0
                     }
                 }
+
                 is ChartsView.State.Error -> {
                     Toast.makeText(context, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
                 }
@@ -66,7 +67,7 @@ class RangeSwitcherFragment : Fragment(), ITitleFragment {
 
 
     private fun refreshUI() {
-        if (rangeIndex == null)
+        if (rangeIndex == null || vm.seriesDailyAreaData.value == null)
             return
 
         rangeChips.forEachIndexed { index, chip ->
@@ -81,7 +82,7 @@ class RangeSwitcherFragment : Fragment(), ITitleFragment {
             else -> vm.seriesDailyAreaData.value!!.list
         }
 
-        if (curSeries==null){
+        if (curSeries == null) {
             chartApi.addAreaSeries { series ->
                 curSeries = series
 
@@ -94,7 +95,7 @@ class RangeSwitcherFragment : Fragment(), ITitleFragment {
                     bottomColor = resources.randomColorTransparent(R.array.blue_array)
                 }
             }
-        }else {
+        } else {
             curSeries?.apply {
                 setData(data)
             }
