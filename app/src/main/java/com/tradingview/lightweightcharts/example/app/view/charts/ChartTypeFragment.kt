@@ -96,7 +96,10 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
             chip.isChecked = index == chartTypeIndex
         }
 
-        curSeries?.let { chartApi.removeSeries(it) }
+        curSeries?.let {
+            chartApi.removeSeries(it)
+            curSeries = null
+        }
         when (chartTypeIndex) {
             0 -> addCandleSeries()
             1 -> addLineSeries()
