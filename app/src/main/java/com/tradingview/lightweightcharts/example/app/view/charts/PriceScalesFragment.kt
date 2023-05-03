@@ -9,35 +9,49 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
+import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.options.models.LineSeriesOptions
+import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairLineOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
+import com.tradingview.lightweightcharts.api.options.models.gridLineOptions
+import com.tradingview.lightweightcharts.api.options.models.gridOptions
+import com.tradingview.lightweightcharts.api.options.models.handleScrollOptions
+import com.tradingview.lightweightcharts.api.options.models.layoutOptions
+import com.tradingview.lightweightcharts.api.options.models.priceScaleMargins
+import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
+import com.tradingview.lightweightcharts.api.series.enums.LastPriceAnimationMode
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
-import com.tradingview.lightweightcharts.api.series.enums.LastPriceAnimationMode
 import com.tradingview.lightweightcharts.example.app.R
+import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.PriceLinesWithTitlesViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
-import kotlinx.android.synthetic.main.layout_chart_fragment.*
 
-class PriceLinesWithTitlesFragment: Fragment() {
+class PriceScalesFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.price_scales
 
     private lateinit var viewModel: PriceLinesWithTitlesViewModel
 
+    private lateinit var binding: LayoutChartFragmentBinding
+
     private var series: MutableList<SeriesApi> = mutableListOf()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.layout_chart_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return LayoutChartFragmentBinding.inflate(inflater, container, false)
+            .also { binding = it }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         provideViewModel()
         observeViewModelData()
-        subscribeOnChartReady(charts_view)
+        subscribeOnChartReady(binding.chartsView)
         applyChartOptions()
     }
 
@@ -47,7 +61,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
 
     private fun observeViewModelData() {
         viewModel.seriesData.observe(viewLifecycleOwner) { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
+            createSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
                 this.series.clear()
                 this.series.add(series)
 
@@ -86,7 +100,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
                     )
                 )
 
-                charts_view.api.timeScale.fitContent()
+                binding.chartsView.api.timeScale.fitContent()
             }
         }
     }
@@ -106,7 +120,7 @@ class PriceLinesWithTitlesFragment: Fragment() {
     }
 
     private fun applyChartOptions() {
-        charts_view.api.applyOptions {
+        binding.chartsView.api.applyOptions {
             layout = layoutOptions {
                 textColor = Color.parseColor("#d1d4dc").toIntColor()
                 background = SolidColor(Color.BLACK)
@@ -143,24 +157,24 @@ class PriceLinesWithTitlesFragment: Fragment() {
     }
 
     private fun createSeriesWithData(
-            data: Data,
-            priceScale: PriceScaleId,
-            chartApi: ChartApi,
-            onSeriesCreated: (SeriesApi) -> Unit
+        data: Data,
+        priceScale: PriceScaleId,
+        chartApi: ChartApi,
+        onSeriesCreated: (SeriesApi) -> Unit,
     ) {
         chartApi.addLineSeries(
-                options = LineSeriesOptions(
-                        color = Color.rgb(0, 120, 255).toIntColor(),
-                        lineWidth = LineWidth.TWO,
-                        crosshairMarkerVisible = false,
-                        lastValueVisible = false,
-                        priceLineVisible = false,
-                        lastPriceAnimation = LastPriceAnimationMode.CONTINUOUS
-                ),
-                onSeriesCreated = { api ->
-                    api.setData(data.list)
-                    onSeriesCreated(api)
-                }
+            options = LineSeriesOptions(
+                color = Color.rgb(0, 120, 255).toIntColor(),
+                lineWidth = LineWidth.TWO,
+                crosshairMarkerVisible = false,
+                lastValueVisible = false,
+                priceLineVisible = false,
+                lastPriceAnimation = LastPriceAnimationMode.CONTINUOUS
+            ),
+            onSeriesCreated = { api ->
+                api.setData(data.list)
+                onSeriesCreated(api)
+            }
         )
     }
 }

@@ -1,6 +1,4 @@
 import FunctionManager from '../function-manager.js';
-import { logger } from '../logger.js'
-import ServiceLocator from '../service-locator/locator.js';
 import SeriesCache from './series-cache.js';
 import SeriesCreationService from './series-creation.js'
 import SeriesInstanceService from './series-instance.js';

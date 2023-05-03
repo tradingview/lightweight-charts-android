@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,49 +7,60 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.VerticalGradientColor
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
+import com.tradingview.lightweightcharts.api.options.models.ChartOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairLineOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
+import com.tradingview.lightweightcharts.api.options.models.gridLineOptions
+import com.tradingview.lightweightcharts.api.options.models.gridOptions
+import com.tradingview.lightweightcharts.api.options.models.layoutOptions
+import com.tradingview.lightweightcharts.api.options.models.watermarkOptions
+import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
-import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.databinding.FragmentCustomThemeChartBinding
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
+import com.tradingview.lightweightcharts.example.app.view.util.random
+import com.tradingview.lightweightcharts.example.app.view.util.randomColor
+import com.tradingview.lightweightcharts.example.app.view.util.randomColorTransparent
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomThemesViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
-import kotlinx.android.synthetic.main.layout_themes_chart_fragment.*
 
-class CustomThemesFragment: Fragment() {
+class CustomThemesFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.custom_themes
 
-    private lateinit var viewModel: CustomThemesViewModel
+    private val vm by lazy { ViewModelProvider(this).get(CustomThemesViewModel::class.java) }
+    private lateinit var binding: FragmentCustomThemeChartBinding
 
-    private var series: MutableList<SeriesApi> = mutableListOf()
+    private val chartApi get() = binding.chartsView.api
+    private var seriesApi: SeriesApi? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.layout_themes_chart_fragment, container, false)
+    private val themeChips get() = binding.run { listOf(chipDark, chipLight, chipColorful) }
+    private var themeIndex: Int? = null
+        set(value) {
+            field = value
+            refreshUI()
+        }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return FragmentCustomThemeChartBinding.inflate(inflater, container, false)
+            .also { binding = it }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        provideViewModel()
         observeViewModelData()
-        subscribeOnChartReady(charts_view)
-        applyChartOptions()
-        dark_theme_btn.setOnClickListener { applyThemeOptions(darkThemeOptions) }
-        light_theme_btn.setOnClickListener { applyThemeOptions(lightThemeOptions) }
-    }
+        subscribeOnChartReady(binding.chartsView)
 
-    private fun provideViewModel() {
-        viewModel = ViewModelProvider(this).get(CustomThemesViewModel::class.java)
-    }
 
-    private fun observeViewModelData() {
-        viewModel.seriesData.observe(viewLifecycleOwner, { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, charts_view.api) { series ->
-                this.series.clear()
-                this.series.add(series)
+        themeChips.forEachIndexed { index, chip ->
+            chip.setOnClickListener {
+                themeIndex = index
             }
-        })
+        }
     }
 
     private fun subscribeOnChartReady(view: ChartsView) {
@@ -67,79 +77,126 @@ class CustomThemesFragment: Fragment() {
         }
     }
 
-    private val darkThemeOptions: ChartOptions.() -> Unit = {
-        layout = layoutOptions {
-            backgroundColor = Color.parseColor("#2B2B43").toIntColor()
-            textColor = Color.parseColor("#D9D9D9").toIntColor()
-        }
-        watermark = watermarkOptions {
-            color = Color.argb(0, 0, 0, 0).toIntColor()
-        }
-        crosshair = crosshairOptions {
-            vertLine = crosshairLineOptions {
-                color = Color.parseColor("#758696").toIntColor()
-                labelBackgroundColor = Color.parseColor("#758696").toIntColor()
-            }
-            horzLine = crosshairLineOptions {
-                color = Color.parseColor("#758696").toIntColor()
-                labelBackgroundColor = Color.parseColor("#758696").toIntColor()
-            }
-        }
-        grid = gridOptions {
-            vertLines = gridLineOptions {
-                color = Color.parseColor("#2B2B43").toIntColor()
-            }
-            horzLines = gridLineOptions {
-                color = Color.parseColor("#363C4E").toIntColor()
-            }
-        }
-    }
-
-    private val lightThemeOptions: ChartOptions.() -> Unit = {
-        layout = layoutOptions {
-            backgroundColor = Color.WHITE.toIntColor()
-            textColor = Color.parseColor("#191919").toIntColor()
-        }
-        watermark = watermarkOptions {
-            color = Color.argb(0, 0, 0, 0).toIntColor()
-        }
-        grid = gridOptions {
-            vertLines = gridLineOptions {
-                visible = false
-            }
-            horzLines = gridLineOptions {
-                color = Color.parseColor("#f0f3fa").toIntColor()
-            }
-        }
-    }
-
-    private fun createSeriesWithData(
-            data: Data,
-            priceScale: PriceScaleId,
-            chartApi: ChartApi,
-            onSeriesCreated: (SeriesApi) -> Unit
-    ) {
-        chartApi.addAreaSeries(
-                options = AreaSeriesOptions(
-                        topColor = Color.argb(143, 33, 150, 243).toIntColor(),
-                        bottomColor = Color.argb(10, 33, 150, 243).toIntColor(),
-                        lineColor = Color.argb(204, 33, 150, 243).toIntColor(),
-                        lineWidth = LineWidth.TWO,
-                ),
+    private fun observeViewModelData() {
+        vm.seriesData.observe(viewLifecycleOwner) { data ->
+            chartApi.addAreaSeries(
+                options = blueAreaSeriesOptions(),
                 onSeriesCreated = { api ->
+                    seriesApi = api
                     api.setData(data.list)
-                    onSeriesCreated(api)
+                    themeIndex = 0
                 }
+            )
+        }
+    }
+
+
+    private fun refreshUI() {
+        if (themeIndex == null)
+            return
+
+        themeChips.forEachIndexed { index, chip ->
+            chip.isChecked = index == themeIndex
+        }
+
+        chartApi.applyOptions {
+            when (themeIndex) {
+                0 -> darkThemeOptions()
+                1 -> lightThemeOptions()
+                2 -> colorfulThemeOptions()
+            }
+        }
+        seriesApi?.applyOptions(
+            when (themeIndex) {
+                2 -> colorfulAreaSeriesOptions()
+                else -> blueAreaSeriesOptions()
+            }
         )
     }
 
-    private fun applyChartOptions() {
-        applyThemeOptions(darkThemeOptions)
-    }
-
-    private fun applyThemeOptions(theme: ChartOptions.() -> Unit) {
-        charts_view.api.applyOptions {
-            theme.invoke(this)
+    private fun ChartOptions.darkThemeOptions() {
+        layout = layoutOptions {
+            background = SolidColor(resources.randomColor(R.array.dark_gray_array))
+            textColor = resources.randomColor(R.array.white_array)
+        }
+        watermark = watermarkOptions {
+            color = resources.randomColorTransparent(R.array.white_array)
+        }
+        crosshair = crosshairOptions {
+            vertLine = crosshairLineOptions {
+                color = resources.randomColor(R.array.cyan_array)
+                labelBackgroundColor = resources.randomColor(R.array.cyan_array)
+            }
+            horzLine = crosshairLineOptions {
+                color = resources.randomColor(R.array.cyan_array)
+                labelBackgroundColor = resources.randomColor(R.array.cyan_array)
+            }
+        }
+        grid = gridOptions {
+            vertLines = gridLineOptions {
+                color = resources.randomColor(R.array.cyan_array)
+            }
+            horzLines = gridLineOptions {
+                color = resources.randomColor(R.array.cyan_array)
+            }
         }
     }
+
+    private fun ChartOptions.lightThemeOptions() {
+        layout = layoutOptions {
+            background = SolidColor(resources.randomColor(R.array.white_array))
+            textColor = resources.randomColor(R.array.dark_gray_array)
+        }
+        watermark = watermarkOptions {
+            color = resources.randomColorTransparent(R.array.dark_gray_array)
+        }
+        grid = gridOptions {
+            vertLines = gridLineOptions {
+                color = resources.randomColor(R.array.cyan_array)
+            }
+            horzLines = gridLineOptions {
+                color = resources.randomColor(R.array.cyan_array)
+            }
+        }
+    }
+
+
+    private fun ChartOptions.colorfulThemeOptions() {
+        layout = layoutOptions {
+            background = VerticalGradientColor(
+                resources.randomColorTransparent(R.array.cyan_array),
+                resources.randomColorTransparent(R.array.blue_array),
+            )
+            textColor = resources.randomColor(R.array.dark_gray_array)
+        }
+        grid = gridOptions {
+            vertLines = gridLineOptions {
+                color = resources.randomColor(R.array.all_colorful)
+                style = LineStyle.random()
+            }
+            horzLines = gridLineOptions {
+                color = resources.randomColor(R.array.all_colorful)
+                style = LineStyle.random()
+            }
+        }
+    }
+
+    private fun blueAreaSeriesOptions(): AreaSeriesOptions =
+        AreaSeriesOptions(
+            topColor = resources.randomColor(R.array.blue_array),
+            bottomColor = resources.randomColorTransparent(R.array.blue_array),
+            lineColor = resources.randomColor(R.array.blue_array),
+            lineWidth = LineWidth.TWO,
+        )
+
+
+    private fun colorfulAreaSeriesOptions(): AreaSeriesOptions =
+        AreaSeriesOptions(
+            topColor = resources.randomColor(R.array.all_colorful),
+            bottomColor = resources.randomColorTransparent(R.array.all_colorful),
+            lineColor = resources.randomColor(R.array.all_colorful),
+            lineWidth = LineWidth.TWO,
+        )
+
+
 }

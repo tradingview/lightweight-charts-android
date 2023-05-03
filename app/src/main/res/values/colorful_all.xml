@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="all_colorful">
+        <item>@color/red_1</item>
+        <item>@color/red_2</item>
+        <item>@color/red_3</item>
+        <item>@color/red_4</item>
+        <item>@color/red_5</item>
+        <item>@color/blue_1</item>
+        <item>@color/blue_2</item>
+        <item>@color/blue_3</item>
+        <item>@color/blue_4</item>
+        <item>@color/blue_5</item>
+        <item>@color/green_1</item>
+        <item>@color/green_2</item>
+        <item>@color/green_3</item>
+        <item>@color/green_4</item>
+        <item>@color/green_5</item>
+        <item>@color/cyan_1</item>
+        <item>@color/cyan_2</item>
+        <item>@color/cyan_3</item>
+        <item>@color/cyan_4</item>
+        <item>@color/cyan_5</item>
+        <item>@color/dark_cyan_1</item>
+        <item>@color/dark_cyan_2</item>
+        <item>@color/dark_cyan_3</item>
+        <item>@color/dark_cyan_4</item>
+        <item>@color/dark_cyan_5</item>
+    </array>
+
+</resources>

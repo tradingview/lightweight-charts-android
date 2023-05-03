@@ -9,22 +9,35 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.options.models.*
-import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairLineOptions
+import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
+import com.tradingview.lightweightcharts.api.options.models.gridLineOptions
+import com.tradingview.lightweightcharts.api.options.models.gridOptions
+import com.tradingview.lightweightcharts.api.options.models.layoutOptions
+import com.tradingview.lightweightcharts.api.options.models.priceScaleMargins
+import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
+import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
+import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
 import com.tradingview.lightweightcharts.example.app.R
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.view.util.Tooltip
 import com.tradingview.lightweightcharts.example.app.viewmodel.FloatingTooltipViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
+import java.text.SimpleDateFormat
 
-class FloatingTooltipFragment: Fragment() {
+class CustomTooltipFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.custom_tooltips
+
     private val viewModelProvider get() = ViewModelProvider(this)
     private lateinit var viewModel: FloatingTooltipViewModel
 
     private lateinit var areaSeries: SeriesApi
+
+    private val dateFormat by lazy { SimpleDateFormat.getDateInstance() }
 
     private val tooltip get() = requireView().findViewById<Tooltip>(R.id.tooltip)
     private val chartsView get() = requireView().findViewById<ChartsView>(R.id.charts_view)
@@ -95,7 +108,7 @@ class FloatingTooltipFragment: Fragment() {
 
 
     private val onCrosshairMove: (MouseEventParams) -> Unit = onCrosshairMove@{ mouseEventParams ->
-        val prices = mouseEventParams.seriesPrices
+        val prices = mouseEventParams.seriesData
         if (prices.isNullOrEmpty()) {
             tooltip.visibility = View.GONE
             return@onCrosshairMove
@@ -105,8 +118,8 @@ class FloatingTooltipFragment: Fragment() {
 
         val price = prices.first().prices.value ?: 0f
 
-        val businessDay = mouseEventParams.time as Time.BusinessDay
-        val time = "${businessDay.year}-${businessDay.month}-${businessDay.day}"
+        val crosshairDate = mouseEventParams.time!!.date
+        val time = dateFormat.format(crosshairDate)
 
         areaSeries.priceToCoordinate(price) { coordinate ->
             if (coordinate == null) {

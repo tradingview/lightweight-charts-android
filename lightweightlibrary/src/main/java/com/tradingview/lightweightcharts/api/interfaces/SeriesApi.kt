@@ -1,9 +1,10 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
-import com.tradingview.lightweightcharts.api.series.common.SeriesData
-import com.tradingview.lightweightcharts.api.series.common.PriceLine
-import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
+import com.tradingview.lightweightcharts.api.options.enums.MismatchDirection
 import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
+import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
+import com.tradingview.lightweightcharts.api.series.common.PriceLine
+import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 
@@ -19,8 +20,11 @@ interface SeriesApi {
         const val SET_SERIES = "setSeries"
         const val PRICE_TO_COORDINATE = "priceToCoordinate"
         const val COORDINATE_TO_PRICE = "coordinateToPrice"
-        const val APPLY_OPTIONS = "applyOptions"
+        const val APPLY_OPTIONS = "applyOptionsSeries"
+        const val PRICE_SCALE_SERIES = "priceScaleSeries"
+        const val DATA_BY_INDEX_SERIES = "dataByIndexSeries"
         const val SET_MARKERS = "setMarkers"
+        const val GET_MARKERS_SERIES = "getMarkersSeries"
         const val CREATE_PRICE_LINE = "createPriceLine"
         const val REMOVE_PRICE_LINE = "removePriceLine"
         const val UPDATE = "update"
@@ -35,6 +39,9 @@ interface SeriesApi {
         const val COORDINATE = "coordinate"
         const val OPTIONS = "options"
         const val BAR = "bar"
+        const val LOGICAL_INDEX = "logicalIndex"
+        const val MISMATCH_DIRECTION = "mismatchDirection"
+
     }
 
     val uuid: String
@@ -66,6 +73,11 @@ interface SeriesApi {
     fun options(onOptionsReceived: (SeriesOptionsCommon) -> Unit)
 
     /**
+     * Returns interface of the price scale the series is currently attached
+     */
+    fun priceScale(): PriceScaleApi
+
+    /**
      * Sets or replaces series data
      * @param data ordered (earlier time point goes first) array of data items.
      * Old data is fully replaced with the new one.
@@ -82,12 +94,28 @@ interface SeriesApi {
     fun update(bar: SeriesData)
 
     /**
+     * Returns a bar data by provided logical index.
+     */
+    fun <T : SeriesData> dataByIndex(
+        clazz: Class<T>,
+        logicalIndex: Int,
+        direction: MismatchDirection = MismatchDirection.None,
+        dataReceived: (T) -> Unit,
+    )
+
+    /**
      * Sets markers for the series
      * @param data array of series markers.
      * This array should be sorted by time.
      * Several markers with same time are allowed.
      */
     fun setMarkers(data: List<SeriesMarker>)
+
+
+    /**
+     * Returns an list of series markers.
+     */
+    fun markers(markersReceived: (List<SeriesMarker>) -> Unit)
 
     /**
      * Creates a new price line
@@ -107,3 +135,9 @@ interface SeriesApi {
      */
     fun seriesType(onSeriesTypeReceived: (SeriesType) -> Unit)
 }
+
+inline fun <reified T : SeriesData> SeriesApi.dataByIndex(
+    logicalIndex: Int,
+    direction: MismatchDirection = MismatchDirection.None,
+    noinline dataReceived: (T) -> Unit,
+) = dataByIndex(T::class.java, logicalIndex, direction, dataReceived)

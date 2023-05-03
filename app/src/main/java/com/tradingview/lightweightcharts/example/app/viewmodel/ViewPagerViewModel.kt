@@ -29,6 +29,10 @@ class ViewPagerViewModel : ViewModel() {
                     val areaSeriesData = staticRepository.getListAreaSeriesData()
                     data.postValue(Data(areaSeriesData, SeriesType.AREA))
                 }
+                SeriesType.LINE -> TODO()
+                SeriesType.CANDLESTICK -> TODO()
+                SeriesType.BAR -> TODO()
+                SeriesType.HISTOGRAM -> TODO()
             }
         }
     }

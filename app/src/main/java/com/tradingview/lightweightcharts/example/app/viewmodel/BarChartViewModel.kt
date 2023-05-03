@@ -9,23 +9,28 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 
-class BarChartViewModel: ViewModel() {
+class BarChartViewModel : ViewModel() {
 
     private val staticRepository = StaticRepository()
 
-    val seriesData: LiveData<Data>
-        get() = data
+    val seriesBarData: LiveData<Data> get() = barData
+    private val barData = MutableLiveData<Data>()
 
-    private val data: MutableLiveData<Data> by lazy {
-        MutableLiveData<Data>().also {
-            loadData()
-        }
+    val seriesAreaData: LiveData<Data> get() = areaData
+    private val areaData = MutableLiveData<Data>()
+
+    fun init() {
+        loadData()
     }
 
     private fun loadData() {
         viewModelScope.launch {
             val barData = staticRepository.getBarChartSeriesData()
-            data.postValue(Data(barData, SeriesType.BAR))
+            this@BarChartViewModel.barData.postValue(Data(barData, SeriesType.BAR))
+
+
+            val areaData = staticRepository.getVolumeStudyAreaData()
+            this@BarChartViewModel.areaData.postValue(Data(areaData, SeriesType.AREA))
         }
     }
 }

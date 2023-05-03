@@ -1,40 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single" >
-        <item android:title="Series">
-            <menu>
-                <item
-                    android:id="@+id/menu_bar_chart"
-                    android:title="Bar chart"/>
-                <item
-                    android:id="@+id/menu_custom_price_formatter"
-                    android:title="Custom price formatter"/>
-                <item
-                    android:id="@+id/menu_custom_themes"
-                    android:title="Custom themes"/>
-                <item
-                    android:id="@+id/menu_floating_tooltip"
-                    android:title="Floating tooltip"/>
-                <item
-                    android:id="@+id/menu_volume_study"
-                    android:title="Volume study"/>
-                <item
-                    android:id="@+id/menu_real_time_emulation"
-                    android:title="Realtime emulation"/>
-                <item
-                    android:id="@+id/menu_series_markers"
-                    android:title="Series markers"/>
-                <item
-                    android:id="@+id/menu_price_lines_with_titles"
-                    android:title="Price lines with titles"/>
-            </menu>
-        </item>
-    </group>
-    <group android:checkableBehavior="single">
-        <item android:title="Pages">
-            <item
-                android:id="@+id/menu_view_pager"
-                android:title="Open ViewPager"/>
-        </item>
-    </group>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_chart_type"
+        android:title="@string/chart_type"
+        />
+
+    <item
+        android:id="@+id/menu_custom_themes"
+        android:title="@string/custom_themes"
+        />
+    <item
+        android:id="@+id/menu_range_switcher"
+        android:title="@string/range_switcher"
+        />
+    <item
+        android:id="@+id/menu_actions"
+        android:title="@string/actions"
+        />
+    <item
+        android:id="@+id/menu_time_scale_actions"
+        android:title="@string/timescale_actions"
+        />
+    <item
+        android:id="@+id/menu_custom_tooltips"
+        android:title="@string/custom_tooltips"
+        />
+    <item
+        android:id="@+id/menu_custom_price_formatter"
+        android:title="@string/custom_formator"
+        />
+
+    <item
+        android:id="@+id/menu_price_scales"
+        android:title="@string/price_scales"
+        />
+    <item
+        android:id="@+id/menu_data"
+        android:title="@string/data"
+        />
+
+
+    <item
+        android:id="@+id/menu_realtime_emulator"
+        android:title="@string/realtime"
+        />
+
+    <item
+        android:id="@+id/menu_indicators_and_markers"
+        android:title="@string/indicators_and_markers"
+        />
+
+    <item
+        android:id="@+id/menu_view_pager"
+        android:title="@string/touch_delegate"
+        />
+
 </menu>
