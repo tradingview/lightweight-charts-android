@@ -14,12 +14,8 @@ export default class SubscriptionsFunctionManager {
             (input, callback) => {
                 try {
                     const subscription = (params) => {
-                        let customSeries = []
-                        params.seriesPrices.forEach((value, key, map) => {
-                            customSeries.push({id: this.seriesFunctionManager.getSeriesId(key, input), prices: value})
-                        })
-                        params.seriesPrices = customSeries
-                        callback(params)
+                        let mouseEvent = this.mouseEvent(params, input)
+                        callback(mouseEvent)
                     }
                     chart.subscribeClick(subscription)
                     logger.d("subscribeOnChartClicked successful")
@@ -43,23 +39,8 @@ export default class SubscriptionsFunctionManager {
             (input, callback) => {
                 try {
                     const subscription = (params) => {
-                        let result = this.selectProps("time", "logical", "point")(params)
-                        result.sourceEvent = this.selectProps(
-                            "clientX", "clientY", "pageX", "pageY", "screenX", "screenY",
-                            "localX", "localY", "ctrlKey", "altKey", "shiftKey", "metaKey"
-                        )(params.sourceEvent)
-
-                        result.seriesData = []
-                        params.seriesData.forEach((value, key, map) => {
-                            result.seriesData.push({id: this.seriesFunctionManager.getSeriesId(key, input), prices: value})
-                        })
-
-
-                        if (params.hoveredSeries) {
-                            result.hoveredSeries = this.seriesFunctionManager.getSeriesId(params.hoveredSeries, input)
-                        }
-
-                        callback(result)
+                        let mouseEvent = this.mouseEvent(params, input)
+                        callback(mouseEvent)
                     }
                     chart.subscribeCrosshairMove(subscription)
                     logger.d("subscribeCrosshairMove successful")
@@ -80,6 +61,27 @@ export default class SubscriptionsFunctionManager {
         )
     }
 
+    mouseEvent(params, input) {
+        let result = this.selectProps("time", "logical", "point")(params)
+        result.sourceEvent = this.selectProps(
+            "clientX", "clientY", "pageX", "pageY", "screenX", "screenY",
+            "localX", "localY", "ctrlKey", "altKey", "shiftKey", "metaKey"
+        )(params.sourceEvent)
+
+        result.seriesData = []
+        params.seriesData.forEach((value, key, map) => {
+            result.seriesData.push({
+                id: this.seriesFunctionManager.getSeriesId(key, input),
+                prices: value
+            })
+        })
+
+
+        if (params.hoveredSeries) {
+            result.hoveredSeries = this.seriesFunctionManager.getSeriesId(params.hoveredSeries, input)
+        }
+        return result
+    }
 
     selectProps(...props) {
         return function (obj) {
