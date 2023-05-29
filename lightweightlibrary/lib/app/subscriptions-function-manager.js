@@ -43,22 +43,23 @@ export default class SubscriptionsFunctionManager {
             (input, callback) => {
                 try {
                     const subscription = (params) => {
-                        params.sourceEvent = this.selectProps(
+                        let result = this.selectProps("time", "logical", "point")(params)
+                        result.sourceEvent = this.selectProps(
                             "clientX", "clientY", "pageX", "pageY", "screenX", "screenY",
                             "localX", "localY", "ctrlKey", "altKey", "shiftKey", "metaKey"
                         )(params.sourceEvent)
 
-                        let customSeries = []
+                        result.seriesData = []
                         params.seriesData.forEach((value, key, map) => {
-                            customSeries.push({id: this.seriesFunctionManager.getSeriesId(key, input), prices: value})
+                            result.seriesData.push({id: this.seriesFunctionManager.getSeriesId(key, input), prices: value})
                         })
-                        params.seriesData = customSeries
+
 
                         if (params.hoveredSeries) {
-                            params.hoveredSeries = this.seriesFunctionManager.getSeriesId(params.hoveredSeries, input)
+                            result.hoveredSeries = this.seriesFunctionManager.getSeriesId(params.hoveredSeries, input)
                         }
 
-                        callback(params)
+                        callback(result)
                     }
                     chart.subscribeCrosshairMove(subscription)
                     logger.d("subscribeCrosshairMove successful")
