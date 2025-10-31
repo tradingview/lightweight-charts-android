@@ -1,0 +1,24 @@
+[versions]
+
+android-gradle = "8.13.0"
+kotlin = "2.2.21"
+google-services = "4.4.4"
+firebase-crashlytics = "3.0.6"
+
+arturbosch-detekt = "1.23.8"
+
+
+[libraries]
+
+[plugins]
+
+
+android = { id = "com.android.application", version.ref = "android-gradle" }
+android-library = { id = "com.android.library", version.ref = "android-gradle" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
+maven-publish = { id = "maven-publish" }
+
+arturbosch-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "arturbosch-detekt" }

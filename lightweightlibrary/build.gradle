@@ -1,6 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'maven-publish'
+plugins{
+    id("com.android.library")
+    id("kotlin-android")
+    id("maven-publish")
+}
 
 android {
     compileSdkVersion 36
@@ -38,7 +40,7 @@ dependencies {
 
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def evaluateShellScript(String ... script) {
+def evaluateShellScript(String... script) {
     def byteArrayOutput = new ByteArrayOutputStream()
     try {
         exec {
