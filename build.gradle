@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.8.0'
+    ext.kotlin_version = '2.1.20'
     repositories {
         google()
         mavenCentral()
@@ -8,15 +8,23 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.13.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.4'
+        classpath 'com.google.gms:google-services:4.4.4'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.6'
     }
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.18.1"
+    id "io.gitlab.arturbosch.detekt" version "1.23.8"
+}
+
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
 
 detekt {
@@ -25,12 +33,6 @@ detekt {
     config = files("$projectDir/default-detekt-config.yml")
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
 
 task clean(type: Delete) {
     delete rootProject.buildDir

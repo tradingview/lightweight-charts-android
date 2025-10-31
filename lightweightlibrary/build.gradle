@@ -3,20 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.0"
+    compileSdkVersion 36
 
     defaultConfig {
-        /*
-        https://developer.android.com/reference/androidx/webkit/WebViewFeature#isFeatureSupported(java.lang.String)
-        Return whether a feature is supported at run-time.
-        On devices running Android version Build.VERSION_CODES.LOLLIPOP and higher,
-        this will check whether a feature is supported, depending on the combination
-        of the desired feature, the Android version of device, and the WebView APK on
-        the device. If running on a device with a lower API level, this will always return false.
-         */
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdkVersion 23
+        targetSdkVersion 36
 
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -30,14 +21,19 @@ android {
         }
     }
     namespace 'com.tradingview.lightweightcharts'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.webkit:webkit:1.6.0'
-    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'androidx.webkit:webkit:1.14.0'
+    implementation 'com.google.code.gson:gson:2.13.2'
 }
 
 import org.apache.tools.ant.taskdefs.condition.Os
