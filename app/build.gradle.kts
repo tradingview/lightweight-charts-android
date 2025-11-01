@@ -1,7 +1,9 @@
 plugins {
-    id("com.android.application")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.android)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.google.services)
+//    alias(libs.plugins.kotlin)
+//    alias(libs.plugins.kotlin.kapt)
     id("kotlin-android")
     id("kotlin-kapt")
 }
@@ -31,14 +33,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 }
 
 dependencies {
-//    implementation 'com.tradingview:lightweightcharts:3.8.0'
+//    implementation("com.tradingview:lightweightcharts:3.8.0")
     implementation(project(":lightweightlibrary"))
 
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))

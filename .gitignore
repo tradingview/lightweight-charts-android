@@ -8,6 +8,7 @@
 /captures
 .externalNativeBuild
 .cxx
+.kotlin
 
 
 /node_modules

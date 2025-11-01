@@ -13,8 +13,8 @@ arturbosch-detekt = "1.23.8"
 [plugins]
 
 
-android = { id = "com.android.application", version.ref = "android-gradle" }
-android-library = { id = "com.android.library", version.ref = "android-gradle" }
+android = { id = "com.android.application" }
+android-library = { id = "com.android.library" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
