@@ -3,10 +3,6 @@ buildscript {
         google()
         mavenCentral()
         maven(url = "https://plugins.gradle.org/m2/")
-
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:8.13.0")
     }
 }
 
@@ -20,8 +16,7 @@ detekt {
     config = files("$projectDir/default-detekt-config.yml")
 }
 
-
-//tasks.register<Delete>("clean") {
-//    delete(rootProject.layout.buildDirectory)
-//}
+tasks.register<Delete>("clean") {
+    delete(rootProject.layout.buildDirectory)
+}
 

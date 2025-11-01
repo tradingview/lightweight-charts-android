@@ -26,12 +26,10 @@ buildCache {
     local {
         isPush = true
         directory = File(rootDir, ".gradle/build-cache")
-        removeUnusedEntriesAfterDays = 1
     }
 }
 
 rootProject.name = "LightweightCharts"
-
 
 include(
     ":app",
