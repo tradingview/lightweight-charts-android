@@ -109,6 +109,6 @@ afterEvaluate {
 }
 
 dependencies {
-    implementation("androidx.webkit:webkit:1.14.0")
-    implementation("com.google.code.gson:gson:2.13.2")
+    implementation(libs.androidx.webkit)
+    implementation(libs.gson)
 }
