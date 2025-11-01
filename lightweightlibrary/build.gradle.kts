@@ -2,7 +2,7 @@ import java.io.ByteArrayOutputStream
 
 plugins {
     alias(libs.plugins.android.library)
-    id("kotlin-android")
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.maven.publish)
 }
 

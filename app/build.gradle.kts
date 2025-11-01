@@ -2,10 +2,8 @@ plugins {
     alias(libs.plugins.android)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.google.services)
-//    alias(libs.plugins.kotlin)
-//    alias(libs.plugins.kotlin.kapt)
-    id("kotlin-android")
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
