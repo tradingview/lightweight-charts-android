@@ -8,13 +8,14 @@ plugins {
 
 android {
     namespace = "com.tradingview.lightweightcharts.example.app"
-    compileSdk = 36
+    compileSdk = libs.versions.sdk.compile.get().toInt()
+
     defaultConfig {
         applicationId = "com.tradingview.lightweightcharts.example"
-        minSdk = 23
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.1"
+        minSdk = libs.versions.sdk.min.get().toInt()
+        targetSdk = libs.versions.sdk.compile.get().toInt()
+        versionCode = libs.versions.lightweightcharts.code.get().toInt()
+        versionName = libs.versions.lightweightcharts.asProvider().get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

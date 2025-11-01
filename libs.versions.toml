@@ -1,6 +1,9 @@
 [versions]
 
+lightweightcharts-code = "2"
 lightweightcharts = "4.0.0"
+sdk-min = "23"
+sdk-compile = "36"
 
 android-gradle = "8.13.0"
 kotlin = "2.2.21"
