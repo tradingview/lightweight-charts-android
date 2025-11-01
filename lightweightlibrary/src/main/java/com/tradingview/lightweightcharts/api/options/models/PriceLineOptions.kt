@@ -5,15 +5,45 @@ import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 
 data class PriceLineOptions(
+    /**
+     * The optional ID of this price line.
+     */
+    var id: String? = null,
+
+    /**
+     * Price line's value.
+     */
     var price: Float? = null,
 
+    /**
+     * Price line's color.
+     */
     var color: IntColor? = null,
 
+    /**
+     * Price line's width in pixels.
+     */
     var lineWidth: LineWidth? = null,
+
+    /**
+     * Price line's style.
+     */
     var lineStyle: LineStyle? = null,
+
+    /**
+     * Display line.
+     */
     var lineVisible: Boolean? = null,
+
+    /**
+     * Display the current price value in on the price scale.
+     */
     var axisLabelVisible: Boolean? = null,
-    var title: String? = null
+
+    /**
+     * Price line's on the chart pane.
+     */
+    var title: String? = null,
 )
 
 inline fun priceLineOptions(init: PriceLineOptions.() -> Unit): PriceLineOptions {

@@ -1,13 +1,13 @@
 import SeriesFunctionManager from "./series/series-function-manager.js";
 import SubscriptionsFunctionManager from "./subscriptions-function-manager";
-import PriceScaleFunctionManager from "./price-scale-function-manager";
 import TimeScaleFunctionManager from "./time-scale/time-scale-function-manager";
 import { logger } from './logger.js';
 import { Locator } from "./service-locator/locator.js";
+import PriceScaleFunctionManager from "./price-scale/price-scale-function-manager";
 
 export default class ChartRegistrationFunctionsController {
 
-  constructor(chart, functionManager, pluginManager) {
+    constructor(chart, functionManager, pluginManager) {
         this.chart = chart
         this.functionManager = functionManager
         this.pluginManager = pluginManager
@@ -27,8 +27,7 @@ export default class ChartRegistrationFunctionsController {
 
         const timeScale = Locator.resolve(TimeScaleFunctionManager.name)
         timeScale.register()
-
-        const priceScale = new PriceScaleFunctionManager(this.chart, this.functionManager)
+        const priceScale = Locator.resolve(PriceScaleFunctionManager.name)
         priceScale.register()
 
         this.functionManager.registerFunction("remove", (params, resolve) => {

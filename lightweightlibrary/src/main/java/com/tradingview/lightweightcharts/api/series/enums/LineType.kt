@@ -7,7 +7,8 @@ import java.lang.reflect.Type
 
 enum class LineType(val value: Int) {
     SIMPLE(0),
-    WITH_STEPS(1);
+    WITH_STEPS(1),
+    CURVED(2);
 
     companion object {
         fun from(value: Int): LineType = values().first { it.value == value }
@@ -17,7 +18,7 @@ enum class LineType(val value: Int) {
         override fun serialize(
             src: LineType?,
             typeOfSrc: Type?,
-            context: JsonSerializationContext?
+            context: JsonSerializationContext?,
         ): JsonElement {
             return JsonPrimitive(src?.value ?: 0)
         }
@@ -25,7 +26,7 @@ enum class LineType(val value: Int) {
         override fun deserialize(
             json: JsonElement?,
             typeOfT: Type?,
-            context: JsonDeserializationContext?
+            context: JsonDeserializationContext?,
         ): LineType {
             return when {
                 json.isNumber() -> from(json.requireInt())

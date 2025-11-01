@@ -20,7 +20,7 @@ class ViewPagerActivity : AppCompatActivity() {
         private val activity: AppCompatActivity,
     ) : RecyclerView.ViewHolder(binding.root) {
         private val viewModel: ViewPagerViewModel =
-            ViewModelProvider(activity).get(ViewPagerViewModel::class.java)
+            ViewModelProvider(activity)[ViewPagerViewModel::class.java]
 
         private lateinit var series: SeriesApi
 

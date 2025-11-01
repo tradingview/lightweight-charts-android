@@ -26,12 +26,15 @@ import com.tradingview.lightweightcharts.api.series.enums.LastPriceAnimationMode
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.PriceLinesWithTitlesViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 
-class PriceLinesWithTitlesFragment : Fragment() {
+class PriceScalesFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.price_scales
 
     private lateinit var viewModel: PriceLinesWithTitlesViewModel
 

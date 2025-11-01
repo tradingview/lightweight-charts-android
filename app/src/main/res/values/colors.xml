@@ -5,4 +5,53 @@
     <color name="colorAccent">#D81B60</color>
     <color name="tooltipSymbolName">#009688</color>
     <color name="tooltipPrice">#21384d</color>
+
+
+    <color name="white_1">#FFC5CBCE</color>
+    <color name="white_2">#FFEBEAE8</color>
+    <color name="white_3">#FFBDB3AC</color>
+    <color name="white_4">#FFD6CCC3</color>
+    <color name="white_5">#FFBDBCAC</color>
+
+
+    <color name="dark_gray_1">#FF6B6B6A</color>
+    <color name="dark_gray_2">#FF717B4E</color>
+    <color name="dark_gray_3">#FF696F70</color>
+    <color name="dark_gray_4">#FF66787A</color>
+    <color name="dark_gray_5">#FF76706B</color>
+
+
+    <color name="blue_1">#FF21384D</color>
+    <color name="blue_2">#FF4668F0</color>
+    <color name="blue_3">#FF3E5DD6</color>
+    <color name="blue_4">#FF3752BD</color>
+    <color name="blue_5">#FF27107A</color>
+
+    <color name="red_1">#FFE04D3D</color>
+    <color name="red_2">#FF61211A</color>
+    <color name="red_3">#FFA4382D</color>
+    <color name="red_4">#FFED5140</color>
+    <color name="red_5">#FFC74436</color>
+
+
+    <color name="green_1">#FF2FE04A</color>
+    <color name="green_2">#FF146120</color>
+    <color name="green_3">#FF22A336</color>
+    <color name="green_4">#FF32ED4E</color>
+    <color name="green_5">#FF29C742</color>
+
+
+    <color name="cyan_1">#3E9599</color>
+    <color name="cyan_2">#64EEF5</color>
+    <color name="cyan_3">#44A1A6</color>
+    <color name="cyan_4">#347C80</color>
+    <color name="cyan_5">#2A6366</color>
+
+
+    <color name="dark_cyan_1">#2D6363</color>
+    <color name="dark_cyan_2">#326F70</color>
+    <color name="dark_cyan_3">#21494A</color>
+    <color name="dark_cyan_4">#1E4242</color>
+    <color name="dark_cyan_5">#21494A</color>
+
 </resources>

@@ -1,9 +1,9 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
 import android.util.SizeF
-import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.api.options.models.TimeScaleOptions
 import com.tradingview.lightweightcharts.api.series.models.Time
+import com.tradingview.lightweightcharts.api.series.models.TimeRange
 
 interface TimeScaleApi {
 
@@ -112,6 +112,12 @@ interface TimeScaleApi {
      * @param options any subset of options
      */
     fun applyOptions(options: TimeScaleOptions)
+
+    /**
+     * Applies new options to the time scale.
+     * @param block any subset of options
+     */
+    fun applyOptions(block: TimeScaleOptions.() -> Unit) = applyOptions(TimeScaleOptions().apply(block))
 
     /**
      * Returns current options

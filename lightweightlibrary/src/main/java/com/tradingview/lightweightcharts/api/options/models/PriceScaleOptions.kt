@@ -62,7 +62,7 @@ data class PriceScaleOptions(
     /**
      * True value add a small horizontal ticks on price axis labels
      */
-    var drawTicks: Boolean? = null
+    var ticksVisible: Boolean? = null
 )
 
 inline fun priceScaleOptions(init: PriceScaleOptions.() -> Unit): PriceScaleOptions {

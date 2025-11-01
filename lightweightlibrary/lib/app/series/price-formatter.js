@@ -1,5 +1,4 @@
 import PluginManager from "../plugin-manager";
-import ServiceLocator from "../service-locator/locator";
 
 export default class PriceFormatterService {
 

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.tradingview.lightweightcharts.example.app.view.DebugChartsView
+        android:id="@+id/charts_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_toRealtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/to_realtime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_fit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fit"
+        app:layout_constraintBaseline_toBaselineOf="@id/chip_toRealtime"
+        app:layout_constraintStart_toEndOf="@id/chip_toRealtime"
+        />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reset"
+        app:layout_constraintBaseline_toBaselineOf="@id/chip_fit"
+        app:layout_constraintStart_toEndOf="@id/chip_fit"
+        />
+
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_save_range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/save_range"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chip_toRealtime"
+        />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_restore_range"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/restore_range"
+        app:layout_constraintBaseline_toBaselineOf="@id/chip_save_range"
+        app:layout_constraintStart_toEndOf="@id/chip_save_range"
+        />
+
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_intercept_touch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:checkable="true"
+        android:text="@string/intercept_touch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chip_save_range"
+        />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_custom_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/custom_options"
+        app:layout_constraintBaseline_toBaselineOf="@id/chip_intercept_touch"
+        app:layout_constraintStart_toEndOf="@id/chip_intercept_touch"
+        />
+
+    <TextView
+        android:id="@+id/tv_debug_values"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chip_intercept_touch"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

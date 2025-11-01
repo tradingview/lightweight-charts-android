@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
@@ -19,12 +20,16 @@ import com.tradingview.lightweightcharts.api.options.models.layoutOptions
 import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
 import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.SeriesMarkersViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 
-class SeriesMarkersFragment : Fragment() {
+class SeriesDataFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.data
+
 
     private lateinit var viewModel: SeriesMarkersViewModel
 
@@ -77,7 +82,7 @@ class SeriesMarkersFragment : Fragment() {
     private fun applyChartOptions() {
         binding.chartsView.api.applyOptions {
             layout = layoutOptions {
-                backgroundColor = IntColor(Color.WHITE)
+                background = SolidColor(IntColor(Color.WHITE))
                 textColor = IntColor(Color.BLACK)
             }
             timeScale = timeScaleOptions {

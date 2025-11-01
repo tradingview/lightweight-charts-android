@@ -1,6 +1,5 @@
 import FunctionManager from "../function-manager";
 import PluginManager from "../plugin-manager";
-import ServiceLocator from "../service-locator/locator";
 import SeriesCache from "./series-cache";
 
 export default class SeriesCreationService {

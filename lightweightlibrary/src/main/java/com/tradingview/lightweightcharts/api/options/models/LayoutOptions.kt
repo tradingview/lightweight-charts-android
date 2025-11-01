@@ -4,12 +4,10 @@ import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SurfaceColor
 
 data class LayoutOptions(
-    /**
-     * Background color of the chart area and the scales
-     */
-    @Deprecated("Use background instead")
-    var backgroundColor: IntColor? = null,
 
+    /**
+     * Chart and scales background color.
+     */
     var background: SurfaceColor? = null,
 
     /**

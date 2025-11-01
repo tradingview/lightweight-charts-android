@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
@@ -22,13 +23,16 @@ import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
 import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutPriceFormatterChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
+import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
 
-class CustomPriceFormatterFragment : Fragment() {
+class CustomPriceFormatterFragment : Fragment(), ITitleFragment {
+    override val fragmentTitleRes = R.string.custom_formator
 
     private lateinit var viewModel: CustomPriceFormatterViewModel
 
@@ -80,7 +84,7 @@ class CustomPriceFormatterFragment : Fragment() {
     private fun applyChartOptions() {
         binding.chartsView.api.applyOptions {
             layout = layoutOptions {
-                backgroundColor = Color.BLACK.toIntColor()
+                background = SolidColor(Color.BLACK.toIntColor())
                 textColor = Color.argb(204, 255, 255, 255).toIntColor()
             }
             localization = localizationOptions {
