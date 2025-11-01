@@ -7,30 +7,29 @@ plugins {
 }
 
 android {
-    compileSdkVersion 36
+    namespace = "com.tradingview.lightweightcharts.example.app"
+    compileSdk = 36
     defaultConfig {
-        applicationId "com.tradingview.lightweightcharts.example"
-        minSdkVersion 23
-        targetSdkVersion 36
-        versionCode 1
-        versionName "1.1"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        applicationId = "com.tradingview.lightweightcharts.example"
+        minSdk = 23
+        targetSdk = 36
+        versionCode = 1
+        versionName = "1.1"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "consumer-rules.pro")
         }
     }
     buildFeatures {
-        viewBinding true
+        viewBinding = true
     }
 
-    namespace "com.tradingview.lightweightcharts.example.app"
-
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
@@ -42,7 +41,7 @@ dependencies {
 //    implementation 'com.tradingview:lightweightcharts:3.8.0'
     implementation(project(":lightweightlibrary"))
 
-    implementation(platform('com.google.firebase:firebase-bom:34.5.0'))
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-crashlytics")
 
     implementation("androidx.appcompat:appcompat:1.7.1")

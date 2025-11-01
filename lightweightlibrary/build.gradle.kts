@@ -14,7 +14,7 @@ android {
         minSdk = 23
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFile("consumer-rules.pro")
+        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "consumer-rules.pro")
     }
 
     buildTypes {
@@ -33,10 +33,6 @@ android {
     }
 }
 
-dependencies {
-    implementation("androidx.webkit:webkit:1.14.0")
-    implementation("com.google.code.gson:gson:2.13.2")
-}
 fun evaluateShellScript(vararg script: String) {
     val outputStream = ByteArrayOutputStream()
     try {
@@ -80,33 +76,39 @@ afterEvaluate {
                 artifactId = "lightweightcharts"
                 version = android.defaultConfig.versionName
                 pom {
-                    name.set("Android Lightweight Charts")
-                    description.set("The Android Lightweight Charts is an Android wrapper of the TradingView Lightweight Charts library.")
-                    url.set("https://github.com/tradingview/lightweight-charts-android")
+                    name = "Android Lightweight Charts"
+                    description = "The Android Lightweight Charts is an Android wrapper of " +
+                        "the TradingView Lightweight Charts library."
+                    url = "https://github.com/tradingview/lightweight-charts-android"
 
                     licenses {
                         license {
-                            name.set("The Apache License, Version 2.0")
-                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                         }
                     }
 
                     developers {
                         developer {
-                            name.set("Alexandr Nevyantsev")
-                            email.set("anevyantsev@tradingview.com")
-                            organization.set("TradingView")
-                            organizationUrl.set("https://www.tradingview.com/")
+                            name = "Alexandr Nevyantsev"
+                            email = "anevyantsev@tradingview.com"
+                            organization = "TradingView"
+                            organizationUrl = "https://www.tradingview.com/"
                         }
                     }
 
                     scm {
-                        connection.set("scm:git:git://github.com/tradingview/lightweight-charts-android.git")
-                        developerConnection.set("scm:git:ssh://github.com/tradingview/lightweight-charts-android.git")
-                        url.set("http://github.com/tradingview/lightweight-charts-android/tree/master")
+                        connection = "scm:git:git://github.com/tradingview/lightweight-charts-android.git"
+                        developerConnection = "scm:git:ssh://github.com/tradingview/lightweight-charts-android.git"
+                        url = "http://github.com/tradingview/lightweight-charts-android/tree/master"
                     }
                 }
             }
         }
     }
+}
+
+dependencies {
+    implementation("androidx.webkit:webkit:1.14.0")
+    implementation("com.google.code.gson:gson:2.13.2")
 }
