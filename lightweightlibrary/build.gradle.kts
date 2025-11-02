@@ -12,6 +12,7 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.sdk.min.get().toInt()
+        version = libs.versions.lightweightcharts.asProvider().get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "consumer-rules.pro")
@@ -61,7 +62,7 @@ tasks.register("npmBuild") {
 afterEvaluate {
     publishing {
         repositories {
-            maven(url = "${layout.buildDirectory}/repo")
+            maven(url = "${layout.buildDirectory.get()}/repo")
         }
 
         publications {
@@ -70,7 +71,7 @@ afterEvaluate {
 
                 groupId = "com.tradingview"
                 artifactId = "lightweightcharts"
-                version = android.defaultConfig.versionName
+                version = libs.versions.lightweightcharts.asProvider().get()
                 pom {
                     name = "Android Lightweight Charts"
                     description = "The Android Lightweight Charts is an Android wrapper of " +
