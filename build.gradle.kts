@@ -20,3 +20,10 @@ tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
 
+tasks.register("detektSource") {
+    dependsOn(tasks.findByName("detekt"))
+}
+
+dependencies {
+    detektPlugins(libs.detekt.formatting)
+}

@@ -47,6 +47,7 @@ permissionsdispatcher-processor = { module = "com.github.permissions-dispatcher:
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "arturbosch-detekt" }
 
 [plugins]
 
