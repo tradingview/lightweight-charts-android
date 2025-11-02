@@ -2,13 +2,13 @@ package com.tradingview.lightweightcharts.api.serializer.gson
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.tradingview.lightweightcharts.api.series.enums.*
-import com.tradingview.lightweightcharts.api.series.models.*
 import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
-import com.tradingview.lightweightcharts.api.chart.models.color.surface.SurfaceColor
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColorAdapter
+import com.tradingview.lightweightcharts.api.chart.models.color.surface.SurfaceColor
 import com.tradingview.lightweightcharts.api.options.enums.TrackingModeExitMode
+import com.tradingview.lightweightcharts.api.series.enums.*
+import com.tradingview.lightweightcharts.api.series.models.*
 
 object GsonProvider {
     fun newInstance(): Gson {
@@ -22,7 +22,7 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeHierarchyAdapter(Time::class.java, Time.TimeAdapter())
     registerTypeAdapter(BarPrices::class.java, BarPrices.BarPricesAdapter())
 
-    //series enums
+    // series enums
     registerTypeAdapter(CrosshairMode::class.java, CrosshairMode.CrosshairModeAdapter())
     registerTypeAdapter(LineStyle::class.java, LineStyle.LineStyleAdapter())
     registerTypeAdapter(PriceLineSource::class.java, PriceLineSource.PriceLineSourceAdapter())
@@ -33,10 +33,14 @@ fun GsonBuilder.registerDefaultAdapters(): GsonBuilder {
     registerTypeAdapter(Colorable::class.java, Colorable.ColorAdapter())
     registerTypeAdapter(IntColor::class.java, IntColorAdapter())
     registerTypeAdapter(SurfaceColor::class.java, SurfaceColor.SurfaceColorAdapter())
-    registerTypeAdapter(LastPriceAnimationMode::class.java,
-        LastPriceAnimationMode.LastPriceAnimationModeAdapter())
-    registerTypeAdapter(TrackingModeExitMode::class.java,
-        TrackingModeExitMode.TrackingModeExitModeAdapter())
+    registerTypeAdapter(
+        LastPriceAnimationMode::class.java,
+        LastPriceAnimationMode.LastPriceAnimationModeAdapter()
+    )
+    registerTypeAdapter(
+        TrackingModeExitMode::class.java,
+        TrackingModeExitMode.TrackingModeExitModeAdapter()
+    )
 
     return this
 }

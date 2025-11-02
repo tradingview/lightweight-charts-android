@@ -45,10 +45,6 @@ class TimeScaleActionsFragment : Fragment(), ITitleFragment {
 
     private var refreshTimer: CountDownTimer? = null
 
-    private val onTimeRangeChanged: (params: TimeRange?) -> Unit = {
-        subscribeVisibleRange = it
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return FragmentChartTimescaleActionsBinding.inflate(inflater, container, false)
             .also { binding = it }
@@ -101,7 +97,7 @@ class TimeScaleActionsFragment : Fragment(), ITitleFragment {
             }
 
             chipCustomOptions.setOnClickListener {
-                //emulate change in runtime
+                // emulate change in runtime
                 timeScaleApi.applyOptions {
                     ticksVisible = true
                 }
@@ -118,16 +114,15 @@ class TimeScaleActionsFragment : Fragment(), ITitleFragment {
                     }
                     timeScaleApi.coordinateToLogical(x) { logical ->
                         touchedLogical = logical
-                        if (logical != null) timeScaleApi.logicalToCoordinate(logical) {
-                            touchedCoordinateFromLogical = it
+                        if (logical != null) {
+                            timeScaleApi.logicalToCoordinate(logical) {
+                                touchedCoordinateFromLogical = it
+                            }
                         }
                     }
                     return captureTouch
                 }
-
             })
-
-
         }
     }
 
@@ -154,22 +149,19 @@ class TimeScaleActionsFragment : Fragment(), ITitleFragment {
         super.onDestroy()
     }
 
-
     private fun refreshUI() {
         timeScaleApi.width { width ->
             timeScaleApi.height { height ->
                 binding.tvDebugValues.text = buildString {
-                    appendLine("timescale size ${width} - ${height}")
-                    if (subscribeVisibleRange != null) appendLine("timerange ${subscribeVisibleRange?.from} - ${subscribeVisibleRange?.to}")
-                    appendLine("touched time ${touchedTime}")
-                    appendLine("touched logical ${touchedLogical}")
-                    appendLine("touched coordinate ${touchedCoordinateFromTime} - ${touchedCoordinateFromLogical}")
+                    appendLine("timescale size $width - $height")
+                    if (subscribeVisibleRange != null) {
+                        appendLine("timerange ${subscribeVisibleRange?.from} - ${subscribeVisibleRange?.to}")
+                    }
+                    appendLine("touched time $touchedTime")
+                    appendLine("touched logical $touchedLogical")
+                    appendLine("touched coordinate $touchedCoordinateFromTime - $touchedCoordinateFromLogical")
                 }
             }
         }
-
-
     }
-
-
 }

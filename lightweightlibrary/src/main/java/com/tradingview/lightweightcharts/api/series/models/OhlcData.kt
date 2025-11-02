@@ -15,14 +15,17 @@ interface OhlcData : SeriesData {
      * The open price.
      */
     val open: Float
+
     /**
      * The high price.
      */
     val high: Float
+
     /**
      * The low price.
      */
     val low: Float
+
     /**
      * The close price.
      */

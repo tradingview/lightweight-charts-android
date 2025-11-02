@@ -26,9 +26,7 @@ data class BarPrices(
             } else {
                 BarPrice(value = prices.asFloat)
             }
-
         }
-
     }
 }
 

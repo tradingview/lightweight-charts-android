@@ -5,18 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerPosition
 import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
 import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.BarData
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 import kotlin.math.floor
 
-class SeriesMarkersViewModel: ViewModel() {
+class SeriesMarkersViewModel : ViewModel() {
     private val staticRepository = StaticRepository()
 
     val seriesData: LiveData<Data>

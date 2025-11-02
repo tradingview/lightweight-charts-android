@@ -15,7 +15,7 @@ enum class LineWidth(val value: Int) {
         fun from(value: Int): LineWidth = values().first { it.value == value }
     }
 
-    class LineWidthAdapter: JsonSerializer<LineWidth>, JsonDeserializer<LineWidth> {
+    class LineWidthAdapter : JsonSerializer<LineWidth>, JsonDeserializer<LineWidth> {
         override fun serialize(
             src: LineWidth?,
             typeOfSrc: Type?,

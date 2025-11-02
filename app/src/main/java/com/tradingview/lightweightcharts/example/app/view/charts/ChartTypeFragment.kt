@@ -83,13 +83,12 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
         vm.seriesBarData.observe(viewLifecycleOwner) {
             refreshUI()
         }
-
     }
 
-
     private fun refreshUI() {
-        if (!isAdded || chartTypeIndex == null || vm.seriesBarData.value == null)
+        if (!isAdded || chartTypeIndex == null || vm.seriesBarData.value == null) {
             return
+        }
 
         chartApi.applyRandOptions()
         typeChips.forEachIndexed { index, chip ->
@@ -146,7 +145,6 @@ class ChartTypeFragment : Fragment(), ITitleFragment {
             }
             series.setData(vm.seriesBarData.value!!.list)
         }
-
     }
 
     private fun addAreaSeries() {

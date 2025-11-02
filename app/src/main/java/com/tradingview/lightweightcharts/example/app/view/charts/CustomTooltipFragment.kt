@@ -106,7 +106,6 @@ class CustomTooltipFragment : Fragment(), ITitleFragment {
         }
     }
 
-
     private val onCrosshairMove: (MouseEventParams) -> Unit = onCrosshairMove@{ mouseEventParams ->
         val prices = mouseEventParams.seriesData
         if (prices.isNullOrEmpty()) {

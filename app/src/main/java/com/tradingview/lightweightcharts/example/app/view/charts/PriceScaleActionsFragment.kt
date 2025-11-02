@@ -2,7 +2,6 @@ package com.tradingview.lightweightcharts.example.app.view.charts
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +40,6 @@ class PriceScaleActionsFragment : Fragment(), ITitleFragment {
         PriceScaleId.LEFT to R.string.left,
     )
 
-
     private var curPriceScaleModeIndex = 0
     private val scaleModeVariants = listOf(
         PriceScaleMode.NORMAL to R.string.linearly_scale,
@@ -75,10 +73,6 @@ class PriceScaleActionsFragment : Fragment(), ITitleFragment {
             )
         }
 
-
-
-
-
         chartApi.applyOptions {
             crosshair = crosshairOptions {
                 mode = CrosshairMode.MAGNET
@@ -92,7 +86,6 @@ class PriceScaleActionsFragment : Fragment(), ITitleFragment {
 
                 when (sideVariants[curSideIndex].first) {
                     PriceScaleId.RIGHT -> {
-
                         chartApi.priceScale(PriceScaleId.RIGHT).applyOptions {
                             visible = true
                         }
@@ -107,7 +100,6 @@ class PriceScaleActionsFragment : Fragment(), ITitleFragment {
                         chartApi.priceScale(PriceScaleId.LEFT).applyOptions {
                             visible = true
                         }
-
                     }
                 }
 
@@ -131,8 +123,6 @@ class PriceScaleActionsFragment : Fragment(), ITitleFragment {
             chipInvert.setOnCheckedChangeListener { buttonView, isChecked ->
                 priceScaleApi.applyOptions(PriceScaleOptions(invertScale = isChecked))
             }
-
-
         }
     }
 
@@ -140,6 +130,4 @@ class PriceScaleActionsFragment : Fragment(), ITitleFragment {
         realtimeDataJob?.cancel()
         super.onDestroy()
     }
-
-
 }

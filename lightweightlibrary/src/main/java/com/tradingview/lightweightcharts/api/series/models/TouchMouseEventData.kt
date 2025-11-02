@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.api.series.models
 
-
 /**
  * The TouchMouseEventData interface represents events that occur due to the user interacting with a
  * pointing device (such as a mouse).
@@ -58,4 +57,4 @@ data class TouchMouseEventData(
      * Windows keyboards, the Windows key (⊞)) was active when the key event was generated.
      */
     var metaKey: Boolean?,
-    )
+)

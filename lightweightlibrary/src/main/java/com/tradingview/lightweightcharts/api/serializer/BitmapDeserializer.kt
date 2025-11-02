@@ -8,7 +8,7 @@ import java.lang.IllegalStateException
 
 class BitmapDeserializer : Deserializer<Bitmap>() {
     companion object {
-        //data:[<MIME-type>][;charset=<encoding>][;base64],<data>
+        // data:[<MIME-type>][;charset=<encoding>][;base64],<data>
         const val dataUrlToBase64Pattern = "^data:[^;]+;base64[,](?<data>.+)"
     }
 

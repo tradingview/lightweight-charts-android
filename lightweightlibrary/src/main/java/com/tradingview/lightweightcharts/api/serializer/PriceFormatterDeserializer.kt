@@ -8,7 +8,7 @@ class PriceFormatterDeserializer : Deserializer<PriceFormatter>() {
     override fun deserialize(json: JsonElement): PriceFormatter? {
         return try {
             gson.fromJson(json, PriceFormatter::class.java)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: JsonSyntaxException) {
             null
         }
     }

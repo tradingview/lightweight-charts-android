@@ -1,8 +1,8 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 import com.tradingview.lightweightcharts.api.options.enums.PriceAxisPosition
 import com.tradingview.lightweightcharts.api.series.enums.PriceScaleMode
-import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 
 data class PriceScaleOptions(
     /**

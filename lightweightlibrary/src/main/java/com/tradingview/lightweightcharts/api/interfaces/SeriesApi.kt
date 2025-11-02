@@ -41,7 +41,6 @@ interface SeriesApi {
         const val BAR = "bar"
         const val LOGICAL_INDEX = "logicalIndex"
         const val MISMATCH_DIRECTION = "mismatchDirection"
-
     }
 
     val uuid: String
@@ -110,7 +109,6 @@ interface SeriesApi {
      * Several markers with same time are allowed.
      */
     fun setMarkers(data: List<SeriesMarker>)
-
 
     /**
      * Returns an list of series markers.

@@ -6,7 +6,7 @@ import com.tradingview.lightweightcharts.help.isString
 import com.tradingview.lightweightcharts.help.requireString
 import java.lang.reflect.Type
 
-class IntColor(val value: Int): Colorable
+class IntColor(val value: Int) : Colorable
 
 class IntColorAdapter : JsonSerializer<IntColor>, JsonDeserializer<IntColor> {
     override fun serialize(
@@ -19,7 +19,6 @@ class IntColorAdapter : JsonSerializer<IntColor>, JsonDeserializer<IntColor> {
             else -> JsonNull.INSTANCE
         }
     }
-
 
     override fun deserialize(
         json: JsonElement?,

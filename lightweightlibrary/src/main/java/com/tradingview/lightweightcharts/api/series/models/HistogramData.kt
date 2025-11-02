@@ -9,4 +9,4 @@ data class HistogramData(
      * Optional color value for certain data item. If missed, color from HistogramSeriesOptions is used
      */
     val color: IntColor? = null
-): SingleValueData
+) : SingleValueData

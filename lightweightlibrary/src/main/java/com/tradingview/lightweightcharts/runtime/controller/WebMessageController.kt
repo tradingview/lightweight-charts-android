@@ -2,14 +2,14 @@ package com.tradingview.lightweightcharts.runtime.controller
 
 import com.google.gson.JsonElement
 import com.tradingview.lightweightcharts.Logger
-import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.api.serializer.Deserializer
+import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.messaging.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 
-open class WebMessageController: WebMessageChannel.BridgeMessageListener {
+open class WebMessageController : WebMessageChannel.BridgeMessageListener {
 
     private var webMessageChannel: WebMessageChannel? = null
     private val callbackBuffer = ConcurrentHashMap<String, BufferElement>()
@@ -31,7 +31,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         return callBridgeFunction(name, params, callback as? (Any?) -> Unit)
     }
 
-    fun <T: Any?> callFunction(
+    fun <T : Any?> callFunction(
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: ((T) -> Unit)?,
@@ -61,7 +61,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         return bridge.uuid
     }
 
-    fun <T: Any> callSubscribe(
+    fun <T : Any> callSubscribe(
         name: String,
         params: Map<String, Any> = emptyMap(),
         callback: (T) -> Unit,
@@ -78,7 +78,7 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         sendMessages()
     }
 
-    fun <T: Any> callUnsubscribe(
+    fun <T : Any> callUnsubscribe(
         name: String,
         subscription: (T) -> Unit
     ) {
@@ -99,7 +99,8 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
             is BridgeFunctionResult -> {
                 val element = callbackBuffer.remove(bridgeMessage.uuid)
                     ?: throw IllegalStateException(
-                        "Could not apply the function result, bridgeMessage: $bridgeMessage")
+                        "Could not apply the function result, bridgeMessage: $bridgeMessage"
+                    )
 
                 element.invoke(bridgeMessage.result)
             }
@@ -155,16 +156,16 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
 
     private fun getStackTrace(): Array<StackTraceElement> {
         return Thread.currentThread().stackTrace
-            //remove current class name from the stacktrace
+            // remove current class name from the stacktrace
             .filter { it.className != WebMessageController::class.qualifiedName }
-            //remove getCurrentThread and getStackTrace from the stacktrace
+            // remove getCurrentThread and getStackTrace from the stacktrace
             .drop(2)
             .toTypedArray()
     }
 
     private fun sendMessages() {
         webMessageChannel?.apply {
-            while(messageBuffer.isNotEmpty()) {
+            while (messageBuffer.isNotEmpty()) {
                 messageBuffer.pollFirst()?.let(::sendMessage)
             }
         }
@@ -189,4 +190,3 @@ open class WebMessageController: WebMessageChannel.BridgeMessageListener {
         fun makeInactive(): BufferElement = copy(isInactive = true)
     }
 }
-

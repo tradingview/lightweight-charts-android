@@ -9,7 +9,7 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 
-class VolumeStudyViewModel: ViewModel() {
+class VolumeStudyViewModel : ViewModel() {
     private val staticRepository = StaticRepository()
 
     val areaSeriesData: LiveData<Data>
@@ -43,5 +43,4 @@ class VolumeStudyViewModel: ViewModel() {
             volumeData.postValue(Data(barData, SeriesType.HISTOGRAM))
         }
     }
-
 }

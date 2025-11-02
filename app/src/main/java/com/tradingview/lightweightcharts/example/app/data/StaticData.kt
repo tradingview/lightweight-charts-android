@@ -1,13 +1,13 @@
 package com.tradingview.lightweightcharts.example.app.data
 
 import android.graphics.Color
+import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.options.enums.PriceAxisPosition
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.models.*
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 
 @Suppress("LongMethod")
 fun listBarChartSeriesBarData(): MutableList<SeriesData> {
@@ -4751,7 +4751,6 @@ fun listAreaSeriesData(): MutableList<SeriesData> {
 fun priceScaleOptions() = PriceScaleOptions(autoScale = false, position = PriceAxisPosition.LEFT)
 fun timeScaleOptions() = TimeScaleOptions(visible = false)
 
-
 fun priceLineOptionsWith(price: Float): PriceLineOptions {
     return PriceLineOptions(
         price = price,
@@ -4771,4 +4770,3 @@ fun priceLineOptions(): PriceLineOptions {
 }
 
 fun singleLineData() = LineData(Time.StringTime("2019-04-11"), 90.01f)
-

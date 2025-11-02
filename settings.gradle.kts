@@ -21,7 +21,6 @@ dependencyResolutionManagement {
     }
 }
 
-
 buildCache {
     local {
         isPush = true

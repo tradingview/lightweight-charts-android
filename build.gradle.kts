@@ -11,17 +11,14 @@ plugins {
 }
 
 detekt {
-    source = files(".")
-    buildUponDefaultConfig = false
-    config = files("$projectDir/default-detekt-config.yml")
+    autoCorrect = true
+    buildUponDefaultConfig = true
+    source.setFrom(files("."))
+    config.setFrom(files("default-detekt-config.yml"))
 }
 
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
-}
-
-tasks.register("detektSource") {
-    dependsOn(tasks.findByName("detekt"))
 }
 
 dependencies {

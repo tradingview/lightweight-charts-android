@@ -28,7 +28,6 @@ class BarChartViewModel : ViewModel() {
             val barData = staticRepository.getBarChartSeriesData()
             this@BarChartViewModel.barData.postValue(Data(barData, SeriesType.BAR))
 
-
             val areaData = staticRepository.getVolumeStudyAreaData()
             this@BarChartViewModel.areaData.postValue(Data(areaData, SeriesType.AREA))
         }

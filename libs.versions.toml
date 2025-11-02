@@ -9,7 +9,7 @@ android-gradle = "8.13.0"
 kotlin = "2.2.21"
 google-services = "4.4.4"
 firebase-crashlytics = "3.0.6"
-arturbosch-detekt = "1.23.8"
+arturbosch-detekt = "1.23.1"
 
 firebase-bom = "34.5.0"
 appcompat = "1.7.1"

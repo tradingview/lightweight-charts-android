@@ -40,7 +40,7 @@ android {
 
 fun evaluateShellScript(vararg script: String) {
     val outputStream = ByteArrayOutputStream()
-    try {
+    runCatching {
         project.exec {
             if (System.getProperty("os.name").lowercase().contains("windows")) {
                 val command = script.joinToString(" ") + "; if (!\$?) { exit 1 }"
@@ -51,7 +51,7 @@ fun evaluateShellScript(vararg script: String) {
             errorOutput = outputStream
             standardOutput = outputStream
         }
-    } catch (e: Exception) {
+    }.onFailure { e ->
         e.printStackTrace()
         throw IllegalStateException(outputStream.toString())
     }

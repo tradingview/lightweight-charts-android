@@ -19,5 +19,4 @@ enum class MismatchDirection(val value: Int) {
      * Search the nearest right item
      */
     NearestRight(1),
-
 }

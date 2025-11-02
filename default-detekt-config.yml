@@ -1,7 +1,6 @@
 config:
-  # is automatically ignored when custom-checks.jar is on the classpath
-  # however other CI checks use the argsfile where our plugin is not applied
-  # we need to care take of this by explicitly allowing this properties
+  validation: true
+  warningsAsErrors: true
   excludes: 'custom-checks.*'
 
 custom-checks:
@@ -9,6 +8,11 @@ custom-checks:
   SpekTestDiscovery:
     active: true
     includes: [ '**/test/**/*Spec.kt' ]
+
+
+potential-bugs:
+  ImplicitDefaultLocale:
+    active: false
 
 comments:
   CommentOverPrivateProperty:
@@ -23,6 +27,10 @@ comments:
     includes: [ '**/detekt-api/src/main/**/api/*.kt' ]
 
 complexity:
+  TooManyFunctions:
+    active: false
+  LongMethod:
+    active: false
   StringLiteralDuplication:
     active: false
     excludes: [ '**/test/**', '**/*Test.kt', '**/*Spec.kt' ]
@@ -75,24 +83,28 @@ exceptions:
   ThrowingNewInstanceOfSameException:
     active: true
 
+
 formatting:
   active: true
-  android: false
   autoCorrect: true
+  NoWildcardImports:
+    active: false
   AnnotationSpacing:
     active: true
   EnumEntryNameCase:
     active: true
   ImportOrdering:
     active: true
+    importsLayout:
+      - "java.*"
+      - "javax.*"
+      - "kotlin.*"
+      - "android.*"
+      - "*"
   Indentation:
     active: true
-  MaximumLineLength:
-    active: false
   NoEmptyFirstLineInMethodBlock:
     active: true
-  ParameterListWrapping:
-    active: false
   SpacingAroundAngleBrackets:
     active: true
   SpacingAroundDoubleColon:
@@ -104,47 +116,10 @@ formatting:
   SpacingBetweenDeclarationsWithComments:
     active: true
 
-naming:
-  InvalidPackageDeclaration:
-    active: true
-    excludes: [ '**/buildSrc/**/*.kt', '**/*.kts' ]
-  NoNameShadowing:
-    active: true
-  NonBooleanPropertyPrefixedWithIs:
-    active: true
-  VariableMaxLength:
-    active: true
-  VariableMinLength:
-    active: true
-
-potential-bugs:
-  AvoidReferentialEquality:
-    active: true
-  DontDowncastCollectionTypes:
-    active: true
-  DoubleMutabilityForCollection:
-    active: false
-  ExitOutsideMain:
-    active: false
-  HasPlatformType:
-    active: true
-  IgnoredReturnValue:
-    active: true
-  ImplicitUnitReturnType:
-    active: true
-  MapGetWithNotNullAssertionOperator:
-    active: true
-  UnconditionalJumpStatementInLoop:
-    active: true
-  UnreachableCatchBlock:
-    active: true
-  UnsafeCast:
-    active: true
-    excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt' ]
-  UselessPostfixExpression:
-    active: true
 
 style:
+  WildcardImport:
+    active: false
   ClassOrdering:
     active: false
   CollapsibleIfStatements:
@@ -169,7 +144,12 @@ style:
   ForbiddenVoid:
     active: true
   MagicNumber:
-    excludes: [ '**/test/**', '**/*Test.kt', '**/*Spec.kt' ]
+    active: false
+    excludes: [
+      '**/app/**/*.kt',
+      '**/test/**',
+      '**/*Test.kt',
+      '**/*Spec.kt' ]
     ignorePropertyDeclaration: true
     ignoreAnnotation: true
     ignoreEnums: true

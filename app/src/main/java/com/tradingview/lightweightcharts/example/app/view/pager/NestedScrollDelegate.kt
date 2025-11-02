@@ -67,6 +67,7 @@ class NestedScrollDelegate(private val context: Context) : TouchDelegate {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             value.toFloat(),
-            context.resources.displayMetrics).toInt()
+            context.resources.displayMetrics
+        ).toInt()
     }
 }

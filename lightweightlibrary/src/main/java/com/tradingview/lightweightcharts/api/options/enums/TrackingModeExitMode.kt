@@ -22,7 +22,6 @@ enum class TrackingModeExitMode(val value: Int) {
      */
     ON_NEXT_TAP(value = 1);
 
-
     companion object {
         fun fromValue(value: Int): TrackingModeExitMode = values().first { it.value == value }
     }

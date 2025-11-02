@@ -13,20 +13,20 @@ data class PriceScaleId(val value: String) {
 
     class PriceScaleIdAdapter : JsonSerializer<PriceScaleId>, JsonDeserializer<PriceScaleId> {
         override fun serialize(
-                src: PriceScaleId?,
-                typeOfSrc: Type?,
-                context: JsonSerializationContext?
+            src: PriceScaleId?,
+            typeOfSrc: Type?,
+            context: JsonSerializationContext?
         ): JsonElement {
             return JsonPrimitive(src?.value ?: "")
         }
 
         override fun deserialize(
-                json: JsonElement?,
-                typeOfT: Type?,
-                context: JsonDeserializationContext?
+            json: JsonElement?,
+            typeOfT: Type?,
+            context: JsonDeserializationContext?
         ): PriceScaleId {
             return when {
-                json.isString() -> when(val value = json.requireString()) {
+                json.isString() -> when (val value = json.requireString()) {
                     LEFT.value -> LEFT
                     RIGHT.value -> RIGHT
                     else -> PriceScaleId(value)

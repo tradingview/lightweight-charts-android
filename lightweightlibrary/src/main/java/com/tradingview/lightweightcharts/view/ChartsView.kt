@@ -9,8 +9,8 @@ import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature.*
 import com.tradingview.lightweightcharts.Logger
 import com.tradingview.lightweightcharts.api.delegates.ChartApiDelegate
-import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
+import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.messaging.LogLevel
 import com.tradingview.lightweightcharts.view.gesture.TouchDelegate
 import java.lang.Exception
@@ -116,8 +116,7 @@ open class ChartsView @JvmOverloads constructor(
 
     interface State {
         class Ready : State
-        class Preparing: State
-        class Error(val exception: Exception): State
+        class Preparing : State
+        class Error(val exception: Exception) : State
     }
 }
-

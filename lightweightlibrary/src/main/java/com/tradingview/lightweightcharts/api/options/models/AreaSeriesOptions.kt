@@ -93,7 +93,6 @@ data class AreaSeriesOptions(
      */
     override var visible: Boolean? = null,
 
-
     // ----------  AreaStyleOptions    ---------------------
     /**
      * Color of the top part of the area.
@@ -140,7 +139,6 @@ data class AreaSeriesOptions(
      */
     override var crosshairMarkerRadius: Float? = null,
 
-
     /**
      * Crosshair marker border color. An empty string falls back to the the color of the series under the crosshair.
      */
@@ -150,7 +148,6 @@ data class AreaSeriesOptions(
      * The crosshair marker background color. An empty string falls back to the the color of the series under the crosshair.
      */
     override var crosshairMarkerBackgroundColor: IntColor? = null,
-
 
     /**
      * Crosshair marker border width in pixels.
@@ -162,7 +159,7 @@ data class AreaSeriesOptions(
      */
     override var lastPriceAnimation: LastPriceAnimationMode? = null,
 
-    ) : SeriesOptionsCommon, AreaStyleOptions
+) : SeriesOptionsCommon, AreaStyleOptions
 
 inline fun areaSeriesOptions(init: AreaSeriesOptions.() -> Unit): AreaSeriesOptions {
     return AreaSeriesOptions().apply(init)

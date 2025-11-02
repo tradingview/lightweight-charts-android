@@ -55,18 +55,17 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
 
     private fun observeViewModelData() = vm.run {
         areaSeriesData.observe(viewLifecycleOwner) { data ->
-            createAreaSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
+            createAreaSeriesWithData(data, binding.chartsView.api) { series ->
                 this@IndicatorsAndMarkersFragment.areaSeries.clear()
                 this@IndicatorsAndMarkersFragment.areaSeries.add(series)
             }
         }
         volumeSeriesData.observe(viewLifecycleOwner) { data ->
-            createVolumeSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
+            createVolumeSeriesWithData(data, binding.chartsView.api) { series ->
                 this@IndicatorsAndMarkersFragment.volumeSeries.clear()
                 this@IndicatorsAndMarkersFragment.volumeSeries.add(series)
             }
         }
-
     }
 
     private fun subscribeOnChartReady(view: ChartsView) {
@@ -76,6 +75,7 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
                 is ChartsView.State.Ready -> {
                     Toast.makeText(context, "Chart ${view.id} is ready", Toast.LENGTH_SHORT).show()
                 }
+
                 is ChartsView.State.Error -> {
                     Toast.makeText(context, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
                 }
@@ -109,7 +109,6 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
 
     private fun createAreaSeriesWithData(
         data: Data,
-        priceScale: PriceScaleId,
         chartApi: ChartApi,
         onSeriesCreated: (SeriesApi) -> Unit,
     ) {
@@ -129,7 +128,6 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
 
     private fun createVolumeSeriesWithData(
         data: Data,
-        priceScale: PriceScaleId,
         chartApi: ChartApi,
         onSeriesCreated: (SeriesApi) -> Unit,
     ) {
@@ -144,13 +142,14 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
                 priceScaleId = PriceScaleId(""),
             ),
             onSeriesCreated = { api ->
-                api.priceScale().applyOptions(PriceScaleOptions().apply {
-                    scaleMargins = PriceScaleMargins(
-                        top = 0.8f,
-                        bottom = 0f,
-                    )
-                })
-
+                api.priceScale().applyOptions(
+                    PriceScaleOptions().apply {
+                        scaleMargins = PriceScaleMargins(
+                            top = 0.8f,
+                            bottom = 0f,
+                        )
+                    }
+                )
 
                 api.setData(data.list)
                 onSeriesCreated(api)

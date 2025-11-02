@@ -26,7 +26,6 @@ class RangesViewModel(val app: Application) : AndroidViewModel(app) {
     val seriesYearlyAreaData: LiveData<Data> get() = yearlyBarData
     private val yearlyBarData = MutableLiveData<Data>()
 
-
     fun init() {
         loadData()
     }
@@ -39,14 +38,11 @@ class RangesViewModel(val app: Application) : AndroidViewModel(app) {
             val weekly = rep.getWeeklyData().take(1000).toList()
             weeklyAreaData.postValue(Data(weekly, SeriesType.BAR))
 
-
             val monthly = rep.getMonthlyData().take(1000).toList()
             monthlyAreaData.postValue(Data(monthly, SeriesType.BAR))
 
-
             val yearly = rep.getYearlyData().toList()
             yearlyBarData.postValue(Data(yearly, SeriesType.BAR))
-
         }
     }
 }

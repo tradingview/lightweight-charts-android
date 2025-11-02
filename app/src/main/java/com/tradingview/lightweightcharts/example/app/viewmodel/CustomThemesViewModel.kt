@@ -9,7 +9,7 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 
-class CustomThemesViewModel: ViewModel() {
+class CustomThemesViewModel : ViewModel() {
 
     private val staticRepository = StaticRepository()
 

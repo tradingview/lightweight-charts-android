@@ -27,7 +27,6 @@ class HistoricalDataRepository(private val app: Application) {
         }
     }
 
-
     fun getWeeklyData(): Sequence<AreaData> {
         var last: Date? = null
         return getDailyData().filter {
@@ -44,7 +43,6 @@ class HistoricalDataRepository(private val app: Application) {
             }
         }
     }
-
 
     fun getMonthlyData(): Sequence<AreaData> {
         var last: Date? = null
@@ -79,9 +77,7 @@ class HistoricalDataRepository(private val app: Application) {
             }
         }
     }
-
 }
-
 
 data class HistNote(
     val splittedLine: List<String>,
@@ -105,7 +101,6 @@ fun HistNote.toBarData() =
         low = low,
         close = close
     )
-
 
 fun HistNote.toAreaData() =
     AreaData(

@@ -11,7 +11,7 @@ class CandlestickSeriesOptionsDeserializer : Deserializer<CandlestickSeriesOptio
                 json,
                 CandlestickSeriesOptions::class.java
             )
-        } catch (e: JsonSyntaxException) {
+        } catch (_: JsonSyntaxException) {
             null
         }
     }

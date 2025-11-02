@@ -52,7 +52,6 @@ interface AreaStyleOptions {
      */
     val crosshairMarkerRadius: Float?
 
-
     /**
      * Crosshair marker border color. An empty string falls back to the the color of the series under the crosshair.
      */

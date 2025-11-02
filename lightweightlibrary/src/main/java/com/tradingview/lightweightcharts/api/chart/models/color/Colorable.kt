@@ -5,10 +5,11 @@ import com.google.gson.*
 import com.tradingview.lightweightcharts.api.series.exception.ColorParseException
 import com.tradingview.lightweightcharts.help.isString
 import com.tradingview.lightweightcharts.help.requireString
-import java.lang.reflect.Type
 import java.lang.IllegalStateException
+import java.lang.reflect.Type
 
 interface Colorable {
+
     class ColorAdapter : JsonSerializer<Colorable>, JsonDeserializer<Colorable> {
         override fun serialize(
             src: Colorable?,
@@ -65,7 +66,7 @@ private fun String.parseHexColor(): Int {
     val argbColor = when (length) {
         7 -> color or argbAlphaMask
         9 -> {
-            val sRGBColor = color shr 8 //remove alpha
+            val sRGBColor = color shr 8 // remove alpha
             val alpha = (color and rgbaAlphaMask) shl 24
             sRGBColor or alpha
         }

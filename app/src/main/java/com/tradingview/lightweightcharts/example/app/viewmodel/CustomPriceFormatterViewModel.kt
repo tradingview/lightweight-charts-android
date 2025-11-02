@@ -9,7 +9,7 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 
-class CustomPriceFormatterViewModel: ViewModel() {
+class CustomPriceFormatterViewModel : ViewModel() {
 
     private val staticRepository = StaticRepository()
 
