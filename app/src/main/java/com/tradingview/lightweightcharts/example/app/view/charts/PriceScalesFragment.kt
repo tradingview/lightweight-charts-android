@@ -25,7 +25,6 @@ import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LastPriceAnimationMode
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
-import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
@@ -61,7 +60,7 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
 
     private fun observeViewModelData() {
         viewModel.seriesData.observe(viewLifecycleOwner) { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
+            createSeriesWithData(data, binding.chartsView.api) { series ->
                 this.series.clear()
                 this.series.add(series)
 
@@ -86,17 +85,6 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
                         lineStyle = LineStyle.SOLID,
                         axisLabelVisible = true,
                         title = "average price",
-                    )
-                )
-
-                val priceLine = series.createPriceLine(
-                    PriceLineOptions(
-                        price = viewModel.maximumPrice,
-                        color = Color.parseColor("#be1238").toIntColor(),
-                        lineWidth = LineWidth.TWO,
-                        lineStyle = LineStyle.SOLID,
-                        axisLabelVisible = true,
-                        title = "maximum price",
                     )
                 )
 
@@ -158,7 +146,6 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
 
     private fun createSeriesWithData(
         data: Data,
-        priceScale: PriceScaleId,
         chartApi: ChartApi,
         onSeriesCreated: (SeriesApi) -> Unit,
     ) {

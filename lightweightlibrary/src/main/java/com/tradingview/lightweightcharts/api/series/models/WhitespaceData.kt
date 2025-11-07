@@ -10,4 +10,4 @@ data class WhitespaceData(
      * The time of the data.
      */
     override val time: Time
-): SeriesData
+) : SeriesData

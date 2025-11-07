@@ -9,7 +9,7 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 
-class FloatingTooltipViewModel: ViewModel() {
+class FloatingTooltipViewModel : ViewModel() {
     private val staticRepository = StaticRepository()
 
     val seriesData: LiveData<Data>

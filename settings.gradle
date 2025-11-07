@@ -1,2 +1,0 @@
-include ':app', ':lightweightlibrary'
-rootProject.name='LightweightCharts'

@@ -24,10 +24,13 @@ open class Data(
 enum class LogLevel {
     @SerializedName("debug")
     DEBUG,
+
     @SerializedName("warning")
     WARNING,
+
     @SerializedName("error")
     ERROR,
+
     @SerializedName("none")
     NONE;
 

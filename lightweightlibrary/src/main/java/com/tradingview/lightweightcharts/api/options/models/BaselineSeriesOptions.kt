@@ -9,7 +9,6 @@ import com.tradingview.lightweightcharts.api.series.enums.LineType
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
 import com.tradingview.lightweightcharts.api.series.enums.PriceLineSource
 import com.tradingview.lightweightcharts.api.series.models.BaseValueType
-
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
@@ -93,10 +92,9 @@ data class BaselineSeriesOptions(
      */
     override var visible: Boolean? = null,
 
-
     // ------------  BaselineStyleOptions  ----------
     /**
-    override * rase value of the series.=null,
+     override * rase value of the series.=null,
      */
     override var baseValue: BaseValueType? = null,
 

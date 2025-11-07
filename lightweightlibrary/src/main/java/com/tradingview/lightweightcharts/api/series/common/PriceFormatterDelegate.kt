@@ -6,7 +6,7 @@ import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 class PriceFormatterDelegate(
     override val uuid: String,
     private val controller: WebMessageController
-): PriceFormatter {
+) : PriceFormatter {
 
     override fun format(price: Float, result: (String?) -> Unit) {
         controller.callFunction(
@@ -19,5 +19,4 @@ class PriceFormatterDelegate(
             PrimitiveSerializer.StringDeserializer
         )
     }
-
 }

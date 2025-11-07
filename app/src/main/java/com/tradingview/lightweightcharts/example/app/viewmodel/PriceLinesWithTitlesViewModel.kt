@@ -10,7 +10,7 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.launch
 
-class PriceLinesWithTitlesViewModel: ViewModel() {
+class PriceLinesWithTitlesViewModel : ViewModel() {
 
     private val staticRepository = StaticRepository()
 
@@ -37,19 +37,16 @@ class PriceLinesWithTitlesViewModel: ViewModel() {
     fun fetchPrices() {
         val seriesDataList = data.value?.list
         minimumPrice = (seriesDataList?.get(0) as LineData).value
-        maximumPrice = minimumPrice;
+        maximumPrice = minimumPrice
         for (i in seriesDataList.indices) {
-            val price = (seriesDataList[i] as LineData).value;
+            val price = (seriesDataList[i] as LineData).value
             if (price > maximumPrice) {
-                maximumPrice = price;
+                maximumPrice = price
             }
             if (price < minimumPrice) {
-                minimumPrice = price;
+                minimumPrice = price
             }
         }
-        avgPrice = (maximumPrice + minimumPrice) / 2;
+        avgPrice = (maximumPrice + minimumPrice) / 2
     }
-
-
-
 }

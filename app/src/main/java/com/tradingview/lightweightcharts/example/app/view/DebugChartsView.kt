@@ -10,6 +10,6 @@ class DebugChartsView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
-): ChartsView(context, attrs, defStyleAttr, defStyleRes) {
+) : ChartsView(context, attrs, defStyleAttr, defStyleRes) {
     override val logLevel: LogLevel = LogLevel.DEBUG
 }

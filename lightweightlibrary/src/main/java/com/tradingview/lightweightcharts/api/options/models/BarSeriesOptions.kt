@@ -44,7 +44,6 @@ inline fun barSeriesOptions(init: BarSeriesOptions.() -> Unit): BarSeriesOptions
     return BarSeriesOptions().apply(init)
 }
 
-
 inline fun SeriesApi.applyBarSeriesOptions(init: BarSeriesOptions.() -> Unit) {
     applyOptions(BarSeriesOptions().apply(init))
 }

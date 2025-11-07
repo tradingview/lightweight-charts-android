@@ -15,4 +15,4 @@ data class BarData(
      * Optional color value for certain data item. If missed, color from options is used
      */
     val color: IntColor? = null,
-): OhlcData
+) : OhlcData

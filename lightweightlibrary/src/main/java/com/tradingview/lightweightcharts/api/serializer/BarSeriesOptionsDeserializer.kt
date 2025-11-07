@@ -8,7 +8,7 @@ class BarSeriesOptionsDeserializer : Deserializer<BarSeriesOptions>() {
     override fun deserialize(json: JsonElement): BarSeriesOptions? {
         return try {
             gson.fromJson(json, BarSeriesOptions::class.java)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: JsonSyntaxException) {
             null
         }
     }

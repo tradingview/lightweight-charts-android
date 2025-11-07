@@ -8,7 +8,7 @@ class TimeDeserializer : Deserializer<Time>() {
     override fun deserialize(json: JsonElement): Time? {
         return try {
             gson.fromJson(json, Time::class.java)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: JsonSyntaxException) {
             null
         }
     }

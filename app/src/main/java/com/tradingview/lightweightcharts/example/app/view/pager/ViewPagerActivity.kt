@@ -27,7 +27,7 @@ class ViewPagerActivity : AppCompatActivity() {
         fun bind() {
             binding.chartsView.addTouchDelegate(NestedScrollDelegate(activity))
             binding.chartsView.subscribeOnChartStateChange { state ->
-                //Do not add new series when ViewHolder is rebinding
+                // Do not add new series when ViewHolder is rebinding
                 if (state is ChartsView.State.Ready && ::series.isInitialized.not()) {
                     viewModel.seriesData.observe(activity) { data ->
                         binding.chartsView.api.addAreaSeries { areaSeries ->
@@ -55,10 +55,9 @@ class ViewPagerActivity : AppCompatActivity() {
                     this@ViewPagerActivity
                 )
 
-
             override fun getItemViewType(position: Int): Int {
-                //We should hold the instance of ChartsView as long as possible
-                //Every page will create its own ChartsView
+                // We should hold the instance of ChartsView as long as possible
+                // Every page will create its own ChartsView
                 return position
             }
 

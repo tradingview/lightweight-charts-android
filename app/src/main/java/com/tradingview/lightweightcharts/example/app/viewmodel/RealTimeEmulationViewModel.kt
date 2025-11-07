@@ -12,7 +12,7 @@ import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class RealTimeEmulationViewModel: ViewModel() {
+class RealTimeEmulationViewModel : ViewModel() {
 
     private val staticRepository = StaticRepository()
     private val dynamicRepository = DynamicRepository()

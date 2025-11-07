@@ -3,7 +3,7 @@ package com.tradingview.lightweightcharts.api.serializer
 import com.google.gson.JsonElement
 
 sealed class PrimitiveSerializer {
-    object StringDeserializer: Deserializer<String>() {
+    object StringDeserializer : Deserializer<String>() {
         override fun deserialize(json: JsonElement): String? {
             if (json.isJsonNull) {
                 return null
@@ -12,7 +12,7 @@ sealed class PrimitiveSerializer {
         }
     }
 
-    object FloatDeserializer: Deserializer<Float>() {
+    object FloatDeserializer : Deserializer<Float>() {
         override fun deserialize(json: JsonElement): Float? {
             if (json.isJsonNull) {
                 return null
@@ -21,7 +21,7 @@ sealed class PrimitiveSerializer {
         }
     }
 
-    object IntDeserializer: Deserializer<Int>() {
+    object IntDeserializer : Deserializer<Int>() {
         override fun deserialize(json: JsonElement): Int? {
             if (json.isJsonNull) {
                 return null
@@ -30,7 +30,7 @@ sealed class PrimitiveSerializer {
         }
     }
 
-    object DoubleDeserializer: Deserializer<Double>() {
+    object DoubleDeserializer : Deserializer<Double>() {
         override fun deserialize(json: JsonElement): Double? {
             if (json.isJsonNull) {
                 return null
@@ -39,10 +39,9 @@ sealed class PrimitiveSerializer {
         }
     }
 
-    object NullDeserializer: Deserializer<Any>() {
+    object NullDeserializer : Deserializer<Any>() {
         override fun deserialize(json: JsonElement): Any? {
             return null
         }
     }
 }
-

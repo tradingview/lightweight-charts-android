@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.delegates
 
 import android.graphics.Bitmap
 import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
+import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.APPLY_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.CHART_OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.PRICE_SCALE
@@ -9,26 +10,25 @@ import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.REMOVE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_CROSSHAIR_MOVE
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.SUBSCRIBE_ON_CLICK
+import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.TAKE_SCREENSHOT
+import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.MIME
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.OPTIONS
+import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
+import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.PRICE_SCALE_ID
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_AREA_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_BAR_SERIES
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_BASELINE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_CANDLESTICK_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_HISTOGRAM_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_LINE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Func.TAKE_SCREENSHOT
-import com.tradingview.lightweightcharts.api.interfaces.ChartApi.Params.MIME
-import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
-import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi.Params.PRICE_SCALE_ID
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
-import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.ADD_BASELINE_SERIES
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi
 import com.tradingview.lightweightcharts.api.options.common.BaselineStyleOptions
-import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.api.options.models.*
 import com.tradingview.lightweightcharts.api.serializer.*
 import com.tradingview.lightweightcharts.api.series.models.*
+import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.version.ChartRuntimeObject
 
 class ChartApiDelegate(
@@ -217,8 +217,10 @@ class ChartApiDelegate(
         return PriceScaleApiDelegate(uuid, controller)
     }
 
-    @Deprecated("Using ChartApi.priceScale() method without arguments " +
-            "has been deprecated, pass valid price scale id instead")
+    @Deprecated(
+        "Using ChartApi.priceScale() method without arguments " +
+            "has been deprecated, pass valid price scale id instead"
+    )
     override fun priceScale(): PriceScaleApi {
         val uuid = controller.callFunction(PRICE_SCALE)
         return PriceScaleApiDelegate(uuid, controller)

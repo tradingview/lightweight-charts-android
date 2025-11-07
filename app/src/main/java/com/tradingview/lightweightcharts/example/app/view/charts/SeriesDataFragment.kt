@@ -19,7 +19,6 @@ import com.tradingview.lightweightcharts.api.options.models.gridOptions
 import com.tradingview.lightweightcharts.api.options.models.layoutOptions
 import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
 import com.tradingview.lightweightcharts.api.options.models.timeScaleOptions
-import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
@@ -29,7 +28,6 @@ import com.tradingview.lightweightcharts.view.ChartsView
 
 class SeriesDataFragment : Fragment(), ITitleFragment {
     override val fragmentTitleRes = R.string.data
-
 
     private lateinit var viewModel: SeriesMarkersViewModel
 
@@ -56,7 +54,7 @@ class SeriesDataFragment : Fragment(), ITitleFragment {
 
     private fun observeViewModelData() {
         viewModel.seriesData.observe(viewLifecycleOwner) { data ->
-            createSeriesWithData(data, PriceScaleId.RIGHT, binding.chartsView.api) { series ->
+            createSeriesWithData(data, binding.chartsView.api) { series ->
                 this.series.clear()
                 this.series.add(series)
 
@@ -72,6 +70,7 @@ class SeriesDataFragment : Fragment(), ITitleFragment {
                 is ChartsView.State.Ready -> {
                     Toast.makeText(context, "Chart ${view.id} is ready", Toast.LENGTH_SHORT).show()
                 }
+
                 is ChartsView.State.Error -> {
                     Toast.makeText(context, state.exception.localizedMessage, Toast.LENGTH_LONG).show()
                 }
@@ -105,7 +104,6 @@ class SeriesDataFragment : Fragment(), ITitleFragment {
 
     private fun createSeriesWithData(
         data: Data,
-        priceScale: PriceScaleId,
         chartApi: ChartApi,
         onSeriesCreated: (SeriesApi) -> Unit,
     ) {
@@ -122,6 +120,5 @@ class SeriesDataFragment : Fragment(), ITitleFragment {
                 onSeriesCreated(api)
             }
         )
-
     }
 }

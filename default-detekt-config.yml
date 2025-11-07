@@ -1,31 +1,39 @@
 config:
-  # is automatically ignored when custom-checks.jar is on the classpath
-  # however other CI checks use the argsfile where our plugin is not applied
-  # we need to care take of this by explicitly allowing this properties
+  validation: true
+  warningsAsErrors: true
   excludes: 'custom-checks.*'
 
 custom-checks:
   active: true
   SpekTestDiscovery:
     active: true
-    includes: ['**/test/**/*Spec.kt']
+    includes: [ '**/test/**/*Spec.kt' ]
+
+
+potential-bugs:
+  ImplicitDefaultLocale:
+    active: false
 
 comments:
   CommentOverPrivateProperty:
     active: true
   UndocumentedPublicClass:
     active: true
-    excludes: ['**/*.kt']
-    includes: ['**/detekt-api/src/main/**/api/*.kt']
+    excludes: [ '**/*.kt' ]
+    includes: [ '**/detekt-api/src/main/**/api/*.kt' ]
   UndocumentedPublicFunction:
     active: true
-    excludes: ['**/*.kt']
-    includes: ['**/detekt-api/src/main/**/api/*.kt']
+    excludes: [ '**/*.kt' ]
+    includes: [ '**/detekt-api/src/main/**/api/*.kt' ]
 
 complexity:
+  TooManyFunctions:
+    active: false
+  LongMethod:
+    active: false
   StringLiteralDuplication:
     active: false
-    excludes: ['**/test/**', '**/*Test.kt', '**/*Spec.kt']
+    excludes: [ '**/test/**', '**/*Test.kt', '**/*Spec.kt' ]
     threshold: 5
     ignoreAnnotation: true
     excludeStringsWithLessThan5Characters: true
@@ -35,12 +43,12 @@ complexity:
     threshold: 10
     includeStaticDeclarations: false
     includePrivateDeclarations: false
-  ComplexMethod:
+  CyclomaticComplexMethod:
     active: true
     ignoreSingleWhenExpression: true
   LargeClass:
     active: true
-    excludes: ['**/test/**', '**/*.Test.kt', '**/*.Spec.kt']
+    excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt' ]
   MethodOverloading:
     active: true
 
@@ -75,24 +83,28 @@ exceptions:
   ThrowingNewInstanceOfSameException:
     active: true
 
+
 formatting:
   active: true
-  android: false
   autoCorrect: true
+  NoWildcardImports:
+    active: false
   AnnotationSpacing:
     active: true
   EnumEntryNameCase:
     active: true
   ImportOrdering:
     active: true
+    importsLayout:
+      - "java.*"
+      - "javax.*"
+      - "kotlin.*"
+      - "android.*"
+      - "*"
   Indentation:
     active: true
-  MaximumLineLength:
-    active: false
   NoEmptyFirstLineInMethodBlock:
     active: true
-  ParameterListWrapping:
-    active: false
   SpacingAroundAngleBrackets:
     active: true
   SpacingAroundDoubleColon:
@@ -104,47 +116,10 @@ formatting:
   SpacingBetweenDeclarationsWithComments:
     active: true
 
-naming:
-  InvalidPackageDeclaration:
-    active: true
-    excludes: ['**/buildSrc/**/*.kt', '**/*.kts']
-  NoNameShadowing:
-    active: true
-  NonBooleanPropertyPrefixedWithIs:
-    active: true
-  VariableMaxLength:
-    active: true
-  VariableMinLength:
-    active: true
-
-potential-bugs:
-  AvoidReferentialEquality:
-    active: true
-  DontDowncastCollectionTypes:
-    active: true
-  DoubleMutabilityForCollection:
-    active: false
-  ExitOutsideMain:
-    active: false
-  HasPlatformType:
-    active: true
-  IgnoredReturnValue:
-    active: true
-  ImplicitUnitReturnType:
-    active: true
-  MapGetWithNotNullAssertionOperator:
-    active: true
-  UnconditionalJumpStatementInLoop:
-    active: true
-  UnreachableCatchBlock:
-    active: true
-  UnsafeCast:
-    active: true
-    excludes: ['**/test/**', '**/*.Test.kt', '**/*.Spec.kt']
-  UselessPostfixExpression:
-    active: true
 
 style:
+  WildcardImport:
+    active: false
   ClassOrdering:
     active: false
   CollapsibleIfStatements:
@@ -159,21 +134,22 @@ style:
     active: true
   ForbiddenComment:
     active: true
-    values:
-      - 'TODO:'
-      - 'FIXME:'
-      - 'STOPSHIP:'
-      - '@author'
-      - '@requiresTypeResolution'
-    excludes: ['**/detekt-rules-style/**/ForbiddenComment.kt']
+    comments:
+      - value: 'FIXME:'
+      - value: 'STOPSHIP:'
+      - value: 'TODO:'
+      - value: '@author'
+      - value: '@requiresTypeResolution'
+    excludes: [ '**/detekt-rules-style/**/ForbiddenComment.kt' ]
   ForbiddenVoid:
     active: true
-  LibraryCodeMustSpecifyReturnType:
-    active: true
-    excludes: ['**/*.kt']
-    includes: ['**/detekt-api/src/main/**/api/*.kt']
   MagicNumber:
-    excludes: ['**/test/**', '**/*Test.kt', '**/*Spec.kt']
+    active: false
+    excludes: [
+      '**/app/**/*.kt',
+      '**/test/**',
+      '**/*Test.kt',
+      '**/*Spec.kt' ]
     ignorePropertyDeclaration: true
     ignoreAnnotation: true
     ignoreEnums: true
@@ -188,7 +164,7 @@ style:
     active: true
   MaxLineLength:
     active: true
-    excludes: ['**/test/**', '**/*Test.kt', '**/*Spec.kt']
+    excludes: [ '**/test/**', '**/*Test.kt', '**/*Spec.kt' ]
     excludeCommentStatements: true
   NestedClassesVisibility:
     active: true

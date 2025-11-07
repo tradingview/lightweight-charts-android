@@ -1,16 +1,16 @@
 package com.tradingview.lightweightcharts.api.options.models
 
-/** 
- * Structure describing grid options 
+/**
+ * Structure describing grid options
  */
 data class GridOptions(
-    /** 
-     * Vertical grid line options 
+    /**
+     * Vertical grid line options
      */
     var vertLines: GridLineOptions? = null,
 
-    /** 
-     * Horizontal grid line options 
+    /**
+     * Horizontal grid line options
      */
     var horzLines: GridLineOptions? = null
 )

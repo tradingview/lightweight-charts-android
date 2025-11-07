@@ -4,11 +4,11 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonSyntaxException
 import com.tradingview.lightweightcharts.api.options.models.LineSeriesOptions
 
-class LineSeriesOptionsDeserializer: Deserializer<LineSeriesOptions>() {
+class LineSeriesOptionsDeserializer : Deserializer<LineSeriesOptions>() {
     override fun deserialize(json: JsonElement): LineSeriesOptions? {
         return try {
             gson.fromJson(json, LineSeriesOptions::class.java)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: JsonSyntaxException) {
             null
         }
     }

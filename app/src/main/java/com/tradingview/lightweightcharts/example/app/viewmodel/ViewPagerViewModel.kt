@@ -24,7 +24,7 @@ class ViewPagerViewModel : ViewModel() {
 
     private fun loadData() {
         viewModelScope.launch {
-            when(dataType) {
+            when (dataType) {
                 SeriesType.AREA -> {
                     val areaSeriesData = staticRepository.getListAreaSeriesData()
                     data.postValue(Data(areaSeriesData, SeriesType.AREA))

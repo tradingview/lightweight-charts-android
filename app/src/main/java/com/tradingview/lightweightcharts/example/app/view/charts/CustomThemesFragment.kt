@@ -55,7 +55,6 @@ class CustomThemesFragment : Fragment(), ITitleFragment {
         observeViewModelData()
         subscribeOnChartReady(binding.chartsView)
 
-
         themeChips.forEachIndexed { index, chip ->
             chip.setOnClickListener {
                 themeIndex = index
@@ -90,10 +89,10 @@ class CustomThemesFragment : Fragment(), ITitleFragment {
         }
     }
 
-
     private fun refreshUI() {
-        if (themeIndex == null)
+        if (themeIndex == null) {
             return
+        }
 
         themeChips.forEachIndexed { index, chip ->
             chip.isChecked = index == themeIndex
@@ -160,7 +159,6 @@ class CustomThemesFragment : Fragment(), ITitleFragment {
         }
     }
 
-
     private fun ChartOptions.colorfulThemeOptions() {
         layout = layoutOptions {
             background = VerticalGradientColor(
@@ -189,7 +187,6 @@ class CustomThemesFragment : Fragment(), ITitleFragment {
             lineWidth = LineWidth.TWO,
         )
 
-
     private fun colorfulAreaSeriesOptions(): AreaSeriesOptions =
         AreaSeriesOptions(
             topColor = resources.randomColor(R.array.all_colorful),
@@ -197,6 +194,4 @@ class CustomThemesFragment : Fragment(), ITitleFragment {
             lineColor = resources.randomColor(R.array.all_colorful),
             lineWidth = LineWidth.TWO,
         )
-
-
 }

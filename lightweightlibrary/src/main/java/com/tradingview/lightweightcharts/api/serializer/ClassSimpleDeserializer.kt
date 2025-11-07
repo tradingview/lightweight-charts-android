@@ -9,9 +9,8 @@ class ClassSimpleDeserializer<T : SeriesData>(private val clazz: Class<T>) : Des
     override fun deserialize(json: JsonElement): T? {
         return try {
             gson.fromJson(json, clazz)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: JsonSyntaxException) {
             null
         }
     }
-
 }

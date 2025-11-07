@@ -62,13 +62,12 @@ class RangeSwitcherFragment : Fragment(), ITitleFragment {
                 rangeIndex = index
             }
         }
-
     }
 
-
     private fun refreshUI() {
-        if (rangeIndex == null || vm.seriesDailyAreaData.value == null)
+        if (rangeIndex == null || vm.seriesDailyAreaData.value == null) {
             return
+        }
 
         rangeChips.forEachIndexed { index, chip ->
             chip.isChecked = index == rangeIndex
@@ -100,7 +99,5 @@ class RangeSwitcherFragment : Fragment(), ITitleFragment {
                 setData(data)
             }
         }
-
     }
-
 }

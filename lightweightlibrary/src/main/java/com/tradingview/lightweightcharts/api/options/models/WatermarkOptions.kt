@@ -1,13 +1,13 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 import com.tradingview.lightweightcharts.api.options.enums.HorizontalAlignment
 import com.tradingview.lightweightcharts.api.options.enums.VerticalAlignment
-import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 
 /**
  * Structure describing watermark options
  */
-data class WatermarkOptions (
+data class WatermarkOptions(
     /**
      * Color of the watermark
      */

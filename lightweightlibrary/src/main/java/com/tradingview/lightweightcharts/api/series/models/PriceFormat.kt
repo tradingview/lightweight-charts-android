@@ -13,10 +13,13 @@ data class PriceFormat(
     enum class Type {
         @SerializedName("price")
         PRICE,
+
         @SerializedName("volume")
         VOLUME,
+
         @SerializedName("percent")
         PERCENT,
+
         @SerializedName("custom")
         CUSTOM
     }
@@ -30,6 +33,5 @@ data class PriceFormat(
         fun priceFormatCustom(formatter: Plugin, minMove: Float): PriceFormat {
             return PriceFormat(formatter = formatter, minMove = minMove, type = Type.CUSTOM)
         }
-
     }
 }

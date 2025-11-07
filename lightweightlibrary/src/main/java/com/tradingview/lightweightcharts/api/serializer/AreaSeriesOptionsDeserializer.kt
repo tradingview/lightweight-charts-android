@@ -8,7 +8,7 @@ class AreaSeriesOptionsDeserializer : Deserializer<AreaSeriesOptions>() {
     override fun deserialize(json: JsonElement): AreaSeriesOptions? {
         return try {
             gson.fromJson(json, AreaSeriesOptions::class.java)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: JsonSyntaxException) {
             null
         }
     }

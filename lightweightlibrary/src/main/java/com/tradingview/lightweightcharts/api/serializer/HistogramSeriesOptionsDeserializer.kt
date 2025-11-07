@@ -8,7 +8,7 @@ class HistogramSeriesOptionsDeserializer : Deserializer<HistogramSeriesOptions>(
     override fun deserialize(json: JsonElement): HistogramSeriesOptions? {
         return try {
             gson.fromJson(json, HistogramSeriesOptions::class.java)
-        } catch (e: JsonSyntaxException) {
+        } catch (_: JsonSyntaxException) {
             null
         }
     }

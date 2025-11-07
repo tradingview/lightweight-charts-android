@@ -11,7 +11,7 @@ import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 class PriceLineDelegate(
     override val uuid: String,
     private val controller: WebMessageController
-): PriceLine {
+) : PriceLine {
 
     override fun applyOptions(options: PriceLineOptions) {
         controller.callFunction(
@@ -31,5 +31,4 @@ class PriceLineDelegate(
             deserializer = PriceLineOptionsDeserializer()
         )
     }
-
 }

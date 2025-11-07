@@ -34,7 +34,7 @@ data class HistogramSeriesOptions(
     override var priceScaleId: PriceScaleId? = null,
     override var autoscaleInfoProvider: Plugin? = null,
     override var visible: Boolean? = null
-): SeriesOptionsCommon, HistogramStyleOptions
+) : SeriesOptionsCommon, HistogramStyleOptions
 
 inline fun histogramSeriesOptions(init: HistogramSeriesOptions.() -> Unit): HistogramSeriesOptions {
     return HistogramSeriesOptions().apply(init)

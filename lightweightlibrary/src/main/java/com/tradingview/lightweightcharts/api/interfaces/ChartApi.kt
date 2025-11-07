@@ -138,7 +138,7 @@ interface ChartApi {
 
     @Deprecated(
         "Using ChartApi.priceScale() method without arguments " +
-                "has been deprecated, pass valid price scale id instead"
+            "has been deprecated, pass valid price scale id instead"
     )
     fun priceScale(): PriceScaleApi
 

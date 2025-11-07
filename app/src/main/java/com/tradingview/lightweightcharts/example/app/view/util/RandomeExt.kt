@@ -11,7 +11,6 @@ fun Resources.randomColor(@ArrayRes arrayRes: Int): IntColor {
     return getIntArray(arrayRes).random().toIntColor()
 }
 
-
 fun Resources.randomColorTransparent(@ArrayRes arrayRes: Int): IntColor {
     val alfaMask = (Random.nextInt(0x50) shl 24) or 0xffffff
     val color = getIntArray(arrayRes).random() and alfaMask
@@ -22,7 +21,6 @@ fun Random.nextFloat(st: Float, end: Float): Float {
     val r = nextFloat()
     return r * (end - st) + st
 }
-
 
 fun LineStyle.Companion.random(): LineStyle =
     LineStyle.values().toList().random()
