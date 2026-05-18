@@ -12,4 +12,5 @@
 
 
 /node_modules
-package-lock.json
+/package-lock.json
+!/lightweightlibrary/package-lock.json
