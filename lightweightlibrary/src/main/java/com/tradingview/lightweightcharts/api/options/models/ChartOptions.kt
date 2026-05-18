@@ -1,5 +1,8 @@
 package com.tradingview.lightweightcharts.api.options.models
 
+import com.google.gson.annotations.SerializedName
+import com.tradingview.lightweightcharts.api.options.enums.PriceScaleSide
+
 /**
  * Structure describing options of the chart. Series options are to be set separately
  */
@@ -27,7 +30,29 @@ data class ChartOptions(
 
     var rightPriceScale: PriceScaleOptions? = null,
 
+    @SerializedName("overlayPriceScales")
     var overlayPriceScale: PriceScaleOptions? = null,
+
+    /**
+     * Whether to create the default pane at chart creation time.
+     */
+    var addDefaultPane: Boolean? = null,
+
+    /**
+     * Preferred visible price scale side when both left and right can be used.
+     */
+    var defaultVisiblePriceScaleId: PriceScaleSide? = null,
+
+    /**
+     * Draw the currently hovered series above other series in the same pane.
+     */
+    var hoveredSeriesOnTop: Boolean? = null,
+
+    var width: Int? = null,
+
+    var height: Int? = null,
+
+    var autoSize: Boolean? = null,
 
     /**
      * Structure with time scale options

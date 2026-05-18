@@ -47,14 +47,16 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
         callback: ((Any?) -> Unit)? = null,
         deserializer: Deserializer<out Any?> = PrimitiveSerializer.NullDeserializer
     ): String {
-        val bridge = BridgeFunction(name, params)
+        val bridge = BridgeFunction(name, params, expectsResult = callback != null)
 
-        @Suppress("UNCHECKED_CAST")
-        callbackBuffer[bridge.uuid] = BufferElement(
-            callback,
-            deserializer,
-            getStackTrace()
-        )
+        if (callback != null) {
+            @Suppress("UNCHECKED_CAST")
+            callbackBuffer[bridge.uuid] = BufferElement(
+                callback,
+                deserializer,
+                getStackTrace()
+            )
+        }
 
         messageBuffer.addLast(bridge)
         sendMessages()
@@ -72,7 +74,8 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
         callbackBuffer[bridge.uuid] = BufferElement(
             callback as (Any?) -> Unit,
             deserializer,
-            getStackTrace()
+            getStackTrace(),
+            isSubscription = true
         )
         messageBuffer.addLast(bridge)
         sendMessages()
@@ -93,14 +96,23 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
         }
     }
 
+    fun clearSubscriptions() {
+        val subscriptionIds = callbackBuffer
+            .filterValues { it.isSubscription }
+            .keys
+            .toList()
+        subscriptionIds.forEach(callbackBuffer::remove)
+    }
+
     override fun onMessage(bridgeMessage: BridgeMessage) {
         Logger.d("Received message from web: $bridgeMessage")
         when (bridgeMessage) {
             is BridgeFunctionResult -> {
                 val element = callbackBuffer.remove(bridgeMessage.uuid)
-                    ?: throw IllegalStateException(
-                        "Could not apply the function result, bridgeMessage: $bridgeMessage"
-                    )
+                if (element == null) {
+                    Logger.w("Ignored function result without callback, bridgeMessage: $bridgeMessage")
+                    return
+                }
 
                 element.invoke(bridgeMessage.result)
             }
@@ -181,7 +193,8 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
         val callback: ((Any?) -> Unit)? = null,
         val deserializer: Deserializer<out Any?>,
         val stackTrace: Array<StackTraceElement>,
-        val isInactive: Boolean = false
+        val isInactive: Boolean = false,
+        val isSubscription: Boolean = false,
     ) {
         fun invoke(jsonElement: JsonElement) {
             callback?.invoke(deserializer.deserialize(jsonElement))

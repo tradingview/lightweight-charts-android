@@ -4,8 +4,18 @@ The Android Lightweight Charts is an Android wrapper of the [TradingView Lightwe
 
 ## Requirements
 
-- minSdkVersion 21
-- Installed WebView with support of ES6
+- minSdkVersion 23
+- Installed Android System WebView or Chrome WebView provider with ES2020 support. Lightweight Charts 5.x is ESM/ES2020-only.
+
+## Build notes
+
+- The Gradle build publishes only the `release` library variant.
+- `gradle.properties` contains Android Gradle Plugin compatibility opt-outs that preserve legacy wrapper behavior during the AGP 9 migration.
+- The library asset merge tasks run `:lightweightlibrary:npmBuild`, which uses `npm ci` when `lightweightlibrary/package-lock.json` is present and rebuilds the JavaScript bridge bundles from `lightweightlibrary/lib`.
+
+## v5 Compatibility Notes
+
+- `TimeScaleApi.coordinateToLogical(...)` and `MouseEventParams.logical` keep the v4 integer logical-index shape. Use `coordinateToLogicalFloat(...)` and `MouseEventParams.logicalFloat` when you need the fractional logical indexes exposed by Lightweight Charts 5.x.
 
 ## How to use
 
@@ -25,9 +35,11 @@ In `/gradle_module/build.gradle`
 ```groovy
 dependencies {
     //...
-    implementation 'com.tradingview:lightweightcharts:4.0.0'
+    implementation 'com.tradingview:lightweightcharts:5.2.0'
 }
 ```
+
+The wrapper keeps the existing v4-shaped helpers where possible and adds v5-native APIs for unified `addSeries`, multiple panes, marker primitives, text/image watermarks, price-scale ranges, logical ranges, double-click events, screenshot top-layer options, and conflation-related options. Custom plugin authoring wrappers are intentionally not exposed yet.
 
 Add view to the layout.
 
@@ -53,7 +65,7 @@ Configure the chart layout.
 ```kotlin
 charts_view.api.applyOptions {
     layout = layoutOptions {
-        backgroundColor = Color.LTGRAY.toIntColor()
+        background = SolidColor(Color.LTGRAY.toIntColor())
         textColor = Color.BLACK.toIntColor()
     }
     localization = localizationOptions {

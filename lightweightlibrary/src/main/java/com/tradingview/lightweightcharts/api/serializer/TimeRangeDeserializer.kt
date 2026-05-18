@@ -22,7 +22,7 @@ class TimeRangeDeserializer : Deserializer<TimeRange>() {
                 TimeRange(Time.Utc(from.asLong), Time.Utc(to.asLong))
             }
             from.isString() -> {
-                TimeRange(Time.StringTime(from.asString), Time.StringTime(to.asString))
+                TimeRange(parseStringTime(from.asString), parseStringTime(to.asString))
             }
             from.isJsonObject -> {
                 fun parseBusinessDay(date: JsonObject): Time.BusinessDay {
@@ -43,5 +43,9 @@ class TimeRangeDeserializer : Deserializer<TimeRange>() {
             }
             else -> null
         }
+    }
+
+    private fun parseStringTime(value: String): Time {
+        return value.toLongOrNull()?.let(Time::Utc) ?: Time.StringTime(value)
     }
 }

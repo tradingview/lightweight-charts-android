@@ -62,7 +62,27 @@ data class PriceScaleOptions(
     /**
      * True value add a small horizontal ticks on price axis labels
      */
-    var ticksVisible: Boolean? = null
+    var ticksVisible: Boolean? = null,
+
+    /**
+     * Minimum width for the price scale.
+     */
+    var minimumWidth: Int? = null,
+
+    /**
+     * Ensures tick marks are visible at the very top and bottom edges.
+     */
+    var ensureEdgeTickMarksVisible: Boolean? = null,
+
+    /**
+     * Price scale tick mark label density.
+     */
+    var tickMarkDensity: Float? = null,
+
+    /**
+     * Price scale text color.
+     */
+    var textColor: IntColor? = null,
 )
 
 inline fun priceScaleOptions(init: PriceScaleOptions.() -> Unit): PriceScaleOptions {

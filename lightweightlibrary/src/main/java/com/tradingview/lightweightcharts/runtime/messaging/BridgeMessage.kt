@@ -18,7 +18,8 @@ open class Data(
     open val params: Map<String, Any>? = null,
     open val result: JsonElement? = null,
     open val message: String? = null,
-    open val logLevel: LogLevel? = null
+    open val logLevel: LogLevel? = null,
+    open val expectsResult: Boolean = true
 )
 
 enum class LogLevel {

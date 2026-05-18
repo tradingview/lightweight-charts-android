@@ -17,7 +17,7 @@ export default class SubscriptionsFunctionManager {
                         let mouseEvent = this.mouseEvent(params, input)
                         callback(mouseEvent)
                     }
-                    chart.subscribeClick(subscription)
+                    this.chart.subscribeClick(subscription)
                     logger.d("subscribeOnChartClicked successful")
                     return subscription
                 } catch (error) {
@@ -27,7 +27,7 @@ export default class SubscriptionsFunctionManager {
             },
             (subscription) => {
                 try {
-                    chart.unsubscribeClick(subscription)
+                    this.chart.unsubscribeClick(subscription)
                     logger.d("unsubscribeOnChartClicked successful")
                 } catch (error) {
                     logger.e('unsubscribeOnClick has been failed', error)
@@ -42,7 +42,7 @@ export default class SubscriptionsFunctionManager {
                         let mouseEvent = this.mouseEvent(params, input)
                         callback(mouseEvent)
                     }
-                    chart.subscribeCrosshairMove(subscription)
+                    this.chart.subscribeCrosshairMove(subscription)
                     logger.d("subscribeCrosshairMove successful")
                     return subscription
                 } catch (error) {
@@ -52,24 +52,54 @@ export default class SubscriptionsFunctionManager {
             },
             (subscription) => {
                 try {
-                    chart.unsubscribeCrosshairMove(subscription)
+                    this.chart.unsubscribeCrosshairMove(subscription)
                     logger.d("unsubscribeCrosshairMove successful")
                 } catch (error) {
                     logger.e('unsubscribeCrosshairMove has been failed', error)
                 }
             }
         )
+
+        this.functionManager.registerSubscription(
+            "subscribeDblClick",
+            (input, callback) => {
+                try {
+                    const subscription = (params) => {
+                        let mouseEvent = this.mouseEvent(params, input)
+                        callback(mouseEvent)
+                    }
+                    this.chart.subscribeDblClick(subscription)
+                    logger.d("subscribeDblClick successful")
+                    return subscription
+                } catch (error) {
+                    logger.e('subscribeDblClick has been failed', error)
+                    return null
+                }
+            },
+            (subscription) => {
+                try {
+                    this.chart.unsubscribeDblClick(subscription)
+                    logger.d("unsubscribeDblClick successful")
+                } catch (error) {
+                    logger.e('unsubscribeDblClick has been failed', error)
+                }
+            }
+        )
     }
 
     mouseEvent(params, input) {
-        let result = this.selectProps("time", "logical", "point")(params)
+        let result = this.selectProps("time", "logical", "point", "paneIndex", "hoveredObjectId")(params)
+        if (typeof params.logical === "number") {
+            result.logicalFloat = params.logical
+            result.logical = Math.trunc(params.logical)
+        }
         result.sourceEvent = this.selectProps(
             "clientX", "clientY", "pageX", "pageY", "screenX", "screenY",
             "localX", "localY", "ctrlKey", "altKey", "shiftKey", "metaKey"
         )(params.sourceEvent)
 
         result.seriesData = []
-        params.seriesData.forEach((value, key, map) => {
+        params.seriesData.forEach((value, key) => {
             result.seriesData.push({
                 id: this.seriesFunctionManager.getSeriesId(key, input),
                 prices: value
@@ -79,6 +109,12 @@ export default class SubscriptionsFunctionManager {
 
         if (params.hoveredSeries) {
             result.hoveredSeries = this.seriesFunctionManager.getSeriesId(params.hoveredSeries, input)
+        }
+        if (params.hoveredInfo) {
+            result.hoveredInfo = {...params.hoveredInfo}
+            if (params.hoveredInfo.series) {
+                result.hoveredInfo.series = this.seriesFunctionManager.getSeriesId(params.hoveredInfo.series, input)
+            }
         }
         return result
     }

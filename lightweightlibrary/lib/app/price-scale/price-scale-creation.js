@@ -46,7 +46,7 @@ class SeriesCreationMethod {
 class PriceScaleChart extends SeriesCreationMethod {
     constructor(chart) {
         super("priceScale", function (input) {
-            return chart.priceScale(input.params.priceScaleId);
+            return chart.priceScale(input.params.priceScaleId || "right", input.params.paneIndex || 0);
         })
     }
 }
@@ -64,7 +64,7 @@ class SeriesPriceScaleChart extends SeriesCreationMethod {
     _findSeries(input) {
         let series = this.seriesCache.get(input.params.seriesId)
         if (series === undefined) {
-            this.functionManager.throwFatalError(new Error(`${seriesName} with uuid:${input.uuid} is not found`), input);
+            throw new Error(`Series with uuid:${input.params.seriesId} is not found`);
         }
 
         return series;

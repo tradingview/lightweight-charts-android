@@ -7,7 +7,9 @@ import java.lang.reflect.Type
 
 enum class CrosshairMode(val value: Int) {
     NORMAL(0),
-    MAGNET(1);
+    MAGNET(1),
+    HIDDEN(2),
+    MAGNET_OHLC(3);
 
     companion object {
         fun fromValue(value: Int): CrosshairMode = values().first { it.value == value }

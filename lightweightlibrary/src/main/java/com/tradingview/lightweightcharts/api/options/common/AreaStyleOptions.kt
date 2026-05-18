@@ -42,6 +42,14 @@ interface AreaStyleOptions {
      */
     val lineType: LineType?
 
+    val lineVisible: Boolean?
+
+    val relativeGradient: Boolean?
+
+    val pointMarkersVisible: Boolean?
+
+    val pointMarkersRadius: Float?
+
     /**
      * Show the crosshair marker.
      */

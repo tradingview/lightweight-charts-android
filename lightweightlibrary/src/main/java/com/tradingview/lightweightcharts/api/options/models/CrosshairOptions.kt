@@ -19,7 +19,12 @@ data class CrosshairOptions(
     /**
      * Options of the crosshair horizontal line
      */
-    var horzLine: CrosshairLineOptions? = null
+    var horzLine: CrosshairLineOptions? = null,
+
+    /**
+     * When enabled, the crosshair skips hidden series indices while snapping.
+     */
+    var doNotSnapToHiddenSeriesIndices: Boolean? = null,
 )
 
 inline fun crosshairOptions(init: CrosshairOptions.() -> Unit): CrosshairOptions {

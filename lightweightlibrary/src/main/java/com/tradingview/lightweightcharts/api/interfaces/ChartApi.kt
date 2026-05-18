@@ -2,8 +2,10 @@ package com.tradingview.lightweightcharts.api.interfaces
 
 import android.graphics.Bitmap
 import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
+import com.tradingview.lightweightcharts.api.chart.models.ScreenshotOptions
 import com.tradingview.lightweightcharts.api.options.common.BaselineStyleOptions
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.series.enums.SeriesType
 import com.tradingview.lightweightcharts.api.series.models.*
 
 interface ChartApi {
@@ -14,9 +16,15 @@ interface ChartApi {
         const val REMOVE = "remove"
         const val REMOVE_SERIES = "removeSeries"
         const val PRICE_SCALE = "priceScale"
+        const val RESIZE = "resize"
         const val APPLY_OPTIONS = "chartApplyOptions"
         const val CHART_OPTIONS = "chartOptions"
         const val TAKE_SCREENSHOT = "takeScreenshot"
+        const val SUBSCRIBE_DBL_CLICK = "subscribeDblClick"
+        const val SET_CROSSHAIR_POSITION = "setCrosshairPosition"
+        const val CLEAR_CROSSHAIR_POSITION = "clearCrosshairPosition"
+        const val PANE_SIZE = "paneSize"
+        const val AUTO_SIZE_ACTIVE = "autoSizeActive"
     }
 
     object Params {
@@ -24,6 +32,15 @@ interface ChartApi {
         const val TEXT = "text"
         const val OPTIONS = "options"
         const val MIME = "mimeType"
+        const val WIDTH = "width"
+        const val HEIGHT = "height"
+        const val FORCE_REPAINT = "forceRepaint"
+        const val ADD_TOP_LAYER = "addTopLayer"
+        const val INCLUDE_CROSSHAIR = "includeCrosshair"
+        const val PRICE = "price"
+        const val HORIZONTAL_POSITION = "horizontalPosition"
+        const val SERIES_UUID = "seriesId"
+        const val PANE_INDEX = "paneIndex"
     }
 
     /**
@@ -37,6 +54,29 @@ interface ChartApi {
      * This is an irreversible operation, you cannot do anything with the chart after removing it.
      */
     fun remove()
+
+    /**
+     * Resizes chart to fixed dimensions. If autoSize is active, the core may ignore dimensions.
+     */
+    fun resize(width: Int, height: Int, forceRepaint: Boolean = false)
+
+    /**
+     * Returns all panes in the chart.
+     */
+    fun panes(onPanesReceived: (List<PaneApi>) -> Unit)
+
+    /**
+     * Adds a pane to the chart.
+     */
+    fun addPane(preserveEmptyPane: Boolean = false, onPaneCreated: (PaneApi) -> Unit)
+
+    fun removePane(index: Int)
+
+    fun swapPanes(first: Int, second: Int)
+
+    fun paneSize(paneIndex: Int = 0, onPaneSizeReceived: (android.util.SizeF) -> Unit)
+
+    fun autoSizeActive(onAutoSizeActiveReceived: (Boolean) -> Unit)
 
     /**
      * Creates an area series with specified parameters
@@ -100,7 +140,26 @@ interface ChartApi {
      * @param onSeriesCreated returns an interface of the created series
      */
     fun addBaselineSeries(
+        options: BaselineSeriesOptions = BaselineSeriesOptions(),
+        onSeriesCreated: (api: SeriesApi) -> Unit
+    )
+
+    @Deprecated(
+        message = "Use BaselineSeriesOptions to include v5 common series options.",
+        level = DeprecationLevel.WARNING
+    )
+    fun addBaselineSeries(
         options: BaselineStyleOptions,
+        onSeriesCreated: (api: SeriesApi) -> Unit
+    )
+
+    /**
+     * v5-native series creation API.
+     */
+    fun addSeries(
+        type: SeriesType,
+        options: SeriesOptionsCommon? = null,
+        paneIndex: Int? = null,
         onSeriesCreated: (api: SeriesApi) -> Unit
     )
 
@@ -121,6 +180,16 @@ interface ChartApi {
     fun unsubscribeClick(onClicked: (params: MouseEventParams) -> Unit)
 
     /**
+     * Adds a subscription to double click event.
+     */
+    fun subscribeDblClick(onDoubleClicked: (params: MouseEventParams) -> Unit)
+
+    /**
+     * Removes double click subscription.
+     */
+    fun unsubscribeDblClick(onDoubleClicked: (params: MouseEventParams) -> Unit)
+
+    /**
      * Adds a subscription to crosshair movement to receive notifications on crosshair movements
      */
     fun subscribeCrosshairMove(onCrosshairMoved: (params: MouseEventParams) -> Unit)
@@ -135,6 +204,11 @@ interface ChartApi {
      * @return target API
      */
     fun priceScale(id: PriceScaleId): PriceScaleApi
+
+    /**
+     * Returns API to manipulate a price scale on a specific pane.
+     */
+    fun priceScale(id: PriceScaleId, paneIndex: Int): PriceScaleApi
 
     @Deprecated(
         "Using ChartApi.priceScale() method without arguments " +
@@ -168,4 +242,23 @@ interface ChartApi {
      * @param onScreenshotReady returns a bitmap with captured chart
      */
     fun takeScreenshot(mimeType: ImageMimeType, onScreenshotReady: (Bitmap) -> Unit)
+
+    fun takeScreenshot(options: ScreenshotOptions, onScreenshotReady: (Bitmap) -> Unit)
+
+    fun setCrosshairPosition(price: Float, horizontalPosition: Time, seriesApi: SeriesApi)
+
+    fun clearCrosshairPosition()
+
+    fun createTextWatermark(
+        options: TextWatermarkOptions,
+        paneIndex: Int = 0,
+        onWatermarkCreated: (WatermarkApi) -> Unit
+    )
+
+    fun createImageWatermark(
+        imageUrl: String,
+        options: ImageWatermarkOptions,
+        paneIndex: Int = 0,
+        onWatermarkCreated: (WatermarkApi) -> Unit
+    )
 }

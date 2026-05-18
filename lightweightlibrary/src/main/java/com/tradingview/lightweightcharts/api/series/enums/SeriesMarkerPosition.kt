@@ -11,4 +11,13 @@ enum class SeriesMarkerPosition {
 
     @SerializedName("inBar")
     IN_BAR,
+
+    @SerializedName("atPriceTop")
+    AT_PRICE_TOP,
+
+    @SerializedName("atPriceBottom")
+    AT_PRICE_BOTTOM,
+
+    @SerializedName("atPriceMiddle")
+    AT_PRICE_MIDDLE,
 }

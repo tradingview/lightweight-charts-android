@@ -34,9 +34,12 @@ export default class TimeScaleInstanceService {
             new ScrollToRealTime(),
             new GetVisibleRange(),
             new SetVisibleRange(),
+            new GetVisibleLogicalRange(),
+            new SetVisibleLogicalRange(),
             new ResetTimeScale(),
             new FitContent(),
             new TimeToCoordinate(),
+            new TimeToIndex(),
             new CoordinateToTime(),
             new LogicalToCoordinate(),
             new CoordinateToLogical(),
@@ -48,6 +51,7 @@ export default class TimeScaleInstanceService {
     _timeScaleInstanceSusbcriptions() {
         return [
             new SubscribeVisibleTimeRangeChange(),
+            new SubscribeVisibleLogicalRangeChange(),
             new SubscribeSizeChange()
         ];
     }
@@ -65,8 +69,8 @@ export default class TimeScaleInstanceService {
                 (input, callback) => {
                     return subscription.subscribe(this._timeScale(), callback);
                 },
-                (subscription) => {
-                    subscription.unsubscribe(this._timeScale(), subscription);
+                (subscriptionRef) => {
+                    subscription.unsubscribe(this._timeScale(), subscriptionRef);
                 }
             );
         });
@@ -106,8 +110,9 @@ class ScrollPosition extends TimeScaleMethodWithReturn {
 
 class ScrollToPosition extends TimeScaleMethod {
     constructor() {
-        super("scrollToPosition", (timeScale, params) => {
+        super("scrollToPosition", (timeScale, params, resolve) => {
             timeScale.scrollToPosition(params.position, params.animated);
+            resolve();
         });
     }
 }
@@ -131,9 +136,10 @@ class TimeScaleApplyOptions extends TimeScaleMethod {
      * @param {TickMarkFormatterService} tickMarkFormatter 
      */
     constructor(tickMarkFormatter) {
-        super("timeScaleApplyOptions", (timeScale, params) => {
+        super("timeScaleApplyOptions", (timeScale, params, resolve) => {
             tickMarkFormatter.register(params, (paramsWithPlugin) => {
                 timeScale.applyOptions(paramsWithPlugin.options);
+                resolve();
             });
         })
     }
@@ -141,8 +147,9 @@ class TimeScaleApplyOptions extends TimeScaleMethod {
 
 class ScrollToRealTime extends TimeScaleMethod {
     constructor() {
-        super("scrollToRealTime", (timeScale, params) => {
+        super("scrollToRealTime", (timeScale, params, resolve) => {
             timeScale.scrollToRealTime();
+            resolve();
         });
     }
 }
@@ -157,24 +164,44 @@ class GetVisibleRange extends TimeScaleMethodWithReturn {
 
 class SetVisibleRange extends TimeScaleMethod {
     constructor() {
-        super("setVisibleRange", (timeScale, params) => {
+        super("setVisibleRange", (timeScale, params, resolve) => {
             timeScale.setVisibleRange(params.range);
+            resolve();
+        });
+    }
+}
+
+class GetVisibleLogicalRange extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("getVisibleLogicalRange", (timeScale, params) => {
+            return timeScale.getVisibleLogicalRange();
+        });
+    }
+}
+
+class SetVisibleLogicalRange extends TimeScaleMethod {
+    constructor() {
+        super("setVisibleLogicalRange", (timeScale, params, resolve) => {
+            timeScale.setVisibleLogicalRange(params.range);
+            resolve();
         });
     }
 }
 
 class ResetTimeScale extends TimeScaleMethod {
     constructor() {
-        super("resetTimeScale", (timeScale, params) => {
+        super("resetTimeScale", (timeScale, params, resolve) => {
             timeScale.resetTimeScale();
+            resolve();
         });
     }
 }
 
 class FitContent extends TimeScaleMethod {
     constructor() {
-        super("fitContent", (timeScale, params) => {
+        super("fitContent", (timeScale, params, resolve) => {
             timeScale.fitContent();
+            resolve();
         });
     }
 }
@@ -183,6 +210,14 @@ class TimeToCoordinate extends TimeScaleMethodWithReturn {
     constructor() {
         super("timeToCoordinate", (timeScale, params) => {
             return timeScale.timeToCoordinate(params.time);
+        });
+    }
+}
+
+class TimeToIndex extends TimeScaleMethodWithReturn {
+    constructor() {
+        super("timeToIndex", (timeScale, params) => {
+            return timeScale.timeToIndex(params.time, params.findNearest || false);
         });
     }
 }
@@ -237,6 +272,21 @@ class SubscribeVisibleTimeRangeChange extends TimeScaleSubscription {
             },
             (timeScale, subscription) => {
                 timeScale.unsubscribeVisibleTimeRangeChange(subscription);
+            }
+        );
+    }
+}
+
+class SubscribeVisibleLogicalRangeChange extends TimeScaleSubscription {
+    constructor() {
+        super(
+            "subscribeVisibleLogicalRangeChange",
+            (timeScale, callback) => {
+                timeScale.subscribeVisibleLogicalRangeChange(callback);
+                return callback;
+            },
+            (timeScale, subscription) => {
+                timeScale.unsubscribeVisibleLogicalRangeChange(subscription);
             }
         );
     }

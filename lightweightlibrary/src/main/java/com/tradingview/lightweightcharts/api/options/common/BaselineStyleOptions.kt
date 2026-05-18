@@ -16,6 +16,8 @@ interface BaselineStyleOptions {
      */
     val baseValue: BaseValueType?
 
+    val relativeGradient: Boolean?
+
     /**
      * The first color of the top area.
      */
@@ -60,6 +62,12 @@ interface BaselineStyleOptions {
      * Line type.
      */
     val lineType: LineType?
+
+    val lineVisible: Boolean?
+
+    val pointMarkersVisible: Boolean?
+
+    val pointMarkersRadius: Float?
 
     /**
      * Show the crosshair marker.

@@ -25,7 +25,17 @@ data class LocalizationOptions(
      * literals which will be replaced with corresponding date's value.
      * Ignored if timeFormatter has been specified.
      */
-    var dateFormat: String? = null
+    var dateFormat: String? = null,
+
+    /**
+     * Formats all price tick mark values at once.
+     */
+    var tickmarksPriceFormatter: Plugin? = null,
+
+    /**
+     * Formats all percentage tick mark values at once.
+     */
+    var tickmarksPercentageFormatter: Plugin? = null,
 )
 
 inline fun localizationOptions(init: LocalizationOptions.() -> Unit): LocalizationOptions {

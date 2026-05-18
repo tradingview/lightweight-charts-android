@@ -7,6 +7,7 @@ import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.COORDI
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.COORDINATE_TO_TIME
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.FIT_CONTENT
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.GET_VISIBLE_RANGE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.GET_VISIBLE_LOGICAL_RANGE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.HEIGHT
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.LOGICAL_TO_COORDINATE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.OPTIONS
@@ -15,16 +16,22 @@ import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SCROLL
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SCROLL_TO_POSITION
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SCROLL_TO_REAL_TIME
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SET_VISIBLE_RANGE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SET_VISIBLE_LOGICAL_RANGE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SUBSCRIBE_SIZE_CHANGE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SUBSCRIBE_VISIBLE_LOGICAL_RANGE_CHANGE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.TIME_TO_COORDINATE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.TIME_TO_INDEX
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Func.WIDTH
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.ANIMATED
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.FIND_NEAREST
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.OPTIONS_PARAM
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.POSITION
 import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.RANGE
+import com.tradingview.lightweightcharts.api.interfaces.TimeScaleApi.Params.TIME
 import com.tradingview.lightweightcharts.api.options.models.TimeScaleOptions
 import com.tradingview.lightweightcharts.api.serializer.*
+import com.tradingview.lightweightcharts.api.series.models.LogicalRange
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
@@ -79,6 +86,23 @@ class TimeScaleApiDelegate(
         )
     }
 
+    override fun getVisibleLogicalRange(onLogicalRangeReceived: (LogicalRange?) -> Unit) {
+        controller.callFunction(
+            GET_VISIBLE_LOGICAL_RANGE,
+            callback = onLogicalRangeReceived,
+            deserializer = LogicalRangeDeserializer()
+        )
+    }
+
+    override fun setVisibleLogicalRange(range: LogicalRange) {
+        controller.callFunction(
+            SET_VISIBLE_LOGICAL_RANGE,
+            mapOf(
+                RANGE to range
+            )
+        )
+    }
+
     override fun resetTimeScale() {
         controller.callFunction(
             RESET_TIME_SCALE
@@ -95,10 +119,22 @@ class TimeScaleApiDelegate(
         controller.callFunction(
             TIME_TO_COORDINATE,
             mapOf(
-                "time" to time
+                TIME to time
             ),
             callback = onCoordinateReceived,
             deserializer = PrimitiveSerializer.FloatDeserializer
+        )
+    }
+
+    override fun timeToIndex(time: Time, findNearest: Boolean, onIndexReceived: (index: Int?) -> Unit) {
+        controller.callFunction(
+            TIME_TO_INDEX,
+            mapOf(
+                TIME to time,
+                FIND_NEAREST to findNearest
+            ),
+            callback = onIndexReceived,
+            deserializer = PrimitiveSerializer.IntDeserializer
         )
     }
 
@@ -113,7 +149,7 @@ class TimeScaleApiDelegate(
         )
     }
 
-    override fun logicalToCoordinate(logical: Int, onCoordinateReceived: (x: Float?) -> Unit) {
+    override fun logicalToCoordinate(logical: Float, onCoordinateReceived: (x: Float?) -> Unit) {
         controller.callFunction(
             LOGICAL_TO_COORDINATE,
             mapOf(
@@ -125,13 +161,19 @@ class TimeScaleApiDelegate(
     }
 
     override fun coordinateToLogical(x: Float, onLogicalReceived: (logical: Int?) -> Unit) {
-        controller.callFunction<Int?>(
+        coordinateToLogicalFloat(x) { logical ->
+            onLogicalReceived(logical?.toInt())
+        }
+    }
+
+    override fun coordinateToLogicalFloat(x: Float, onLogicalReceived: (logical: Float?) -> Unit) {
+        controller.callFunction<Float?>(
             COORDINATE_TO_LOGICAL,
             mapOf(
                 "x" to x
             ),
             callback = onLogicalReceived,
-            deserializer = PrimitiveSerializer.IntDeserializer
+            deserializer = PrimitiveSerializer.FloatDeserializer
         )
     }
 
@@ -164,6 +206,21 @@ class TimeScaleApiDelegate(
         controller.callUnsubscribe(
             SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE,
             subscription = onTimeRangeChanged
+        )
+    }
+
+    override fun subscribeVisibleLogicalRangeChange(onLogicalRangeChanged: (params: LogicalRange?) -> Unit) {
+        controller.callSubscribe(
+            SUBSCRIBE_VISIBLE_LOGICAL_RANGE_CHANGE,
+            callback = onLogicalRangeChanged,
+            deserializer = LogicalRangeDeserializer()
+        )
+    }
+
+    override fun unsubscribeVisibleLogicalRangeChange(onLogicalRangeChanged: (params: LogicalRange?) -> Unit) {
+        controller.callUnsubscribe(
+            SUBSCRIBE_VISIBLE_LOGICAL_RANGE_CHANGE,
+            subscription = onLogicalRangeChanged
         )
     }
 
