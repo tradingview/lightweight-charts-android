@@ -12,6 +12,7 @@
     <string name="customizing">Customizing</string>
     <string name="chart_type">Chart Type</string>
     <string name="custom_themes">Custom Themes</string>
+    <string name="no_attribution_logo">No attribution logo</string>
     <string name="range_switcher">Range Switcher</string>
     <string name="legend">Legend</string>
     <string name="series_compare">Series Compare</string>
@@ -23,6 +24,22 @@
     <string name="price_scales">Price Scales</string>
     <string name="data">Data</string>
     <string name="indicators_and_markers">Indicators &amp; Markers</string>
+    <string name="v5_panes_and_series">v5 Panes &amp; Series</string>
+    <string name="v5_markers_and_watermarks">v5 Markers &amp; Watermarks</string>
+    <string name="v5_scales_and_events">v5 Scales &amp; Events</string>
+    <string name="v5_waiting_for_chart">Waiting for chart</string>
+    <string name="v5_move_series">Move series</string>
+    <string name="v5_series_order">Series order</string>
+    <string name="v5_pane_size">Pane size</string>
+    <string name="v5_pop">Pop</string>
+    <string name="v5_toggle_markers">Markers</string>
+    <string name="v5_marker_z_order">Z-order</string>
+    <string name="v5_text_watermark">Text mark</string>
+    <string name="v5_image_watermark">Image mark</string>
+    <string name="v5_logical_range">Logical range</string>
+    <string name="v5_price_range">Price range</string>
+    <string name="v5_crosshair">Crosshair</string>
+    <string name="v5_screenshot">Screenshot</string>
 
     <string name="additional">Additional</string>
     <string name="touch_delegate">Touch Delegate</string>

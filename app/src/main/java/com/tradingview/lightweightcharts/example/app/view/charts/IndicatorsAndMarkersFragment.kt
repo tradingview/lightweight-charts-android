@@ -16,14 +16,21 @@ import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.HistogramSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.PriceScaleMargins
 import com.tradingview.lightweightcharts.api.options.models.PriceScaleOptions
+import com.tradingview.lightweightcharts.api.options.models.SeriesMarkersOptions
 import com.tradingview.lightweightcharts.api.options.models.gridLineOptions
 import com.tradingview.lightweightcharts.api.options.models.gridOptions
 import com.tradingview.lightweightcharts.api.options.models.layoutOptions
 import com.tradingview.lightweightcharts.api.options.models.priceScaleMargins
 import com.tradingview.lightweightcharts.api.options.models.priceScaleOptions
+import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.LineWidth
+import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerPosition
+import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerShape
+import com.tradingview.lightweightcharts.api.series.enums.SeriesMarkerZOrder
+import com.tradingview.lightweightcharts.api.series.models.LineData
 import com.tradingview.lightweightcharts.api.series.models.PriceFormat
 import com.tradingview.lightweightcharts.api.series.models.PriceScaleId
+import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
@@ -121,6 +128,10 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
             ),
             onSeriesCreated = { api ->
                 api.setData(data.list)
+                api.createSeriesMarkers(
+                    data = createIndicatorMarkers(data.list),
+                    options = SeriesMarkersOptions(zOrder = SeriesMarkerZOrder.TOP, autoScale = true),
+                ) {}
                 onSeriesCreated(api)
             }
         )
@@ -154,6 +165,41 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
                 api.setData(data.list)
                 onSeriesCreated(api)
             }
+        )
+    }
+
+    private fun createIndicatorMarkers(data: List<SeriesData>): List<SeriesMarker> {
+        if (data.size < 55) {
+            return emptyList()
+        }
+
+        val firstSignal = data[18] as LineData
+        val secondSignal = data[34] as LineData
+        val thirdSignal = data[49] as LineData
+
+        return listOf(
+            SeriesMarker(
+                time = firstSignal.time,
+                position = SeriesMarkerPosition.BELOW_BAR,
+                color = Color.parseColor("#1E88E5").toIntColor(),
+                shape = SeriesMarkerShape.ARROW_UP,
+                text = "RSI",
+            ),
+            SeriesMarker(
+                time = secondSignal.time,
+                position = SeriesMarkerPosition.ABOVE_BAR,
+                color = Color.parseColor("#E91E63").toIntColor(),
+                shape = SeriesMarkerShape.ARROW_DOWN,
+                text = "Exit",
+            ),
+            SeriesMarker(
+                time = thirdSignal.time,
+                position = SeriesMarkerPosition.AT_PRICE_MIDDLE,
+                price = thirdSignal.value,
+                color = Color.parseColor("#F5A623").toIntColor(),
+                shape = SeriesMarkerShape.CIRCLE,
+                text = "Signal",
+            ),
         )
     }
 }

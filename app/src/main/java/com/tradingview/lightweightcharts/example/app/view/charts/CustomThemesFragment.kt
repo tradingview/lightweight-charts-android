@@ -117,6 +117,7 @@ class CustomThemesFragment : Fragment(), ITitleFragment {
         layout = layoutOptions {
             background = SolidColor(resources.randomColor(R.array.dark_gray_array))
             textColor = resources.randomColor(R.array.white_array)
+            attributionLogo = false
         }
         watermark = watermarkOptions {
             color = resources.randomColorTransparent(R.array.white_array)
@@ -145,6 +146,7 @@ class CustomThemesFragment : Fragment(), ITitleFragment {
         layout = layoutOptions {
             background = SolidColor(resources.randomColor(R.array.white_array))
             textColor = resources.randomColor(R.array.dark_gray_array)
+            attributionLogo = false
         }
         watermark = watermarkOptions {
             color = resources.randomColorTransparent(R.array.dark_gray_array)
@@ -166,6 +168,7 @@ class CustomThemesFragment : Fragment(), ITitleFragment {
                 resources.randomColorTransparent(R.array.blue_array),
             )
             textColor = resources.randomColor(R.array.dark_gray_array)
+            attributionLogo = false
         }
         grid = gridOptions {
             vertLines = gridLineOptions {
