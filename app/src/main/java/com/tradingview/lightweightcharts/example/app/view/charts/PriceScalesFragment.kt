@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.LineSeriesOptions
@@ -29,6 +27,7 @@ import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
+import com.tradingview.lightweightcharts.example.app.view.util.chartColor
 import com.tradingview.lightweightcharts.example.app.viewmodel.PriceLinesWithTitlesViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 
@@ -69,7 +68,7 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
                 series.createPriceLine(
                     PriceLineOptions(
                         price = viewModel.minimumPrice,
-                        color = Color.parseColor("#be1238").toIntColor(),
+                        color = chartColor(R.color.chart_price_line),
                         lineWidth = LineWidth.TWO,
                         lineStyle = LineStyle.SOLID,
                         axisLabelVisible = true,
@@ -80,7 +79,7 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
                 series.createPriceLine(
                     PriceLineOptions(
                         price = viewModel.avgPrice,
-                        color = Color.parseColor("#be1238").toIntColor(),
+                        color = chartColor(R.color.chart_price_line),
                         lineWidth = LineWidth.TWO,
                         lineStyle = LineStyle.SOLID,
                         axisLabelVisible = true,
@@ -110,8 +109,8 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
     private fun applyChartOptions() {
         binding.chartsView.api.applyOptions {
             layout = layoutOptions {
-                textColor = Color.parseColor("#d1d4dc").toIntColor()
-                background = SolidColor(Color.BLACK)
+                textColor = chartColor(R.color.chart_text_primary)
+                background = SolidColor(chartColor(R.color.chart_black))
             }
             rightPriceScale = priceScaleOptions {
                 scaleMargins = priceScaleMargins {
@@ -122,7 +121,7 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
             crosshair = crosshairOptions {
                 vertLine = crosshairLineOptions {
                     width = LineWidth.THREE
-                    color = Color.YELLOW.toIntColor()
+                    color = chartColor(R.color.chart_marker_yellow)
                     style = LineStyle.SOLID
                 }
                 horzLine = crosshairLineOptions {
@@ -132,10 +131,10 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
             }
             grid = gridOptions {
                 vertLines = gridLineOptions {
-                    color = Color.argb(0, 42, 46, 57).toIntColor()
+                    color = chartColor(R.color.chart_grid_dark, alpha = 0)
                 }
                 horzLines = gridLineOptions {
-                    color = Color.argb(0, 42, 46, 57).toIntColor()
+                    color = chartColor(R.color.chart_grid_dark, alpha = 0)
                 }
             }
             handleScroll = handleScrollOptions {
@@ -151,7 +150,7 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
     ) {
         chartApi.addLineSeries(
             options = LineSeriesOptions(
-                color = Color.rgb(0, 120, 255).toIntColor(),
+                color = chartColor(R.color.chart_line_blue),
                 lineWidth = LineWidth.TWO,
                 crosshairMarkerVisible = false,
                 lastValueVisible = false,
@@ -164,4 +163,6 @@ class PriceScalesFragment : Fragment(), ITitleFragment {
             }
         )
     }
+
+    private fun chartColor(colorRes: Int, alpha: Int? = null) = requireContext().chartColor(colorRes, alpha)
 }

@@ -54,4 +54,36 @@
     <color name="dark_cyan_4">#1E4242</color>
     <color name="dark_cyan_5">#21494A</color>
 
+    <color name="chart_dark_background">#FF131722</color>
+    <color name="chart_black">#FF000000</color>
+    <color name="chart_white">#FFFFFFFF</color>
+    <color name="chart_deep_background">#FF11131A</color>
+    <color name="chart_signal_background">#FF101418</color>
+    <color name="chart_text_dark">#FF333333</color>
+    <color name="chart_text_primary">#FFD1D4DC</color>
+    <color name="chart_text_secondary">#FFD6DEE6</color>
+    <color name="chart_text_bright">#FFF1F5F9</color>
+    <color name="chart_grid_dark">#FF2A2E39</color>
+    <color name="chart_grid_slate">#FF78909C</color>
+    <color name="chart_light_grid">#FFF0F3FA</color>
+    <color name="chart_tooltip_grid">#FFEEEEEE</color>
+    <color name="chart_series_indigo">#FF1565C0</color>
+    <color name="chart_series_green">#FF26A69A</color>
+    <color name="chart_series_red">#FFEF5350</color>
+    <color name="chart_series_cyan">#FF26C6DA</color>
+    <color name="chart_series_blue">#FF4B7BEC</color>
+    <color name="chart_series_yellow">#FFF5C542</color>
+    <color name="chart_series_rose">#FFFB7185</color>
+    <color name="chart_series_emerald">#FF34D399</color>
+    <color name="chart_series_orange">#FFF97316</color>
+    <color name="chart_line_blue">#FF0078FF</color>
+    <color name="chart_price_line">#FFBE1238</color>
+    <color name="chart_marker_blue">#FF1E88E5</color>
+    <color name="chart_marker_pink">#FFE91E63</color>
+    <color name="chart_marker_orange">#FFF5A623</color>
+    <color name="chart_marker_purple">#FF9C27B0</color>
+    <color name="chart_marker_teal">#FF00ACC1</color>
+    <color name="chart_marker_green">#FF43A047</color>
+    <color name="chart_marker_yellow">#FFFFEB3B</color>
+
 </resources>

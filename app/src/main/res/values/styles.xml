@@ -8,4 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ChartTextWatermark">
+        <item name="chartWatermarkFontFamily">sans-serif</item>
+        <item name="chartWatermarkTitleFontStyle">bold</item>
+        <item name="chartWatermarkTitleFontSizeLarge">52</item>
+        <item name="chartWatermarkTitleFontSizeSmall">30</item>
+        <item name="chartWatermarkTitleLineHeightLarge">56</item>
+        <item name="chartWatermarkTitleLineHeightSmall">34</item>
+        <item name="chartWatermarkSubtitleFontSizeLarge">18</item>
+        <item name="chartWatermarkSubtitleFontSizeSmall">14</item>
+        <item name="chartWatermarkSubtitleLineHeightLarge">24</item>
+        <item name="chartWatermarkSubtitleLineHeightSmall">18</item>
+    </style>
+
 </resources>

@@ -8,7 +8,10 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.util.*
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import kotlin.math.roundToInt
 
 class DynamicRepository {
@@ -29,7 +32,9 @@ class DynamicRepository {
         var ticksInCurrentBar = 0
 
         return flow {
-            val date = Date()
+            val date = Date(lastData.time.date.time + DAY_MS)
+            val stringTimeLocale = (lastData.time as? Time.StringTime)?.locale ?: Locale.getDefault()
+            val stringDateFormat = SimpleDateFormat(STRING_TIME_FORMAT, stringTimeLocale)
             while (true) {
                 var currentCandlestickData: OhlcData
 
@@ -43,7 +48,7 @@ class DynamicRepository {
 
                 if (ticksInCurrentBar == 0) {
                     currentCandlestickData = CandlestickData(
-                        time = Time.Utc.fromDate(date),
+                        time = date.toSeriesTime(lastData.time, stringDateFormat),
                         open = noisedPrice,
                         high = noisedPrice,
                         low = noisedPrice,
@@ -51,7 +56,7 @@ class DynamicRepository {
                     )
                 } else {
                     currentCandlestickData = CandlestickData(
-                        time = Time.Utc.fromDate(date),
+                        time = date.toSeriesTime(lastData.time, stringDateFormat),
                         open = lastOpen,
                         high = lastHigh.coerceAtLeast(noisedPrice),
                         low = lastLow.coerceAtMost(noisedPrice),
@@ -67,7 +72,7 @@ class DynamicRepository {
                 lastClose = currentCandlestickData.close
 
                 if (++ticksInCurrentBar == 5) {
-                    date.time = date.time + 86000L * 1000L
+                    date.time += DAY_MS
                     currentIndex++
                     ticksInCurrentBar = 0
                     if (currentIndex == 5000) {
@@ -87,7 +92,28 @@ class DynamicRepository {
         }
     }
 
+    private fun Date.toSeriesTime(seedTime: Time, stringDateFormat: SimpleDateFormat): Time {
+        return when (seedTime) {
+            is Time.Utc -> Time.Utc.fromDate(this)
+            is Time.StringTime -> Time.StringTime(stringDateFormat.format(this), seedTime.locale)
+            is Time.BusinessDay -> Calendar.getInstance()
+                .apply { time = this@toSeriesTime }
+                .run {
+                    Time.BusinessDay(
+                        year = get(Calendar.YEAR),
+                        month = get(Calendar.MONTH) + 1,
+                        day = get(Calendar.DAY_OF_MONTH),
+                    )
+                }
+        }
+    }
+
     private fun getRandomPrice(): Int {
         return 10 + (Math.random() * 1000).roundToInt() / 100
+    }
+
+    private companion object {
+        private const val DAY_MS = 86_400_000L
+        private const val STRING_TIME_FORMAT = "yyyy-MM-dd"
     }
 }

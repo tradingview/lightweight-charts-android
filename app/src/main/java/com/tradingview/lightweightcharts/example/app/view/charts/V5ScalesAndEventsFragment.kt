@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.chart.models.ScreenshotOptions
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.enums.ConflationPriority
@@ -35,6 +33,7 @@ import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.FragmentV5ShowcaseBinding
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.view.util.ScreenshotShare
+import com.tradingview.lightweightcharts.example.app.view.util.chartColor
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlin.math.sin
 
@@ -141,8 +140,8 @@ class V5ScalesAndEventsFragment : Fragment(), ITitleFragment {
 
         api.applyOptions {
             layout = layoutOptions {
-                background = SolidColor(Color.parseColor("#101418").toIntColor())
-                textColor = Color.parseColor("#D6DEE6").toIntColor()
+                background = SolidColor(chartColor(R.color.chart_signal_background))
+                textColor = chartColor(R.color.chart_text_secondary)
                 attributionLogo = false
             }
             defaultVisiblePriceScaleId = PriceScaleSide.RIGHT
@@ -151,7 +150,7 @@ class V5ScalesAndEventsFragment : Fragment(), ITitleFragment {
                 minimumWidth = 72
                 ensureEdgeTickMarksVisible = true
                 tickMarkDensity = 1.4f
-                textColor = Color.parseColor("#F1F5F9").toIntColor()
+                textColor = chartColor(R.color.chart_text_bright)
             }
             timeScale = timeScaleOptions {
                 enableConflation = true
@@ -168,8 +167,8 @@ class V5ScalesAndEventsFragment : Fragment(), ITitleFragment {
                 doNotSnapToHiddenSeriesIndices = true
             }
             grid = gridOptions {
-                vertLines = gridLineOptions { color = Color.argb(24, 148, 163, 184).toIntColor() }
-                horzLines = gridLineOptions { color = Color.argb(36, 148, 163, 184).toIntColor() }
+                vertLines = gridLineOptions { color = chartColor(R.color.chart_grid_slate, alpha = 24) }
+                horzLines = gridLineOptions { color = chartColor(R.color.chart_grid_slate, alpha = 36) }
             }
         }
 
@@ -177,9 +176,9 @@ class V5ScalesAndEventsFragment : Fragment(), ITitleFragment {
             type = SeriesType.AREA,
             options = AreaSeriesOptions(
                 title = "Conflated signal",
-                topColor = Color.argb(112, 52, 211, 153).toIntColor(),
-                bottomColor = Color.argb(12, 52, 211, 153).toIntColor(),
-                lineColor = Color.parseColor("#34D399").toIntColor(),
+                topColor = chartColor(R.color.chart_series_emerald, alpha = 112),
+                bottomColor = chartColor(R.color.chart_series_emerald, alpha = 12),
+                lineColor = chartColor(R.color.chart_series_emerald),
                 lineWidth = LineWidth.TWO,
                 relativeGradient = true,
                 conflationThresholdFactor = 0.6f,
@@ -193,7 +192,7 @@ class V5ScalesAndEventsFragment : Fragment(), ITitleFragment {
             type = SeriesType.LINE,
             options = LineSeriesOptions(
                 title = "Hidden snap target",
-                color = Color.parseColor("#F97316").toIntColor(),
+                color = chartColor(R.color.chart_series_orange),
                 lineWidth = LineWidth.ONE,
                 visible = false,
             ),
@@ -246,6 +245,8 @@ class V5ScalesAndEventsFragment : Fragment(), ITitleFragment {
         binding.tvDebugValues.text = message
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
+
+    private fun chartColor(colorRes: Int, alpha: Int? = null) = requireContext().chartColor(colorRes, alpha)
 
     companion object {
         private const val POINT_COUNT = 5_200

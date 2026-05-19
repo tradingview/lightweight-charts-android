@@ -1,17 +1,18 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.graphics.Color
 import android.os.Bundle
+import android.util.SizeF
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.PaneApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
+import com.tradingview.lightweightcharts.api.interfaces.paneSizes
+import com.tradingview.lightweightcharts.api.interfaces.snapshot
 import com.tradingview.lightweightcharts.api.interfaces.pop
 import com.tradingview.lightweightcharts.api.options.enums.PriceScaleSide
 import com.tradingview.lightweightcharts.api.options.models.CandlestickSeriesOptions
@@ -35,6 +36,7 @@ import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.FragmentV5ShowcaseBinding
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
+import com.tradingview.lightweightcharts.example.app.view.util.chartColor
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlin.math.abs
 import kotlin.math.sin
@@ -98,38 +100,7 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
             }
         }
         binding.chipTertiary.setOnClickListener {
-            binding.chartsView.api.paneSize(MAIN_PANE_INDEX) { mainSize ->
-                binding.chartsView.api.paneSize(VOLUME_PANE_INDEX) { volumeSize ->
-                    binding.chartsView.api.paneSize(LEFT_SCALE_PANE_INDEX) { leftScaleSize ->
-                        preservedPane?.let { pane ->
-                            preservedPaneCompact = !preservedPaneCompact
-                            pane.setHeight(
-                                if (preservedPaneCompact) {
-                                    PRESERVED_PANE_COMPACT_HEIGHT
-                                } else {
-                                    PRESERVED_PANE_EXPANDED_HEIGHT
-                                }
-                            )
-                            pane.paneIndex { preservedPaneIndex ->
-                                pane.getHeight { preservedPaneHeight ->
-                                    pane.getSeries { preservedPaneSeries ->
-                                        pane.preserveEmptyPane { preserve ->
-                                            updateStatus(
-                                                "Pane 0: ${mainSize.width.toInt()}x${mainSize.height.toInt()}, " +
-                                                    "pane 1: ${volumeSize.width.toInt()}x${volumeSize.height.toInt()}, " +
-                                                    "pane 2L: ${leftScaleSize.width.toInt()}x${leftScaleSize.height.toInt()}, " +
-                                                    "pane $preservedPaneIndex: ${preservedPaneHeight}px, " +
-                                                    "series=${preservedPaneSeries.size}, preserve=$preserve",
-                                                showToast = false,
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            reportPaneSizes()
         }
         binding.chipQuaternary.setOnClickListener {
             if (::candleSeries.isInitialized) {
@@ -148,15 +119,15 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
 
         chartApi.applyOptions {
             layout = layoutOptions {
-                background = SolidColor(Color.parseColor("#11131A").toIntColor())
-                textColor = Color.parseColor("#D1D4DC").toIntColor()
+                background = SolidColor(chartColor(R.color.chart_deep_background))
+                textColor = chartColor(R.color.chart_text_primary)
                 attributionLogo = false
             }
             leftPriceScale = priceScaleOptions {
                 visible = true
                 borderVisible = true
                 minimumWidth = 54
-                textColor = Color.parseColor("#FB7185").toIntColor()
+                textColor = chartColor(R.color.chart_series_rose)
             }
             defaultVisiblePriceScaleId = PriceScaleSide.RIGHT
             hoveredSeriesOnTop = true
@@ -165,8 +136,8 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
                 doNotSnapToHiddenSeriesIndices = true
             }
             grid = gridOptions {
-                vertLines = gridLineOptions { color = Color.argb(32, 120, 144, 156).toIntColor() }
-                horzLines = gridLineOptions { color = Color.argb(44, 120, 144, 156).toIntColor() }
+                vertLines = gridLineOptions { color = chartColor(R.color.chart_grid_slate, alpha = 32) }
+                horzLines = gridLineOptions { color = chartColor(R.color.chart_grid_slate, alpha = 44) }
             }
             timeScale = timeScaleOptions {
                 rightOffsetPixels = 16f
@@ -196,7 +167,7 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
             type = SeriesType.LINE,
             options = LineSeriesOptions(
                 title = "MA 8",
-                color = Color.parseColor("#F5C542").toIntColor(),
+                color = chartColor(R.color.chart_series_yellow),
                 lineWidth = LineWidth.TWO,
                 pointMarkersVisible = true,
                 pointMarkersRadius = 2f,
@@ -214,7 +185,7 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
                 type = SeriesType.HISTOGRAM,
                 options = HistogramSeriesOptions(
                     title = "Volume",
-                    color = Color.parseColor("#4B7BEC").toIntColor(),
+                    color = chartColor(R.color.chart_series_blue),
                     priceFormat = PriceFormat.priceFormatBuiltIn(
                         type = PriceFormat.Type.VOLUME,
                         precision = 0,
@@ -236,7 +207,7 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
                 type = SeriesType.LINE,
                 options = LineSeriesOptions(
                     title = "Left scale signal",
-                    color = Color.parseColor("#FB7185").toIntColor(),
+                    color = chartColor(R.color.chart_series_rose),
                     lineWidth = LineWidth.TWO,
                     priceScaleId = PriceScaleId.LEFT,
                     priceLineVisible = true,
@@ -254,7 +225,7 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
                 series.priceScale().applyOptions {
                     visible = true
                     borderVisible = true
-                    textColor = Color.parseColor("#FB7185").toIntColor()
+                    textColor = chartColor(R.color.chart_series_rose)
                     minimumWidth = 54
                 }
                 createPreservedPane(chartApi)
@@ -272,18 +243,39 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
     }
 
     private fun reportPaneState(chartApi: ChartApi) {
+        val pane = preservedPane ?: return
+        var paneCount: Int? = null
+        var leftScaleWidth: Float? = null
+        var lastVolumeLabel: String? = null
+        var preservedPaneSeriesCount: Int? = null
+
+        fun showIfReady() {
+            val count = paneCount ?: return
+            val width = leftScaleWidth ?: return
+            val label = lastVolumeLabel ?: return
+            val seriesCount = preservedPaneSeriesCount ?: return
+            showStatus(
+                "Panes: $count, left scale width: ${width.toInt()}px, " +
+                    "preserved pane series: $seriesCount, " +
+                    "last volume label: $label"
+            )
+        }
+
         chartApi.panes { panes ->
-            leftScaleSeries.priceScale().width { leftScaleWidth ->
-                volumeSeries.lastValueData(globalLast = true) { last ->
-                    preservedPane?.getSeries { preservedPaneSeries ->
-                        showStatus(
-                            "Panes: ${panes.size}, left scale width: ${leftScaleWidth.toInt()}px, " +
-                                "preserved pane series: ${preservedPaneSeries.size}, " +
-                                "last volume label: ${last.text.orEmpty()}"
-                        )
-                    }
-                }
-            }
+            paneCount = panes.size
+            showIfReady()
+        }
+        leftScaleSeries.priceScale().width { width ->
+            leftScaleWidth = width
+            showIfReady()
+        }
+        volumeSeries.lastValueData(globalLast = true) { last ->
+            lastVolumeLabel = last.text.orEmpty()
+            showIfReady()
+        }
+        pane.snapshot { snapshot ->
+            preservedPaneSeriesCount = snapshot.series.size
+            showIfReady()
         }
     }
 
@@ -312,7 +304,7 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
             HistogramData(
                 time = candle.time,
                 value = (18_000 + index * 210 + abs(candle.close - candle.open) * 9_000).toFloat(),
-                color = Color.parseColor(if (rising) "#26A69A" else "#EF5350").toIntColor(),
+                color = chartColor(if (rising) R.color.chart_series_green else R.color.chart_series_red),
             )
         }
     }
@@ -348,6 +340,35 @@ class V5PanesAndSeriesFragment : Fragment(), ITitleFragment {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun reportPaneSizes() {
+        val pane = preservedPane ?: return
+        preservedPaneCompact = !preservedPaneCompact
+        pane.setHeight(
+            if (preservedPaneCompact) {
+                PRESERVED_PANE_COMPACT_HEIGHT
+            } else {
+                PRESERVED_PANE_EXPANDED_HEIGHT
+            }
+        )
+
+        binding.chartsView.api.paneSizes(MAIN_PANE_INDEX, VOLUME_PANE_INDEX, LEFT_SCALE_PANE_INDEX) { sizes ->
+            pane.snapshot { preserved ->
+                updateStatus(
+                    "Pane 0: ${sizes.getValue(MAIN_PANE_INDEX).format()}, " +
+                        "pane 1: ${sizes.getValue(VOLUME_PANE_INDEX).format()}, " +
+                        "pane 2L: ${sizes.getValue(LEFT_SCALE_PANE_INDEX).format()}, " +
+                        "pane ${preserved.index}: ${preserved.height}px, " +
+                        "series=${preserved.series.size}, preserve=${preserved.preserveEmptyPane}",
+                    showToast = false,
+                )
+            }
+        }
+    }
+
+    private fun chartColor(colorRes: Int, alpha: Int? = null) = requireContext().chartColor(colorRes, alpha)
+
+    private fun SizeF.format(): String = "${width.toInt()}x${height.toInt()}"
 
     companion object {
         private const val MAIN_PANE_INDEX = 0

@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.crosshairLineOptions
@@ -25,6 +23,7 @@ import com.tradingview.lightweightcharts.api.series.models.MouseEventParams
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.view.util.Tooltip
+import com.tradingview.lightweightcharts.example.app.view.util.chartColor
 import com.tradingview.lightweightcharts.example.app.viewmodel.FloatingTooltipViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 import java.text.SimpleDateFormat
@@ -54,9 +53,9 @@ class CustomTooltipFragment : Fragment(), ITitleFragment {
         viewModel.seriesData.observe(viewLifecycleOwner) { data ->
             chartApi.addAreaSeries(
                 options = AreaSeriesOptions(
-                    topColor = Color.argb(143, 0, 150, 136).toIntColor(),
-                    bottomColor = Color.argb(10, 0, 150, 136).toIntColor(),
-                    lineColor = Color.argb(255, 0, 150, 136).toIntColor(),
+                    topColor = chartColor(R.color.tooltipSymbolName, alpha = 143),
+                    bottomColor = chartColor(R.color.tooltipSymbolName, alpha = 10),
+                    lineColor = chartColor(R.color.tooltipSymbolName),
                     lineWidth = LineWidth.TWO,
                 ),
                 onSeriesCreated = { api ->
@@ -77,8 +76,8 @@ class CustomTooltipFragment : Fragment(), ITitleFragment {
     private fun applyChartOptions() {
         chartApi.applyOptions {
             layout = layoutOptions {
-                background = SolidColor(Color.WHITE)
-                textColor = Color.parseColor("#333333").toIntColor()
+                background = SolidColor(chartColor(R.color.chart_white))
+                textColor = chartColor(R.color.chart_text_dark)
             }
             crosshair = crosshairOptions {
                 vertLine = crosshairLineOptions {
@@ -97,10 +96,10 @@ class CustomTooltipFragment : Fragment(), ITitleFragment {
             }
             grid = gridOptions {
                 horzLines = gridLineOptions {
-                    color = Color.parseColor("#eeeeee").toIntColor()
+                    color = chartColor(R.color.chart_tooltip_grid)
                 }
                 vertLines = gridLineOptions {
-                    color = Color.WHITE.toIntColor()
+                    color = chartColor(R.color.chart_white)
                 }
             }
         }
@@ -138,4 +137,6 @@ class CustomTooltipFragment : Fragment(), ITitleFragment {
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, it, resources.displayMetrics).toInt()
         } ?: 0
     }
+
+    private fun chartColor(colorRes: Int, alpha: Int? = null) = requireContext().chartColor(colorRes, alpha)
 }

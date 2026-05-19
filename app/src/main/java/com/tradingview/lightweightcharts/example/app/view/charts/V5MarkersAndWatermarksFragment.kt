@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesMarkersApi
@@ -38,7 +36,10 @@ import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.data.listSeriesMarkersSeriesData
 import com.tradingview.lightweightcharts.example.app.databinding.FragmentV5ShowcaseBinding
+import com.tradingview.lightweightcharts.example.app.view.util.ChartWatermarkTypography
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
+import com.tradingview.lightweightcharts.example.app.view.util.chartColor
+import com.tradingview.lightweightcharts.example.app.view.util.chartWatermarkTypography
 import com.tradingview.lightweightcharts.view.ChartsView
 import kotlin.math.floor
 
@@ -56,6 +57,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
     private var markerZOrderIndex = 0
     private var textWatermarkLarge = true
     private var imageWatermarkOpaque = false
+    private lateinit var watermarkTypography: ChartWatermarkTypography
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return FragmentV5ShowcaseBinding.inflate(inflater, container, false)
@@ -126,19 +128,20 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
     private fun setupChart(chartApi: ChartApi) {
         val data = listSeriesMarkersSeriesData().take(80)
         markers = createMarkers(data)
+        watermarkTypography = requireContext().chartWatermarkTypography()
 
         chartApi.applyOptions {
             layout = layoutOptions {
-                background = SolidColor(Color.parseColor("#131722").toIntColor())
-                textColor = Color.parseColor("#D1D4DC").toIntColor()
+                background = SolidColor(chartColor(R.color.chart_dark_background))
+                textColor = chartColor(R.color.chart_text_primary)
                 attributionLogo = true
             }
             crosshair = crosshairOptions {
                 mode = CrosshairMode.MAGNET_OHLC
             }
             grid = gridOptions {
-                vertLines = gridLineOptions { color = Color.argb(20, 197, 203, 206).toIntColor() }
-                horzLines = gridLineOptions { color = Color.argb(32, 197, 203, 206).toIntColor() }
+                vertLines = gridLineOptions { color = chartColor(R.color.white_1, alpha = 20) }
+                horzLines = gridLineOptions { color = chartColor(R.color.white_1, alpha = 32) }
             }
         }
 
@@ -165,7 +168,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
             type = SeriesType.LINE,
             options = LineSeriesOptions(
                 title = "Z-order reference line",
-                color = Color.parseColor("#FFFFFF").toIntColor(),
+                color = chartColor(R.color.white_1),
                 lineWidth = LineWidth.FOUR,
                 priceLineVisible = false,
                 lastValueVisible = false,
@@ -207,7 +210,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
             SeriesMarker(
                 time = aboveBar.time,
                 position = SeriesMarkerPosition.ABOVE_BAR,
-                color = Color.parseColor("#F5A623").toIntColor(),
+                color = chartColor(R.color.chart_marker_orange),
                 shape = SeriesMarkerShape.CIRCLE,
                 size = 2,
                 id = "above-bar",
@@ -216,7 +219,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
             SeriesMarker(
                 time = belowBar.time,
                 position = SeriesMarkerPosition.BELOW_BAR,
-                color = Color.parseColor("#1E88E5").toIntColor(),
+                color = chartColor(R.color.chart_marker_blue),
                 shape = SeriesMarkerShape.ARROW_UP,
                 id = "below-bar",
                 text = "belowBar ${floor(belowBar.low)}",
@@ -224,7 +227,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
             SeriesMarker(
                 time = inBar.time,
                 position = SeriesMarkerPosition.IN_BAR,
-                color = Color.parseColor("#E91E63").toIntColor(),
+                color = chartColor(R.color.chart_marker_pink),
                 shape = SeriesMarkerShape.SQUARE,
                 id = "in-bar",
                 text = "inBar",
@@ -233,7 +236,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
                 time = priceBar.time,
                 position = SeriesMarkerPosition.AT_PRICE_TOP,
                 price = priceBar.high + 2f,
-                color = Color.parseColor("#9C27B0").toIntColor(),
+                color = chartColor(R.color.chart_marker_purple),
                 shape = SeriesMarkerShape.SQUARE,
                 id = "at-price-top",
                 text = "atPriceTop",
@@ -242,7 +245,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
                 time = priceBar.time,
                 position = SeriesMarkerPosition.AT_PRICE_MIDDLE,
                 price = (priceBar.high + priceBar.low) / 2f,
-                color = Color.parseColor("#00ACC1").toIntColor(),
+                color = chartColor(R.color.chart_marker_teal),
                 shape = SeriesMarkerShape.CIRCLE,
                 id = "at-price-middle",
                 text = "atPriceMiddle",
@@ -251,7 +254,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
                 time = priceBar.time,
                 position = SeriesMarkerPosition.AT_PRICE_BOTTOM,
                 price = priceBar.low - 2f,
-                color = Color.parseColor("#43A047").toIntColor(),
+                color = chartColor(R.color.chart_marker_green),
                 shape = SeriesMarkerShape.SQUARE,
                 id = "at-price-bottom",
                 text = "atPriceBottom",
@@ -260,7 +263,7 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
                 time = zOrderBar.time,
                 position = SeriesMarkerPosition.AT_PRICE_MIDDLE,
                 price = zOrderBar.close,
-                color = Color.parseColor("#FFEB3B").toIntColor(),
+                color = chartColor(R.color.chart_marker_yellow),
                 shape = SeriesMarkerShape.SQUARE,
                 size = 7,
                 id = "z-order-probe",
@@ -300,22 +303,24 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
             lines = listOf(
                 TextWatermarkLineOptions(
                     text = "Lightweight Charts 5.2",
-                    color = Color.argb(56, 255, 255, 255).toIntColor(),
-                    fontSize = if (large) 52 else 30,
-                    lineHeight = if (large) 56 else 34,
-                    fontStyle = "bold",
-                    fontFamily = "sans-serif",
+                    color = chartColor(R.color.white_1, alpha = 56),
+                    fontSize = watermarkTypography.titleFontSize(large),
+                    lineHeight = watermarkTypography.titleLineHeight(large),
+                    fontStyle = watermarkTypography.titleFontStyle,
+                    fontFamily = watermarkTypography.fontFamily,
                 ),
                 TextWatermarkLineOptions(
                     text = "primitive markers + watermarks",
-                    color = Color.argb(72, 255, 255, 255).toIntColor(),
-                    fontSize = if (large) 18 else 14,
-                    lineHeight = if (large) 24 else 18,
-                    fontFamily = "sans-serif",
+                    color = chartColor(R.color.white_1, alpha = 72),
+                    fontSize = watermarkTypography.subtitleFontSize(large),
+                    lineHeight = watermarkTypography.subtitleLineHeight(large),
+                    fontFamily = watermarkTypography.fontFamily,
                 ),
             ),
         )
     }
+
+    private fun chartColor(colorRes: Int, alpha: Int? = null) = requireContext().chartColor(colorRes, alpha)
 
     private fun showStatus(message: String) {
         binding.tvDebugValues.text = message
@@ -328,7 +333,6 @@ class V5MarkersAndWatermarksFragment : Fragment(), ITitleFragment {
             SeriesMarkerZOrder.ABOVE_SERIES,
             SeriesMarkerZOrder.TOP,
         )
-        private const val IMAGE_WATERMARK =
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='120' viewBox='0 0 240 120'%3E%3Crect width='240' height='120' rx='18' fill='%23296FF0' fill-opacity='0.45'/%3E%3Cpath d='M44 82 96 34l34 31 28-24 38 41' fill='none' stroke='%23FFFFFF' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+        private const val IMAGE_WATERMARK = "file:///android_asset/watermarks/chart-watermark.svg"
     }
 }

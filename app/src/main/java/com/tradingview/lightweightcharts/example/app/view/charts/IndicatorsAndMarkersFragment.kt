@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
@@ -35,6 +33,7 @@ import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
+import com.tradingview.lightweightcharts.example.app.view.util.chartColor
 import com.tradingview.lightweightcharts.example.app.viewmodel.VolumeStudyViewModel
 import com.tradingview.lightweightcharts.view.ChartsView
 
@@ -93,8 +92,8 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
     private fun applyChartOptions() {
         binding.chartsView.api.applyOptions {
             layout = layoutOptions {
-                background = SolidColor(Color.parseColor("#131722").toIntColor())
-                textColor = Color.parseColor("#d1d4dc").toIntColor()
+                background = SolidColor(chartColor(R.color.chart_dark_background))
+                textColor = chartColor(R.color.chart_text_primary)
             }
             rightPriceScale = priceScaleOptions {
                 scaleMargins = priceScaleMargins {
@@ -105,10 +104,10 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
             }
             grid = gridOptions {
                 vertLines = gridLineOptions {
-                    color = Color.argb(0, 42, 46, 57).toIntColor()
+                    color = chartColor(R.color.chart_grid_dark, alpha = 0)
                 }
                 horzLines = gridLineOptions {
-                    color = Color.argb(153, 42, 46, 57).toIntColor()
+                    color = chartColor(R.color.chart_grid_dark, alpha = 153)
                 }
             }
         }
@@ -121,9 +120,9 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
     ) {
         chartApi.addAreaSeries(
             options = AreaSeriesOptions(
-                topColor = Color.argb(143, 38, 198, 218).toIntColor(),
-                bottomColor = Color.argb(10, 38, 198, 218).toIntColor(),
-                lineColor = Color.argb(255, 38, 198, 218).toIntColor(),
+                topColor = chartColor(R.color.chart_series_cyan, alpha = 143),
+                bottomColor = chartColor(R.color.chart_series_cyan, alpha = 10),
+                lineColor = chartColor(R.color.chart_series_cyan),
                 lineWidth = LineWidth.TWO,
             ),
             onSeriesCreated = { api ->
@@ -144,7 +143,7 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
     ) {
         chartApi.addHistogramSeries(
             options = HistogramSeriesOptions(
-                color = Color.parseColor("#26a69a").toIntColor(),
+                color = chartColor(R.color.chart_series_green),
                 priceFormat = PriceFormat.priceFormatBuiltIn(
                     type = PriceFormat.Type.VOLUME,
                     precision = 1,
@@ -181,14 +180,14 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
             SeriesMarker(
                 time = firstSignal.time,
                 position = SeriesMarkerPosition.BELOW_BAR,
-                color = Color.parseColor("#1E88E5").toIntColor(),
+                color = chartColor(R.color.chart_marker_blue),
                 shape = SeriesMarkerShape.ARROW_UP,
                 text = "RSI",
             ),
             SeriesMarker(
                 time = secondSignal.time,
                 position = SeriesMarkerPosition.ABOVE_BAR,
-                color = Color.parseColor("#E91E63").toIntColor(),
+                color = chartColor(R.color.chart_marker_pink),
                 shape = SeriesMarkerShape.ARROW_DOWN,
                 text = "Exit",
             ),
@@ -196,10 +195,12 @@ class IndicatorsAndMarkersFragment : Fragment(), ITitleFragment {
                 time = thirdSignal.time,
                 position = SeriesMarkerPosition.AT_PRICE_MIDDLE,
                 price = thirdSignal.value,
-                color = Color.parseColor("#F5A623").toIntColor(),
+                color = chartColor(R.color.chart_marker_orange),
                 shape = SeriesMarkerShape.CIRCLE,
                 text = "Signal",
             ),
         )
     }
+
+    private fun chartColor(colorRes: Int, alpha: Int? = null) = requireContext().chartColor(colorRes, alpha)
 }
