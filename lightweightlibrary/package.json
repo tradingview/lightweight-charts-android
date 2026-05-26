@@ -1,17 +1,17 @@
 {
   "private": true,
   "name": "lightweight-android",
-  "version": "4.0.0",
+  "version": "5.2.0",
   "description": "Financial lightweight charts built with HTML5 canvas",
   "author": "TradingView, Inc.",
   "license": "Apache-2.0",
   "main": "src/index.js",
   "dependencies": {
-    "lightweight-charts": "4.0.0"
+    "lightweight-charts": "5.2.0"
   },
   "devDependencies": {
-    "webpack": "^5.48.0",
-    "webpack-cli": "^4.7.2"
+    "webpack": "5.106.2",
+    "webpack-cli": "4.10.0"
   },
   "scripts": {
     "compile": "npx webpack ./lib/app/index.js --config ./webpack.config.js --output-path ./src/main/assets/com/tradingview/lightweightcharts/scripts/app",

@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.interfaces
 
 import android.util.SizeF
 import com.tradingview.lightweightcharts.api.options.models.TimeScaleOptions
+import com.tradingview.lightweightcharts.api.series.models.LogicalRange
 import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.api.series.models.TimeRange
 
@@ -15,10 +16,14 @@ interface TimeScaleApi {
         const val SCROLL_TO_REAL_TIME = "scrollToRealTime"
         const val GET_VISIBLE_RANGE = "getVisibleRange"
         const val SET_VISIBLE_RANGE = "setVisibleRange"
+        const val GET_VISIBLE_LOGICAL_RANGE = "getVisibleLogicalRange"
+        const val SET_VISIBLE_LOGICAL_RANGE = "setVisibleLogicalRange"
         const val RESET_TIME_SCALE = "resetTimeScale"
         const val FIT_CONTENT = "fitContent"
         const val SUBSCRIBE_VISIBLE_TIME_RANGE_CHANGE = "subscribeVisibleTimeRangeChange"
+        const val SUBSCRIBE_VISIBLE_LOGICAL_RANGE_CHANGE = "subscribeVisibleLogicalRangeChange"
         const val TIME_TO_COORDINATE = "timeToCoordinate"
+        const val TIME_TO_INDEX = "timeToIndex"
         const val COORDINATE_TO_TIME = "coordinateToTime"
         const val LOGICAL_TO_COORDINATE = "logicalToCoordinate"
         const val COORDINATE_TO_LOGICAL = "coordinateToLogical"
@@ -32,6 +37,8 @@ interface TimeScaleApi {
         const val POSITION = "position"
         const val ANIMATED = "animated"
         const val RANGE = "range"
+        const val TIME = "time"
+        const val FIND_NEAREST = "findNearest"
     }
 
     /**
@@ -65,6 +72,16 @@ interface TimeScaleApi {
     fun setVisibleRange(range: TimeRange)
 
     /**
+     * Returns current visible logical range of the chart.
+     */
+    fun getVisibleLogicalRange(onLogicalRangeReceived: (LogicalRange?) -> Unit)
+
+    /**
+     * Sets visible logical range of data.
+     */
+    fun setVisibleLogicalRange(range: LogicalRange)
+
+    /**
      * Restores default zooming and scroll position of the time scale
      */
     fun resetTimeScale()
@@ -84,6 +101,11 @@ interface TimeScaleApi {
     fun timeToCoordinate(time: Time, onCoordinateReceived: (x: Float?) -> Unit)
 
     /**
+     * Converts a time to logical index.
+     */
+    fun timeToIndex(time: Time, findNearest: Boolean = false, onIndexReceived: (index: Int?) -> Unit)
+
+    /**
      * Converts a coordinate to time.
      * @param x coordinate needs to be converted
      * @param onTimeReceived returns the time of a bar that placed on that coordinate
@@ -93,11 +115,18 @@ interface TimeScaleApi {
 
     /**
      * Converts a logical index to local x coordinate.
-     * @param logical logical index needs to be converted
+     * @param logical logical index needs to be converted. Logical indexes can be fractional.
      * @param onCoordinateReceived returns x coordinate of that time
      *                            or null if the chart doesn't have data
      */
-    fun logicalToCoordinate(logical: Int, onCoordinateReceived: (x: Float?) -> Unit)
+    fun logicalToCoordinate(logical: Float, onCoordinateReceived: (x: Float?) -> Unit)
+
+    /**
+     * Converts an integer logical index to local x coordinate.
+     */
+    fun logicalToCoordinate(logical: Int, onCoordinateReceived: (x: Float?) -> Unit) {
+        logicalToCoordinate(logical.toFloat(), onCoordinateReceived)
+    }
 
     /**
      * Converts a coordinate to logical index.
@@ -106,6 +135,14 @@ interface TimeScaleApi {
      *                         or null if the chart doesn't have data
      */
     fun coordinateToLogical(x: Float, onLogicalReceived: (logical: Int?) -> Unit)
+
+    /**
+     * Converts a coordinate to a v5 fractional logical index.
+     * @param x coordinate needs to be converted
+     * @param onLogicalReceived returns logical index that is located on that coordinate
+     *                         or null if the chart doesn't have data
+     */
+    fun coordinateToLogicalFloat(x: Float, onLogicalReceived: (logical: Float?) -> Unit)
 
     /**
      * Applies new options to the time scale.
@@ -135,6 +172,16 @@ interface TimeScaleApi {
      * Removes a subscription to visible range changes
      */
     fun unsubscribeVisibleTimeRangeChange(onTimeRangeChanged: (params: TimeRange?) -> Unit)
+
+    /**
+     * Adds a subscription to logical visible range changes.
+     */
+    fun subscribeVisibleLogicalRangeChange(onLogicalRangeChanged: (params: LogicalRange?) -> Unit)
+
+    /**
+     * Removes a subscription to logical visible range changes.
+     */
+    fun unsubscribeVisibleLogicalRangeChange(onLogicalRangeChanged: (params: LogicalRange?) -> Unit)
 
     /**
      * Returns a current width of the time scale

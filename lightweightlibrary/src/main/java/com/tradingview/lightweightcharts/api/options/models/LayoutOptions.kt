@@ -23,7 +23,17 @@ data class LayoutOptions(
     /**
      * Font family of a text on the scales
      */
-    var fontFamily: String? = null
+    var fontFamily: String? = null,
+
+    /**
+     * Whether to show the TradingView attribution logo.
+     */
+    var attributionLogo: Boolean? = null,
+
+    /**
+     * Options for chart layout panes.
+     */
+    var panes: LayoutPanesOptions? = null,
 )
 
 inline fun layoutOptions(init: LayoutOptions.() -> Unit): LayoutOptions {

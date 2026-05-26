@@ -1,4 +1,4 @@
-import * as LightweightCharts from 'lightweight';
+import * as LightweightCharts from 'lightweight-charts';
 import FunctionManager from './function-manager.js';
 import ChartRegistrationFunctionsController from './chart-registration-functions-controller.js';
 import PluginManager from './plugin-manager.js';
@@ -72,7 +72,10 @@ onload = () => {
         height: window.innerHeight,
         layout: {
             //default value is transparent background
-            backgroundColor: "#00000000"
+            background: {
+                type: "solid",
+                color: "#00000000"
+            }
         }
     });
 }

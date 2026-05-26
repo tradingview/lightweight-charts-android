@@ -34,6 +34,9 @@ export default class FunctionManager {
 
         try {
             fn.functionRef(data, (result) => {
+                if (data.expectsResult === false) {
+                    return;
+                }
                 this.port.postMessage(JSON.stringify({
                     messageType: "Message::FunctionResult",
                     data: {
@@ -68,7 +71,10 @@ export default class FunctionManager {
             }))
         }
         const subscription = fn.subscribe(data, callback)
-        this.subscriptions.set(data.uuid + data.fn, subscription)
+        this.subscriptions.set(data.uuid + data.fn, {
+            name: data.fn,
+            subscription: subscription
+        })
     }
 
     unsubscribe(data) {
@@ -80,14 +86,14 @@ export default class FunctionManager {
         }
 
         const id = data.uuid + data.fn
-        const subscription = this.subscriptions.get(id)
+        const record = this.subscriptions.get(id)
 
-        if (subscription === undefined) {
+        if (record === undefined) {
             this.throwFatalError(new Error(`Subscriber:${data.fn} with uuid:${data.uuid} is not found`), data)
             return
         }
 
-        fn.unsubscribe(subscription)
+        fn.unsubscribe(record.subscription)
         this.subscriptions.delete(id)
 
         this.port.postMessage(JSON.stringify({
@@ -97,6 +103,20 @@ export default class FunctionManager {
                 uuid: data.uuid
             }
         }))
+    }
+
+    removeSubscriptions(predicate) {
+        for (let [id, record] of this.subscriptions.entries()) {
+            if (!predicate(record.subscription, record.name)) {
+                continue
+            }
+
+            const fn = this.functions.find((value) => { return value.name === record.name })
+            if (fn !== undefined) {
+                fn.unsubscribe(record.subscription)
+            }
+            this.subscriptions.delete(id)
+        }
     }
 
     throwFatalError(error, data) {
@@ -119,4 +139,3 @@ export default class FunctionManager {
         return undefined !== duplicatedValue
     }
 }
-

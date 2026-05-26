@@ -10,6 +10,7 @@ import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.repository.DynamicRepository
 import com.tradingview.lightweightcharts.example.app.repository.StaticRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class RealTimeEmulationViewModel : ViewModel() {
@@ -18,9 +19,11 @@ class RealTimeEmulationViewModel : ViewModel() {
     private val dynamicRepository = DynamicRepository()
 
     val seriesFlow: Flow<SeriesData>
-        get() = dynamicRepository.getListSeriesData(data.value!!) {
-            loadData()
-        }
+        get() = dynamicRepository
+            .getListSeriesData(emulationData ?: data.value!!) {
+                loadData()
+            }
+            .onEach(::rememberEmittedBar)
 
     val seriesData: LiveData<Data>
         get() = data
@@ -31,10 +34,26 @@ class RealTimeEmulationViewModel : ViewModel() {
         }
     }
 
+    private var emulationData: Data? = null
+
     private fun loadData() {
         viewModelScope.launch {
             val barData = staticRepository.getRealTimeEmulationSeriesData()
-            data.postValue(Data(barData, SeriesType.CANDLESTICK))
+            val loadedData = Data(barData, SeriesType.CANDLESTICK)
+            emulationData = loadedData
+            data.postValue(loadedData)
         }
+    }
+
+    private fun rememberEmittedBar(bar: SeriesData) {
+        val currentData = emulationData ?: data.value ?: return
+        val nextList = currentData.list.toMutableList()
+        val lastBar = nextList.lastOrNull()
+        if (lastBar?.time?.date?.time == bar.time.date.time && nextList.isNotEmpty()) {
+            nextList[nextList.lastIndex] = bar
+        } else {
+            nextList.add(bar)
+        }
+        emulationData = currentData.copy(list = nextList)
     }
 }

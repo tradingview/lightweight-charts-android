@@ -1,11 +1,15 @@
 package com.tradingview.lightweightcharts.view
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.widget.FrameLayout
 import androidx.webkit.WebViewClientCompat
@@ -52,6 +56,34 @@ internal class WebSession @JvmOverloads constructor(
                 visibility = View.VISIBLE
                 onReady()
             }
+
+            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+                if (!request.isForMainFrame) {
+                    return false
+                }
+                return openExternalUrl(request.url)
+            }
+
+            @Suppress("OVERRIDE_DEPRECATION")
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                return openExternalUrl(url?.let(Uri::parse))
+            }
+        }
+    }
+
+    private fun openExternalUrl(uri: Uri?): Boolean {
+        val scheme = uri?.scheme ?: return false
+        if (scheme != "http" && scheme != "https") {
+            return false
+        }
+
+        return try {
+            context.startActivity(Intent(Intent.ACTION_VIEW, uri).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+            true
+        } catch (_: ActivityNotFoundException) {
+            true
         }
     }
 }

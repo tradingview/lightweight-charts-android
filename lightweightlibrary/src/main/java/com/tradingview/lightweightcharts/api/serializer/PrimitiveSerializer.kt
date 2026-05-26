@@ -39,6 +39,15 @@ sealed class PrimitiveSerializer {
         }
     }
 
+    object BooleanDeserializer : Deserializer<Boolean>() {
+        override fun deserialize(json: JsonElement): Boolean? {
+            if (json.isJsonNull) {
+                return null
+            }
+            return json.asBoolean
+        }
+    }
+
     object NullDeserializer : Deserializer<Any>() {
         override fun deserialize(json: JsonElement): Any? {
             return null

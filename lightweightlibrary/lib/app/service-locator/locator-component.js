@@ -7,6 +7,8 @@ import SeriesCache from "../series/series-cache";
 import SeriesCreationService from "../series/series-creation";
 import SeriesFunctionManager from "../series/series-function-manager";
 import SeriesInstanceService from "../series/series-instance";
+import MarkersCache from "../series/markers-cache";
+import PaneCache from "../pane/pane-cache";
 import TickMarkFormatterService from "../time-scale/tick-mark-formatter";
 import TimeScaleFunctionManager from "../time-scale/time-scale-function-manager";
 import TimeScaleInstanceService from "../time-scale/time-scale-instance";
@@ -14,6 +16,7 @@ import PriceScaleCache from "../price-scale/price-scale-cache";
 import PriceScaleCreationService from "../price-scale/price-scale-creation";
 import PriceScaleInstanceService from "../price-scale/price-scale-instance";
 import PriceScaleFunctionManager from "../price-scale/price-scale-function-manager";
+import WatermarkCache from "../watermark/watermark-cache";
 import { Locator } from "./locator";
 
 export function initLocator(functionManager, pluginManager, chart) {
@@ -31,6 +34,9 @@ class LocatorComponent {
         this.registerLineCache();
         this.registerLineService();
         this.registerSeriesCache();
+        this.registerMarkersCache();
+        this.registerPaneCache();
+        this.registerWatermarkCache();
 
         this.registerSeriesFunctionManager();
 
@@ -63,8 +69,20 @@ class LocatorComponent {
         Locator.register(SeriesCache.name, () => new SeriesCache());
     }
 
+    registerMarkersCache() {
+        Locator.register(MarkersCache.name, () => new MarkersCache());
+    }
+
+    registerPaneCache() {
+        Locator.register(PaneCache.name, () => new PaneCache());
+    }
+
     registerPriceScaleCache() {
         Locator.register(PriceScaleCache.name, () => new PriceScaleCache());
+    }
+
+    registerWatermarkCache() {
+        Locator.register(WatermarkCache.name, () => new WatermarkCache());
     }
 
     registerSeriesFunctionManager() {

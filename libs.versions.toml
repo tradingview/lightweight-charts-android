@@ -1,15 +1,15 @@
 [versions]
 
 lightweightcharts-code = "16"
-lightweightcharts = "4.0.0"
+lightweightcharts = "5.2.0"
 sdk-min = "23"
 sdk-compile = "36"
 
-android-gradle = "8.13.0"
+android-gradle = "9.2.1"
 kotlin = "2.2.21"
 google-services = "4.4.4"
 firebase-crashlytics = "3.0.6"
-arturbosch-detekt = "1.23.1"
+arturbosch-detekt = "1.23.8"
 
 firebase-bom = "34.5.0"
 appcompat = "1.7.1"
@@ -22,6 +22,7 @@ permissionsdispatcher = "4.9.2"
 
 webkit = "1.14.0"
 gson = "2.13.2"
+junit = "4.13.2"
 
 [libraries]
 
@@ -46,6 +47,7 @@ permissionsdispatcher-processor = { module = "com.github.permissions-dispatcher:
 
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+junit = { module = "junit:junit", version.ref = "junit" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "arturbosch-detekt" }
 
@@ -54,8 +56,8 @@ detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", 
 
 android = { id = "com.android.application", version.ref = "android-gradle" }
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+android-builtin-kotlin = { id = "com.android.built-in-kotlin", version.ref = "android-gradle" }
+android-legacy-kapt = { id = "com.android.legacy-kapt", version.ref = "android-gradle" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 maven-publish = { id = "maven-publish" }

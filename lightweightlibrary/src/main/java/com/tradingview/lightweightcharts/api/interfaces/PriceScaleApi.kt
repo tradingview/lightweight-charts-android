@@ -1,6 +1,7 @@
 package com.tradingview.lightweightcharts.api.interfaces
 
 import com.tradingview.lightweightcharts.api.options.models.PriceScaleOptions
+import com.tradingview.lightweightcharts.api.series.models.PriceRange
 
 interface PriceScaleApi {
 
@@ -8,6 +9,9 @@ interface PriceScaleApi {
         const val OPTIONS = "priceScaleOptions"
         const val APPLY_OPTIONS = "priceScaleApplyOptions"
         const val WIDTH = "priceScaleWidth"
+        const val SET_VISIBLE_RANGE = "priceScaleSetVisibleRange"
+        const val GET_VISIBLE_RANGE = "priceScaleGetVisibleRange"
+        const val SET_AUTO_SCALE = "priceScaleSetAutoScale"
     }
 
     object Params {
@@ -15,6 +19,9 @@ interface PriceScaleApi {
         const val OPTIONS_PARAM = "options"
         const val CALLER = "caller"
         const val PRICE_SCALE_ID = "priceScaleId"
+        const val PANE_INDEX = "paneIndex"
+        const val RANGE = "range"
+        const val ON = "on"
     }
 
     val uuid: String
@@ -37,4 +44,19 @@ interface PriceScaleApi {
      * Returns a width of the price scale if it's visible or 0 if invisible.
      */
     fun width(onWidthReceived: (Float) -> Unit)
+
+    /**
+     * Sets the visible range of the price scale.
+     */
+    fun setVisibleRange(range: PriceRange)
+
+    /**
+     * Returns the visible range of the price scale, or null if range is not set.
+     */
+    fun getVisibleRange(onRangeReceived: (PriceRange?) -> Unit)
+
+    /**
+     * Sets auto scale mode.
+     */
+    fun setAutoScale(on: Boolean)
 }

@@ -11,6 +11,10 @@
         android:title="@string/custom_themes"
         />
     <item
+        android:id="@+id/menu_no_attribution_logo"
+        android:title="@string/no_attribution_logo"
+        />
+    <item
         android:id="@+id/menu_range_switcher"
         android:title="@string/range_switcher"
         />
@@ -49,6 +53,21 @@
     <item
         android:id="@+id/menu_indicators_and_markers"
         android:title="@string/indicators_and_markers"
+        />
+
+    <item
+        android:id="@+id/menu_v5_panes_and_series"
+        android:title="@string/v5_panes_and_series"
+        />
+
+    <item
+        android:id="@+id/menu_v5_markers_and_watermarks"
+        android:title="@string/v5_markers_and_watermarks"
+        />
+
+    <item
+        android:id="@+id/menu_v5_scales_and_events"
+        android:title="@string/v5_scales_and_events"
         />
 
     <item

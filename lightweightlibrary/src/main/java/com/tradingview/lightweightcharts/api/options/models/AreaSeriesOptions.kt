@@ -109,6 +109,8 @@ data class AreaSeriesOptions(
      */
     override var invertFilledArea: Boolean? = null,
 
+    override var relativeGradient: Boolean? = null,
+
     /**
      * Line color.
      */
@@ -128,6 +130,12 @@ data class AreaSeriesOptions(
      * Line type.
      */
     override var lineType: LineType? = null,
+
+    override var lineVisible: Boolean? = null,
+
+    override var pointMarkersVisible: Boolean? = null,
+
+    override var pointMarkersRadius: Float? = null,
 
     /**
      * Show the crosshair marker.
@@ -158,6 +166,8 @@ data class AreaSeriesOptions(
      * Last price animation mode.
      */
     override var lastPriceAnimation: LastPriceAnimationMode? = null,
+
+    override var conflationThresholdFactor: Float? = null,
 
 ) : SeriesOptionsCommon, AreaStyleOptions
 

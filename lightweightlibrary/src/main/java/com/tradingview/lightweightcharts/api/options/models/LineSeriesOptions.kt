@@ -36,6 +36,9 @@ data class LineSeriesOptions(
     override var lineStyle: LineStyle? = null,
     override var lineWidth: LineWidth? = null,
     override var lineType: LineType? = null,
+    override var lineVisible: Boolean? = null,
+    override var pointMarkersVisible: Boolean? = null,
+    override var pointMarkersRadius: Float? = null,
     override var crosshairMarkerVisible: Boolean? = null,
     override var crosshairMarkerRadius: Float? = null,
 
@@ -46,6 +49,7 @@ data class LineSeriesOptions(
     override var priceScaleId: PriceScaleId? = null,
     override var autoscaleInfoProvider: Plugin? = null,
     override var visible: Boolean? = null,
+    override var conflationThresholdFactor: Float? = null,
     override var lastPriceAnimation: LastPriceAnimationMode? = null,
 ) : SeriesOptionsCommon, LineStyleOptions
 

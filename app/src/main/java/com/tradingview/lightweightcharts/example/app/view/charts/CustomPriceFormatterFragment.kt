@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SolidColor
-import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.interfaces.ChartApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
@@ -26,6 +24,7 @@ import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.LayoutPriceFormatterChartFragmentBinding
 import com.tradingview.lightweightcharts.example.app.model.Data
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
+import com.tradingview.lightweightcharts.example.app.view.util.chartColor
 import com.tradingview.lightweightcharts.example.app.viewmodel.CustomPriceFormatterViewModel
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.view.ChartsView
@@ -84,8 +83,8 @@ class CustomPriceFormatterFragment : Fragment(), ITitleFragment {
     private fun applyChartOptions() {
         binding.chartsView.api.applyOptions {
             layout = layoutOptions {
-                background = SolidColor(Color.BLACK.toIntColor())
-                textColor = Color.argb(204, 255, 255, 255).toIntColor()
+                background = SolidColor(chartColor(R.color.chart_black))
+                textColor = chartColor(R.color.chart_white, alpha = 204)
             }
             localization = localizationOptions {
                 priceFormatter = PriceFormatter(template = "\${price:#2:#2}")
@@ -94,17 +93,17 @@ class CustomPriceFormatterFragment : Fragment(), ITitleFragment {
                 mode = CrosshairMode.NORMAL
             }
             rightPriceScale = priceScaleOptions {
-                borderColor = Color.argb(204, 255, 255, 255).toIntColor()
+                borderColor = chartColor(R.color.chart_white, alpha = 204)
             }
             timeScale = timeScaleOptions {
-                borderColor = Color.argb(204, 255, 255, 255).toIntColor()
+                borderColor = chartColor(R.color.chart_white, alpha = 204)
             }
             grid = gridOptions {
                 vertLines = gridLineOptions {
-                    color = Color.argb(51, 255, 255, 255).toIntColor()
+                    color = chartColor(R.color.chart_white, alpha = 51)
                 }
                 horzLines = gridLineOptions {
-                    color = Color.argb(51, 255, 255, 255).toIntColor()
+                    color = chartColor(R.color.chart_white, alpha = 51)
                 }
             }
         }
@@ -117,9 +116,9 @@ class CustomPriceFormatterFragment : Fragment(), ITitleFragment {
     ) {
         chartApi.addAreaSeries(
             options = AreaSeriesOptions(
-                topColor = Color.argb(128, 21, 101, 192).toIntColor(),
-                bottomColor = Color.argb(128, 21, 101, 192).toIntColor(),
-                lineColor = Color.argb(204, 255, 255, 255).toIntColor(),
+                topColor = chartColor(R.color.chart_series_indigo, alpha = 128),
+                bottomColor = chartColor(R.color.chart_series_indigo, alpha = 128),
+                lineColor = chartColor(R.color.chart_white, alpha = 204),
                 lineWidth = LineWidth.TWO,
             ),
             onSeriesCreated = { api ->
@@ -136,4 +135,6 @@ class CustomPriceFormatterFragment : Fragment(), ITitleFragment {
             }
         }
     }
+
+    private fun chartColor(colorRes: Int, alpha: Int? = null) = requireContext().chartColor(colorRes, alpha)
 }

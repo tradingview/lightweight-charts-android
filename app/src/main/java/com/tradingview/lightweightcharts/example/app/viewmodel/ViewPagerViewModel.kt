@@ -33,6 +33,7 @@ class ViewPagerViewModel : ViewModel() {
                 SeriesType.CANDLESTICK -> TODO()
                 SeriesType.BAR -> TODO()
                 SeriesType.HISTOGRAM -> TODO()
+                SeriesType.BASELINE -> TODO()
             }
         }
     }

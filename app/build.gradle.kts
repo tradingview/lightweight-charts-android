@@ -1,12 +1,14 @@
+import com.android.build.api.dsl.ApplicationExtension
+
 plugins {
     alias(libs.plugins.android)
+    alias(libs.plugins.android.builtin.kotlin)
+    alias(libs.plugins.android.legacy.kapt)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
 }
 
-android {
+extensions.configure<ApplicationExtension>("android") {
     namespace = "com.tradingview.lightweightcharts.example.app"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
@@ -26,6 +28,12 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+
+    packaging {
+        jniLibs {
+            keepDebugSymbols += "**/libdatastore_shared_counter.so"
+        }
     }
 
     compileOptions {
@@ -53,5 +61,5 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation(libs.permissionsdispatcher)
-    kapt(libs.permissionsdispatcher.processor)
+    add("kapt", libs.permissionsdispatcher.processor)
 }

@@ -33,7 +33,8 @@ data class HistogramSeriesOptions(
     override var base: Float? = null,
     override var priceScaleId: PriceScaleId? = null,
     override var autoscaleInfoProvider: Plugin? = null,
-    override var visible: Boolean? = null
+    override var visible: Boolean? = null,
+    override var conflationThresholdFactor: Float? = null,
 ) : SeriesOptionsCommon, HistogramStyleOptions
 
 inline fun histogramSeriesOptions(init: HistogramSeriesOptions.() -> Unit): HistogramSeriesOptions {

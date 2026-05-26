@@ -16,5 +16,10 @@ data class SeriesMarker(
     val color: IntColor? = null,
 
     val id: String? = null,
-    val text: String? = null
+    val text: String? = null,
+
+    /**
+     * Required when [position] is one of the price-based positions.
+     */
+    val price: Float? = null,
 )

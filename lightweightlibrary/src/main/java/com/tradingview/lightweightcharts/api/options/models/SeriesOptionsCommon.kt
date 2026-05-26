@@ -89,4 +89,9 @@ interface SeriesOptionsCommon {
      * Visibility of series
      */
     val visible: Boolean?
+
+    /**
+     * Series-level conflation smoothing factor. Overrides the global time scale option when set.
+     */
+    val conflationThresholdFactor: Float?
 }

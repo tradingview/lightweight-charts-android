@@ -1,6 +1,5 @@
 package com.tradingview.lightweightcharts.example.app.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.webkit.WebView
@@ -16,12 +15,16 @@ import com.tradingview.lightweightcharts.example.app.view.charts.CustomPriceForm
 import com.tradingview.lightweightcharts.example.app.view.charts.CustomThemesFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.CustomTooltipFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.IndicatorsAndMarkersFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.NoAttributionLogoFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.PriceScalesFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.RangeSwitcherFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.RealTimeEmulationFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.SeriesDataFragment
 import com.tradingview.lightweightcharts.example.app.view.charts.TimeScaleActionsFragment
-import com.tradingview.lightweightcharts.example.app.view.pager.ViewPagerActivity
+import com.tradingview.lightweightcharts.example.app.view.charts.V5MarkersAndWatermarksFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.V5PanesAndSeriesFragment
+import com.tradingview.lightweightcharts.example.app.view.charts.V5ScalesAndEventsFragment
+import com.tradingview.lightweightcharts.example.app.view.pager.TouchDelegateFragment
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_chart_type -> startFragment(ChartTypeFragment::class.java)
                 R.id.menu_custom_themes -> startFragment(CustomThemesFragment::class.java)
+                R.id.menu_no_attribution_logo -> startFragment(NoAttributionLogoFragment::class.java)
                 R.id.menu_range_switcher -> startFragment(RangeSwitcherFragment::class.java)
                 R.id.menu_actions -> startFragment(ChartActionsFragment::class.java)
                 R.id.menu_time_scale_actions -> startFragment(TimeScaleActionsFragment::class.java)
@@ -63,9 +67,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_data -> startFragment(SeriesDataFragment::class.java)
                 R.id.menu_realtime_emulator -> startFragment(RealTimeEmulationFragment::class.java)
                 R.id.menu_indicators_and_markers -> startFragment(IndicatorsAndMarkersFragment::class.java)
-                R.id.menu_view_pager -> {
-                    startActivity(Intent(this@MainActivity, ViewPagerActivity::class.java))
-                }
+                R.id.menu_v5_panes_and_series -> startFragment(V5PanesAndSeriesFragment::class.java)
+                R.id.menu_v5_markers_and_watermarks -> startFragment(V5MarkersAndWatermarksFragment::class.java)
+                R.id.menu_v5_scales_and_events -> startFragment(V5ScalesAndEventsFragment::class.java)
+                R.id.menu_view_pager -> startFragment(TouchDelegateFragment::class.java)
             }
             binding.drawerLayout.closeDrawers()
             true

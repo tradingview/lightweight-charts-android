@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.models.CandlestickSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.PriceScaleOptions
@@ -21,6 +23,7 @@ import com.tradingview.lightweightcharts.example.app.databinding.FragmentChartPr
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
 import com.tradingview.lightweightcharts.example.app.viewmodel.RealTimeEmulationViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class PriceScaleActionsFragment : Fragment(), ITitleFragment {
     override val fragmentTitleRes = R.string.pricescale_actions
@@ -66,8 +69,10 @@ class PriceScaleActionsFragment : Fragment(), ITitleFragment {
                     this.seriesApi = series
                     series.setData(data.list)
 
-                    realtimeDataJob = lifecycleScope.launchWhenResumed {
-                        viewModel.seriesFlow.collect(series::update)
+                    realtimeDataJob = viewLifecycleOwner.lifecycleScope.launch {
+                        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                            viewModel.seriesFlow.collect(series::update)
+                        }
                     }
                 }
             )

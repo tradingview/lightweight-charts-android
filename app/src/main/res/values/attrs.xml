@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ChartTextWatermark">
+        <attr name="chartWatermarkFontFamily" format="string" />
+        <attr name="chartWatermarkTitleFontStyle" format="string" />
+        <attr name="chartWatermarkTitleFontSizeLarge" format="integer" />
+        <attr name="chartWatermarkTitleFontSizeSmall" format="integer" />
+        <attr name="chartWatermarkTitleLineHeightLarge" format="integer" />
+        <attr name="chartWatermarkTitleLineHeightSmall" format="integer" />
+        <attr name="chartWatermarkSubtitleFontSizeLarge" format="integer" />
+        <attr name="chartWatermarkSubtitleFontSizeSmall" format="integer" />
+        <attr name="chartWatermarkSubtitleLineHeightLarge" format="integer" />
+        <attr name="chartWatermarkSubtitleLineHeightSmall" format="integer" />
+    </declare-styleable>
+</resources>

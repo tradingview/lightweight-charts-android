@@ -1,0 +1,4 @@
+interface:
+  display_name: "Upgrade Lightweight Charts Android"
+  short_description: "Plan and implement JS core upgrades"
+  default_prompt: "Use $upgrade-lightweight-charts-android to update this Android wrapper to the latest lightweight-charts JavaScript release."

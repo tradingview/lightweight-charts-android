@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 
 object FragmentFactory {
     fun <T : Fragment> getInstance(clazz: Class<T>, bundle: Bundle? = null): T {
-        val fragment = clazz.newInstance()
+        val fragment = clazz.getDeclaredConstructor().newInstance()
         fragment.arguments = bundle
         return fragment
     }

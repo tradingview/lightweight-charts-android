@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.chart.models.color.Colorable
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.options.common.BaselineStyleOptions
 import com.tradingview.lightweightcharts.api.series.enums.LastPriceAnimationMode
 import com.tradingview.lightweightcharts.api.series.enums.LineStyle
@@ -98,6 +99,8 @@ data class BaselineSeriesOptions(
      */
     override var baseValue: BaseValueType? = null,
 
+    override var relativeGradient: Boolean? = null,
+
     /**
      * The first color of the top area.
      */
@@ -144,6 +147,12 @@ data class BaselineSeriesOptions(
      */
     override var lineType: LineType? = null,
 
+    override var lineVisible: Boolean? = null,
+
+    override var pointMarkersVisible: Boolean? = null,
+
+    override var pointMarkersRadius: Float? = null,
+
     /**
      * Show the crosshair marker.
      */
@@ -177,4 +186,13 @@ data class BaselineSeriesOptions(
      * Last price animation mode.
      */
     override var lastPriceAnimation: LastPriceAnimationMode? = null,
+    override var conflationThresholdFactor: Float? = null,
 ) : SeriesOptionsCommon, BaselineStyleOptions
+
+inline fun baselineSeriesOptions(init: BaselineSeriesOptions.() -> Unit): BaselineSeriesOptions {
+    return BaselineSeriesOptions().apply(init)
+}
+
+inline fun SeriesApi.applyBaselineSeriesOptions(init: BaselineSeriesOptions.() -> Unit) {
+    applyOptions(BaselineSeriesOptions().apply(init))
+}

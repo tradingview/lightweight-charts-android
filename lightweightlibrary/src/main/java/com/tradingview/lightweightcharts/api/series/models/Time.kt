@@ -21,7 +21,10 @@ sealed class Time {
         override val date: Date
             get() = Calendar
                 .getInstance()
-                .apply { set(year, month, day) }
+                .apply {
+                    clear()
+                    set(year, month - 1, day)
+                }
                 .time
     }
 
@@ -40,7 +43,8 @@ sealed class Time {
             get() = tryParseDate(source, locale)
 
         private fun tryParseDate(stringDate: String, locale: Locale): Date {
-            return SimpleDateFormat("yyyy-MM-dd", locale).parse(stringDate)
+            return SimpleDateFormat("yyyy-MM-dd", locale)
+                .parse(stringDate)
                 ?: throw IllegalStateException("Date format is not supported")
         }
     }

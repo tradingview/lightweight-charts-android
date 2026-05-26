@@ -14,7 +14,7 @@ export default class PriceScaleInstanceService {
             this.functionManager.registerFunction(method.name, (input, resolve) => {
                 const scale = this.priceScaleCache.get(input.params.caller)
                 if (scale === undefined) {
-                    this.functionManager.throwFatalError(new Error(`PriceScale with uuid:${input.caller} is not found`), input)
+                    this.functionManager.throwFatalError(new Error(`PriceScale with uuid:${input.params.caller} is not found`), input)
                 } else {
                     method.invoke(scale, input.params, resolve)
                 }
@@ -25,8 +25,12 @@ export default class PriceScaleInstanceService {
 
     _priceScaleInstanceMethods() {
         return [
+            new PriceScaleOptions(),
             new ApplyOptions(),
             new PriceScaleWidth(),
+            new SetVisibleRange(),
+            new GetVisibleRange(),
+            new SetAutoScale(),
         ];
     }
 
@@ -55,6 +59,15 @@ class ApplyOptions extends PriceScaleInstanceMethod {
     constructor() {
         super("priceScaleApplyOptions", function (scale, params, resolve) {
             scale.applyOptions(params.options)
+            resolve()
+        });
+    }
+}
+
+class PriceScaleOptions extends PriceScaleInstanceMethod {
+    constructor() {
+        super("priceScaleOptions", function (scale, params, resolve) {
+            resolve(scale.options());
         });
     }
 }
@@ -64,6 +77,32 @@ class PriceScaleWidth extends PriceScaleInstanceMethod {
     constructor() {
         super("priceScaleWidth", function (scale, params, resolve) {
             resolve(scale.width())
+        });
+    }
+}
+
+class SetVisibleRange extends PriceScaleInstanceMethod {
+    constructor() {
+        super("priceScaleSetVisibleRange", function (scale, params, resolve) {
+            scale.setVisibleRange(params.range);
+            resolve();
+        });
+    }
+}
+
+class GetVisibleRange extends PriceScaleInstanceMethod {
+    constructor() {
+        super("priceScaleGetVisibleRange", function (scale, params, resolve) {
+            resolve(scale.getVisibleRange());
+        });
+    }
+}
+
+class SetAutoScale extends PriceScaleInstanceMethod {
+    constructor() {
+        super("priceScaleSetAutoScale", function (scale, params, resolve) {
+            scale.setAutoScale(params.on);
+            resolve();
         });
     }
 }

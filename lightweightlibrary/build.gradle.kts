@@ -1,12 +1,13 @@
-import java.io.ByteArrayOutputStream
+import com.android.build.api.dsl.LibraryExtension
+import com.tradingview.lightweightcharts.build.NpmBuildTask
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.builtin.kotlin)
     alias(libs.plugins.maven.publish)
 }
 
-android {
+extensions.configure<LibraryExtension>("android") {
     namespace = "com.tradingview.lightweightcharts"
     compileSdk = libs.versions.sdk.compile.get().toInt()
 
@@ -30,40 +31,32 @@ android {
     }
 
     publishing {
-        multipleVariants {
-            allVariants()
+        // Publish only the release AAR variant. This matches the Maven artifact consumed by
+        // Android clients and avoids exposing debug-only sample configuration.
+        singleVariant("release") {
             withSourcesJar()
             withJavadocJar()
         }
     }
 }
 
-fun evaluateShellScript(vararg script: String) {
-    val outputStream = ByteArrayOutputStream()
-    runCatching {
-        project.exec {
-            if (System.getProperty("os.name").lowercase().contains("windows")) {
-                val command = script.joinToString(" ") + "; if (!\$?) { exit 1 }"
-                commandLine("powershell", "-Command", command)
-            } else {
-                commandLine(*script)
-            }
-            errorOutput = outputStream
-            standardOutput = outputStream
+
+val npmBuild = tasks.register<NpmBuildTask>("npmBuild") {
+    inputs.file(layout.projectDirectory.file("package.json"))
+    listOf("package-lock.json", "npm-shrinkwrap.json").forEach { lockfile ->
+        val candidate = layout.projectDirectory.file(lockfile)
+        if (candidate.asFile.exists()) {
+            inputs.file(candidate)
         }
-    }.onFailure { e ->
-        e.printStackTrace()
-        throw IllegalStateException(outputStream.toString())
     }
+    inputs.file(layout.projectDirectory.file("webpack.config.js"))
+    inputs.dir(layout.projectDirectory.dir("lib"))
+    outputs.dir(layout.projectDirectory.dir("src/main/assets/com/tradingview/lightweightcharts/scripts"))
 }
 
-tasks.register("npmBuild") {
-    doLast {
-        evaluateShellScript("npm", "install")
-        evaluateShellScript("npm", "run", "compile")
-        evaluateShellScript("npm", "run", "compile-price-formatter")
-        evaluateShellScript("npm", "run", "compile-time-formatter")
-        evaluateShellScript("npm", "run", "compile-eval-plugin")
+tasks.configureEach {
+    if (name.startsWith("merge") && name.endsWith("Assets")) {
+        dependsOn(npmBuild)
     }
 }
 
@@ -116,4 +109,6 @@ afterEvaluate {
 dependencies {
     implementation(libs.androidx.webkit)
     implementation(libs.gson)
+
+    testImplementation(libs.junit)
 }

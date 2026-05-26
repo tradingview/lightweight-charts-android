@@ -1,17 +1,14 @@
 package com.tradingview.lightweightcharts.example.app.view.charts
 
-import android.Manifest
-import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.tradingview.lightweightcharts.api.chart.models.ImageMimeType
 import com.tradingview.lightweightcharts.api.options.models.CandlestickSeriesOptions
 import com.tradingview.lightweightcharts.api.options.models.crosshairOptions
@@ -19,11 +16,10 @@ import com.tradingview.lightweightcharts.api.series.enums.CrosshairMode
 import com.tradingview.lightweightcharts.example.app.R
 import com.tradingview.lightweightcharts.example.app.databinding.FragmentChartActionsBinding
 import com.tradingview.lightweightcharts.example.app.view.util.ITitleFragment
+import com.tradingview.lightweightcharts.example.app.view.util.ScreenshotShare
 import com.tradingview.lightweightcharts.example.app.viewmodel.RealTimeEmulationViewModel
 import kotlinx.coroutines.Job
-import permissions.dispatcher.NeedsPermission
-import java.io.File
-import java.io.FileOutputStream
+import kotlinx.coroutines.launch
 
 class ChartActionsFragment : Fragment(), ITitleFragment {
     override val fragmentTitleRes = R.string.actions
@@ -50,8 +46,10 @@ class ChartActionsFragment : Fragment(), ITitleFragment {
                 options = CandlestickSeriesOptions(),
                 onSeriesCreated = { series ->
                     series.setData(data.list)
-                    realtimeDataJob = lifecycleScope.launchWhenResumed {
-                        viewModel.seriesFlow.collect(series::update)
+                    realtimeDataJob = viewLifecycleOwner.lifecycleScope.launch {
+                        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                            viewModel.seriesFlow.collect(series::update)
+                        }
                     }
                 }
             )
@@ -73,23 +71,9 @@ class ChartActionsFragment : Fragment(), ITitleFragment {
         super.onDestroy()
     }
 
-    @NeedsPermission(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE
-    )
     fun shareScreenshot() {
-        chartApi.takeScreenshot(ImageMimeType.WEBP) { bitmap ->
-            val context = requireContext()
-
-            val picturesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            val file = File(picturesDir, "share.webp")
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, FileOutputStream(file))
-
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "image/webp"
-            val uri = FileProvider.getUriForFile(context, "com.tradingview.fileprovider", file)
-            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-            context.startActivity(Intent.createChooser(shareIntent, "Share image using"))
+        chartApi.takeScreenshot(ImageMimeType.PNG) { bitmap ->
+            ScreenshotShare.share(requireContext(), bitmap)
         }
     }
 }

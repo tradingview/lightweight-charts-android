@@ -11,15 +11,26 @@ export default class PriceFormatterService {
     }
 
     register(params, callback) {
-        if (!params.options.priceFormat || !params.options.priceFormat.formatter) {
+        if (!params.options.priceFormat) {
             callback(params);
             return;
         }
 
-        const plugin = params.options.priceFormat.formatter;
+        this._registerPriceFormatPlugin(params, "formatter", () => {
+            this._registerPriceFormatPlugin(params, "tickmarksFormatter", () => callback(params));
+        })
+    }
+
+    _registerPriceFormatPlugin(params, key, callback) {
+        if (!params.options.priceFormat[key]) {
+            callback();
+            return;
+        }
+
+        const plugin = params.options.priceFormat[key];
         this.pluginManager.register(plugin, (fun) => {
-            params.options.priceFormat.formatter = fun;
-            callback(params);
+            params.options.priceFormat[key] = fun;
+            callback();
         });
     }
 }

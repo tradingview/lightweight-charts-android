@@ -1,6 +1,7 @@
 package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
+import com.tradingview.lightweightcharts.api.options.enums.ConflationPriority
 import com.tradingview.lightweightcharts.runtime.plugins.Plugin
 
 data class TimeScaleOptions(
@@ -80,6 +81,31 @@ data class TimeScaleOptions(
      * Draw small vertical line on time axis labels.
      */
     var ticksVisible: Boolean? = null,
+
+    /**
+     * Sets the max space between bars in pixels.
+     */
+    var maxBarSpacing: Float? = null,
+
+    /**
+     * Sets right offset in pixels. Takes precedence over [rightOffset].
+     */
+    var rightOffsetPixels: Float? = null,
+
+    /**
+     * Maximum tick mark label length.
+     */
+    var tickMarkMaxCharacterLength: Int? = null,
+
+    /**
+     * Minimum time scale height.
+     */
+    var minimumHeight: Int? = null,
+
+    var enableConflation: Boolean? = null,
+    var conflationThresholdFactor: Float? = null,
+    var precomputeConflationOnInit: Boolean? = null,
+    var precomputeConflationPriority: ConflationPriority? = null,
 )
 
 inline fun timeScaleOptions(init: TimeScaleOptions.() -> Unit): TimeScaleOptions {
