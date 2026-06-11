@@ -91,6 +91,11 @@ interface SeriesOptionsCommon {
     val visible: Boolean?
 
     /**
+     * Additional tolerance in pixels used when hit testing the series
+     */
+    val hitTestTolerance: Float?
+
+    /**
      * Series-level conflation smoothing factor. Overrides the global time scale option when set.
      */
     val conflationThresholdFactor: Float?

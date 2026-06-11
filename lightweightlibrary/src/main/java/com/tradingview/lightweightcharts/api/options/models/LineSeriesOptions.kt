@@ -46,9 +46,12 @@ data class LineSeriesOptions(
 
     override var crosshairMarkerBackgroundColor: IntColor? = null,
 
+    override var crosshairMarkerBorderWidth: Float? = null,
+
     override var priceScaleId: PriceScaleId? = null,
     override var autoscaleInfoProvider: Plugin? = null,
     override var visible: Boolean? = null,
+    override var hitTestTolerance: Float? = null,
     override var conflationThresholdFactor: Float? = null,
     override var lastPriceAnimation: LastPriceAnimationMode? = null,
 ) : SeriesOptionsCommon, LineStyleOptions

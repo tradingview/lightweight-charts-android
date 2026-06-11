@@ -93,6 +93,11 @@ data class BaselineSeriesOptions(
      */
     override var visible: Boolean? = null,
 
+    /**
+     * Additional tolerance in pixels used when hit testing the series
+     */
+    override var hitTestTolerance: Float? = null,
+
     // ------------  BaselineStyleOptions  ----------
     /**
      override * rase value of the series.=null,

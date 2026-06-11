@@ -73,6 +73,12 @@ data class TimeScaleOptions(
     var shiftVisibleRangeOnNewBar: Boolean? = null,
 
     /**
+     * Allow the visible range to be shifted to the right when a new bar is added
+     * which is replacing an existing whitespace time point on the chart
+     */
+    var allowShiftVisibleRangeOnWhitespaceReplacement: Boolean? = null,
+
+    /**
      * Allows to override the tick marks formatter
      */
     var tickMarkFormatter: Plugin? = null,
@@ -101,6 +107,22 @@ data class TimeScaleOptions(
      * Minimum time scale height.
      */
     var minimumHeight: Int? = null,
+
+    /**
+     * Changes horizontal alignment of the time scale tick marks to a uniform distribution.
+     */
+    var uniformDistribution: Boolean? = null,
+
+    /**
+     * Allow major time scale labels to be rendered in a bolder font weight.
+     */
+    var allowBoldLabels: Boolean? = null,
+
+    /**
+     * Ignore time scale points containing only whitespace
+     * when drawing grid lines, tick marks, and snapping the crosshair.
+     */
+    var ignoreWhitespaceIndices: Boolean? = null,
 
     var enableConflation: Boolean? = null,
     var conflationThresholdFactor: Float? = null,

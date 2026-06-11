@@ -18,5 +18,6 @@ interface LineStyleOptions {
     val crosshairMarkerRadius: Float?
     val crosshairMarkerBorderColor: IntColor?
     val crosshairMarkerBackgroundColor: IntColor?
+    val crosshairMarkerBorderWidth: Float?
     val lastPriceAnimation: LastPriceAnimationMode?
 }

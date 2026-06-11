@@ -41,6 +41,17 @@ data class PriceLineOptions(
     var axisLabelVisible: Boolean? = null,
 
     /**
+     * Background color for the axis label.
+     * Will default to the price line color if unspecified.
+     */
+    var axisLabelColor: IntColor? = null,
+
+    /**
+     * Text color for the axis label.
+     */
+    var axisLabelTextColor: IntColor? = null,
+
+    /**
      * Price line's on the chart pane.
      */
     var title: String? = null,

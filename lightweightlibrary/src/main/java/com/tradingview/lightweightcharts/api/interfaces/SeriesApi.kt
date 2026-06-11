@@ -7,7 +7,9 @@ import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.series.common.PriceLine
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.SeriesType
+import com.tradingview.lightweightcharts.api.series.models.BarsInfo
 import com.tradingview.lightweightcharts.api.series.models.LastValueData
+import com.tradingview.lightweightcharts.api.series.models.LogicalRange
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 
 interface SeriesApi {
@@ -22,6 +24,7 @@ interface SeriesApi {
         const val SET_SERIES = "setSeries"
         const val PRICE_TO_COORDINATE = "priceToCoordinate"
         const val COORDINATE_TO_PRICE = "coordinateToPrice"
+        const val BARS_IN_LOGICAL_RANGE = "barsInLogicalRange"
         const val APPLY_OPTIONS = "applyOptionsSeries"
         const val PRICE_SCALE_SERIES = "priceScaleSeries"
         const val DATA_BY_INDEX_SERIES = "dataByIndexSeries"
@@ -57,6 +60,7 @@ interface SeriesApi {
         const val ORDER = "order"
         const val PANE_INDEX = "paneIndex"
         const val GLOBAL_LAST = "globalLast"
+        const val RANGE = "range"
     }
 
     val uuid: String
@@ -74,6 +78,19 @@ interface SeriesApi {
      * @param onPriceReceived price value of the coordinate on the chart
      */
     fun coordinateToPrice(coordinate: Float, onPriceReceived: (Float?) -> Unit)
+
+    /**
+     * Returns bars information for the series in the provided logical range
+     * @param range the logical range to retrieve info for
+     * @param onBarsInfoReceived bars information for the series in the provided range,
+     * or null if no series data has been found in the requested range
+     */
+    fun barsInLogicalRange(range: LogicalRange, onBarsInfoReceived: (BarsInfo?) -> Unit)
+
+    /**
+     * Returns the interface of the price formatter applied to the series
+     */
+    fun priceFormatter(): PriceFormatterApi
 
     /**
      * Applies new options to the existing series

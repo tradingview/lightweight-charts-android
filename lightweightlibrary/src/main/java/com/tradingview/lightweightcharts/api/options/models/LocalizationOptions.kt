@@ -15,6 +15,11 @@ data class LocalizationOptions(
     var priceFormatter: Plugin? = null,
 
     /**
+     * User-defined function for percentage formatting.
+     */
+    var percentageFormatter: Plugin? = null,
+
+    /**
      * User-defined function for time formatting.
      */
     var timeFormatter: Plugin? = null,

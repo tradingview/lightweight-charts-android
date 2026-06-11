@@ -8,8 +8,13 @@ import com.tradingview.lightweightcharts.api.options.enums.PriceScaleSide
  */
 data class ChartOptions(
     /**
+     * ## Deprecated
+     * Watermark is no longer a chart option in Lightweight Charts v5.
+     * Use the watermark plugin API [com.tradingview.lightweightcharts.api.interfaces.ChartApi.createTextWatermark] instead.
+     *
      * Structure with watermark options
      */
+    @Deprecated("Watermark is no longer a chart option in v5. Use ChartApi.createTextWatermark/createImageWatermark instead.")
     var watermark: WatermarkOptions? = null,
 
     /**

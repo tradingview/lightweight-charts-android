@@ -83,6 +83,8 @@ export default class SeriesInstanceService {
             new RemoveSeries(this.chart, this.seriesCache, this.markersCache, this.lineCache, this.functionManager),
             new PriceToCoordinate(),
             new CoordinateToPrice(),
+            new BarsInLogicalRange(),
+            new PriceFormatterFormat(),
             new Options(this.pluginManager),
             new DataByIndex(),
             new SeriesType(),
@@ -195,6 +197,22 @@ class CoordinateToPrice extends SeriesInstanceMethod {
     constructor() {
         super("coordinateToPrice", function (series, params, resolve) {
             resolve(series.coordinateToPrice(params.coordinate));
+        });
+    }
+}
+
+class BarsInLogicalRange extends SeriesInstanceMethod {
+    constructor() {
+        super("barsInLogicalRange", function (series, params, resolve) {
+            resolve(series.barsInLogicalRange(params.range));
+        });
+    }
+}
+
+class PriceFormatterFormat extends SeriesInstanceMethod {
+    constructor() {
+        super("priceFormatterFormat", function (series, params, resolve) {
+            resolve(series.priceFormatter().format(params.price));
         });
     }
 }

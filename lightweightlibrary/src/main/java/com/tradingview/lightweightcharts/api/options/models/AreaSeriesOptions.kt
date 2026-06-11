@@ -93,6 +93,11 @@ data class AreaSeriesOptions(
      */
     override var visible: Boolean? = null,
 
+    /**
+     * Additional tolerance in pixels used when hit testing the series
+     */
+    override var hitTestTolerance: Float? = null,
+
     // ----------  AreaStyleOptions    ---------------------
     /**
      * Color of the top part of the area.

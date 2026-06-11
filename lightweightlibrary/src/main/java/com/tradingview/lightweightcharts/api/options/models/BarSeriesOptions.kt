@@ -38,6 +38,7 @@ data class BarSeriesOptions(
     override var priceScaleId: PriceScaleId? = null,
     override var autoscaleInfoProvider: Plugin? = null,
     override var visible: Boolean? = null,
+    override var hitTestTolerance: Float? = null,
     override var conflationThresholdFactor: Float? = null,
 ) : SeriesOptionsCommon, BarStyleOptions
 

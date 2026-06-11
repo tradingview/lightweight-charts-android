@@ -1,9 +1,11 @@
 package com.tradingview.lightweightcharts.api.delegates
 
+import com.tradingview.lightweightcharts.api.interfaces.PriceFormatterApi
 import com.tradingview.lightweightcharts.api.interfaces.PriceScaleApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesMarkersApi
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.APPLY_OPTIONS
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.BARS_IN_LOGICAL_RANGE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.COORDINATE_TO_PRICE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.DATA as SERIES_DATA
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Func.CREATE_SERIES_MARKERS_COMPAT
@@ -37,6 +39,7 @@ import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.OPTIONS
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.ORDER
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PANE_INDEX
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.PRICE
+import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.RANGE
 import com.tradingview.lightweightcharts.api.interfaces.SeriesApi.Params.SERIES_UUID
 import com.tradingview.lightweightcharts.api.options.enums.MismatchDirection
 import com.tradingview.lightweightcharts.api.options.models.AreaSeriesOptions
@@ -49,6 +52,7 @@ import com.tradingview.lightweightcharts.api.options.models.PriceLineOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesMarkersOptions
 import com.tradingview.lightweightcharts.api.options.models.SeriesOptionsCommon
 import com.tradingview.lightweightcharts.api.serializer.AreaSeriesOptionsDeserializer
+import com.tradingview.lightweightcharts.api.serializer.BarsInfoDeserializer
 import com.tradingview.lightweightcharts.api.serializer.BarSeriesOptionsDeserializer
 import com.tradingview.lightweightcharts.api.serializer.BaselineSeriesOptionsDeserializer
 import com.tradingview.lightweightcharts.api.serializer.ClassSimpleDeserializer
@@ -65,7 +69,9 @@ import com.tradingview.lightweightcharts.api.series.common.PriceLine
 import com.tradingview.lightweightcharts.api.series.common.PriceLineDelegate
 import com.tradingview.lightweightcharts.api.series.common.SeriesData
 import com.tradingview.lightweightcharts.api.series.enums.SeriesType
+import com.tradingview.lightweightcharts.api.series.models.BarsInfo
 import com.tradingview.lightweightcharts.api.series.models.LastValueData
+import com.tradingview.lightweightcharts.api.series.models.LogicalRange
 import com.tradingview.lightweightcharts.api.series.models.SeriesMarker
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.version.ChartRuntimeObject
@@ -135,6 +141,22 @@ class SeriesApiDelegate<T : SeriesOptionsCommon>(
             callback = onPriceReceived,
             PrimitiveSerializer.FloatDeserializer
         )
+    }
+
+    override fun barsInLogicalRange(range: LogicalRange, onBarsInfoReceived: (BarsInfo?) -> Unit) {
+        controller.callFunction(
+            BARS_IN_LOGICAL_RANGE,
+            mapOf(
+                SERIES_UUID to uuid,
+                RANGE to range
+            ),
+            callback = onBarsInfoReceived,
+            deserializer = BarsInfoDeserializer()
+        )
+    }
+
+    override fun priceFormatter(): PriceFormatterApi {
+        return PriceFormatterApiDelegate(uuid, controller)
     }
 
     override fun applyOptions(options: SeriesOptionsCommon) {
