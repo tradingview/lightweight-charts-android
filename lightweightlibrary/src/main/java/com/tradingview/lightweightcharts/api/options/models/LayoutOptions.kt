@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.api.options.models
 
 import com.tradingview.lightweightcharts.api.chart.models.color.IntColor
 import com.tradingview.lightweightcharts.api.chart.models.color.surface.SurfaceColor
+import com.tradingview.lightweightcharts.api.options.enums.ColorSpace
 
 data class LayoutOptions(
 
@@ -34,6 +35,12 @@ data class LayoutOptions(
      * Options for chart layout panes.
      */
     var panes: LayoutPanesOptions? = null,
+
+    /**
+     * The color space to use for the chart rendering. The display-p3 color space
+     * provides a wider gamut of colors but requires a compatible display.
+     */
+    var colorSpace: ColorSpace? = null,
 )
 
 inline fun layoutOptions(init: LayoutOptions.() -> Unit): LayoutOptions {

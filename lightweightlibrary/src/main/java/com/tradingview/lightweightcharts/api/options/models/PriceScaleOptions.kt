@@ -30,7 +30,7 @@ data class PriceScaleOptions(
     /**
      * Defines position of the price scale on the chart
      */
-    @Deprecated("")
+    @Deprecated("Removed in Lightweight Charts v5 and ignored by the library. Use leftPriceScale/rightPriceScale visibility and priceScaleId instead.")
     var position: PriceAxisPosition? = null,
 
     /**
