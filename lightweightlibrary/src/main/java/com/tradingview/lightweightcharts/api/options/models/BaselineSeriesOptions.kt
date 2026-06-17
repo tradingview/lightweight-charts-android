@@ -100,7 +100,9 @@ data class BaselineSeriesOptions(
 
     // ------------  BaselineStyleOptions  ----------
     /**
-     override * rase value of the series.=null,
+     * Base value of the series.
+     *
+     * Default value: `{ type: 'price', price: 0 }`
      */
     override var baseValue: BaseValueType? = null,
 
