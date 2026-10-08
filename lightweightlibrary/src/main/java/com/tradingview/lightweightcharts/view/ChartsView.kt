@@ -9,6 +9,7 @@ import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature.*
 import com.tradingview.lightweightcharts.Logger
 import com.tradingview.lightweightcharts.api.delegates.ChartApiDelegate
+import com.tradingview.lightweightcharts.api.exception.ChartBridgeException
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
 import com.tradingview.lightweightcharts.runtime.controller.WebMessageController
 import com.tradingview.lightweightcharts.runtime.messaging.LogLevel
@@ -97,6 +98,18 @@ open class ChartsView @JvmOverloads constructor(
 
     fun unsubscribeOnChartStateChange(subscriber: (State) -> Unit) {
         onStateChanged.remove(subscriber)
+    }
+
+    /**
+     * Sets the listener for errors the chart reports asynchronously, after the API call that caused them
+     * has already returned: a JavaScript failure while executing a call, a call result that could not
+     * be deserialized, or a malformed bridge message. See [ChartBridgeException] for the error types.
+     *
+     * The listener is invoked on the main thread. When no listener is set, these errors are thrown on
+     * the main thread and crash the app. Pass `null` to remove the listener.
+     */
+    fun setOnErrorListener(listener: ((ChartBridgeException) -> Unit)?) {
+        webMessageController.errorListener = listener
     }
 
     fun addTouchDelegate(touchDelegate: TouchDelegate) {

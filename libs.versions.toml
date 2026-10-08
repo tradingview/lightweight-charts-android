@@ -1,7 +1,7 @@
 [versions]
 
-lightweightcharts-code = "16"
-lightweightcharts = "5.2.0"
+lightweightcharts-code = "17"
+lightweightcharts = "5.2.1"
 sdk-min = "23"
 sdk-compile = "36"
 

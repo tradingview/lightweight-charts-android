@@ -70,7 +70,13 @@ export default class FunctionManager {
                 }
             }))
         }
-        const subscription = fn.subscribe(data, callback)
+        let subscription
+        try {
+            subscription = fn.subscribe(data, callback)
+        } catch (e) {
+            this.throwFatalError(e, data)
+            return
+        }
         this.subscriptions.set(data.uuid + data.fn, {
             name: data.fn,
             subscription: subscription
@@ -93,7 +99,11 @@ export default class FunctionManager {
             return
         }
 
-        fn.unsubscribe(record.subscription)
+        try {
+            fn.unsubscribe(record.subscription)
+        } catch (e) {
+            this.throwFatalError(e, data)
+        }
         this.subscriptions.delete(id)
 
         this.port.postMessage(JSON.stringify({
@@ -120,17 +130,21 @@ export default class FunctionManager {
     }
 
     throwFatalError(error, data) {
-        logger.e(error.message)
+        // anything can be thrown, not only an Error
+        const isError = error instanceof Error
+        logger.e(isError ? error.message : String(error))
 
-        if (data === undefined) {
-            data = {}
-        }
-
-        data.message = error.stack
+        // Send back only what native reads: echoing the call's params is costly for large data,
+        // and some callers pass objects that cannot be serialized
+        const { fn, uuid } = data || {}
 
         this.port.postMessage(JSON.stringify({
             messageType: "Message::FatalError",
-            data: data
+            data: {
+                fn: fn,
+                uuid: uuid,
+                message: (isError && error.stack) || String(error)
+            }
         }))
     }
 
