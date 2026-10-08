@@ -6,7 +6,9 @@ import android.webkit.WebView
 import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebMessagePortCompat
 import androidx.webkit.WebViewCompat
+import com.google.gson.JsonParseException
 import com.tradingview.lightweightcharts.Logger
+import com.tradingview.lightweightcharts.api.exception.ChartBridgeException
 import com.tradingview.lightweightcharts.api.serializer.gson.GsonProvider
 import com.tradingview.lightweightcharts.runtime.messaging.*
 
@@ -20,13 +22,20 @@ class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePo
 
     init {
         nativePort.setWebMessageCallback(object : WebMessagePortCompat.WebMessageCallbackCompat() {
+            @Suppress("TooGenericExceptionCaught")
             override fun onMessage(port: WebMessagePortCompat, webMessage: WebMessageCompat?) {
-                if (webMessage != null) {
-                    val bridgeMessage = bridgeMessageOf(webMessage)
-                    onBridgeMessageListener?.onMessage(bridgeMessage)
-                } else {
+                if (webMessage == null) {
                     Logger.w("Web message is null")
+                    return
                 }
+
+                val bridgeMessage = try {
+                    bridgeMessageOf(webMessage)
+                } catch (e: Exception) {
+                    onBridgeMessageListener?.onError(ChartBridgeException.MalformedMessageError(e))
+                    return
+                }
+                onBridgeMessageListener?.onMessage(bridgeMessage)
             }
         })
     }
@@ -56,10 +65,16 @@ class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePo
     }
 
     private fun bridgeMessageOf(webMessage: WebMessageCompat): BridgeMessage {
-        val message = serializer.fromJson(
+        val message: BridgeMessage? = serializer.fromJson(
             webMessage.data,
             BridgeMessage::class.java
         )
+
+        // Gson bypasses Kotlin null-safety, so a malformed message can leave these fields null
+        @Suppress("SENSELESS_COMPARISON")
+        if (message == null || message.messageType == null || message.data == null) {
+            throw JsonParseException("Bridge message has no type or data")
+        }
 
         return when (message.messageType) {
             MessageType.FUNCTION_RESULT -> BridgeFunctionResult(message)
@@ -72,5 +87,9 @@ class WebMessageChannel(private val logLevel: LogLevel, ports: List<WebMessagePo
 
     interface BridgeMessageListener {
         fun onMessage(bridgeMessage: BridgeMessage)
+
+        fun onError(error: ChartBridgeException) {
+            throw error
+        }
     }
 }

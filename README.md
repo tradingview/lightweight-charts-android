@@ -35,7 +35,7 @@ In `/gradle_module/build.gradle`
 ```groovy
 dependencies {
     //...
-    implementation 'com.tradingview:lightweightcharts:5.2.0'
+    implementation 'com.tradingview:lightweightcharts:5.2.1'
 }
 ```
 
@@ -105,6 +105,25 @@ val data = listOf(
 )
 histogramSeries.setData(data)
 ```
+
+## Error handling
+
+Chart calls run asynchronously in the WebView, so some errors are only known after the call has returned, for example calling `update` on a series that was already removed. By default these errors are thrown on the main thread and crash the app. To handle them yourself, set an error listener:
+
+```kotlin
+charts_view.setOnErrorListener { error ->
+    // error.functionName is the failed bridge call, e.g. "update"
+    crashReporter.recordException(error)
+}
+```
+
+The listener receives a `ChartBridgeException`, which is one of:
+
+- `JsFatalError`: the JavaScript side failed to execute the call. Its stack trace holds the JavaScript frames, and its `cause` holds the stack of your code that made the call.
+- `ResultDeserializationError`: the call result could not be parsed, so its callback was not invoked. Its stack trace is the stack of your code that made the call, and its `cause` is the parsing error.
+- `MalformedMessageError`: a message from the JavaScript side could not be parsed.
+
+`ChartBridgeException` extends `IllegalStateException`. Exceptions thrown by your own callbacks are not caught and propagate as usual.
 
 ## License
 

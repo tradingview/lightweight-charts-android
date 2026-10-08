@@ -2,6 +2,7 @@ package com.tradingview.lightweightcharts.runtime.controller
 
 import com.google.gson.JsonElement
 import com.tradingview.lightweightcharts.Logger
+import com.tradingview.lightweightcharts.api.exception.ChartBridgeException
 import com.tradingview.lightweightcharts.api.serializer.Deserializer
 import com.tradingview.lightweightcharts.api.serializer.PrimitiveSerializer
 import com.tradingview.lightweightcharts.runtime.WebMessageChannel
@@ -14,6 +15,20 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
     private var webMessageChannel: WebMessageChannel? = null
     private val callbackBuffer = ConcurrentHashMap<String, BufferElement>()
     private val messageBuffer = ConcurrentLinkedDeque<BridgeMessage>()
+
+    // JS replies to a call without a callback only when it fails, so nothing would ever remove its
+    // call site. Keep only the most recent ones: an error arrives shortly after the call that caused it.
+    private val notificationCallSites = object : LinkedHashMap<String, BridgeCallSite>() {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, BridgeCallSite>): Boolean {
+            return size > MAX_NOTIFICATION_CALL_SITES
+        }
+    }
+
+    /**
+     * Receives the errors reported asynchronously by the bridge. When it is `null`, they are thrown instead.
+     */
+    @Volatile
+    var errorListener: ((ChartBridgeException) -> Unit)? = null
 
     fun callFunction(
         name: String,
@@ -48,14 +63,14 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
         deserializer: Deserializer<out Any?> = PrimitiveSerializer.NullDeserializer
     ): String {
         val bridge = BridgeFunction(name, params, expectsResult = callback != null)
+        val callSite = BridgeCallSite(name)
 
         if (callback != null) {
-            @Suppress("UNCHECKED_CAST")
-            callbackBuffer[bridge.uuid] = BufferElement(
-                callback,
-                deserializer,
-                getStackTrace()
-            )
+            callbackBuffer[bridge.uuid] = BufferElement(callback, deserializer, callSite)
+        } else {
+            synchronized(notificationCallSites) {
+                notificationCallSites[bridge.uuid] = callSite
+            }
         }
 
         messageBuffer.addLast(bridge)
@@ -74,7 +89,7 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
         callbackBuffer[bridge.uuid] = BufferElement(
             callback as (Any?) -> Unit,
             deserializer,
-            getStackTrace(),
+            BridgeCallSite(name),
             isSubscription = true
         )
         messageBuffer.addLast(bridge)
@@ -114,13 +129,13 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
                     return
                 }
 
-                element.invoke(bridgeMessage.result)
+                deliverResult(element, bridgeMessage.result)
             }
 
             is BridgeSubscribeResult -> {
                 val element = callbackBuffer[bridgeMessage.uuid]
                 if (element != null && !element.isInactive) {
-                    element.invoke(bridgeMessage.result)
+                    deliverResult(element, bridgeMessage.result)
                 } else {
                     Logger.w("Inactive subscription triggered the action")
                 }
@@ -131,30 +146,68 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
             }
 
             is BridgeFatalError -> {
-                val element = callbackBuffer.remove(bridgeMessage.uuid)
-
-                val message = bridgeMessage.message.split('\n').first()
-                val jsException = IllegalStateException(message).apply {
-                    val regex = getStackTraceRegex()
-                    val trace = regex.findAll(bridgeMessage.message).map { result ->
-                        val values = result.groupValues
-                        StackTraceElement(
-                            "jsCode",
-                            values[1],
-                            values[2],
-                            values[3].toInt()
-                        )
-                    }.toList()
-                    stackTrace = trace.toTypedArray()
-
-                    val exception = IllegalStateException()
-                    exception.stackTrace = element?.stackTrace ?: emptyArray()
-                    initCause(exception)
+                val callSite = bridgeMessage.uuid?.let { uuid ->
+                    callbackBuffer.remove(uuid)?.callSite ?: removeNotificationCallSite(uuid)
                 }
+                val message = bridgeMessage.message
 
-                throw jsException
+                dispatchError(
+                    ChartBridgeException.JsFatalError(
+                        functionName = callSite?.functionName ?: bridgeMessage.functionName,
+                        jsMessage = message.lineSequence().first(),
+                        jsStackTrace = jsStackTraceOf(message),
+                        callSite = callSite?.trimToCaller()
+                    )
+                )
             }
         }
+    }
+
+    override fun onError(error: ChartBridgeException) {
+        dispatchError(error)
+    }
+
+    private fun dispatchError(error: ChartBridgeException) {
+        val listener = errorListener ?: throw error
+        listener(error)
+    }
+
+    // Deserializers may throw anything. Only deserialization is guarded: exceptions thrown by
+    // the callback belong to the caller and propagate as usual.
+    @Suppress("TooGenericExceptionCaught")
+    private fun deliverResult(element: BufferElement, result: JsonElement) {
+        val value = try {
+            element.deserializer.deserialize(result)
+        } catch (e: Exception) {
+            dispatchError(
+                ChartBridgeException.ResultDeserializationError(
+                    functionName = element.callSite.functionName,
+                    callStackTrace = element.callSite.trimToCaller().stackTrace,
+                    cause = e
+                )
+            )
+            return
+        }
+
+        element.callback?.invoke(value)
+    }
+
+    private fun removeNotificationCallSite(uuid: String): BridgeCallSite? {
+        return synchronized(notificationCallSites) {
+            notificationCallSites.remove(uuid)
+        }
+    }
+
+    private fun jsStackTraceOf(message: String): Array<StackTraceElement> {
+        return getStackTraceRegex().findAll(message).map { result ->
+            val values = result.groupValues
+            StackTraceElement(
+                "jsCode",
+                values[1],
+                values[2],
+                values[3].toInt()
+            )
+        }.toList().toTypedArray()
     }
 
     private fun getStackTraceRegex(): Regex {
@@ -164,15 +217,6 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
         val columnGroup = "(\\d+)"
         val pattern = "at\\s+$methodGroup\\s+[(]$fileGroup:$lineGroup:$columnGroup[)]"
         return Regex(pattern)
-    }
-
-    private fun getStackTrace(): Array<StackTraceElement> {
-        return Thread.currentThread().stackTrace
-            // remove current class name from the stacktrace
-            .filter { it.className != WebMessageController::class.qualifiedName }
-            // remove getCurrentThread and getStackTrace from the stacktrace
-            .drop(2)
-            .toTypedArray()
     }
 
     private fun sendMessages() {
@@ -189,17 +233,17 @@ open class WebMessageController : WebMessageChannel.BridgeMessageListener {
         sendMessages()
     }
 
-    data class BufferElement(
+    internal data class BufferElement(
         val callback: ((Any?) -> Unit)? = null,
         val deserializer: Deserializer<out Any?>,
-        val stackTrace: Array<StackTraceElement>,
+        val callSite: BridgeCallSite,
         val isInactive: Boolean = false,
         val isSubscription: Boolean = false,
     ) {
-        fun invoke(jsonElement: JsonElement) {
-            callback?.invoke(deserializer.deserialize(jsonElement))
-        }
-
         fun makeInactive(): BufferElement = copy(isInactive = true)
+    }
+
+    private companion object {
+        const val MAX_NOTIFICATION_CALL_SITES = 128
     }
 }
