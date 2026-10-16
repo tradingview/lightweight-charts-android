@@ -1,6 +1,10 @@
 # Lightweight-charts-android
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.tradingview/lightweightcharts)](https://central.sonatype.com/artifact/com.tradingview/lightweightcharts)
+
 The Android Lightweight Charts is an Android wrapper of the [TradingView Lightweight Charts](https://github.com/tradingview/lightweight-charts) library.
+
+The library is published on Maven Central as [`com.tradingview:lightweightcharts`](https://central.sonatype.com/artifact/com.tradingview/lightweightcharts).
 
 ## Requirements
 
